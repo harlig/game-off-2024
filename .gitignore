@@ -1,0 +1,12 @@
+# Godot
+.godot/
+/android/
+
+# IDE
+.vscode/
+
+# Mac
+*.DS_Store
+
+# Build
+/target
