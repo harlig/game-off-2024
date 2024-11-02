@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://c0gt8q5pcmfki"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_71vwo"]
+
+[sub_resource type="Gradient" id="Gradient_nb3l8"]
+offsets = PackedFloat32Array(0, 0.503529, 1)
+colors = PackedColorArray(0, 1, 0, 1, 0, 0.462745, 0, 1, 0, 1, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lewau"]
+gradient = SubResource("Gradient_nb3l8")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ln02g"]
+
+[sub_resource type="Gradient" id="Gradient_dt5xq"]
+colors = PackedColorArray(0, 0, 0, 1, 0.294456, 0.498125, 0.993233, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6dn3k"]
+gradient = SubResource("Gradient_dt5xq")
+width = 20
+height = 20
+
+[sub_resource type="Gradient" id="Gradient_red8w"]
+colors = PackedColorArray(0, 0, 0, 1, 0.993338, 0, 0.220847, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_78fos"]
+gradient = SubResource("Gradient_red8w")
+width = 20
+height = 20
+
+[node name="Combat" type="Node2D"]
+position = Vector2(-1, 0)
+
+[node name="Ground" type="Area2D" parent="."]
+position = Vector2(575, 500)
+scale = Vector2(20, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_71vwo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground/CollisionShape2D"]
+texture = SubResource("GradientTexture2D_lewau")
+
+[node name="PlayerBase" type="Area2D" parent="."]
+position = Vector2(80, 432)
+scale = Vector2(4.185, 6.88)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBase"]
+shape = SubResource("RectangleShape2D_ln02g")
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerBase/CollisionShape2D"]
+texture = SubResource("GradientTexture2D_6dn3k")
+
+[node name="EnemyBase" type="Area2D" parent="."]
+position = Vector2(1072, 432)
+scale = Vector2(4.18548, -6.88)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBase"]
+shape = SubResource("RectangleShape2D_ln02g")
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyBase/CollisionShape2D"]
+texture = SubResource("GradientTexture2D_78fos")

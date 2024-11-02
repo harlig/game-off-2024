@@ -18,19 +18,19 @@ func updateDisplay() -> void:
 	$Background/Mana.text = str(mana)
 	$Background/Damage.text = str(damage)
 	$MarginContainer/TextureRect.texture = load(card_image_path)
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	resizePortrait()
-	
+
 func resizePortrait() -> void:
 	var current_width = $MarginContainer.size.x
-	var margin_value = current_width * 0.2 
+	var margin_value = current_width * 0.2
 	$MarginContainer.add_theme_constant_override("margin_left", margin_value)
 	$MarginContainer.add_theme_constant_override("margin_right", margin_value)
-	$MarginContainer.add_theme_constant_override("margin_top", margin_value * 0.5)  # Optional: set a different ratio for top
-	$MarginContainer.add_theme_constant_override("margin_bottom", margin_value * 0.5)  # Optional: set a different ratio for bottom
-	
+	$MarginContainer.add_theme_constant_override("margin_top", margin_value * 0.5) # Optional: set a different ratio for top
+	$MarginContainer.add_theme_constant_override("margin_bottom", margin_value * 0.5) # Optional: set a different ratio for bottom
+
 func setStats(max_health, health, mana, damage, card_name, card_image_path) -> void:
 	self.max_health = max_health
 	self.health = health
@@ -39,4 +39,3 @@ func setStats(max_health, health, mana, damage, card_name, card_image_path) -> v
 	self.card_name = card_name
 	self.card_image_path = card_image_path
 	updateDisplay()
-	
