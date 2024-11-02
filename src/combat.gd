@@ -4,6 +4,7 @@ extends Node2D
 
 func _ready() -> void:
 	spawn_enemy_unit()
+	pass
 
 func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector2, team: Attackable.Team) -> Unit:
 	var new_unit: Unit = unit_to_spawn.instantiate()

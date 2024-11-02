@@ -34,8 +34,6 @@ scale = Vector2(0.33, 0.66)
 texture = SubResource("GradientTexture2D_xj0yn")
 region_rect = Rect2(0, 0, 1, 1)
 
-[connection signal="area_entered" from="Attackable" to="." method="_on_attackable_area_entered"]
-[connection signal="area_exited" from="Attackable" to="." method="_on_attackable_area_exited"]
 [connection signal="area_entered" from="TargetArea" to="." method="_on_target_area_area_entered"]
 [connection signal="area_exited" from="TargetArea" to="." method="_on_target_area_area_exited"]
 

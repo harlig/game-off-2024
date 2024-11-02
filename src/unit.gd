@@ -34,16 +34,6 @@ func _process(delta: float) -> void:
 	else:
 		position.x -= speed * delta
 
-# when I run into something
-func _on_attackable_area_entered(area: Area2D) -> void:
-	if area.get_parent() == self:
-		return
-	is_stopped = true
-
-func _on_attackable_area_exited(_area: Area2D) -> void:
-	is_stopped = false
-
-
 # when something runs into my target area
 func _on_target_area_area_entered(area: Area2D) -> void:
 	if area is not Attackable or area.get_parent() == self:
@@ -53,10 +43,12 @@ func _on_target_area_area_entered(area: Area2D) -> void:
 		return
 
 	currently_attacking = attackable
+	is_stopped = true
 
 
 func _on_target_area_area_exited(_area: Area2D) -> void:
 	currently_attacking = null
+	is_stopped = false
 
 
 func set_stats(new_max_health: int, new_damage: int, new_card_name: String, new_card_image_path: String) -> void:
