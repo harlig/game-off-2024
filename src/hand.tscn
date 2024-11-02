@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8t6e3s743l15"]
+
+[ext_resource type="Script" path="res://src/hand.gd" id="1_qmirp"]
+[ext_resource type="PackedScene" uid="uid://dh14vc0cg3k4w" path="res://src/card.tscn" id="2_0iv46"]
+
+[node name="Hand" type="HBoxContainer"]
+clip_contents = true
+offset_left = 70.0
+offset_top = 27.0
+offset_right = 1062.0
+offset_bottom = 238.0
+alignment = 1
+script = ExtResource("1_qmirp")
+card_scene = ExtResource("2_0iv46")
