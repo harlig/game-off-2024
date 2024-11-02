@@ -5,6 +5,7 @@ var current_size := 0
 signal card_played
 
 var last_clicked_card: Node = null
+var cards_in_hand: Array[Card] = []
 
 func _ready() -> void:
 	deal_full_demo_hand()
@@ -44,6 +45,7 @@ func deal_specific_card(new_max_health: int, new_health: int, new_mana: int, new
 		card_instance.card_clicked.connect(_on_card_clicked)
 		add_child(card_instance)
 		current_size += 1
+		cards_in_hand.append(card_instance)
 
 func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 	if last_clicked_card and last_clicked_card != card_instance:
@@ -56,3 +58,4 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 		remove_child(card_instance)
 		card_instance.queue_free() # Might need to remove later TBD
 		last_clicked_card = null
+		cards_in_hand.erase(card_instance)
