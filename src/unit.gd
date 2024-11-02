@@ -34,7 +34,6 @@ func _process(delta: float) -> void:
 
 # when I run into something
 func _on_attackable_area_entered(area: Area2D) -> void:
-	print(area.get_children())
 	if area.get_parent() == self:
 		return
 	is_stopped = true

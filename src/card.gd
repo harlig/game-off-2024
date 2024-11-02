@@ -1,4 +1,4 @@
-extends AspectRatioContainer
+class_name Card extends AspectRatioContainer
 var max_health := 5
 var health := max_health
 var mana := 2
@@ -6,7 +6,7 @@ var damage := 2
 var card_name := "Example Creature"
 var card_image_path := "res://logo.png"
 var is_selected := false
-signal card_clicked 
+signal card_clicked
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	update_display()
@@ -19,20 +19,20 @@ func update_display() -> void:
 	$Background/Mana.text = str(mana)
 	$Background/Damage.text = str(damage)
 	$MarginContainer/TextureRect.texture = load(card_image_path)
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	resize_portrait()
 
-	
+
 func resize_portrait() -> void:
-	var current_width = $MarginContainer.size.x
-	var margin_value = current_width * 0.2 
+	var current_width: float = $MarginContainer.size.x
+	var margin_value: float = current_width * 0.2
 	$MarginContainer.add_theme_constant_override("margin_left", margin_value)
 	$MarginContainer.add_theme_constant_override("margin_right", margin_value)
-	$MarginContainer.add_theme_constant_override("margin_top", margin_value * 0.5)  # Optional: set a different ratio for top
-	$MarginContainer.add_theme_constant_override("margin_bottom", margin_value * 0.5)  # Optional: set a different ratio for bottom
-	
+	$MarginContainer.add_theme_constant_override("margin_top", margin_value * 0.5)
+	$MarginContainer.add_theme_constant_override("margin_bottom", margin_value * 0.5)
+
 func set_stats(new_max_health: int, new_health: int, new_mana: int, new_damage: int, new_card_name: String, new_card_image_path: String) -> void:
 	max_health = new_max_health
 	health = new_health
@@ -43,13 +43,13 @@ func set_stats(new_max_health: int, new_health: int, new_mana: int, new_damage: 
 	update_display()
 
 func on_select() -> void:
-	var style_box = StyleBoxFlat.new()
+	var style_box := StyleBoxFlat.new()
 	if is_selected:
 		card_clicked.emit(1, self)
-		style_box.bg_color = Color(204/255.0, 204/255.0, 0)  # Yellowish color; use RGBA values between 0-1
+		style_box.bg_color = Color(204 / 255.0, 204 / 255.0, 0) # Yellowish color; use RGBA values between 0-1
 	else:
 		card_clicked.emit(2, self)
-		style_box.bg_color = Color(120/255.0, 120/255.0, 120/255.0)  # Red color; use RGBA values between 0-1
+		style_box.bg_color = Color(120 / 255.0, 120 / 255.0, 120 / 255.0) # Red color; use RGBA values between 0-1
 
 	$Background.add_theme_stylebox_override("panel", style_box)
 

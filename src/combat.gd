@@ -16,11 +16,11 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector2, team: Attack
 	add_child(new_unit)
 
 func spawn_player_unit(offset: int = 0) -> void:
-	var unit_position = $PlayerBase.position + Vector2(75 + 55 * offset, 0)
+	var unit_position: Vector2 = $PlayerBase.position + Vector2(75 + 55 * offset, 0)
 	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
 	spawn_unit(unit, unit_position, Attackable.Team.PLAYER)
 
 func spawn_enemy_unit() -> void:
-	var unit_position = $EnemyBase.position - Vector2(75, 0)
+	var unit_position: Vector2 = $EnemyBase.position - Vector2(75, 0)
 	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
 	spawn_unit(unit, unit_position, Attackable.Team.ENEMY)

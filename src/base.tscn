@@ -14,7 +14,6 @@ height = 20
 scale = Vector2(4.185, 6.8)
 
 [node name="Attackable" parent="." instance=ExtResource("1_honqt")]
-scale = Vector2(1, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_5eh68")
