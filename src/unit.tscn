@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://d3hshvebdfvx5"]
+[gd_scene load_steps=6 format=3 uid="uid://d3hshvebdfvx5"]
 
 [ext_resource type="Script" path="res://src/unit.gd" id="1_lt78l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4e2w1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c0ysy"]
 
 [sub_resource type="Gradient" id="Gradient_ob8dk"]
 
@@ -13,11 +15,20 @@ gradient = SubResource("Gradient_ob8dk")
 scale = Vector2(1.01784, 1)
 script = ExtResource("1_lt78l")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1, 2)
+[node name="BodyCollider" type="CollisionShape2D" parent="."]
+scale = Vector2(1.7, 2)
 shape = SubResource("RectangleShape2D_4e2w1")
+
+[node name="TargetArea" type="Area2D" parent="."]
+
+[node name="TargetCollider" type="CollisionShape2D" parent="TargetArea"]
+position = Vector2(21.6144, 0)
+scale = Vector2(1.44417, 6.64)
+shape = SubResource("CircleShape2D_c0ysy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.33, 0.66)
 texture = SubResource("GradientTexture2D_xj0yn")
 region_rect = Rect2(0, 0, 1, 1)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
