@@ -1,24 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://clmqqkb8vuuyp"]
+[gd_scene load_steps=4 format=3 uid="uid://clmqqkb8vuuyp"]
 
 [ext_resource type="PackedScene" uid="uid://bys8v8wbsjwrq" path="res://src/attackable.tscn" id="1_honqt"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mg316"]
-
 [sub_resource type="Gradient" id="Gradient_ukwnw"]
-colors = PackedColorArray(0, 0, 0, 1, 0.390076, 0.476976, 0.982596, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.338844, 0.48524, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_5eh68"]
 gradient = SubResource("Gradient_ukwnw")
 width = 20
 height = 20
 
-[node name="Base" type="Area2D"]
+[node name="Base" type="Node2D"]
 scale = Vector2(4.185, 6.8)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_mg316")
+[node name="Attackable" parent="." instance=ExtResource("1_honqt")]
+scale = Vector2(1, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_5eh68")
-
-[node name="Attackable" parent="." instance=ExtResource("1_honqt")]

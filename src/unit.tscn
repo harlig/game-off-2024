@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://d3hshvebdfvx5"]
+[gd_scene load_steps=7 format=3 uid="uid://d3hshvebdfvx5"]
 
 [ext_resource type="Script" path="res://src/unit.gd" id="1_lt78l"]
+[ext_resource type="PackedScene" uid="uid://bys8v8wbsjwrq" path="res://src/attackable.tscn" id="2_x7kh0"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4e2w1"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_570hm"]
+size = Vector2(25, 40)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c0ysy"]
 
@@ -11,13 +13,14 @@
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xj0yn"]
 gradient = SubResource("Gradient_ob8dk")
 
-[node name="Unit" type="Area2D"]
+[node name="Unit" type="Node2D"]
 scale = Vector2(1.01784, 1)
 script = ExtResource("1_lt78l")
 
-[node name="BodyCollider" type="CollisionShape2D" parent="."]
-scale = Vector2(1.7, 2)
-shape = SubResource("RectangleShape2D_4e2w1")
+[node name="Attackable" parent="." instance=ExtResource("2_x7kh0")]
+
+[node name="CollisionShape2D" parent="Attackable" index="1"]
+shape = SubResource("RectangleShape2D_570hm")
 
 [node name="TargetArea" type="Area2D" parent="."]
 
@@ -31,4 +34,9 @@ scale = Vector2(0.33, 0.66)
 texture = SubResource("GradientTexture2D_xj0yn")
 region_rect = Rect2(0, 0, 1, 1)
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_entered" from="Attackable" to="." method="_on_attackable_area_entered"]
+[connection signal="area_exited" from="Attackable" to="." method="_on_attackable_area_exited"]
+[connection signal="area_entered" from="TargetArea" to="." method="_on_target_area_area_entered"]
+[connection signal="area_exited" from="TargetArea" to="." method="_on_target_area_area_exited"]
+
+[editable path="Attackable"]

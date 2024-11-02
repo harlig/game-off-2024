@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0gt8q5pcmfki"]
+[gd_scene load_steps=7 format=3 uid="uid://c0gt8q5pcmfki"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_8bss6"]
 [ext_resource type="PackedScene" uid="uid://clmqqkb8vuuyp" path="res://src/base.tscn" id="2_cotyr"]
@@ -9,6 +9,15 @@ colors = PackedColorArray(0, 1, 0, 1, 0, 0.462745, 0, 1, 0, 1, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_lewau"]
 gradient = SubResource("Gradient_nb3l8")
+
+[sub_resource type="Gradient" id="Gradient_ik0ng"]
+offsets = PackedFloat32Array(0, 0.997647)
+colors = PackedColorArray(0, 0, 0, 1, 0.952864, 2.88785e-07, 0.550141, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5r1os"]
+gradient = SubResource("Gradient_ik0ng")
+width = 20
+height = 20
 
 [node name="Combat" type="Node2D"]
 position = Vector2(-1, 0)
@@ -22,5 +31,13 @@ texture = SubResource("GradientTexture2D_lewau")
 [node name="PlayerBase" parent="." instance=ExtResource("2_cotyr")]
 position = Vector2(80, 432)
 
-[node name="EnemyBase2" parent="." instance=ExtResource("2_cotyr")]
+[node name="EnemyBase" parent="." instance=ExtResource("2_cotyr")]
 position = Vector2(1072, 432)
+
+[node name="Attackable" parent="EnemyBase" index="0"]
+team = 1
+
+[node name="Sprite2D" parent="EnemyBase" index="1"]
+texture = SubResource("GradientTexture2D_5r1os")
+
+[editable path="EnemyBase"]

@@ -19,3 +19,9 @@ config/icon="res://logo.png"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+
+[debug]
+gdscript/warnings/unassigned_variable=2
+gdscript/warnings/shadowed_variable=2
+gdscript/warnings/shadowed_variable_base_class=2
+gdscript/warnings/untyped_declaration=1
