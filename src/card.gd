@@ -11,11 +11,9 @@ var times_clicked := 0
 var original_stylebox_override: StyleBoxFlat
 
 signal card_clicked
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
 	update_display()
-
-	pass # Replace with function body.
 
 func update_display() -> void:
 	$Background/Title.text = card_name

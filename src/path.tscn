@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqsfue756ebra"]
+
+[ext_resource type="Shader" path="res://src/path.gdshader" id="1_ofwsv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nkfwq"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_ofwsv")
+shader_parameter/is_valid = false
+shader_parameter/valid_color = Color(0.972549, 0.972549, 0.972549, 1)
+shader_parameter/not_valid_color = Color(0.235294, 0.235294, 0.235294, 1)
+shader_parameter/is_selected = false
+shader_parameter/len = 10.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_4y8xt"]
+resource_local_to_scene = true
+size = Vector2(10, 0.05)
+orientation = 1
+
+[node name="Path" type="MeshInstance3D"]
+material_override = SubResource("ShaderMaterial_nkfwq")
+mesh = SubResource("QuadMesh_4y8xt")
