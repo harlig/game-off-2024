@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://k6wygwuic0ls"]
+
+[ext_resource type="Script" path="res://src/map_node.gd" id="1_mgal4"]
+[ext_resource type="Texture2D" uid="uid://drw2cj6wbjfb2" path="res://textures/node.png" id="1_v3bfy"]
+
+[node name="MapNode" type="StaticBody3D"]
+script = ExtResource("1_mgal4")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+texture = ExtResource("1_v3bfy")
