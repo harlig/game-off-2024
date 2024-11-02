@@ -2,9 +2,14 @@ extends Node2D
 
 @export var unit: PackedScene
 
-func _ready() -> void:
-	spawn_enemy_unit()
-	pass
+var time_since_last_enemy_spawn: float = 0
+func _process(delta: float) -> void:
+	# every 5 seconds spawn an enemy's best card
+	time_since_last_enemy_spawn += delta
+	if time_since_last_enemy_spawn > 5:
+		$EnemyHand.play_best_card()
+		time_since_last_enemy_spawn = 0
+
 
 func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector2, team: Attackable.Team) -> Unit:
 	var new_unit: Unit = unit_to_spawn.instantiate()
@@ -15,13 +20,14 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector2, team: Attack
 	add_child(new_unit)
 	return new_unit
 
-func spawn_enemy_unit() -> void:
-	var unit_position: Vector2 = $EnemyBase.position - Vector2(75, 0)
-	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
-	spawn_unit(unit, unit_position, Attackable.Team.ENEMY)
-
 func _on_hand_card_played(played_card: Card) -> void:
 	var unit_position: Vector2 = $PlayerBase.position + Vector2(75, 0)
 	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
 	var created_unit: Unit = spawn_unit(unit, unit_position, Attackable.Team.PLAYER)
+	created_unit.set_stats(played_card.max_health, played_card.damage, played_card.card_name, played_card.card_image_path)
+
+func _on_enemy_hand_card_played(played_card: Card) -> void:
+	var unit_position: Vector2 = $EnemyBase.position - Vector2(75, 0)
+	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
+	var created_unit: Unit = spawn_unit(unit, unit_position, Attackable.Team.ENEMY)
 	created_unit.set_stats(played_card.max_health, played_card.damage, played_card.card_name, played_card.card_image_path)

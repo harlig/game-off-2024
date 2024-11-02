@@ -47,12 +47,16 @@ team = 1
 [node name="Sprite2D" parent="EnemyBase" index="1"]
 texture = SubResource("GradientTexture2D_5r1os")
 
-[node name="Hand" parent="." instance=ExtResource("3_syoq1")]
+[node name="PlayerHand" parent="." instance=ExtResource("3_syoq1")]
 offset_left = 201.0
 offset_top = 431.0
 offset_right = 957.0
 offset_bottom = 631.0
 
-[connection signal="card_played" from="Hand" to="." method="_on_hand_card_played"]
+[node name="EnemyHand" parent="." instance=ExtResource("3_syoq1")]
+visible = false
+
+[connection signal="card_played" from="PlayerHand" to="." method="_on_hand_card_played"]
+[connection signal="card_played" from="EnemyHand" to="." method="_on_enemy_hand_card_played"]
 
 [editable path="EnemyBase"]

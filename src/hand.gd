@@ -59,3 +59,16 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 		card_instance.queue_free() # Might need to remove later TBD
 		last_clicked_card = null
 		cards_in_hand.erase(card_instance)
+
+func play_best_card() -> void:
+	var best_card: Card = null
+	var best_card_value: float = -1
+	for card in cards_in_hand:
+		var card_value: float = card.health + card.damage
+		if card_value > best_card_value:
+			best_card = card
+			best_card_value = card_value
+	if best_card:
+		_on_card_clicked(2, best_card)
+	else:
+		print("No more cards to play")
