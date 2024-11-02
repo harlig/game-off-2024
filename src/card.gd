@@ -6,6 +6,10 @@ var damage := 2
 var card_name := "Example Creature"
 var card_image_path := "res://logo.png"
 var is_selected := false
+var times_clicked := 0
+
+var original_stylebox_override: StyleBoxFlat
+
 signal card_clicked
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -43,6 +47,9 @@ func set_stats(new_max_health: int, new_health: int, new_mana: int, new_damage: 
 	update_display()
 
 func on_select() -> void:
+	if original_stylebox_override == null:
+		original_stylebox_override = $Background.get_theme_stylebox("panel")
+
 	var style_box := StyleBoxFlat.new()
 	if is_selected:
 		card_clicked.emit(1, self)
@@ -59,3 +66,8 @@ func _gui_input(event: InputEvent) -> void:
 			print("Card Clicked")
 			is_selected = !is_selected
 			on_select()
+
+func reset_selected() -> void:
+	is_selected = false
+	times_clicked = 0
+	$Background.add_theme_stylebox_override("panel", original_stylebox_override)

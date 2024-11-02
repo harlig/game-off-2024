@@ -3,7 +3,9 @@ extends HBoxContainer
 var hand_size := 5
 var current_size := 0
 signal card_played
-# Called when the node enters the scene tree for the first time.
+
+var last_clicked_card: Node = null
+
 func _ready() -> void:
 	deal_full_demo_hand()
 	pass # Replace with function body.
@@ -44,8 +46,14 @@ func deal_specific_card(new_max_health: int, new_health: int, new_mana: int, new
 		current_size += 1
 
 func _on_card_clicked(times_clicked: int, card_instance: Node) -> void:
+	if last_clicked_card and last_clicked_card != card_instance:
+		last_clicked_card.reset_selected()
+
+	last_clicked_card = card_instance
+
 	print(str(times_clicked))
 	if times_clicked == 2:
 		card_played.emit(card_instance)
 		remove_child(card_instance)
 		card_instance.queue_free() # Might need to remove later TBD
+		last_clicked_card = null
