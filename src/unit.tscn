@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3hshvebdfvx5"]
+
+[ext_resource type="Script" path="res://src/unit.gd" id="1_lt78l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4e2w1"]
+
+[sub_resource type="Gradient" id="Gradient_ob8dk"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xj0yn"]
+gradient = SubResource("Gradient_ob8dk")
+
+[node name="Unit" type="Node2D"]
+script = ExtResource("1_lt78l")
+
+[node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(1, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_4e2w1")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D/CollisionShape2D"]
+scale = Vector2(0.33, 0.33)
+texture = SubResource("GradientTexture2D_xj0yn")
+region_rect = Rect2(0, 0, 1, 1)

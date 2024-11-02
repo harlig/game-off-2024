@@ -1,4 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://c0gt8q5pcmfki"]
+[gd_scene load_steps=10 format=3 uid="uid://c0gt8q5pcmfki"]
+
+[ext_resource type="Script" path="res://src/combat.gd" id="1_8bss6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_71vwo"]
 
@@ -29,6 +31,7 @@ height = 20
 
 [node name="Combat" type="Node2D"]
 position = Vector2(-1, 0)
+script = ExtResource("1_8bss6")
 
 [node name="Ground" type="Area2D" parent="."]
 position = Vector2(575, 500)
