@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0gt8q5pcmfki"]
+[gd_scene load_steps=9 format=3 uid="uid://c0gt8q5pcmfki"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_8bss6"]
 [ext_resource type="PackedScene" uid="uid://clmqqkb8vuuyp" path="res://src/base.tscn" id="2_cotyr"]
 [ext_resource type="PackedScene" uid="uid://j5yc37j5bbbc" path="res://src/hand.tscn" id="3_syoq1"]
+[ext_resource type="Texture2D" uid="uid://dwv8j850ihl6f" path="res://textures/background.png" id="4_ybamm"]
 
 [sub_resource type="Gradient" id="Gradient_nb3l8"]
 offsets = PackedFloat32Array(0, 0.503529, 1)
@@ -24,7 +25,12 @@ height = 20
 position = Vector2(-1, 0)
 script = ExtResource("1_8bss6")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(576, 295)
+texture = ExtResource("4_ybamm")
+
 [node name="Ground" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(562, 400)
 scale = Vector2(20, 0.5)
 texture = SubResource("GradientTexture2D_lewau")
