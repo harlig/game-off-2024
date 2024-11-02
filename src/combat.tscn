@@ -47,4 +47,6 @@ offset_top = 431.0
 offset_right = 957.0
 offset_bottom = 631.0
 
+[connection signal="card_played" from="Hand" to="." method="_on_hand_card_played"]
+
 [editable path="EnemyBase"]

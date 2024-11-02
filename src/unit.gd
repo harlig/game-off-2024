@@ -3,7 +3,9 @@ class_name Unit extends Node2D
 enum Direction {LEFT, RIGHT}
 
 @export var direction: Direction = Direction.RIGHT
-var speed := 150
+var speed := 75
+var damage := 1
+var unit_name: String = "Unit"
 
 var is_stopped := false
 var currently_attacking: Attackable = null
@@ -17,7 +19,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if currently_attacking != null:
 		if time_since_last_attack >= 1.0 or !has_attacked:
-			currently_attacking.take_damage(10)
+			currently_attacking.take_damage(damage)
 			time_since_last_attack = 0.0
 		has_attacked = true
 
@@ -55,3 +57,9 @@ func _on_target_area_area_entered(area: Area2D) -> void:
 
 func _on_target_area_area_exited(_area: Area2D) -> void:
 	currently_attacking = null
+
+
+func set_stats(new_max_health: int, new_damage: int, new_card_name: String, new_card_image_path: String) -> void:
+	$Attackable.set_hp(new_max_health)
+	damage = new_damage
+	unit_name = new_card_name

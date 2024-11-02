@@ -8,6 +8,10 @@ enum Team {PLAYER, ENEMY}
 func _ready() -> void:
 	$HP.text = str(hp)
 
+func set_hp(new_hp: int) -> void:
+	hp = new_hp
+	$HP.text = str(hp)
+
 func take_damage(damage: int) -> void:
 	print("Taking damage")
 	hp -= damage

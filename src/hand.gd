@@ -45,13 +45,12 @@ func deal_specific_card(new_max_health: int, new_health: int, new_mana: int, new
 		add_child(card_instance)
 		current_size += 1
 
-func _on_card_clicked(times_clicked: int, card_instance: Node) -> void:
+func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 	if last_clicked_card and last_clicked_card != card_instance:
 		last_clicked_card.reset_selected()
 
 	last_clicked_card = card_instance
 
-	print(str(times_clicked))
 	if times_clicked == 2:
 		card_played.emit(card_instance)
 		remove_child(card_instance)
