@@ -46,12 +46,32 @@ shape = SubResource("RectangleShape2D_ln02g")
 [node name="Sprite2D" type="Sprite2D" parent="PlayerBase"]
 texture = SubResource("GradientTexture2D_6dn3k")
 
+[node name="HP" type="Label" parent="PlayerBase"]
+offset_left = -16.0096
+offset_top = -22.5291
+offset_right = 23.9904
+offset_bottom = 0.47093
+scale = Vector2(0.839864, 0.478541)
+text = "69"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="EnemyBase" type="Area2D" parent="."]
 position = Vector2(1072, 432)
-scale = Vector2(4.18548, -6.88)
+scale = Vector2(4.185, 6.88)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBase"]
 shape = SubResource("RectangleShape2D_ln02g")
 
 [node name="Sprite2D" type="Sprite2D" parent="EnemyBase"]
 texture = SubResource("GradientTexture2D_78fos")
+
+[node name="HP" type="Label" parent="EnemyBase"]
+offset_left = -15.5317
+offset_top = -23.2558
+offset_right = 24.4683
+offset_bottom = -0.255814
+scale = Vector2(0.839864, 0.478541)
+text = "69"
+horizontal_alignment = 1
+vertical_alignment = 1
