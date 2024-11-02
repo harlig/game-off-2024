@@ -17,7 +17,7 @@ func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
-	if currently_attacking != null:
+	if !currently_attacking.is_empty():
 		if time_since_last_attack >= 1.0 or !has_attacked:
 			for attackable in currently_attacking:
 				attackable.take_damage(damage)

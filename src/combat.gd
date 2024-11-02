@@ -7,6 +7,7 @@ func _process(delta: float) -> void:
 	# every 5 seconds spawn an enemy's best card
 	time_since_last_enemy_spawn += delta
 	if time_since_last_enemy_spawn > 5:
+		# TODO: need to only do this if the enemy still has a base
 		$EnemyHand.play_best_card()
 		time_since_last_enemy_spawn = 0
 
