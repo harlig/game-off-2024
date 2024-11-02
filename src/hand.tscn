@@ -5,10 +5,10 @@
 
 [node name="Hand" type="HBoxContainer"]
 clip_contents = true
-offset_left = 70.0
-offset_top = 27.0
-offset_right = 1062.0
-offset_bottom = 238.0
+offset_left = 86.0
+offset_top = 32.0
+offset_right = 842.0
+offset_bottom = 232.0
 alignment = 1
 script = ExtResource("1_qmirp")
 card_scene = ExtResource("2_0iv46")
