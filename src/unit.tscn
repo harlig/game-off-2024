@@ -9,16 +9,15 @@
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xj0yn"]
 gradient = SubResource("Gradient_ob8dk")
 
-[node name="Unit" type="Node2D"]
+[node name="Unit" type="Area2D"]
+scale = Vector2(1.01784, 1)
 script = ExtResource("1_lt78l")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(1, 2)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_4e2w1")
 
-[node name="Sprite2D" type="Sprite2D" parent="Area2D/CollisionShape2D"]
-scale = Vector2(0.33, 0.33)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.33, 0.66)
 texture = SubResource("GradientTexture2D_xj0yn")
 region_rect = Rect2(0, 0, 1, 1)

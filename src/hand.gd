@@ -12,14 +12,14 @@ func deal(cards_to_deal: int) -> void:
 		card_instance.z_index = hand_size - i
 		print(card_instance.z_index)
 		card_instance.setStats(
-			5 + i,  # max_health
-			5 + i,  # health
-			2 + i,  # mana
-			3 + i,  # damage
-			"Creature " + str(i + 1),  # card_name
-			"res://logo.png"  # card_image_path
+			5 + i, # max_health
+			5 + i, # health
+			2 + i, # mana
+			3 + i, # damage
+			"Creature " + str(i + 1), # card_name
+			"res://logo.png" # card_image_path
 		)
-		var rotation_increment = deg_to_rad(5)  # Adjust the degree increment for rotation
+		var rotation_increment = deg_to_rad(5) # Adjust the degree increment for rotation
 		card_instance.rotation = rotation_increment * i
 		add_child(card_instance)
 

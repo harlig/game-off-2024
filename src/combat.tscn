@@ -1,8 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://c0gt8q5pcmfki"]
+[gd_scene load_steps=9 format=3 uid="uid://c0gt8q5pcmfki"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_8bss6"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_71vwo"]
 
 [sub_resource type="Gradient" id="Gradient_nb3l8"]
 offsets = PackedFloat32Array(0, 0.503529, 1)
@@ -33,14 +31,9 @@ height = 20
 position = Vector2(-1, 0)
 script = ExtResource("1_8bss6")
 
-[node name="Ground" type="Area2D" parent="."]
-position = Vector2(575, 500)
+[node name="Ground" type="Sprite2D" parent="."]
+position = Vector2(562, 500)
 scale = Vector2(20, 0.5)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
-shape = SubResource("RectangleShape2D_71vwo")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ground/CollisionShape2D"]
 texture = SubResource("GradientTexture2D_lewau")
 
 [node name="PlayerBase" type="Area2D" parent="."]
@@ -50,7 +43,7 @@ scale = Vector2(4.185, 6.88)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBase"]
 shape = SubResource("RectangleShape2D_ln02g")
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerBase/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerBase"]
 texture = SubResource("GradientTexture2D_6dn3k")
 
 [node name="EnemyBase" type="Area2D" parent="."]
@@ -60,5 +53,5 @@ scale = Vector2(4.18548, -6.88)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBase"]
 shape = SubResource("RectangleShape2D_ln02g")
 
-[node name="Sprite2D" type="Sprite2D" parent="EnemyBase/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="EnemyBase"]
 texture = SubResource("GradientTexture2D_78fos")
