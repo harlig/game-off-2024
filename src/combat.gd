@@ -14,7 +14,6 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector2, direction: U
 	new_unit.position = unit_position
 	new_unit.direction = direction
 	add_child(new_unit)
-	print("Spawned")
 
 func spawn_player_unit() -> void:
 	var unit_position = $PlayerBase.position + Vector2(75, 0)

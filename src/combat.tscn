@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://c0gt8q5pcmfki"]
+[gd_scene load_steps=5 format=3 uid="uid://c0gt8q5pcmfki"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_8bss6"]
+[ext_resource type="PackedScene" uid="uid://clmqqkb8vuuyp" path="res://src/base.tscn" id="2_cotyr"]
 
 [sub_resource type="Gradient" id="Gradient_nb3l8"]
 offsets = PackedFloat32Array(0, 0.503529, 1)
@@ -8,24 +9,6 @@ colors = PackedColorArray(0, 1, 0, 1, 0, 0.462745, 0, 1, 0, 1, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_lewau"]
 gradient = SubResource("Gradient_nb3l8")
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ln02g"]
-
-[sub_resource type="Gradient" id="Gradient_dt5xq"]
-colors = PackedColorArray(0, 0, 0, 1, 0.294456, 0.498125, 0.993233, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_6dn3k"]
-gradient = SubResource("Gradient_dt5xq")
-width = 20
-height = 20
-
-[sub_resource type="Gradient" id="Gradient_red8w"]
-colors = PackedColorArray(0, 0, 0, 1, 0.993338, 0, 0.220847, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_78fos"]
-gradient = SubResource("Gradient_red8w")
-width = 20
-height = 20
 
 [node name="Combat" type="Node2D"]
 position = Vector2(-1, 0)
@@ -36,42 +19,8 @@ position = Vector2(562, 500)
 scale = Vector2(20, 0.5)
 texture = SubResource("GradientTexture2D_lewau")
 
-[node name="PlayerBase" type="Area2D" parent="."]
+[node name="PlayerBase" parent="." instance=ExtResource("2_cotyr")]
 position = Vector2(80, 432)
-scale = Vector2(4.185, 6.88)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBase"]
-shape = SubResource("RectangleShape2D_ln02g")
-
-[node name="Sprite2D" type="Sprite2D" parent="PlayerBase"]
-texture = SubResource("GradientTexture2D_6dn3k")
-
-[node name="HP" type="Label" parent="PlayerBase"]
-offset_left = -16.0096
-offset_top = -22.5291
-offset_right = 23.9904
-offset_bottom = 0.47093
-scale = Vector2(0.839864, 0.478541)
-text = "69"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="EnemyBase" type="Area2D" parent="."]
+[node name="EnemyBase2" parent="." instance=ExtResource("2_cotyr")]
 position = Vector2(1072, 432)
-scale = Vector2(4.185, 6.88)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBase"]
-shape = SubResource("RectangleShape2D_ln02g")
-
-[node name="Sprite2D" type="Sprite2D" parent="EnemyBase"]
-texture = SubResource("GradientTexture2D_78fos")
-
-[node name="HP" type="Label" parent="EnemyBase"]
-offset_left = -15.5317
-offset_top = -23.2558
-offset_right = 24.4683
-offset_bottom = -0.255814
-scale = Vector2(0.839864, 0.478541)
-text = "69"
-horizontal_alignment = 1
-vertical_alignment = 1
