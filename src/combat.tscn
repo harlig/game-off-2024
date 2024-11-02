@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0gt8q5pcmfki"]
+[gd_scene load_steps=8 format=3 uid="uid://c0gt8q5pcmfki"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_8bss6"]
 [ext_resource type="PackedScene" uid="uid://clmqqkb8vuuyp" path="res://src/base.tscn" id="2_cotyr"]
+[ext_resource type="PackedScene" uid="uid://j5yc37j5bbbc" path="res://src/hand.tscn" id="3_syoq1"]
 
 [sub_resource type="Gradient" id="Gradient_nb3l8"]
 offsets = PackedFloat32Array(0, 0.503529, 1)
@@ -24,20 +25,26 @@ position = Vector2(-1, 0)
 script = ExtResource("1_8bss6")
 
 [node name="Ground" type="Sprite2D" parent="."]
-position = Vector2(562, 500)
+position = Vector2(562, 400)
 scale = Vector2(20, 0.5)
 texture = SubResource("GradientTexture2D_lewau")
 
 [node name="PlayerBase" parent="." instance=ExtResource("2_cotyr")]
-position = Vector2(80, 432)
+position = Vector2(80, 332)
 
 [node name="EnemyBase" parent="." instance=ExtResource("2_cotyr")]
-position = Vector2(1072, 432)
+position = Vector2(1072, 332)
 
 [node name="Attackable" parent="EnemyBase" index="0"]
 team = 1
 
 [node name="Sprite2D" parent="EnemyBase" index="1"]
 texture = SubResource("GradientTexture2D_5r1os")
+
+[node name="Hand" parent="." instance=ExtResource("3_syoq1")]
+offset_left = 201.0
+offset_top = 431.0
+offset_right = 957.0
+offset_bottom = 631.0
 
 [editable path="EnemyBase"]
