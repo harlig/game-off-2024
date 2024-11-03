@@ -48,4 +48,8 @@ func _on_player_base_died() -> void:
 
 func _on_enemy_base_died() -> void:
 	state = CombatState.WON
+	provide_rewards()
+
+func provide_rewards() -> void:
+	# TODO: Randomly select 3 of enemy's best 5 cards in deck and present to player to draft to their deck
 	emit_signal("combat_over", state)
