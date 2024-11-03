@@ -8,6 +8,7 @@ class_name Run
 
 var player_position := Vector2(0, 0)
 var accessible_nodes := []
+var current_node: MapNode = null
 
 func _ready() -> void:
 	# Define parameters for map generation
@@ -20,6 +21,10 @@ func _ready() -> void:
 
 	# Initialize player position and accessible nodes
 	player_position = Vector2(0, 0)
+	current_node = map.node_instances[player_position]
+	# set the starting node as beat
+	current_node.beat_node()
+
 	$Player.position = Vector3(player_position.x, 2, player_position.y)
 	update_accessible_nodes()
 	update_camera_position()
@@ -37,10 +42,15 @@ func _on_node_clicked(node_position: Vector2) -> void:
 	if node_position in accessible_nodes:
 		print("Node at position ", node_position, " is accessible.")
 		var map_node: MapNode = map.node_instances[node_position]
+		current_node = map_node
 		print("Node is a ", MapNode.NodeType.keys()[map_node.node_type], " node.")
 		player_position = node_position
 		$Player.position = Vector3(player_position.x, 2, player_position.y)
-		if map_node.node_type == MapNode.NodeType.COMBAT:
+
+		# ignore if node has been beaten
+		if map_node.has_been_beaten:
+			pass
+		elif map_node.node_type == MapNode.NodeType.COMBAT:
 			# Start combat
 			print("Starting combat at node ", node_position)
 			$Map.hide()
@@ -48,6 +58,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			var new_combat := combat_scene.instantiate()
 			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
+
 		update_accessible_nodes()
 		update_camera_position()
 
@@ -55,11 +66,13 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	if combat_state == Combat.CombatState.WON:
 		print("Combat won!")
 		$Combat.queue_free()
+		current_node.beat_node()
 		$Map.show()
 		$Player.show()
 	elif combat_state == Combat.CombatState.LOST:
 		print("Combat lost!")
 		$Combat.queue_free()
+		# TODO: probably want to do something else but idk
 		# Restart the game
 		$Map.show()
 		$Player.show()

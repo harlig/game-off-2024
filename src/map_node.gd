@@ -5,6 +5,9 @@ enum NodeType {
 }
 
 var node_type: NodeType = NodeType.COMBAT
+@onready var beat_node_sprite := preload("res://textures/check_box.png")
+
+var has_been_beaten := false
 
 signal node_clicked(node_position: Vector2)
 
@@ -17,3 +20,8 @@ func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _norm
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			print("Left mouse button pressed")
 			emit_signal("node_clicked", Vector2(position.x, position.z))
+
+
+func beat_node() -> void:
+	$Sprite3D.texture = beat_node_sprite
+	has_been_beaten = true
