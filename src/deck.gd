@@ -6,13 +6,13 @@ const INITIAL_DECK_SIZE: int = 10
 var cards: Array[Card] = []
 
 func _ready() -> void:
-	for ndx in range(INITIAL_DECK_SIZE):
+	for ndx in range(INITIAL_DECK_SIZE - 1):
 		# add basic cards to deck
 		var basic_card := create_card(
-			5 + ndx, # max_health
-			5 + ndx, # health
-			2 + ndx, # mana
-			3 + ndx, # damage
+			5, # max_health
+			5, # health
+			2, # mana
+			3, # damage
 			"Creature " + str(ndx + 1), # card_name
 			"res://logo.png" # card_image_path
 		)

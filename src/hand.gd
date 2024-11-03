@@ -8,8 +8,9 @@ var cards_in_hand: Array[Card] = []
 
 var combat_deck: CombatDeck
 
-func set_combat_deck(deck: CombatDeck) -> void:
+func setup_deck(deck: CombatDeck) -> void:
 	combat_deck = deck
+	deal_full_hand()
 
 func deal_full_hand() -> void:
 	for ndx in range(hand_size):

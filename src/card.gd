@@ -12,6 +12,9 @@ class Data:
 	var card_name: String = "Example Creature"
 	var card_image_path: String = "res://logo.png"
 
+	func _to_string() -> String:
+		return "Card Data: " + card_name + " with " + str(health) + " health, " + str(mana) + " mana, and " + str(damage) + " damage."
+
 var data: Data = Data.new() # Ensure data is instantiated
 
 signal card_clicked

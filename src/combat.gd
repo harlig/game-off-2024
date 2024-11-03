@@ -10,11 +10,8 @@ var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
 
 func _ready() -> void:
-	$PlayerHand.set_combat_deck($PlayerCombatDeck)
-	$EnemyHand.set_combat_deck($EnemyCombatDeck)
-
-	$PlayerHand.deal_full_hand()
-	$EnemyHand.deal_full_hand()
+	$PlayerHand.setup_deck($PlayerCombatDeck)
+	$EnemyHand.setup_deck($EnemyCombatDeck)
 
 func _process(delta: float) -> void:
 	if state != CombatState.PLAYING:
