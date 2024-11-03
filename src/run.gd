@@ -35,6 +35,8 @@ func update_camera_position() -> void:
 func _on_node_clicked(node_position: Vector2) -> void:
 	if node_position in accessible_nodes:
 		print("Node at position ", node_position, " is accessible.")
+		var map_node: MapNode = map.node_instances[node_position]
+		print("Node is a ", MapNode.NodeType.keys()[map_node.node_type], " node.")
 		player_position = node_position
 		$Player.position = Vector3(player_position.x, 2, player_position.y)
 		update_accessible_nodes()

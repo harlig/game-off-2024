@@ -10,11 +10,13 @@ signal node_clicked(node_position: Vector2)
 var map_tree := {}
 var visited_nodes := []
 var available_nodes := []
+var node_instances := {}
 
 func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_depth: int) -> void:
 	map_tree.clear()
 	visited_nodes.clear()
 	available_nodes.clear()
+	node_instances.clear()
 
 	map_tree[center_node] = []
 	visited_nodes.append(center_node)
@@ -54,6 +56,7 @@ func visualize_map() -> void:
 			node.scale = Vector3(0.05, 0.05, 0.05)
 			node.connect("node_clicked", _on_node_clicked)
 			add_child(node)
+			node_instances[child_node] = node # Store the MapNode instance
 
 			# Create a DottedLine to represent the connection
 			var path := path_scene.instantiate() as MeshInstance3D
