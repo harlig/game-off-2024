@@ -55,7 +55,8 @@ func _on_target_area_area_exited(area: Area2D) -> void:
 		is_stopped = false
 
 
-func set_stats(new_max_health: int, new_damage: int, new_card_name: String, new_card_image_path: String) -> void:
-	$Attackable.set_hp(new_max_health)
-	damage = new_damage
-	unit_name = new_card_name
+func set_stats(card_data: Card.Data) -> void:
+	print("Setting stats for card with data " + str(card_data))
+	$Attackable.set_hp(card_data.max_health)
+	damage = card_data.damage
+	unit_name = card_data.card_name

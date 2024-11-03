@@ -64,7 +64,7 @@ func play_best_card() -> void:
 	var best_card: Card = null
 	var best_card_value: float = -1
 	for card in cards_in_hand:
-		var card_value: float = card.health + card.damage
+		var card_value: float = card.data.health + card.data.damage
 		if card_value > best_card_value:
 			best_card = card
 			best_card_value = card_value

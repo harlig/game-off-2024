@@ -1,14 +1,18 @@
 class_name Card extends AspectRatioContainer
-var max_health := 5
-var health := max_health
-var mana := 2
-var damage := 2
-var card_name := "Example Creature"
-var card_image_path := "res://logo.png"
 var is_selected := false
 var times_clicked := 0
 
 var original_stylebox_override: StyleBoxFlat
+
+class Data:
+	var max_health: int = 5
+	var health: int = max_health
+	var mana: int = 2
+	var damage: int = 2
+	var card_name: String = "Example Creature"
+	var card_image_path: String = "res://logo.png"
+
+var data: Data = Data.new() # Ensure data is instantiated
 
 signal card_clicked
 
@@ -16,11 +20,11 @@ func _ready() -> void:
 	update_display()
 
 func update_display() -> void:
-	$Background/Title.text = card_name
-	$Background/Health.text = str(health)
-	$Background/Mana.text = str(mana)
-	$Background/Damage.text = str(damage)
-	$MarginContainer/TextureRect.texture = load(card_image_path)
+	$Background/Title.text = data.card_name
+	$Background/Health.text = str(data.health)
+	$Background/Mana.text = str(data.mana)
+	$Background/Damage.text = str(data.damage)
+	$MarginContainer/TextureRect.texture = load(data.card_image_path)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -36,12 +40,12 @@ func resize_portrait() -> void:
 	$MarginContainer.add_theme_constant_override("margin_bottom", margin_value * 0.5)
 
 func set_stats(new_max_health: int, new_health: int, new_mana: int, new_damage: int, new_card_name: String, new_card_image_path: String) -> void:
-	max_health = new_max_health
-	health = new_health
-	mana = new_mana
-	damage = new_damage
-	card_name = new_card_name
-	card_image_path = new_card_image_path
+	data.max_health = new_max_health
+	data.health = new_health
+	data.mana = new_mana
+	data.damage = new_damage
+	data.card_name = new_card_name
+	data.card_image_path = new_card_image_path
 	update_display()
 
 func on_select() -> void:

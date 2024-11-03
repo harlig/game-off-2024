@@ -32,13 +32,13 @@ func _on_hand_card_played(played_card: Card) -> void:
 	var unit_position: Vector2 = $PlayerBase.position + Vector2(75, 0)
 	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
 	var created_unit: Unit = spawn_unit(unit, unit_position, Attackable.Team.PLAYER)
-	created_unit.set_stats(played_card.max_health, played_card.damage, played_card.card_name, played_card.card_image_path)
+	created_unit.set_stats(played_card.data)
 
 func _on_enemy_hand_card_played(played_card: Card) -> void:
 	var unit_position: Vector2 = $EnemyBase.position - Vector2(75, 0)
 	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
 	var created_unit: Unit = spawn_unit(unit, unit_position, Attackable.Team.ENEMY)
-	created_unit.set_stats(played_card.max_health, played_card.damage, played_card.card_name, played_card.card_image_path)
+	created_unit.set_stats(played_card.data)
 
 
 func _on_player_base_died() -> void:
