@@ -6,7 +6,8 @@ const INITIAL_DECK_SIZE: int = 10
 var cards: Array[Card] = []
 
 func _ready() -> void:
-	for ndx in range(INITIAL_DECK_SIZE - 1):
+	var num_basic_cards := INITIAL_DECK_SIZE - 2
+	for ndx in range(num_basic_cards):
 		# add basic cards to deck
 		var basic_card := create_card(
 			5, # max_health
@@ -17,16 +18,16 @@ func _ready() -> void:
 			"res://logo.png" # card_image_path
 		)
 		add_card(basic_card)
-
-	var rare_card := create_card(
-			20, # max_health
-			20, # health
-			8, # mana
-			25, # damage
-			"Demogorgon", # card_name
-			"res://logo.png" # card_image_path
-		)
-	add_card(rare_card)
+	for ndx in range(INITIAL_DECK_SIZE - num_basic_cards):
+		var rare_card := create_card(
+				20, # max_health
+				20, # health
+				8, # mana
+				25, # damage
+				"Demogorgon", # card_name
+				"res://logo.png" # card_image_path
+			)
+		add_card(rare_card)
 
 func add_card(card: Card) -> void:
 	cards.append(card)
