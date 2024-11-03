@@ -1,3 +1,5 @@
+# This represents the deck of cards that the player draws from/discards to during combat
+# This exists as a separate node so that the deck can be passed to the Hand nodes, and in case there are any temporary changes to the deck during combat that don't persist between combats
 class_name CombatDeck extends Node
 
 var discard_pile: Array[Card] = []
