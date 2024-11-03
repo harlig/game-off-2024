@@ -4,6 +4,7 @@ class_name Run
 
 @onready var map := $Map
 @onready var camera := $Map/Camera3D
+@onready var combat_scene := preload("res://src/combat.tscn")
 
 var player_position := Vector2(0, 0)
 var accessible_nodes := []
@@ -39,5 +40,12 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		print("Node is a ", MapNode.NodeType.keys()[map_node.node_type], " node.")
 		player_position = node_position
 		$Player.position = Vector3(player_position.x, 2, player_position.y)
+		if map_node.node_type == MapNode.NodeType.COMBAT:
+			# Start combat
+			print("Starting combat at node ", node_position)
+			$Map.hide()
+			$Player.hide()
+			var new_combat := combat_scene.instantiate()
+			add_child(new_combat)
 		update_accessible_nodes()
 		update_camera_position()

@@ -2,12 +2,17 @@ extends Node2D
 
 @export var unit: PackedScene
 
+enum CombatState {PLAYING, WON, LOST}
+
+var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
+
 func _process(delta: float) -> void:
+	if state != CombatState.PLAYING:
+		return
 	# every 5 seconds spawn an enemy's best card
 	time_since_last_enemy_spawn += delta
 	if time_since_last_enemy_spawn > 5:
-		# TODO: need to only do this if the enemy still has a base
 		$EnemyHand.play_best_card()
 		time_since_last_enemy_spawn = 0
 
@@ -32,3 +37,11 @@ func _on_enemy_hand_card_played(played_card: Card) -> void:
 	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
 	var created_unit: Unit = spawn_unit(unit, unit_position, Attackable.Team.ENEMY)
 	created_unit.set_stats(played_card.max_health, played_card.damage, played_card.card_name, played_card.card_image_path)
+
+
+func _on_player_base_died() -> void:
+	state = CombatState.LOST
+
+
+func _on_enemy_base_died() -> void:
+	state = CombatState.WON

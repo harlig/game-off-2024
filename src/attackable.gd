@@ -5,6 +5,8 @@ var hp := 50
 
 enum Team {PLAYER, ENEMY}
 
+signal died()
+
 func _ready() -> void:
 	$HP.text = str(hp)
 
@@ -19,3 +21,4 @@ func take_damage(damage: int) -> void:
 	if hp <= 0:
 		$HP.text = "0"
 		get_parent().queue_free()
+		emit_signal("died")

@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://c0gt8q5pcmfki"]
+[gd_scene load_steps=10 format=3 uid="uid://c0gt8q5pcmfki"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_8bss6"]
 [ext_resource type="PackedScene" uid="uid://clmqqkb8vuuyp" path="res://src/base.tscn" id="2_cotyr"]
+[ext_resource type="PackedScene" uid="uid://d3hshvebdfvx5" path="res://src/unit.tscn" id="2_fntqh"]
 [ext_resource type="PackedScene" uid="uid://j5yc37j5bbbc" path="res://src/hand.tscn" id="3_syoq1"]
 [ext_resource type="Texture2D" uid="uid://dwv8j850ihl6f" path="res://textures/background.png" id="4_ybamm"]
 
@@ -24,6 +25,7 @@ height = 20
 [node name="Combat" type="Node2D"]
 position = Vector2(-1, 0)
 script = ExtResource("1_8bss6")
+unit = ExtResource("2_fntqh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(576, 295)
@@ -56,7 +58,10 @@ offset_bottom = 631.0
 [node name="EnemyHand" parent="." instance=ExtResource("3_syoq1")]
 visible = false
 
+[connection signal="died" from="PlayerBase/Attackable" to="." method="_on_player_base_died"]
+[connection signal="died" from="EnemyBase/Attackable" to="." method="_on_enemy_base_died"]
 [connection signal="card_played" from="PlayerHand" to="." method="_on_hand_card_played"]
 [connection signal="card_played" from="EnemyHand" to="." method="_on_enemy_hand_card_played"]
 
+[editable path="PlayerBase"]
 [editable path="EnemyBase"]
