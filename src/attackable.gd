@@ -15,7 +15,6 @@ func set_hp(new_hp: int) -> void:
 	$HP.text = str(hp)
 
 func take_damage(damage: int) -> void:
-	print("Taking damage")
 	hp -= damage
 	$HP.text = str(hp)
 	if hp <= 0:

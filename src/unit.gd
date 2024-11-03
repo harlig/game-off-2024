@@ -3,7 +3,7 @@ class_name Unit extends Node2D
 enum Direction {LEFT, RIGHT}
 
 @export var direction: Direction = Direction.RIGHT
-var speed := 75
+var speed := 175
 var damage := 5
 var unit_name: String = "Unit"
 

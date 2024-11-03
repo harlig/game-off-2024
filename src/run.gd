@@ -46,6 +46,24 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			$Map.hide()
 			$Player.hide()
 			var new_combat := combat_scene.instantiate()
+			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
+		update_accessible_nodes()
+		update_camera_position()
+
+func _on_combat_over(combat_state: Combat.CombatState) -> void:
+	if combat_state == Combat.CombatState.WON:
+		print("Combat won!")
+		$Combat.queue_free()
+		$Map.show()
+		$Player.show()
+	elif combat_state == Combat.CombatState.LOST:
+		print("Combat lost!")
+		$Combat.queue_free()
+		# Restart the game
+		$Map.show()
+		$Player.show()
+		player_position = Vector2(0, 0)
+		$Player.position = Vector3(player_position.x, 2, player_position.y)
 		update_accessible_nodes()
 		update_camera_position()
