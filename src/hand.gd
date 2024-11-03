@@ -1,5 +1,4 @@
-extends HBoxContainer
-@export var card_scene: PackedScene
+class_name Hand extends HBoxContainer
 var hand_size := 5
 var current_size := 0
 signal card_played
@@ -7,45 +6,21 @@ signal card_played
 var last_clicked_card: Node = null
 var cards_in_hand: Array[Card] = []
 
-func _ready() -> void:
-	deal_full_demo_hand()
-	pass # Replace with function body.
+var combat_deck: CombatDeck
 
-func deal_full_demo_hand() -> void:
-	for i in range(hand_size):
-		deal_specific_card(
-			5 + i, # max_health
-			5 + i, # health
-			2 + i, # mana
-			3 + i, # damage
-			"Creature " + str(i + 1), # card_name
-			"res://logo.png" # card_image_path
-		)
-	deal_specific_card(
-			20, # max_health
-			20, # health
-			8, # mana
-			25, # damage
-			"Demogorgon", # card_name
-			"res://logo.png" # card_image_path
-		)
+func set_combat_deck(deck: CombatDeck) -> void:
+	combat_deck = deck
 
-func deal_specific_card(new_max_health: int, new_health: int, new_mana: int, new_damage: int, new_card_name: String, new_card_image_path: String) -> void:
-		var card_instance: Card = card_scene.instantiate()
-		card_instance.set_stats(
-			new_max_health, # max_health
-			new_health, # health
-			new_mana, # mana
-			new_damage, # damage
-			new_card_name, # card_name
-			new_card_image_path # card_image_path
-		)
+func deal_full_hand() -> void:
+	for ndx in range(hand_size):
+		deal_card(combat_deck.draw())
 
-
-		card_instance.card_clicked.connect(_on_card_clicked)
-		add_child(card_instance)
-		current_size += 1
-		cards_in_hand.append(card_instance)
+func deal_card(card: Card) -> void:
+	print("Getting dealt card ", card)
+	card.card_clicked.connect(_on_card_clicked)
+	add_child(card)
+	current_size += 1
+	cards_in_hand.append(card)
 
 func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 	if last_clicked_card and last_clicked_card != card_instance:
@@ -56,9 +31,9 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 	if times_clicked == 2:
 		card_played.emit(card_instance)
 		remove_child(card_instance)
-		card_instance.queue_free() # Might need to remove later TBD
 		last_clicked_card = null
 		cards_in_hand.erase(card_instance)
+		combat_deck.discard(card_instance)
 
 func play_best_card() -> void:
 	var best_card: Card = null
