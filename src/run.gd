@@ -87,4 +87,5 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 
 
 func _on_map_view_deck_clicked() -> void:
-	deck.toggle_visualize_deck()
+	var is_visualizing_deck: bool = deck.toggle_visualize_deck()
+	map.set_interactable(!is_visualizing_deck)

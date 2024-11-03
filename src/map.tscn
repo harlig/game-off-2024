@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dnuxboxdulw4k"]
+[gd_scene load_steps=5 format=3 uid="uid://dnuxboxdulw4k"]
 
 [ext_resource type="Script" path="res://src/map.gd" id="1_6kf0m"]
 [ext_resource type="Texture2D" uid="uid://drw2cj6wbjfb2" path="res://textures/node.png" id="2_jn6kg"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0krmm"]
+size = Vector2(1154, 1154)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_y8fa8"]
 size = Vector2(1154, 1154)
@@ -12,6 +15,12 @@ script = ExtResource("1_6kf0m")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 2)
 size = 250.0
+
+[node name="TranslucentCover" type="Sprite3D" parent="."]
+transform = Transform3D(1000, 0, 0, 0, -4.37114e-05, -1000, 0, 1000, -4.37114e-05, 0, -9, 0)
+visible = false
+modulate = Color(6.69017e-06, 0.741291, 0.415732, 1)
+texture = SubResource("PlaceholderTexture2D_0krmm")
 
 [node name="Sprite3D2" type="Sprite3D" parent="."]
 transform = Transform3D(1000, 0, 0, 0, -4.37114e-05, -1000, 0, 1000, -4.37114e-05, 0, -10, 0)

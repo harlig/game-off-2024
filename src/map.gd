@@ -12,6 +12,14 @@ var map_tree := {}
 var visited_nodes := []
 var available_nodes := []
 var node_instances := {}
+var can_interact := true
+
+func set_interactable(interactable: bool) -> void:
+	can_interact = interactable
+	if can_interact:
+		$TranslucentCover.hide()
+	else:
+		$TranslucentCover.show()
 
 func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_depth: int) -> void:
 	map_tree.clear()
@@ -84,8 +92,8 @@ func visualize_map() -> void:
 			(path.mesh as QuadMesh).size.x = length
 
 func _on_node_clicked(node_position: Vector2) -> void:
-	emit_signal("node_clicked", node_position)
-
+	if can_interact:
+		emit_signal("node_clicked", node_position)
 
 func _on_view_deck_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

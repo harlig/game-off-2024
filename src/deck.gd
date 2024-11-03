@@ -53,7 +53,7 @@ func create_card(
 	)
 	return card_instance
 
-func toggle_visualize_deck() -> void:
+func toggle_visualize_deck() -> bool:
 	is_visualizing_deck = !is_visualizing_deck
 	if is_visualizing_deck:
 		for card in cards:
@@ -61,3 +61,4 @@ func toggle_visualize_deck() -> void:
 	else:
 		for card in cards:
 			remove_child(card)
+	return is_visualizing_deck
