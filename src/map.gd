@@ -2,14 +2,14 @@ extends Node3D
 
 class_name Map
 
+signal node_clicked(node_position: Vector2)
+
 @onready var path_scene := preload("res://src/path.tscn");
 @onready var node_scene := preload("res://src/map_node.tscn");
 
 var map_tree := {}
 var visited_nodes := []
 var available_nodes := []
-
-signal node_clicked(node_position: Vector2)
 
 func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_depth: int) -> void:
 	map_tree.clear()
@@ -52,6 +52,7 @@ func visualize_map() -> void:
 			var node: MapNode = node_scene.instantiate()
 			node.position = Vector3(child_node.x, 1.2, child_node.y)
 			node.scale = Vector3(0.05, 0.05, 0.05)
+			node.connect("node_clicked", _on_node_clicked)
 			add_child(node)
 
 			# Create a DottedLine to represent the connection
@@ -76,3 +77,6 @@ func visualize_map() -> void:
 			path.rotation.y = angle
 			(path.material_override as ShaderMaterial).set_shader_parameter("len", length)
 			(path.mesh as QuadMesh).size.x = length
+
+func _on_node_clicked(node_position: Vector2) -> void:
+	emit_signal("node_clicked", node_position)

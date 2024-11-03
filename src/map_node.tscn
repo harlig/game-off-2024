@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://k6wygwuic0ls"]
+[gd_scene load_steps=4 format=3 uid="uid://k6wygwuic0ls"]
 
 [ext_resource type="Script" path="res://src/map_node.gd" id="1_mgal4"]
 [ext_resource type="Texture2D" uid="uid://drw2cj6wbjfb2" path="res://textures/node.png" id="1_v3bfy"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u40r5"]
+size = Vector3(2, 2, 2)
 
 [node name="MapNode" type="StaticBody3D"]
 script = ExtResource("1_mgal4")
@@ -9,3 +12,9 @@ script = ExtResource("1_mgal4")
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 texture = ExtResource("1_v3bfy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+shape = SubResource("BoxShape3D_u40r5")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

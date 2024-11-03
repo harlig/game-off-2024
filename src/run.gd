@@ -33,6 +33,4 @@ func update_camera_position() -> void:
 
 func _on_node_clicked(node_position: Vector2) -> void:
 	if node_position in accessible_nodes:
-		player_position = node_position
-		update_accessible_nodes()
-		update_camera_position()
+		print("Node at position ", node_position, " is accessible.")
