@@ -5,6 +5,8 @@ const INITIAL_DECK_SIZE: int = 10
 @onready var card_scene := preload("res://src/card.tscn")
 var cards: Array[Card] = []
 
+var is_visualizing_deck: bool = false
+
 func _ready() -> void:
 	var num_basic_cards := INITIAL_DECK_SIZE - 2
 	for ndx in range(num_basic_cards):
@@ -50,3 +52,12 @@ func create_card(
 		new_card_image_path
 	)
 	return card_instance
+
+func toggle_visualize_deck() -> void:
+	is_visualizing_deck = !is_visualizing_deck
+	if is_visualizing_deck:
+		for card in cards:
+			add_child(card)
+	else:
+		for card in cards:
+			remove_child(card)

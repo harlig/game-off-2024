@@ -3,6 +3,7 @@ extends Node3D
 class_name Map
 
 signal node_clicked(node_position: Vector2)
+signal view_deck_clicked()
 
 @onready var path_scene := preload("res://src/path.tscn");
 @onready var node_scene := preload("res://src/map_node.tscn");
@@ -90,3 +91,4 @@ func _on_view_deck_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
 			print("View Deck Clicked")
+			view_deck_clicked.emit()

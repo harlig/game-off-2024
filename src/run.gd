@@ -84,3 +84,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		$Player.position = Vector3(player_position.x, 2, player_position.y)
 		update_accessible_nodes()
 		update_camera_position()
+
+
+func _on_map_view_deck_clicked() -> void:
+	deck.toggle_visualize_deck()
