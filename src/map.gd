@@ -40,7 +40,7 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 
 		if not overlap and new_node not in visited_nodes:
 			map_tree[start_node].append(new_node)
-			map_tree[new_node] = []
+			map_tree[new_node] = [start_node]
 			visited_nodes.append(new_node)
 			available_nodes.append(new_node)
 			# Recursively generate more paths from the new node

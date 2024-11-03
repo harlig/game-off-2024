@@ -9,7 +9,7 @@ size = Vector2(1154, 1154)
 script = ExtResource("1_6kf0m")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.371368, 0.928486, 0, -0.928486, 0.371368, 0, 5, 2)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 2)
 size = 250.0
 
 [node name="Sprite3D2" type="Sprite3D" parent="."]
