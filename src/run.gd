@@ -4,6 +4,7 @@ class_name Run
 
 @onready var map := $Map
 @onready var camera := $Map/Camera3D
+@onready var deck := $Deck
 @onready var combat_scene := preload("res://src/combat.tscn")
 
 var player_position := Vector2(0, 0)

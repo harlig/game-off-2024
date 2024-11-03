@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dljtnngynioy1"]
+[gd_scene load_steps=5 format=3 uid="uid://dljtnngynioy1"]
 
 [ext_resource type="Script" path="res://src/run.gd" id="1_cnw64"]
 [ext_resource type="PackedScene" uid="uid://dnuxboxdulw4k" path="res://src/map.tscn" id="2_bsm6l"]
+[ext_resource type="PackedScene" uid="uid://cih1pigr4i7xh" path="res://src/deck.tscn" id="3_pu7pl"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xa4ld"]
 
@@ -15,3 +16,5 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 
 modulate = Color(0, 0, 0, 1)
 pixel_size = 0.1
 texture = SubResource("PlaceholderTexture2D_xa4ld")
+
+[node name="Deck" parent="." instance=ExtResource("3_pu7pl")]
