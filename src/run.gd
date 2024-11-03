@@ -55,6 +55,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			# Start combat
 			print("Starting combat at node ", node_position)
 			$Map.hide()
+			$Map/ViewDeck.hide()
 			$Player.hide()
 			var new_combat := combat_scene.instantiate()
 			new_combat.connect("combat_over", _on_combat_over)
@@ -69,6 +70,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		$Combat.queue_free()
 		current_node.beat_node()
 		$Map.show()
+		$Map/ViewDeck.show()
 		$Player.show()
 	elif combat_state == Combat.CombatState.LOST:
 		print("Combat lost!")
@@ -76,6 +78,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		# TODO: probably want to do something else but idk
 		# Restart the game
 		$Map.show()
+		$Map/ViewDeck.show()
 		$Player.show()
 		player_position = Vector2(0, 0)
 		$Player.position = Vector3(player_position.x, 2, player_position.y)

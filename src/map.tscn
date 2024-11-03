@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnuxboxdulw4k"]
+[gd_scene load_steps=4 format=3 uid="uid://dnuxboxdulw4k"]
 
 [ext_resource type="Script" path="res://src/map.gd" id="1_6kf0m"]
+[ext_resource type="Texture2D" uid="uid://drw2cj6wbjfb2" path="res://textures/node.png" id="2_jn6kg"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_y8fa8"]
 size = Vector2(1154, 1154)
@@ -16,3 +17,19 @@ size = 250.0
 transform = Transform3D(1000, 0, 0, 0, -4.37114e-05, -1000, 0, 1000, -4.37114e-05, 0, -10, 0)
 modulate = Color(0.362022, 0.808241, 1, 1)
 texture = SubResource("PlaceholderTexture2D_y8fa8")
+
+[node name="ViewDeck" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1047.0
+offset_top = 540.0
+offset_right = 1087.0
+offset_bottom = 580.0
+scale = Vector2(2.16736, 2.28852)
+
+[node name="Sprite2D" type="Sprite2D" parent="ViewDeck"]
+position = Vector2(21.224, 19.2264)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_jn6kg")
+
+[connection signal="gui_input" from="ViewDeck" to="." method="_on_view_deck_gui_input"]

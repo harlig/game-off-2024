@@ -1,4 +1,4 @@
-class_name Deck extends Node
+class_name Deck extends Control
 
 const INITIAL_DECK_SIZE: int = 10
 

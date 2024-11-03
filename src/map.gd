@@ -84,3 +84,9 @@ func visualize_map() -> void:
 
 func _on_node_clicked(node_position: Vector2) -> void:
 	emit_signal("node_clicked", node_position)
+
+
+func _on_view_deck_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
+			print("View Deck Clicked")
