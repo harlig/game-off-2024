@@ -55,7 +55,10 @@ func _on_target_area_area_exited(area: Area2D) -> void:
 		is_stopped = false
 
 
-func set_stats(card_data: Card.Data) -> void:
+func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
 	$Attackable.set_hp(card_data.max_health)
+	$Sprite2D.texture = ResourceLoader.load(card_data.card_image_path)
+	$Sprite2D.flip_h = flip_image
+
 	damage = card_data.damage
 	unit_name = card_data.card_name
