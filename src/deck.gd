@@ -62,5 +62,6 @@ func toggle_visualize_deck() -> bool:
 			add_child(card)
 	else:
 		for card in cards:
+			card.reset_selected()
 			remove_child(card)
 	return is_visualizing_deck
