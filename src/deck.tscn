@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://src/deck.gd" id="1_mwo1f"]
 
-[node name="Deck" type="HBoxContainer"]
+[node name="Deck" type="GridContainer"]
 offset_left = 206.0
 offset_top = 74.0
 offset_right = 962.0
 offset_bottom = 574.0
-alignment = 1
+columns = 6
 script = ExtResource("1_mwo1f")
