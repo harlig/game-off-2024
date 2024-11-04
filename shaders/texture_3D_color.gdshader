@@ -15,7 +15,7 @@ void fragment() {
 	vec4 tex = texture(albedo, uv);
 	
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
-	ALBEDO = color.rgb;
+	ALBEDO = mix(tex.rgb, color, 0.3);
 	ALPHA = tex.a;
 	// Called for every pixel the material is visible on.
 }
