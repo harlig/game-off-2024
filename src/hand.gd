@@ -3,6 +3,7 @@ class_name Hand extends Control
 @onready var cards_area: HBoxContainer = $CardsArea
 @onready var mana_area: Control = $ManaArea
 const HAND_SIZE := 5
+const MAX_MANA := 10
 
 signal card_played
 
@@ -12,16 +13,17 @@ var combat_deck: CombatDeck
 
 func setup_deck(deck: CombatDeck) -> void:
 	combat_deck = deck
-	deal_full_hand()
+	refresh_hand()
 
-func deal_full_hand() -> void:
+func refresh_hand() -> void:
+	_discard_hand()
+	_deal_full_hand()
+
+func _deal_full_hand() -> void:
 	for ndx in range(HAND_SIZE):
-		deal_card(combat_deck.draw())
+		_deal_card(combat_deck.draw())
 
-func draw_and_deal() -> void:
-	deal_card(combat_deck.draw())
-
-func deal_card(card: Card) -> void:
+func _deal_card(card: Card) -> void:
 	if card == null:
 		print("No card to deal")
 		return
@@ -30,7 +32,7 @@ func deal_card(card: Card) -> void:
 	cards_area.add_child(card)
 	cards_in_hand.append(card)
 
-func discard_hand() -> void:
+func _discard_hand() -> void:
 	last_clicked_card = null
 	for card in cards_in_hand:
 		discard(card)

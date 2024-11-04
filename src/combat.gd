@@ -106,5 +106,4 @@ func _on_refresh_button_pressed() -> void:
 
 	can_refresh = false
 	$RefreshControl/Button.disabled = true
-	$PlayerHand.discard_hand()
-	$PlayerHand.deal_full_hand()
+	$PlayerHand.refresh_hand()
