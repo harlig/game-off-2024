@@ -21,19 +21,20 @@ unit = ExtResource("2_fntqh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_ybamm")
 
 [node name="Ground" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(969, 652)
-scale = Vector2(80, 0.5)
+position = Vector2(965, 614)
+scale = Vector2(16, 0.1)
 texture = SubResource("GradientTexture2D_lewau")
 
 [node name="PlayerBase" parent="." instance=ExtResource("2_cotyr")]
-position = Vector2(200, 638)
+position = Vector2(200, 612)
 
 [node name="EnemyBase" parent="." instance=ExtResource("2_cotyr")]
-position = Vector2(1720, 638)
+position = Vector2(1720, 612)
 
 [node name="Attackable" parent="EnemyBase" index="0"]
 team = 1
