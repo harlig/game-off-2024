@@ -28,6 +28,7 @@ func _process(delta: float) -> void:
 	time_since_last_enemy_spawn += delta
 	if time_since_last_enemy_spawn > 5:
 		$EnemyHand.play_best_card()
+		$EnemyHand.replenish_mana()
 		time_since_last_enemy_spawn = 0
 
 	# update refresh timer
