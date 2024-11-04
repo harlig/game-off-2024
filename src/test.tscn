@@ -1,0 +1,138 @@
+[gd_scene load_steps=20 format=3 uid="uid://b3ktuay7bbkej"]
+
+[ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="1_mphi0"]
+[ext_resource type="Texture2D" uid="uid://jn6tlsaflx1f" path="res://textures/base.png" id="2_85570"]
+[ext_resource type="Texture2D" uid="uid://kia8yhfpcapr" path="res://textures/environment/ground_01.png" id="2_j6kvm"]
+[ext_resource type="Texture2D" uid="uid://la0yccjnuxq2" path="res://textures/environment/trees_02.png" id="3_ojcre"]
+[ext_resource type="PackedScene" uid="uid://c0paiugr6o31v" path="res://src/torch.tscn" id="3_rwuhn"]
+[ext_resource type="Shader" path="res://shaders/texture_3D_color.gdshader" id="3_wjt7n"]
+[ext_resource type="Texture2D" uid="uid://dbwmcfhncm4bg" path="res://textures/environment/trees_01.png" id="4_uj4vm"]
+
+[sub_resource type="Environment" id="Environment_oe4hh"]
+background_mode = 1
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.909711, 0.854743, 0.82889, 1)
+fog_light_energy = 0.1
+fog_density = 0.1
+fog_height = 2.0
+fog_height_density = 0.05
+fog_depth_curve = 4.59479
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vgg3n"]
+render_priority = 0
+shader = ExtResource("1_mphi0")
+shader_parameter/albedo = ExtResource("2_j6kvm")
+shader_parameter/flip_h = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_vrv57"]
+size = Vector2(60, 60)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wfuwv"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_n17a5"]
+size = Vector2(60, 60)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pic1n"]
+render_priority = 0
+shader = ExtResource("1_mphi0")
+shader_parameter/albedo = ExtResource("2_85570")
+shader_parameter/flip_h = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_be2ei"]
+size = Vector2(3, 3)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6p58s"]
+render_priority = 0
+shader = ExtResource("3_wjt7n")
+shader_parameter/albedo = ExtResource("3_ojcre")
+shader_parameter/color = Color(0.16, 0.138667, 0, 1)
+shader_parameter/flip_h = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_vyyhk"]
+size = Vector2(60, 33)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g1xli"]
+render_priority = 0
+shader = ExtResource("3_wjt7n")
+shader_parameter/albedo = ExtResource("3_ojcre")
+shader_parameter/color = Color(0.11, 0.0935, 0, 1)
+shader_parameter/flip_h = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_mq6yw"]
+size = Vector2(60, 33)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r5ik2"]
+render_priority = 0
+shader = ExtResource("1_mphi0")
+shader_parameter/albedo = ExtResource("4_uj4vm")
+shader_parameter/flip_h = false
+
+[node name="Test" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_oe4hh")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939692, 0.34202, 0, -0.34202, 0.939692, 0, 22, 40)
+projection = 1
+size = 25.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.324, -4.18797)
+light_energy = 0.5
+omni_range = 30.0
+omni_attenuation = 0.7
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.02818, 0)
+light_color = Color(0.452586, 0.452586, 0.452586, 1)
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_vgg3n")
+mesh = SubResource("QuadMesh_vrv57")
+
+[node name="Wall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, -26.4827)
+material_override = SubResource("StandardMaterial3D_wfuwv")
+mesh = SubResource("QuadMesh_n17a5")
+
+[node name="Units" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Units"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, -17.2066, 1.35, -10.752)
+material_override = SubResource("ShaderMaterial_pic1n")
+mesh = SubResource("QuadMesh_be2ei")
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Trees"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 15.1471, -20.9693)
+material_override = SubResource("ShaderMaterial_6p58s")
+mesh = SubResource("QuadMesh_vyyhk")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Trees"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, -5.95442, 15.2364, -24.2875)
+material_override = SubResource("ShaderMaterial_g1xli")
+mesh = SubResource("QuadMesh_mq6yw")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Trees"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 1.91556, 10.0225, -27.8623)
+material_override = SubResource("ShaderMaterial_r5ik2")
+mesh = SubResource("QuadMesh_vyyhk")
+skeleton = NodePath("../..")
+
+[node name="Torches" type="Node3D" parent="."]
+
+[node name="Torch" parent="Torches" instance=ExtResource("3_rwuhn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5874, 0, -14.0768)
+
+[node name="Torch2" parent="Torches" instance=ExtResource("3_rwuhn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.31609, 0, -13.7666)
+
+[node name="Torch3" parent="Torches" instance=ExtResource("3_rwuhn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5512, 0, -14.4239)
