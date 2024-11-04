@@ -14,8 +14,8 @@ func _ready() -> void:
 	for ndx in range(num_basic_cards):
 		# add basic cards to deck
 		var basic_card := create_card(
-			5, # max_health
-			5, # health
+			10, # max_health
+			10, # health
 			2, # mana
 			3, # damage
 			"Creature " + str(ndx + 1), # card_name
