@@ -67,11 +67,13 @@ func _on_enemy_hand_card_played(played_card: Card) -> void:
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
-	emit_signal("combat_over", state)
+	$RefreshControl.hide()
+	combat_over.emit(state)
 
 
 func _on_enemy_base_died() -> void:
 	state = CombatState.WON
+	$RefreshControl.hide()
 	provide_rewards()
 
 func provide_rewards() -> void:
