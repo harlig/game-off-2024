@@ -16,6 +16,12 @@ script = ExtResource("1_lt78l")
 
 [node name="Attackable" parent="." instance=ExtResource("2_x7kh0")]
 
+[node name="HP" parent="Attackable" index="0"]
+offset_left = -17.6845
+offset_top = -78.0
+offset_right = 22.3155
+offset_bottom = -55.0
+
 [node name="CollisionShape2D" parent="Attackable" index="1"]
 position = Vector2(2.94742, -19)
 shape = SubResource("RectangleShape2D_570hm")
