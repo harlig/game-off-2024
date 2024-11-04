@@ -2,6 +2,9 @@ class_name Unit extends Node2D
 
 enum Direction {LEFT, RIGHT}
 
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+var attack_animation := "attack"
+
 @export var direction: Direction = Direction.RIGHT
 var speed := 175
 var damage := 5
@@ -13,12 +16,16 @@ var currently_attacking: Array[Attackable] = []
 var has_attacked := false
 var time_since_last_attack := 0.0
 
+const ATTACK_COOLDOWN := 2.0
+
 func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
 	if !currently_attacking.is_empty():
 		if time_since_last_attack >= 1.0 or !has_attacked:
+			animation_player.seek(0, true)
+			animation_player.play(attack_animation)
 			for attackable in currently_attacking:
 				attackable.take_damage(damage)
 			time_since_last_attack = 0.0
@@ -53,12 +60,16 @@ func _on_target_area_area_exited(area: Area2D) -> void:
 	currently_attacking.erase(area)
 	if currently_attacking.size() == 0:
 		is_stopped = false
+		animation_player.seek(0, true)
+		animation_player.play("walk")
 
 
 func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
 	$Attackable.set_hp(card_data.max_health)
 	$Sprite2D.texture = ResourceLoader.load(card_data.card_image_path)
 	$Sprite2D.flip_h = flip_image
+	if flip_image:
+		attack_animation = "attack_reversed"
 
 	damage = card_data.damage
 	unit_name = card_data.card_name
