@@ -8,7 +8,7 @@ var draw_pile: Array[Card] = []
 func _ready() -> void:
 	# kinda gross but we need to get the deck from the Run, not from the parent Combat
 	# TODO: how do I do this for the enemy who has another deck? Maybe I need to pass the deck in?
-	for card: Card in (get_parent().get_parent().get_node("Deck") as Deck).cards:
+	for card: Card in (get_parent().get_parent().get_node("DeckControl").get_node("Deck") as Deck).cards:
 		var new_card := card.duplicate()
 		# well idk why duplicating the card doesn't duplicate the data, but it doesn't work without this
 		new_card.data = card.data
