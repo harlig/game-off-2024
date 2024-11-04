@@ -1,27 +1,18 @@
 class_name Hand extends HBoxContainer
-var hand_size := 5
-var current_size := 0
+const HAND_SIZE := 5
+
 signal card_played
 
 var last_clicked_card: Node = null
 var cards_in_hand: Array[Card] = []
-
 var combat_deck: CombatDeck
-
-# every 2.5 seconds draw a card
-func _ready() -> void:
-	var draw_timer := Timer.new()
-	draw_timer.wait_time = 2.5
-	draw_timer.connect("timeout", draw_and_deal)
-	add_child(draw_timer)
-	draw_timer.start()
 
 func setup_deck(deck: CombatDeck) -> void:
 	combat_deck = deck
 	deal_full_hand()
 
 func deal_full_hand() -> void:
-	for ndx in range(hand_size):
+	for ndx in range(HAND_SIZE):
 		deal_card(combat_deck.draw())
 
 func draw_and_deal() -> void:
@@ -34,8 +25,13 @@ func deal_card(card: Card) -> void:
 
 	card.card_clicked.connect(_on_card_clicked)
 	add_child(card)
-	current_size += 1
 	cards_in_hand.append(card)
+
+func discard_hand() -> void:
+	last_clicked_card = null
+	for card in cards_in_hand:
+		discard(card)
+	cards_in_hand.clear()
 
 func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 	if last_clicked_card and last_clicked_card != card_instance:
@@ -45,11 +41,14 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 
 	if times_clicked == 2:
 		card_played.emit(card_instance)
-		remove_child(card_instance)
 		last_clicked_card = null
-		card_instance.disconnect("card_clicked", _on_card_clicked)
+		discard(card_instance)
 		cards_in_hand.erase(card_instance)
-		combat_deck.discard(card_instance)
+
+func discard(card: Card) -> void:
+	card.disconnect("card_clicked", _on_card_clicked)
+	combat_deck.discard(card)
+	remove_child(card)
 
 func play_best_card() -> void:
 	var best_card: Card = null

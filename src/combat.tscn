@@ -70,10 +70,44 @@ offset_right = 954.0
 offset_bottom = 372.0
 alignment = 1
 
+[node name="RefreshControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 576.0
+offset_top = 36.0
+offset_right = 616.0
+offset_bottom = 76.0
+scale = Vector2(2.44434, 2.10719)
+
+[node name="Button" type="Button" parent="RefreshControl"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 20.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 8
+text = "Refresh"
+
+[node name="Label" type="Label" parent="RefreshControl"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -22.9157
+offset_bottom = 0.0843468
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="died" from="PlayerBase/Attackable" to="." method="_on_player_base_died"]
 [connection signal="died" from="EnemyBase/Attackable" to="." method="_on_enemy_base_died"]
 [connection signal="card_played" from="PlayerHand" to="." method="_on_hand_card_played"]
 [connection signal="card_played" from="EnemyHand" to="." method="_on_enemy_hand_card_played"]
+[connection signal="pressed" from="RefreshControl/Button" to="." method="_on_refresh_button_pressed"]
 
 [editable path="PlayerBase"]
 [editable path="EnemyBase"]

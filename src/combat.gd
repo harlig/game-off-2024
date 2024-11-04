@@ -7,12 +7,19 @@ signal reward_chosen(card: Card)
 
 enum CombatState {PLAYING, WON, LOST}
 
+const REFRESH_TIMEOUT = 5.0
+
 var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
+
+var can_refresh := false
+var refresh_time_left: float = REFRESH_TIMEOUT
 
 func _ready() -> void:
 	$PlayerHand.setup_deck($PlayerCombatDeck)
 	$EnemyHand.setup_deck($EnemyCombatDeck)
+	$RefreshControl/Label.text = str(refresh_time_left + 1)
+	set_process(true)
 
 func _process(delta: float) -> void:
 	if state != CombatState.PLAYING:
@@ -23,6 +30,18 @@ func _process(delta: float) -> void:
 		$EnemyHand.play_best_card()
 		time_since_last_enemy_spawn = 0
 
+	# update refresh timer
+	refresh_time_left -= delta
+	if refresh_time_left <= 0:
+		on_refresh_timeout()
+	else:
+		$RefreshControl/Label.text = str(int(refresh_time_left + 1))
+
+func on_refresh_timeout() -> void:
+	can_refresh = true
+	refresh_time_left = REFRESH_TIMEOUT
+	$RefreshControl/Button.disabled = false
+	$RefreshControl/Label.text = str(refresh_time_left + 1)
 
 func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector2, team: Attackable.Team) -> Unit:
 	var new_unit: Unit = unit_to_spawn.instantiate()
@@ -77,3 +96,13 @@ func _on_reward_clicked(times_clicked: int, reward_card: Card) -> void:
 		reward_card.reset_selected()
 		reward_chosen.emit(reward_card)
 		combat_over.emit(state)
+
+
+func _on_refresh_button_pressed() -> void:
+	if not can_refresh:
+		return
+
+	can_refresh = false
+	$RefreshControl/Button.disabled = true
+	$PlayerHand.discard_hand()
+	$PlayerHand.deal_full_hand()
