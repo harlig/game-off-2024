@@ -7,6 +7,7 @@ const hand_unit_texture_path := "res://textures/units/hand_crawler.png"
 const cricket_unit_texture_path := "res://textures/units/cricket.png"
 var cards: Array[Card] = []
 
+
 var is_visualizing_deck: bool = false
 
 func _ready() -> void:

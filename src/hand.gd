@@ -90,6 +90,9 @@ func discard(card: Card) -> void:
 	cards_area.remove_child(card)
 
 func play_best_card() -> void:
+	if cards_in_hand.size() == 0:
+		refresh_hand()
+	replenish_mana()
 	var best_card: Card = null
 	var best_card_value: float = -1
 	for card in cards_in_hand:
@@ -98,6 +101,7 @@ func play_best_card() -> void:
 			best_card = card
 			best_card_value = card_value
 	if best_card:
+		print(best_card.data.card_name)
 		_on_card_clicked(2, best_card)
 	else:
 		print("No more cards to play")
