@@ -52,7 +52,7 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector2, team: Attack
 	add_child(new_unit)
 	return new_unit
 
-func _on_hand_card_played(played_card: Card) -> void:
+func _on_player_hand_card_played(played_card: Card) -> void:
 	var unit_position: Vector2 = $PlayerBase.position + Vector2(75, 0)
 	unit_position.y = $Ground.position.y - $Ground.scale.y * 0.5 - 40
 	var created_unit: Unit = spawn_unit(unit, unit_position, Attackable.Team.PLAYER)

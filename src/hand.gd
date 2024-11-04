@@ -1,4 +1,7 @@
-class_name Hand extends HBoxContainer
+class_name Hand extends Control
+
+@onready var cards_area: HBoxContainer = $CardsArea
+@onready var mana_area: Control = $ManaArea
 const HAND_SIZE := 5
 
 signal card_played
@@ -24,7 +27,7 @@ func deal_card(card: Card) -> void:
 		return
 
 	card.card_clicked.connect(_on_card_clicked)
-	add_child(card)
+	cards_area.add_child(card)
 	cards_in_hand.append(card)
 
 func discard_hand() -> void:
@@ -48,7 +51,7 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 func discard(card: Card) -> void:
 	card.disconnect("card_clicked", _on_card_clicked)
 	combat_deck.discard(card)
-	remove_child(card)
+	cards_area.remove_child(card)
 
 func play_best_card() -> void:
 	var best_card: Card = null
