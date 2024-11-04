@@ -73,10 +73,10 @@ alignment = 1
 [node name="RefreshControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 576.0
+offset_left = 496.0
 offset_top = 36.0
-offset_right = 616.0
-offset_bottom = 76.0
+offset_right = 576.0
+offset_bottom = 96.0
 scale = Vector2(2.44434, 2.10719)
 
 [node name="Button" type="Button" parent="RefreshControl"]
@@ -85,8 +85,11 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 20.0
 grow_horizontal = 2
+focus_mode = 0
 theme_override_font_sizes/font_size = 8
-text = "Refresh"
+disabled = true
+text = "Refresh
+hand + mana"
 
 [node name="Label" type="Label" parent="RefreshControl"]
 layout_mode = 1
