@@ -33,7 +33,8 @@ position = Vector2(960, 540)
 texture = ExtResource("4_ybamm")
 
 [node name="Ground" type="Sprite2D" parent="."]
-position = Vector2(969, 641)
+visible = false
+position = Vector2(969, 652)
 scale = Vector2(80, 0.5)
 texture = SubResource("GradientTexture2D_lewau")
 
@@ -50,11 +51,10 @@ team = 1
 texture = SubResource("GradientTexture2D_5r1os")
 
 [node name="PlayerHand" parent="." instance=ExtResource("3_syoq1")]
-offset_left = 300.0
-offset_top = 750.0
-offset_right = 1620.0
-offset_bottom = 1190.0
-scale = Vector2(1, 0.555)
+offset_left = 313.0
+offset_top = 668.0
+offset_right = 1633.0
+offset_bottom = 1068.0
 
 [node name="EnemyHand" parent="." instance=ExtResource("3_syoq1")]
 visible = false
@@ -73,10 +73,10 @@ alignment = 1
 [node name="RefreshControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 890.0
-offset_top = 120.0
-offset_right = 1030.0
-offset_bottom = 200.0
+offset_left = 796.0
+offset_top = 121.0
+offset_right = 936.0
+offset_bottom = 201.0
 scale = Vector2(2.44434, 2.10719)
 
 [node name="Button" type="Button" parent="RefreshControl"]
