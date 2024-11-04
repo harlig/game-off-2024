@@ -20,11 +20,15 @@ texture = SubResource("PlaceholderTexture2D_xa4ld")
 [node name="DeckControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 mouse_filter = 2
 
 [node name="Deck" parent="DeckControl" instance=ExtResource("3_pu7pl")]
 layout_mode = 1
+offset_left = -450.0
+offset_top = -300.0
+offset_right = 450.0
+offset_bottom = 300.0
 
 [connection signal="view_deck_clicked" from="Map" to="." method="_on_map_view_deck_clicked"]

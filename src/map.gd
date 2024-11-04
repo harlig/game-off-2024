@@ -95,7 +95,5 @@ func _on_node_clicked(node_position: Vector2) -> void:
 	if can_interact:
 		emit_signal("node_clicked", node_position)
 
-func _on_view_deck_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
-			view_deck_clicked.emit()
+func _on_view_deck_pressed() -> void:
+	view_deck_clicked.emit()

@@ -29,20 +29,19 @@ script = ExtResource("1_8bss6")
 unit = ExtResource("2_fntqh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(576, 295)
+position = Vector2(960, 540)
 texture = ExtResource("4_ybamm")
 
 [node name="Ground" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(562, 400)
-scale = Vector2(20, 0.5)
+position = Vector2(969, 641)
+scale = Vector2(80, 0.5)
 texture = SubResource("GradientTexture2D_lewau")
 
 [node name="PlayerBase" parent="." instance=ExtResource("2_cotyr")]
-position = Vector2(80, 332)
+position = Vector2(200, 578)
 
 [node name="EnemyBase" parent="." instance=ExtResource("2_cotyr")]
-position = Vector2(1072, 332)
+position = Vector2(1720, 578)
 
 [node name="Attackable" parent="EnemyBase" index="0"]
 team = 1
@@ -51,10 +50,11 @@ team = 1
 texture = SubResource("GradientTexture2D_5r1os")
 
 [node name="PlayerHand" parent="." instance=ExtResource("3_syoq1")]
-offset_left = 201.0
-offset_top = 431.0
-offset_right = 957.0
-offset_bottom = 631.0
+offset_left = 300.0
+offset_top = 750.0
+offset_right = 1620.0
+offset_bottom = 1190.0
+scale = Vector2(1, 0.555)
 
 [node name="EnemyHand" parent="." instance=ExtResource("3_syoq1")]
 visible = false
@@ -64,29 +64,29 @@ visible = false
 [node name="EnemyCombatDeck" parent="." instance=ExtResource("6_yvacw")]
 
 [node name="Reward" type="HBoxContainer" parent="."]
-offset_left = 202.0
-offset_top = 172.0
-offset_right = 954.0
-offset_bottom = 372.0
+offset_left = 560.0
+offset_top = 260.0
+offset_right = 1360.0
+offset_bottom = 500.0
 alignment = 1
 
 [node name="RefreshControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 496.0
-offset_top = 36.0
-offset_right = 576.0
-offset_bottom = 96.0
+offset_left = 890.0
+offset_top = 120.0
+offset_right = 1030.0
+offset_bottom = 200.0
 scale = Vector2(2.44434, 2.10719)
 
 [node name="Button" type="Button" parent="RefreshControl"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 20.0
+offset_bottom = 42.0
 grow_horizontal = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 12
 disabled = true
 text = "Refresh
 hand + mana"
@@ -97,14 +97,12 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -22.9157
-offset_bottom = 0.0843468
+offset_top = -17.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 16
 text = "30"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [connection signal="died" from="PlayerBase/Attackable" to="." method="_on_player_base_died"]
 [connection signal="died" from="EnemyBase/Attackable" to="." method="_on_enemy_base_died"]
