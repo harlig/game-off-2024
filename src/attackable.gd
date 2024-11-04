@@ -1,7 +1,7 @@
 class_name Attackable extends Area2D
 
 @export var team: Team
-var hp := 50000
+var hp := 75
 
 enum Team {PLAYER, ENEMY}
 
