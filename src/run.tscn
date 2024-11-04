@@ -17,6 +17,14 @@ modulate = Color(0, 0, 0, 1)
 pixel_size = 0.1
 texture = SubResource("PlaceholderTexture2D_xa4ld")
 
-[node name="Deck" parent="." instance=ExtResource("3_pu7pl")]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+
+[node name="Deck" parent="Control" instance=ExtResource("3_pu7pl")]
+layout_mode = 1
 
 [connection signal="view_deck_clicked" from="Map" to="." method="_on_map_view_deck_clicked"]
