@@ -3,10 +3,10 @@
 [ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="1_mphi0"]
 [ext_resource type="Texture2D" uid="uid://jn6tlsaflx1f" path="res://textures/base.png" id="2_85570"]
 [ext_resource type="Texture2D" uid="uid://kia8yhfpcapr" path="res://textures/environment/ground_01.png" id="2_j6kvm"]
-[ext_resource type="Texture2D" uid="uid://la0yccjnuxq2" path="res://textures/environment/trees_02.png" id="3_ojcre"]
 [ext_resource type="PackedScene" uid="uid://c0paiugr6o31v" path="res://src/torch.tscn" id="3_rwuhn"]
 [ext_resource type="Shader" path="res://shaders/texture_3D_color.gdshader" id="3_wjt7n"]
 [ext_resource type="Texture2D" uid="uid://dbwmcfhncm4bg" path="res://textures/environment/trees_01.png" id="4_uj4vm"]
+[ext_resource type="Texture2D" uid="uid://c4tcd37tjw7cx" path="res://textures/environment/trees_03.png" id="5_26b7b"]
 
 [sub_resource type="Environment" id="Environment_oe4hh"]
 background_mode = 1
@@ -46,9 +46,8 @@ size = Vector2(3, 3)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6p58s"]
 render_priority = 0
-shader = ExtResource("3_wjt7n")
-shader_parameter/albedo = ExtResource("3_ojcre")
-shader_parameter/color = Color(0.16, 0.138667, 0, 1)
+shader = ExtResource("1_mphi0")
+shader_parameter/albedo = ExtResource("5_26b7b")
 shader_parameter/flip_h = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_vyyhk"]
@@ -57,7 +56,7 @@ size = Vector2(60, 33)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g1xli"]
 render_priority = 0
 shader = ExtResource("3_wjt7n")
-shader_parameter/albedo = ExtResource("3_ojcre")
+shader_parameter/albedo = ExtResource("5_26b7b")
 shader_parameter/color = Color(0.11, 0.0935, 0, 1)
 shader_parameter/flip_h = true
 
