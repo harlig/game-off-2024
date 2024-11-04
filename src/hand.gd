@@ -28,7 +28,6 @@ func draw_and_deal() -> void:
 	deal_card(combat_deck.draw())
 
 func deal_card(card: Card) -> void:
-	print("Getting dealt card ", card)
 	if card == null:
 		print("No card to deal")
 		return

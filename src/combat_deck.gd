@@ -20,7 +20,6 @@ func _ready() -> void:
 func draw() -> Card:
 	if draw_pile.size() == 0:
 		shuffle_discard_into_draw()
-	print("Drawing card from draw pile")
 	return draw_pile.pop_back()
 
 func shuffle_discard_into_draw() -> void:

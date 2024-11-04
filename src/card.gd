@@ -71,7 +71,6 @@ func on_select() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
-			print("Card Clicked")
 			is_selected = !is_selected
 			on_select()
 

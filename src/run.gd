@@ -41,10 +41,8 @@ func update_camera_position() -> void:
 
 func _on_node_clicked(node_position: Vector2) -> void:
 	if node_position in accessible_nodes:
-		print("Node at position ", node_position, " is accessible.")
 		var map_node: MapNode = map.node_instances[node_position]
 		current_node = map_node
-		print("Node is a ", MapNode.NodeType.keys()[map_node.node_type], " node.")
 		player_position = node_position
 		$Player.position = Vector3(player_position.x, 2, player_position.y)
 
@@ -53,11 +51,11 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			pass
 		elif map_node.node_type == MapNode.NodeType.COMBAT:
 			# Start combat
-			print("Starting combat at node ", node_position)
 			$Map.hide()
 			$Map/ViewDeck.hide()
 			$Player.hide()
 			var new_combat := combat_scene.instantiate()
+			new_combat.connect("reward_chosen", _on_combat_reward_chosen)
 			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
 
@@ -89,3 +87,6 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 func _on_map_view_deck_clicked() -> void:
 	var is_visualizing_deck: bool = deck.toggle_visualize_deck()
 	map.set_interactable(!is_visualizing_deck)
+
+func _on_combat_reward_chosen(card: Card) -> void:
+	deck.add_card(card)

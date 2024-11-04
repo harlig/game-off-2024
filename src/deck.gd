@@ -32,7 +32,9 @@ func _ready() -> void:
 		add_card(rare_card)
 
 func add_card(card: Card) -> void:
-	cards.append(card)
+	var duped_card: Card = card.duplicate()
+	duped_card.data = card.data
+	cards.append(duped_card)
 
 func create_card(
 	new_max_health: int,

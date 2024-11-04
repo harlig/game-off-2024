@@ -3,6 +3,7 @@ class_name Combat extends Node2D
 @export var unit: PackedScene
 
 signal combat_over(combat_state: CombatState)
+signal reward_chosen(card: Card)
 
 enum CombatState {PLAYING, WON, LOST}
 
@@ -56,13 +57,23 @@ func _on_enemy_base_died() -> void:
 
 func provide_rewards() -> void:
 	var best_enemy_cards: Array[Card] = $EnemyCombatDeck.get_best_cards(3)
-	print("Best enemy cards")
 	for card: Card in best_enemy_cards:
 		var card_offered := card.duplicate()
 		card_offered.data = card.data
+		card_offered.connect("card_clicked", _on_reward_clicked)
 		$Reward.add_child(card_offered)
-		$PlayerHand.queue_free()
-		$EnemyHand.queue_free()
-		print(card.data)
+	$PlayerHand.queue_free()
+	$EnemyHand.queue_free()
 
-	# emit_signal("combat_over", state)
+var last_clicked_reward_card: Card = null
+
+func _on_reward_clicked(times_clicked: int, reward_card: Card) -> void:
+	if last_clicked_reward_card and last_clicked_reward_card != reward_card:
+		last_clicked_reward_card.reset_selected()
+
+	last_clicked_reward_card = reward_card
+
+	if times_clicked == 2:
+		reward_card.reset_selected()
+		reward_chosen.emit(reward_card)
+		combat_over.emit(state)
