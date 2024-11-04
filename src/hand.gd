@@ -10,6 +10,7 @@ signal card_played
 var last_clicked_card: Node = null
 var cards_in_hand: Array[Card] = []
 var combat_deck: CombatDeck
+var mana_consumed := 0
 
 func setup_deck(deck: CombatDeck) -> void:
 	combat_deck = deck
@@ -18,6 +19,7 @@ func setup_deck(deck: CombatDeck) -> void:
 func refresh_hand() -> void:
 	_discard_hand()
 	_deal_full_hand()
+	mana_consumed = 0
 
 func _deal_full_hand() -> void:
 	for ndx in range(HAND_SIZE):
@@ -45,10 +47,20 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 	last_clicked_card = card_instance
 
 	if times_clicked == 2:
-		card_played.emit(card_instance)
-		last_clicked_card = null
-		discard(card_instance)
-		cards_in_hand.erase(card_instance)
+		# check if we have enough mana
+		if mana_consumed + card_instance.data.mana > MAX_MANA:
+			# TODO: something more disruptive
+			print("Not enough mana")
+			return
+		play_card(last_clicked_card)
+
+
+func play_card(card: Card) -> void:
+	mana_consumed += card.data.mana
+	card_played.emit(card)
+	discard(card)
+	cards_in_hand.erase(card)
+	last_clicked_card = null
 
 func discard(card: Card) -> void:
 	card.disconnect("card_clicked", _on_card_clicked)
