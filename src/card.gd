@@ -23,6 +23,7 @@ var data: Data = Data.new() # Ensure data is instantiated
 signal card_clicked
 
 func _ready() -> void:
+	original_stylebox_override = $Background.get_theme_stylebox("panel")
 	update_display()
 
 func update_display() -> void:
@@ -42,8 +43,6 @@ func set_stats(new_max_health: int, new_health: int, new_mana: int, new_damage: 
 	update_display()
 
 func on_select() -> void:
-	if original_stylebox_override == null:
-		original_stylebox_override = $Background.get_theme_stylebox("panel")
 
 	var style_box := StyleBoxFlat.new()
 	if is_selected:

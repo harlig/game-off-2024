@@ -7,7 +7,7 @@ signal reward_chosen(card: Card)
 
 enum CombatState {PLAYING, WON, LOST}
 
-const REFRESH_TIMEOUT = 5.0
+const REFRESH_TIMEOUT = 10.0
 
 var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 		return
 	# every 5 seconds spawn an enemy's best card
 	time_since_last_enemy_spawn += delta
-	if time_since_last_enemy_spawn > 500:
+	if time_since_last_enemy_spawn > 5:
 		$EnemyHand.play_best_card()
 		time_since_last_enemy_spawn = 0
 

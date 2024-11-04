@@ -7,8 +7,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_570hm"]
 size = Vector2(31.3937, 40)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_c0ysy"]
-radius = 14.2864
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vr6em"]
+size = Vector2(29.6495, 20.8)
 
 [node name="Unit" type="Node2D"]
 scale = Vector2(1.01784, 1)
@@ -23,9 +23,9 @@ shape = SubResource("RectangleShape2D_570hm")
 [node name="TargetArea" type="Area2D" parent="."]
 
 [node name="TargetCollider" type="CollisionShape2D" parent="TargetArea"]
-position = Vector2(0, -25)
+position = Vector2(19.9216, -26)
 scale = Vector2(2.5, 2.5)
-shape = SubResource("CircleShape2D_c0ysy")
+shape = SubResource("RectangleShape2D_vr6em")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -13)
