@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 		return
 	# every 5 seconds spawn an enemy's best card
 	time_since_last_enemy_spawn += delta
-	if time_since_last_enemy_spawn > 5:
+	if time_since_last_enemy_spawn > 500:
 		$EnemyHand.play_best_card()
 		time_since_last_enemy_spawn = 0
 
@@ -58,6 +58,11 @@ func provide_rewards() -> void:
 	var best_enemy_cards: Array[Card] = $EnemyCombatDeck.get_best_cards(3)
 	print("Best enemy cards")
 	for card: Card in best_enemy_cards:
+		var card_offered := card.duplicate()
+		card_offered.data = card.data
+		$Reward.add_child(card_offered)
+		$PlayerHand.queue_free()
+		$EnemyHand.queue_free()
 		print(card.data)
 
-	emit_signal("combat_over", state)
+	# emit_signal("combat_over", state)

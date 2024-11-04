@@ -63,6 +63,13 @@ visible = false
 
 [node name="EnemyCombatDeck" parent="." instance=ExtResource("6_yvacw")]
 
+[node name="Reward" type="HBoxContainer" parent="."]
+offset_left = 202.0
+offset_top = 172.0
+offset_right = 954.0
+offset_bottom = 372.0
+alignment = 1
+
 [connection signal="died" from="PlayerBase/Attackable" to="." method="_on_player_base_died"]
 [connection signal="died" from="EnemyBase/Attackable" to="." method="_on_enemy_base_died"]
 [connection signal="card_played" from="PlayerHand" to="." method="_on_hand_card_played"]
