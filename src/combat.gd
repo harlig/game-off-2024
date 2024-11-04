@@ -55,5 +55,9 @@ func _on_enemy_base_died() -> void:
 	provide_rewards()
 
 func provide_rewards() -> void:
-	# TODO: Randomly select 3 of enemy's best 5 cards in deck and present to player to draft to their deck
+	var best_enemy_cards: Array[Card] = $EnemyCombatDeck.get_best_cards(3)
+	print("Best enemy cards")
+	for card: Card in best_enemy_cards:
+		print(card.data)
+
 	emit_signal("combat_over", state)

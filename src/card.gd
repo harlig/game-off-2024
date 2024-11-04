@@ -12,6 +12,9 @@ class Data:
 	var card_name: String = "Example Creature"
 	var card_image_path: String = "res://logo.png"
 
+	func get_card_score() -> int:
+		return health + damage
+
 	func _to_string() -> String:
 		return "Card Data: " + card_name + " with " + str(health) + " health, " + str(mana) + " mana, and " + str(damage) + " damage."
 
