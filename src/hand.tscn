@@ -18,6 +18,25 @@ anchor_right = 0.6
 anchor_bottom = 0.2
 grow_vertical = 2
 
+[node name="Label" type="Label" parent="ManaArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.15
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 26
+text = "Mana"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ManaArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 2
+
 [node name="CardsArea" type="HBoxContainer" parent="."]
 clip_contents = true
 layout_mode = 1
