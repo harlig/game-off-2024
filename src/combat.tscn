@@ -28,15 +28,14 @@ position = Vector2(-1, 0)
 script = ExtResource("1_8bss6")
 unit = ExtResource("2_fntqh")
 
+[node name="Ground" type="Sprite2D" parent="."]
+position = Vector2(969, 640)
+scale = Vector2(80, 0.01)
+texture = SubResource("GradientTexture2D_lewau")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
 texture = ExtResource("4_ybamm")
-
-[node name="Ground" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(969, 652)
-scale = Vector2(80, 0.5)
-texture = SubResource("GradientTexture2D_lewau")
 
 [node name="PlayerBase" parent="." instance=ExtResource("2_cotyr")]
 position = Vector2(200, 578)
