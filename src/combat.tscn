@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c0gt8q5pcmfki"]
+[gd_scene load_steps=10 format=3 uid="uid://c0gt8q5pcmfki"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_8bss6"]
 [ext_resource type="PackedScene" uid="uid://clmqqkb8vuuyp" path="res://src/base.tscn" id="2_cotyr"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://j5yc37j5bbbc" path="res://src/hand.tscn" id="3_syoq1"]
 [ext_resource type="Texture2D" uid="uid://dwv8j850ihl6f" path="res://textures/background.png" id="4_ybamm"]
 [ext_resource type="PackedScene" uid="uid://deyj5t686af3v" path="res://src/combat_deck.tscn" id="6_yvacw"]
+[ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/reward.tscn" id="7_rauth"]
 
 [sub_resource type="Gradient" id="Gradient_nb3l8"]
 offsets = PackedFloat32Array(0, 0.503529, 1)
@@ -55,13 +56,12 @@ visible = false
 
 [node name="EnemyCombatDeck" parent="." instance=ExtResource("6_yvacw")]
 
-[node name="Reward" type="HBoxContainer" parent="."]
-offset_left = 560.0
-offset_top = 260.0
-offset_right = 1360.0
-offset_bottom = 500.0
-size_flags_horizontal = 3
-alignment = 1
+[node name="Reward" parent="." instance=ExtResource("7_rauth")]
+visible = false
+offset_left = 320.0
+offset_top = 160.0
+offset_right = 1600.0
+offset_bottom = 840.0
 
 [node name="RefreshControl" type="Control" parent="."]
 layout_mode = 3

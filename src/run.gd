@@ -10,7 +10,8 @@ class_name Run
 var player_position := Vector2(0, 0)
 var accessible_nodes := []
 var current_node: MapNode = null
-var combat_difficulty:= 1
+var combat_difficulty := 1
+
 func _ready() -> void:
 	# Define parameters for map generation
 	var initial_spawn_path_directions := 5
