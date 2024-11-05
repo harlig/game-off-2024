@@ -1,6 +1,6 @@
-class_name ThreeDCombat extends Node3D
+class_name Combat extends Node3D
 
-@onready var unit: PackedScene = preload("res://src/three_d_unit.tscn")
+@onready var unit: PackedScene = preload("res://src/unit.tscn")
 @onready var card_scene := preload("res://src/card.tscn")
 @onready var reward := $Reward
 
@@ -125,12 +125,12 @@ func on_refresh_timeout() -> void:
 	$RefreshControl/Button.disabled = false
 	$RefreshControl/Label.text = str(refresh_time_left + 1)
 
-func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: ThreeDAttackable.Team) -> ThreeDUnit:
-	var new_unit: ThreeDUnit = unit_to_spawn.instantiate()
+func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team) -> Unit:
+	var new_unit: Unit = unit_to_spawn.instantiate()
 	var random_z_offset := randf_range(-1, 1)
 	new_unit.position = Vector3(unit_position.x, unit_position.y, unit_position.z + random_z_offset)
-	new_unit.direction = ThreeDUnit.Direction.RIGHT if team == ThreeDAttackable.Team.PLAYER else ThreeDUnit.Direction.LEFT
-	if team == ThreeDAttackable.Team.ENEMY:
+	new_unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
+	if team == Attackable.Team.ENEMY:
 		new_unit.get_node("TargetArea").scale.x *= -1
 		new_unit.get_node("Attackable").scale.x *= -1
 	new_unit.get_node("Attackable").team = team
@@ -140,13 +140,13 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: ThreeD
 func _on_player_hand_card_played(played_card: Card) -> void:
 	var unit_x: float = $PlayerBase.position.x + OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $PlayerBase.position.z
-	var created_unit: ThreeDUnit = spawn_unit(unit, Vector3(unit_x, 0, unit_z), ThreeDAttackable.Team.PLAYER)
+	var created_unit: Unit = spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.PLAYER)
 	created_unit.set_stats(played_card.data)
 
 func _on_enemy_hand_card_played(played_card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $EnemyBase.position.z
-	var created_unit: ThreeDUnit = spawn_unit(unit, Vector3(unit_x, 0, unit_z), ThreeDAttackable.Team.ENEMY)
+	var created_unit: Unit = spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY)
 	created_unit.set_stats(played_card.data, true)
 
 

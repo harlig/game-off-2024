@@ -1,4 +1,4 @@
-class_name ThreeDAttackable extends Area3D
+class_name Attackable extends Area3D
 
 @export var team: Team
 var hp := 75:

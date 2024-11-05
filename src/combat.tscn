@@ -1,14 +1,14 @@
 [gd_scene load_steps=8 format=3 uid="uid://bdga38e85imgw"]
 
-[ext_resource type="Script" path="res://src/three_d_combat.gd" id="1_1q57p"]
+[ext_resource type="Script" path="res://src/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_mtl7e"]
 [ext_resource type="Script" path="res://src/combat_camera.gd" id="4_uic0f"]
-[ext_resource type="PackedScene" uid="uid://d2wxwevlcnfik" path="res://src/three_d_base.tscn" id="5_d80wm"]
+[ext_resource type="PackedScene" uid="uid://d2wxwevlcnfik" path="res://src/base.tscn" id="5_d80wm"]
 [ext_resource type="PackedScene" uid="uid://j5yc37j5bbbc" path="res://src/hand.tscn" id="6_br0o2"]
 [ext_resource type="PackedScene" uid="uid://deyj5t686af3v" path="res://src/combat_deck.tscn" id="7_bknt5"]
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/reward.tscn" id="8_1gtat"]
 
-[node name="ThreeDCombat" type="Node3D"]
+[node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
 
 [node name="Backdrop" parent="." instance=ExtResource("1_mtl7e")]
@@ -26,7 +26,7 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -17.207, 0, -10.752)
 [node name="EnemyBase" parent="." instance=ExtResource("5_d80wm")]
 transform = Transform3D(-2, 0, -3.01992e-07, 0, 2, 0, 3.01992e-07, 0, -2, 17.207, 0, -10.752)
 
-[node name="ThreeDAttackable" parent="EnemyBase" index="0"]
+[node name="Attackable" parent="EnemyBase" index="0"]
 team = 1
 
 [node name="PlayerHand" parent="." instance=ExtResource("6_br0o2")]
@@ -83,14 +83,14 @@ theme_override_font_sizes/font_size = 16
 text = "30"
 horizontal_alignment = 1
 
-[connection signal="died" from="PlayerBase/ThreeDAttackable" to="." method="_on_player_base_died"]
-[connection signal="died" from="EnemyBase/ThreeDAttackable" to="." method="_on_enemy_base_died"]
+[connection signal="died" from="PlayerBase/Attackable" to="." method="_on_player_base_died"]
+[connection signal="died" from="EnemyBase/Attackable" to="." method="_on_enemy_base_died"]
 [connection signal="card_played" from="PlayerHand" to="." method="_on_player_hand_card_played"]
 [connection signal="card_played" from="EnemyHand" to="." method="_on_enemy_hand_card_played"]
 [connection signal="reward_chosen" from="Reward" to="." method="_on_reward_reward_chosen"]
 [connection signal="pressed" from="RefreshControl/Button" to="." method="_on_refresh_button_pressed"]
 
 [editable path="PlayerBase"]
-[editable path="PlayerBase/ThreeDAttackable"]
+[editable path="PlayerBase/Attackable"]
 [editable path="EnemyBase"]
-[editable path="EnemyBase/ThreeDAttackable"]
+[editable path="EnemyBase/Attackable"]

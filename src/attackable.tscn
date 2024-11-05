@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://7d2f0g6jswhx"]
 
-[ext_resource type="Script" path="res://src/three_d_attackable.gd" id="1_5gjtp"]
+[ext_resource type="Script" path="res://src/attackable.gd" id="1_5gjtp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jgdx6"]
 
-[node name="ThreeDAttackable" type="Area3D"]
+[node name="Attackable" type="Area3D"]
 script = ExtResource("1_5gjtp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

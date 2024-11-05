@@ -1,4 +1,4 @@
-class_name ThreeDUnit extends Node3D
+class_name Unit extends Node3D
 
 enum Direction {LEFT, RIGHT}
 
@@ -12,7 +12,7 @@ var damage := 5
 var unit_name: String = "Unit"
 
 var is_stopped := false
-var currently_attacking: Array[ThreeDAttackable] = []
+var currently_attacking: Array[Attackable] = []
 
 var is_attacking := false
 var time_since_last_attack := 0.0
@@ -48,9 +48,9 @@ func do_attacks(_anim_name: String) -> void:
 
 # when something runs into my target area
 func _on_target_area_area_entered(area: Area3D) -> void:
-	if area is not ThreeDAttackable or area.get_parent() == self:
+	if area is not Attackable or area.get_parent() == self:
 		return
-	var attackable := area as ThreeDAttackable
+	var attackable := area as Attackable
 	if attackable.team == $Attackable.team:
 		return
 
@@ -60,9 +60,9 @@ func _on_target_area_area_entered(area: Area3D) -> void:
 
 
 func _on_target_area_area_exited(area: Area3D) -> void:
-	if area is not ThreeDAttackable:
+	if area is not Attackable:
 		return
-	if (area as ThreeDAttackable).team == $Attackable.team:
+	if (area as Attackable).team == $Attackable.team:
 		return
 	currently_attacking.erase(area)
 	if currently_attacking.size() == 0:
