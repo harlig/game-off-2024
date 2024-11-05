@@ -23,7 +23,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if !currently_attacking.is_empty():
-		is_attacking = true
 		if time_since_last_attack >= 1.0:
 			animation_player.seek(0, true)
 			animation_player.play(attack_animation)
@@ -51,6 +50,7 @@ func _on_target_area_area_entered(area: Area2D) -> void:
 		return
 
 	currently_attacking.append(attackable)
+	is_attacking = true
 	is_stopped = true
 
 

@@ -15,7 +15,7 @@ var time_since_last_enemy_spawn: float = 0
 
 var can_refresh := false
 var refresh_time_left: float = REFRESH_TIMEOUT
-var difficulty:= 1
+var difficulty := 1
 
 var creature_cards: Array[Dictionary] = [
 	{"name": "Shriekling", "type": "Air", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/cricket.png"}, # 0
@@ -78,7 +78,7 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 	var total_strength := 0
 	var strengh_limited_creatures: Array[Dictionary] = creature_cards.filter(func(card: Dictionary) -> bool: return card["strength_factor"] <= single_card_strength_limit)
 	while total_strength < strength_limit:
-		var dict := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size()-1)]
+		var dict := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
 		total_strength += dict["strength_factor"]
 		new_deck.append(new_card_from_dict(dict))
 	return new_deck
@@ -126,7 +126,9 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector2, team: Attack
 	var new_unit: Unit = unit_to_spawn.instantiate()
 	new_unit.position = unit_position
 	new_unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
-	new_unit.get_node("TargetArea").scale.x = 1 if team == Attackable.Team.PLAYER else -1
+	if team == Attackable.Team.ENEMY:
+		new_unit.get_node("TargetArea").scale.x *= -1
+		new_unit.get_node("Attackable").scale.x *= -1
 	new_unit.get_node("Attackable").team = team
 	add_child(new_unit)
 	return new_unit
