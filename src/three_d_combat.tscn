@@ -26,6 +26,9 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -17.207, 0, -10.752)
 [node name="EnemyBase" parent="." instance=ExtResource("5_d80wm")]
 transform = Transform3D(-2, 0, -3.01992e-07, 0, 2, 0, 3.01992e-07, 0, -2, 17.207, 0, -10.752)
 
+[node name="ThreeDAttackable" parent="EnemyBase" index="0"]
+team = 1
+
 [node name="PlayerHand" parent="." instance=ExtResource("6_br0o2")]
 offset_left = 320.0
 offset_top = 677.0

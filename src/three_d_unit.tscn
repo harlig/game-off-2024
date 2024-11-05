@@ -30,3 +30,6 @@ shape = SubResource("BoxShape3D_ce7wc")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 material_override = SubResource("ShaderMaterial_av3n6")
 mesh = SubResource("QuadMesh_4p5bs")
+
+[connection signal="area_entered" from="TargetArea" to="." method="_on_target_area_area_entered"]
+[connection signal="area_exited" from="TargetArea" to="." method="_on_target_area_area_exited"]

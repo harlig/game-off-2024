@@ -139,9 +139,7 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: ThreeD
 func _on_player_hand_card_played(played_card: Card) -> void:
 	var unit_x: float = $PlayerBase.position.x + OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $PlayerBase.position.z
-	var created_unit: ThreeDUnit = spawn_unit(unit, Vector3(unit_x, 0, unit_z), ThreeDAttackable.Team.ENEMY)
-	print("Spawned unit at: " + str(created_unit.position))
-	print("Player base position at: " + str($PlayerBase.position))
+	var created_unit: ThreeDUnit = spawn_unit(unit, Vector3(unit_x, 0, unit_z), ThreeDAttackable.Team.PLAYER)
 	created_unit.set_stats(played_card.data)
 
 func _on_enemy_hand_card_played(played_card: Card) -> void:

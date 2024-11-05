@@ -6,7 +6,7 @@ enum Direction {LEFT, RIGHT}
 var attack_animation := "attack"
 
 @export var direction: Direction = Direction.RIGHT
-var speed := 0
+var speed := 175
 var damage := 5
 var unit_name: String = "Unit"
 
