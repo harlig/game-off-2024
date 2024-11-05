@@ -75,14 +75,14 @@ func _on_node_clicked(node_position: Vector2) -> void:
 func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	if combat_state == Combat.CombatState.WON:
 		print("Combat won!")
-		$Combat.queue_free()
+		$ThreeDCombat.queue_free()
 		current_node.beat_node()
 		$Map.show()
 		$Map/ViewDeck.show()
 		$Player.show()
 	elif combat_state == Combat.CombatState.LOST:
 		print("Combat lost!")
-		$Combat.queue_free()
+		$ThreeDCombat.queue_free()
 		# TODO: probably want to do something else but idk
 		# Restart the game
 		$Map.show()

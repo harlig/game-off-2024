@@ -127,7 +127,8 @@ func on_refresh_timeout() -> void:
 
 func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: ThreeDAttackable.Team) -> ThreeDUnit:
 	var new_unit: ThreeDUnit = unit_to_spawn.instantiate()
-	new_unit.position = unit_position
+	var random_z_offset := randf_range(-1, 1)
+	new_unit.position = Vector3(unit_position.x, unit_position.y, unit_position.z + random_z_offset)
 	new_unit.direction = ThreeDUnit.Direction.RIGHT if team == ThreeDAttackable.Team.PLAYER else ThreeDUnit.Direction.LEFT
 	if team == ThreeDAttackable.Team.ENEMY:
 		new_unit.get_node("TargetArea").scale.x *= -1

@@ -46,8 +46,8 @@ visible = false
 visible = false
 offset_left = 320.0
 offset_top = 160.0
-offset_right = 1600.0
-offset_bottom = 840.0
+offset_right = -320.0
+offset_bottom = -240.0
 
 [node name="RefreshControl" type="Control" parent="."]
 layout_mode = 3
@@ -87,6 +87,7 @@ horizontal_alignment = 1
 [connection signal="died" from="EnemyBase/ThreeDAttackable" to="." method="_on_enemy_base_died"]
 [connection signal="card_played" from="PlayerHand" to="." method="_on_player_hand_card_played"]
 [connection signal="card_played" from="EnemyHand" to="." method="_on_enemy_hand_card_played"]
+[connection signal="reward_chosen" from="Reward" to="." method="_on_reward_reward_chosen"]
 [connection signal="pressed" from="RefreshControl/Button" to="." method="_on_refresh_button_pressed"]
 
 [editable path="PlayerBase"]
