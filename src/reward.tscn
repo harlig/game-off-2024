@@ -35,7 +35,7 @@ anchor_bottom = 0.8
 grow_vertical = 2
 alignment = 1
 
-[node name="Button" type="Button" parent="."]
+[node name="SkipButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4
@@ -48,3 +48,5 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 48
 text = "Skip
 (+25g)"
+
+[connection signal="pressed" from="SkipButton" to="." method="_on_skip_button_pressed"]

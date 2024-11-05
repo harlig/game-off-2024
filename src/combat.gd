@@ -5,12 +5,12 @@ class_name Combat extends Node2D
 @onready var reward := $Reward
 
 signal combat_over(combat_state: CombatState)
-signal reward_chosen(card: Card)
+signal reward_chosen(reward: Reward.RewardData)
 
 enum CombatState {PLAYING, WON, LOST}
 
 const REFRESH_TIMEOUT = 10.0
-const ENEMY_SPAWN_TIMER := 4.0
+const ENEMY_SPAWN_TIMER := 400.0
 
 var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
@@ -161,14 +161,9 @@ func _on_enemy_base_died() -> void:
 func provide_rewards() -> void:
 	var best_enemy_cards: Array[Card] = $EnemyCombatDeck.get_best_cards(3)
 	reward.add_card_offerings(best_enemy_cards)
-	reward.connect("reward_chosen", _on_reward_chosen)
 	reward.show()
 	$PlayerHand.queue_free()
 	$EnemyHand.queue_free()
-
-func _on_reward_chosen(card: Card) -> void:
-	reward_chosen.emit(card)
-	combat_over.emit(state)
 
 func _on_refresh_button_pressed() -> void:
 	if not can_refresh:
@@ -177,3 +172,7 @@ func _on_refresh_button_pressed() -> void:
 	can_refresh = false
 	$RefreshControl/Button.disabled = true
 	$PlayerHand.refresh_hand()
+
+func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
+	reward_chosen.emit(reward_data)
+	combat_over.emit(state)

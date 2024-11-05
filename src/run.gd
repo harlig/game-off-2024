@@ -91,5 +91,10 @@ func _on_map_view_deck_clicked() -> void:
 	var is_visualizing_deck: bool = deck.toggle_visualize_deck()
 	map.set_interactable(!is_visualizing_deck)
 
-func _on_combat_reward_chosen(card: Card) -> void:
-	deck.add_card(card)
+func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
+	if reward.type == Reward.RewardData.Type.CARD:
+		print("Received card reward: ", reward.card.data)
+		deck.add_card(reward.card)
+	elif reward.type == Reward.RewardData.Type.GOLD:
+		print("Received gold reward: ", reward.gold)
+		# TODO: add gold here
