@@ -11,7 +11,11 @@ var player_position := Vector2(0, 0)
 var accessible_nodes := []
 var current_node: MapNode = null
 var combat_difficulty := 1
-var bank := 0
+var bank := 10:
+	set(value):
+		print("Bank value changed to: ", value)
+		bank = value
+		$Map/BankControl/BankText.text = str(value)
 
 func _ready() -> void:
 	# Define parameters for map generation
@@ -21,6 +25,7 @@ func _ready() -> void:
 	# Generate the map
 	map.generate_map(Vector2(0, 0), initial_spawn_path_directions, max_depth)
 	map.visualize_map()
+	$Map/BankControl/BankText.text = str(bank)
 
 	# Initialize player position and accessible nodes
 	player_position = Vector2(0, 0)
