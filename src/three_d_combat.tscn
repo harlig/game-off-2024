@@ -1,0 +1,92 @@
+[gd_scene load_steps=8 format=3 uid="uid://bdga38e85imgw"]
+
+[ext_resource type="Script" path="res://src/three_d_combat.gd" id="1_1q57p"]
+[ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_mtl7e"]
+[ext_resource type="Script" path="res://src/combat_camera.gd" id="4_uic0f"]
+[ext_resource type="PackedScene" uid="uid://d2wxwevlcnfik" path="res://src/three_d_base.tscn" id="5_d80wm"]
+[ext_resource type="PackedScene" uid="uid://j5yc37j5bbbc" path="res://src/hand.tscn" id="6_br0o2"]
+[ext_resource type="PackedScene" uid="uid://deyj5t686af3v" path="res://src/combat_deck.tscn" id="7_bknt5"]
+[ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/reward.tscn" id="8_1gtat"]
+
+[node name="ThreeDCombat" type="Node3D"]
+script = ExtResource("1_1q57p")
+
+[node name="Backdrop" parent="." instance=ExtResource("1_mtl7e")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939692, 0.34202, 0, -0.34202, 0.939692, 0, 22, 40)
+projection = 1
+size = 25.0
+script = ExtResource("4_uic0f")
+metadata/_edit_lock_ = true
+
+[node name="PlayerBase" parent="." instance=ExtResource("5_d80wm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.207, 0, -10.752)
+
+[node name="EnemyBase" parent="." instance=ExtResource("5_d80wm")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 17.207, 0, -10.752)
+
+[node name="PlayerHand" parent="." instance=ExtResource("6_br0o2")]
+offset_left = 320.0
+offset_top = 677.0
+offset_right = 1600.0
+offset_bottom = 1077.0
+
+[node name="EnemyHand" parent="." instance=ExtResource("6_br0o2")]
+visible = false
+
+[node name="PlayerCombatDeck" parent="." instance=ExtResource("7_bknt5")]
+
+[node name="EnemyCombatDeck" parent="." instance=ExtResource("7_bknt5")]
+
+[node name="Reward" parent="." instance=ExtResource("8_1gtat")]
+visible = false
+offset_left = 320.0
+offset_top = 160.0
+offset_right = 1600.0
+offset_bottom = 840.0
+
+[node name="RefreshControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1.0
+offset_top = 756.0
+offset_right = 121.0
+offset_bottom = 836.0
+scale = Vector2(2.44434, 2.10719)
+
+[node name="Button" type="Button" parent="RefreshControl"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 42.0
+grow_horizontal = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+disabled = true
+text = "Refresh
+hand + mana"
+
+[node name="Label" type="Label" parent="RefreshControl"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -17.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+text = "30"
+horizontal_alignment = 1
+
+[connection signal="died" from="PlayerBase/ThreeDAttackable" to="." method="_on_player_base_died"]
+[connection signal="died" from="EnemyBase/ThreeDAttackable" to="." method="_on_enemy_base_died"]
+[connection signal="card_played" from="PlayerHand" to="." method="_on_player_hand_card_played"]
+[connection signal="card_played" from="EnemyHand" to="." method="_on_enemy_hand_card_played"]
+[connection signal="pressed" from="RefreshControl/Button" to="." method="_on_refresh_button_pressed"]
+
+[editable path="PlayerBase"]
+[editable path="PlayerBase/ThreeDAttackable"]
+[editable path="EnemyBase"]
+[editable path="EnemyBase/ThreeDAttackable"]

@@ -1,6 +1,5 @@
-[gd_scene load_steps=31 format=3 uid="uid://b3ktuay7bbkej"]
+[gd_scene load_steps=30 format=3 uid="uid://b3ktuay7bbkej"]
 
-[ext_resource type="Script" path="res://src/combat_camera.gd" id="1_imnqs"]
 [ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="1_mphi0"]
 [ext_resource type="Texture2D" uid="uid://jn6tlsaflx1f" path="res://textures/base.png" id="2_85570"]
 [ext_resource type="Texture2D" uid="uid://kia8yhfpcapr" path="res://textures/environment/ground_01.png" id="2_j6kvm"]
@@ -120,13 +119,6 @@ buffer = PackedFloat32Array(0, 0, -0.804428, 14.9695, 0, 0.804428, 0, -0.0004062
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_oe4hh")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.939692, 0.34202, 0, -0.34202, 0.939692, 0, 22, 40)
-projection = 1
-size = 25.0
-script = ExtResource("1_imnqs")
-metadata/_edit_lock_ = true
-
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.324, -4.18797)
 light_energy = 0.5
@@ -151,6 +143,7 @@ mesh = SubResource("QuadMesh_n17a5")
 metadata/_edit_lock_ = true
 
 [node name="Units" type="Node3D" parent="."]
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Units"]
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, -17.2066, 1.35, -10.752)
