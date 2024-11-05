@@ -26,8 +26,7 @@ func _process(delta: float) -> void:
 		if time_since_last_attack >= 1.0:
 			animation_player.seek(0, true)
 			animation_player.play(attack_animation)
-			for attackable in currently_attacking:
-				attackable.take_damage(damage)
+			animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
 			time_since_last_attack = 0.0
 
 	if is_attacking:
@@ -40,6 +39,10 @@ func _process(delta: float) -> void:
 		position.x += speed * delta
 	else:
 		position.x -= speed * delta
+
+func do_attacks(_anim_name: String) -> void:
+	for attackable in currently_attacking:
+		attackable.take_damage(damage)
 
 # when something runs into my target area
 func _on_target_area_area_entered(area: Area2D) -> void:
@@ -63,12 +66,11 @@ func _on_target_area_area_exited(area: Area2D) -> void:
 	if currently_attacking.size() == 0:
 		is_stopped = false
 		is_attacking = false
-		animation_player.animation_finished.connect(_on_attack_finished)
+		animation_player.animation_finished.connect(_on_attack_finished, ConnectFlags.CONNECT_ONE_SHOT)
 
 func _on_attack_finished(_anim_name: String) -> void:
 	animation_player.seek(0, true)
 	animation_player.play("walk")
-	animation_player.animation_finished.disconnect(_on_attack_finished)
 
 
 func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
