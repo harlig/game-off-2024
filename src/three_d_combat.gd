@@ -10,7 +10,7 @@ signal reward_chosen(reward: Reward.RewardData)
 enum CombatState {PLAYING, WON, LOST}
 
 const REFRESH_TIMEOUT = 10.0
-const ENEMY_SPAWN_TIMER := 400.0
+const ENEMY_SPAWN_TIMER := 4.0
 const OFFSET_FROM_BASE_DISTANCE := 3
 
 var state: CombatState = CombatState.PLAYING

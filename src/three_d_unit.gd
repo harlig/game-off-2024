@@ -4,6 +4,7 @@ enum Direction {LEFT, RIGHT}
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 var attack_animation := "attack"
+const WALK_ANIMATION := "walk"
 
 @export var direction: Direction = Direction.RIGHT
 var speed := 10
@@ -43,6 +44,7 @@ func _process(delta: float) -> void:
 func do_attacks(_anim_name: String) -> void:
 	for attackable in currently_attacking:
 		attackable.take_damage(damage)
+	animation_player.play(WALK_ANIMATION)
 
 # when something runs into my target area
 func _on_target_area_area_entered(area: Area3D) -> void:
@@ -70,7 +72,7 @@ func _on_target_area_area_exited(area: Area3D) -> void:
 
 func _on_attack_finished(_anim_name: String) -> void:
 	animation_player.seek(0, true)
-	animation_player.play("walk")
+	animation_player.play(WALK_ANIMATION)
 
 
 func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
