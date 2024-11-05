@@ -13,7 +13,7 @@ var unit_name: String = "Unit"
 var is_stopped := false
 var currently_attacking: Array[Attackable] = []
 
-var has_attacked := false
+var is_attacking := false
 var time_since_last_attack := 0.0
 
 const ATTACK_COOLDOWN := 2.0
@@ -23,15 +23,15 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if !currently_attacking.is_empty():
-		if time_since_last_attack >= 1.0 or !has_attacked:
+		is_attacking = true
+		if time_since_last_attack >= 1.0:
 			animation_player.seek(0, true)
 			animation_player.play(attack_animation)
 			for attackable in currently_attacking:
 				attackable.take_damage(damage)
 			time_since_last_attack = 0.0
-		has_attacked = true
 
-	if has_attacked:
+	if is_attacking:
 		time_since_last_attack += delta
 
 	if is_stopped:
@@ -57,11 +57,18 @@ func _on_target_area_area_entered(area: Area2D) -> void:
 func _on_target_area_area_exited(area: Area2D) -> void:
 	if area is not Attackable:
 		return
+	if (area as Attackable).team == $Attackable.team:
+		return
 	currently_attacking.erase(area)
 	if currently_attacking.size() == 0:
 		is_stopped = false
-		animation_player.seek(0, true)
-		animation_player.play("walk")
+		is_attacking = false
+		animation_player.animation_finished.connect(_on_attack_finished)
+
+func _on_attack_finished(_anim_name: String) -> void:
+	animation_player.seek(0, true)
+	animation_player.play("walk")
+	animation_player.animation_finished.disconnect(_on_attack_finished)
 
 
 func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
