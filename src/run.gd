@@ -72,15 +72,15 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		update_accessible_nodes()
 		update_camera_position()
 
-func _on_combat_over(combat_state: Combat.CombatState) -> void:
-	if combat_state == Combat.CombatState.WON:
+func _on_combat_over(combat_state: ThreeDCombat.CombatState) -> void:
+	if combat_state == ThreeDCombat.CombatState.WON:
 		print("Combat won!")
 		$ThreeDCombat.queue_free()
 		current_node.beat_node()
 		$Map.show()
 		$Map/ViewDeck.show()
 		$Player.show()
-	elif combat_state == Combat.CombatState.LOST:
+	elif combat_state == ThreeDCombat.CombatState.LOST:
 		print("Combat lost!")
 		$ThreeDCombat.queue_free()
 		# TODO: probably want to do something else but idk
