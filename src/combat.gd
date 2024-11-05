@@ -15,28 +15,29 @@ var time_since_last_enemy_spawn: float = 0
 
 var can_refresh := false
 var refresh_time_left: float = REFRESH_TIMEOUT
+var difficulty:= 1
 
 var creature_cards: Array[Dictionary] = [
-    {"name": "Shriekling", "type": "Air", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/cricket.png"}, # 0
-    {"name": "Murkmouth", "type": "Melee", "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/hand_crawler.png"}, # 1
-    {"name": "Wraithvine", "type": "Ranged", "health": 2, "damage": 4, "mana": 3, "strength_factor": 7, "card_image_path": "res://logo.png"}, # 2
-    {"name": "Gloom", "type": "Air", "health": 1, "damage": 2, "mana": 1, "strength_factor": 3, "card_image_path": "res://logo.png"}, # 3
-    {"name": "Hollowstalkers", "type": "Melee", "health": 4, "damage": 3, "mana": 4, "strength_factor": 8, "card_image_path": "res://textures/units/cricket.png"}, # 4
-    {"name": "Sablemoth", "type": "Air", "health": 2, "damage": 1, "mana": 1, "strength_factor": 2, "card_image_path": "res://logo.png"}, # 5
-    {"name": "Creep", "type": "Melee", "health": 1, "damage": 1, "mana": 1, "strength_factor": 2, "card_image_path": "res://textures/units/cricket.png"}, # 6
-    {"name": "Netherlimbs", "type": "Melee", "health": 5, "damage": 5, "mana": 5, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 7
-    {"name": "Phantom Husk", "type": "Ranged", "health": 2, "damage": 3, "mana": 2, "strength_factor": 6, "card_image_path": "res://textures/units/cricket.png"}, # 8
-    {"name": "Spindler", "type": "Ranged", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://logo.png"}, # 9
-    {"name": "Nightclaw", "type": "Melee", "health": 3, "damage": 4, "mana": 4, "strength_factor": 7, "card_image_path": "res://textures/units/cricket.png"}, # 10
-    {"name": "Rotling", "type": "Melee", "health": 2, "damage": 2, "mana": 2, "strength_factor": 5, "card_image_path": "res://logo.png"}, # 11
-    {"name": "Dreadroot", "type": "Ranged", "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/cricket.png"}, # 12
-    {"name": "Haunt", "type": "Air", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://logo.png"}, # 13
-    {"name": "Cryptkin", "type": "Melee", "health": 1, "damage": 2, "mana": 1, "strength_factor": 3, "card_image_path": "res://textures/units/cricket.png"}, # 14
-    {"name": "Soul Devourer", "type": "Melee", "health": 8, "damage": 9, "mana": 8, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"}, # 15
-    {"name": "Void Tyrant", "type": "Air", "health": 6, "damage": 7, "mana": 7, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 16
-    {"name": "Shadow Colossus", "type": "Ranged", "health": 7, "damage": 6, "mana": 6, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 17
-    {"name": "Ebon Phantom", "type": "Air", "health": 5, "damage": 8, "mana": 8, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 18
-    {"name": "Abyssal Fiend", "type": "Melee", "health": 10, "damage": 10, "mana": 10, "strength_factor": 10, "card_image_path": "res://logo.png"} # 19
+	{"name": "Shriekling", "type": "Air", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/cricket.png"}, # 0
+	{"name": "Murkmouth", "type": "Melee", "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/hand_crawler.png"}, # 1
+	{"name": "Wraithvine", "type": "Ranged", "health": 2, "damage": 4, "mana": 3, "strength_factor": 7, "card_image_path": "res://logo.png"}, # 2
+	{"name": "Gloom", "type": "Air", "health": 1, "damage": 2, "mana": 1, "strength_factor": 1, "card_image_path": "res://logo.png"}, # 3
+	{"name": "Hollowstalkers", "type": "Melee", "health": 4, "damage": 3, "mana": 4, "strength_factor": 8, "card_image_path": "res://textures/units/cricket.png"}, # 4
+	{"name": "Sablemoth", "type": "Air", "health": 2, "damage": 1, "mana": 1, "strength_factor": 2, "card_image_path": "res://logo.png"}, # 5
+	{"name": "Creep", "type": "Melee", "health": 1, "damage": 1, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 6
+	{"name": "Netherlimbs", "type": "Melee", "health": 5, "damage": 5, "mana": 5, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 7
+	{"name": "Phantom Husk", "type": "Ranged", "health": 2, "damage": 3, "mana": 2, "strength_factor": 6, "card_image_path": "res://textures/units/cricket.png"}, # 8
+	{"name": "Spindler", "type": "Ranged", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/hand_crawler.png"}, # 9
+	{"name": "Nightclaw", "type": "Melee", "health": 3, "damage": 4, "mana": 4, "strength_factor": 7, "card_image_path": "res://textures/units/cricket.png"}, # 10
+	{"name": "Rotling", "type": "Melee", "health": 2, "damage": 2, "mana": 2, "strength_factor": 5, "card_image_path": "res://logo.png"}, # 11
+	{"name": "Dreadroot", "type": "Ranged", "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/cricket.png"}, # 12
+	{"name": "Haunt", "type": "Air", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://logo.png"}, # 13
+	{"name": "Cryptkin", "type": "Melee", "health": 1, "damage": 2, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 14
+	{"name": "Soul Devourer", "type": "Melee", "health": 8, "damage": 9, "mana": 8, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"}, # 15
+	{"name": "Void Tyrant", "type": "Air", "health": 6, "damage": 7, "mana": 7, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 16
+	{"name": "Shadow Colossus", "type": "Ranged", "health": 7, "damage": 6, "mana": 6, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 17
+	{"name": "Ebon Phantom", "type": "Air", "health": 5, "damage": 8, "mana": 8, "strength_factor": 9, "card_image_path": "res://textures/units/hand_crawler.png"}, # 18
+	{"name": "Abyssal Fiend", "type": "Melee", "health": 10, "damage": 10, "mana": 10, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"} # 19
 ]
 
 
@@ -71,19 +72,22 @@ func create_card(
 	return card_instance
 
 
-func randomize_new_enemy_deck(strength_limit: int) -> Array[Card]:
+func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
+	print("Strength Limit:" + str(strength_limit) + " Difficulty: " + str(single_card_strength_limit))
 	var new_deck: Array[Card] = []
 	var total_strength := 0
+	var strengh_limited_creatures: Array[Dictionary] = creature_cards.filter(func(card: Dictionary) -> bool: return card["strength_factor"] <= single_card_strength_limit)
 	while total_strength < strength_limit:
-		var dict := creature_cards[randi_range(0, 19)]
+		var dict := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size()-1)]
 		total_strength += dict["strength_factor"]
 		new_deck.append(new_card_from_dict(dict))
 	return new_deck
 
 
 func _ready() -> void:
+	print("ready")
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
-	var enemy_cards := randomize_new_enemy_deck(100)
+	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
 	$PlayerCombatDeck.prepare_combat_deck(player_deck.cards)
 	$EnemyCombatDeck.prepare_combat_deck(enemy_cards)
 	$PlayerHand.setup_deck($PlayerCombatDeck)
@@ -91,13 +95,15 @@ func _ready() -> void:
 	$RefreshControl/Label.text = str(refresh_time_left + 1)
 	set_process(true)
 
+func testOrder() -> void:
+	print("test")
 
 func _process(delta: float) -> void:
 	if state != CombatState.PLAYING:
 		return
 	# every 5 seconds spawn an enemy's best card
 	time_since_last_enemy_spawn += delta
-	if time_since_last_enemy_spawn > 5:
+	if time_since_last_enemy_spawn > 4:
 		print("Play enemy")
 		$EnemyHand.play_best_card()
 		$EnemyHand.replenish_mana()

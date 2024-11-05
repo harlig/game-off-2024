@@ -10,7 +10,7 @@ class_name Run
 var player_position := Vector2(0, 0)
 var accessible_nodes := []
 var current_node: MapNode = null
-
+var combat_difficulty:= 1
 func _ready() -> void:
 	# Define parameters for map generation
 	var initial_spawn_path_directions := 5
@@ -55,6 +55,8 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			$Map/ViewDeck.hide()
 			$Player.hide()
 			var new_combat := combat_scene.instantiate()
+			new_combat.difficulty = combat_difficulty
+			combat_difficulty += 1
 			new_combat.connect("reward_chosen", _on_combat_reward_chosen)
 			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
