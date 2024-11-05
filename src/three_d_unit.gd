@@ -2,8 +2,8 @@ class_name ThreeDUnit extends Node3D
 
 enum Direction {LEFT, RIGHT}
 
-# @onready var animation_player: AnimationPlayer = $AnimationPlayer
-# var attack_animation := "attack"
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+var attack_animation := "attack"
 
 @export var direction: Direction = Direction.RIGHT
 var speed := 10
@@ -24,9 +24,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if !currently_attacking.is_empty():
 		if time_since_last_attack >= 1.0:
-			# animation_player.seek(0, true)
-			# animation_player.play(attack_animation)
-			# animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
+			animation_player.seek(0, true)
+			animation_player.play(attack_animation)
+			animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
 			time_since_last_attack = 0.0
 
 	if is_attacking:
@@ -66,20 +66,19 @@ func _on_target_area_area_exited(area: Area3D) -> void:
 	if currently_attacking.size() == 0:
 		is_stopped = false
 		is_attacking = false
-		# animation_player.animation_finished.connect(_on_attack_finished, ConnectFlags.CONNECT_ONE_SHOT)
+		animation_player.animation_finished.connect(_on_attack_finished, ConnectFlags.CONNECT_ONE_SHOT)
 
 func _on_attack_finished(_anim_name: String) -> void:
-	pass
-	# animation_player.seek(0, true)
-	# animation_player.play("walk")
+	animation_player.seek(0, true)
+	animation_player.play("walk")
 
 
 func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
 	$Attackable.hp = card_data.max_health
 	# $Sprite2D.texture = ResourceLoader.load(card_data.card_image_path)
 	# $Sprite2D.flip_h = flip_image
-	# if flip_image:
-	# 	attack_animation = "attack_reversed"
+	if flip_image:
+		attack_animation = "attack_reversed"
 
 	damage = card_data.damage
 	unit_name = card_data.card_name
