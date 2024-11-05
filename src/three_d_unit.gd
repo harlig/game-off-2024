@@ -77,8 +77,8 @@ func _on_attack_finished(_anim_name: String) -> void:
 
 func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
 	$Attackable.hp = card_data.max_health
-	# $Sprite2D.texture = ResourceLoader.load(card_data.card_image_path)
-	# $Sprite2D.flip_h = flip_image
+	$MeshInstance3D.material_override.set_shader_parameter("albedo", ResourceLoader.load(card_data.card_image_path))
+	$MeshInstance3D.material_override.set_shader_parameter("flip_h", flip_image)
 	if flip_image:
 		attack_animation = "attack_reversed"
 

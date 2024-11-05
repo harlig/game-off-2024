@@ -8,6 +8,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_ce7wc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_av3n6"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_4m4ol")
 shader_parameter/albedo = ExtResource("3_6nqad")
