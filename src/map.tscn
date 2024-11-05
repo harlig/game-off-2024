@@ -36,4 +36,33 @@ focus_mode = 0
 text = "View
 Deck"
 
+[node name="BankControl" type="Control" parent="."]
+layout_mode = 3
+anchor_left = 0.82
+anchor_top = 0.02
+anchor_right = 0.98
+anchor_bottom = 0.1
+grow_horizontal = 0
+
+[node name="DollarText" type="Label" parent="BankControl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 1.0
+theme_override_font_sizes/font_size = 48
+text = "$$"
+
+[node name="BankText" type="Label" parent="BankControl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 58
+text = "69420"
+horizontal_alignment = 2
+vertical_alignment = 2
+
 [connection signal="pressed" from="ViewDeck" to="." method="_on_view_deck_pressed"]

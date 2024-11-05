@@ -11,6 +11,7 @@ var player_position := Vector2(0, 0)
 var accessible_nodes := []
 var current_node: MapNode = null
 var combat_difficulty := 1
+var bank := 0
 
 func _ready() -> void:
 	# Define parameters for map generation
@@ -97,4 +98,4 @@ func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 		deck.add_card(reward.card)
 	elif reward.type == Reward.RewardData.Type.GOLD:
 		print("Received gold reward: ", reward.gold)
-		# TODO: add gold here
+		bank += reward.gold
