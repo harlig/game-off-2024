@@ -74,7 +74,7 @@ func _on_attack_finished(_anim_name: String) -> void:
 
 
 func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
-	$Attackable.set_hp(card_data.max_health)
+	$Attackable.hp = card_data.max_health
 	$Sprite2D.texture = ResourceLoader.load(card_data.card_image_path)
 	$Sprite2D.flip_h = flip_image
 	if flip_image:

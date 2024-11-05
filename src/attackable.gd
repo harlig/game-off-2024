@@ -1,17 +1,16 @@
 class_name Attackable extends Area2D
 
 @export var team: Team
-var hp := 75
+var hp := 75:
+	set(new_hp):
+		hp = new_hp
+		$HP.text = str(hp)
 
 enum Team {PLAYER, ENEMY}
 
 signal died()
 
 func _ready() -> void:
-	$HP.text = str(hp)
-
-func set_hp(new_hp: int) -> void:
-	hp = new_hp
 	$HP.text = str(hp)
 
 func take_damage(damage: int) -> void:
