@@ -12,6 +12,7 @@ shader_parameter/flip_h = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_0cn2e"]
 size = Vector2(2, 2)
+center_offset = Vector3(0, -0.03, 0)
 
 [node name="ThreeDBase" type="Node3D"]
 
