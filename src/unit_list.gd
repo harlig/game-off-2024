@@ -3,10 +3,10 @@ class_name UnitList extends Node
 static var card_scene := preload("res://src/card.tscn")
 
 static var creature_cards: Array[Dictionary] = [
-	{"name": "Shriekling", "type": card_type.AIR, "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/cricket.png"}, # 0
+	{"name": "Shriekling", "type": card_type.RANGED, "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/cricket.png"}, # 0
 	{"name": "Murkmouth", "type": card_type.MELEE, "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/hand_crawler.png"}, # 1
 	{"name": "Wraithvine", "type": card_type.RANGED, "health": 2, "damage": 4, "mana": 3, "strength_factor": 7, "card_image_path": "res://logo.png"}, # 2
-	{"name": "Gloom", "type": card_type.AIR, "health": 1, "damage": 2, "mana": 1, "strength_factor": 1, "card_image_path": "res://logo.png"}, # 3
+	{"name": "Gloom", "type": card_type.AIR, "health": 1, "damage": 2, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 3
 	{"name": "Hollowstalkers", "type": card_type.MELEE, "health": 4, "damage": 3, "mana": 4, "strength_factor": 8, "card_image_path": "res://textures/units/cricket.png"}, # 4
 	{"name": "Sablemoth", "type": card_type.AIR, "health": 2, "damage": 1, "mana": 1, "strength_factor": 2, "card_image_path": "res://logo.png"}, # 5
 	{"name": "Creep", "type": card_type.MELEE, "health": 1, "damage": 1, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 6
@@ -21,7 +21,7 @@ static var creature_cards: Array[Dictionary] = [
 	{"name": "Soul Devourer", "type": card_type.MELEE, "health": 8, "damage": 9, "mana": 8, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"}, # 15
 	{"name": "Void Tyrant", "type": card_type.AIR, "health": 6, "damage": 7, "mana": 7, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 16
 	{"name": "Shadow Colossus", "type": card_type.RANGED, "health": 7, "damage": 6, "mana": 6, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 17
-	{"name": "Ebon Phantom", "type": card_type.AIR, "health": 5, "damage": 8, "mana": 8, "strength_factor": 9, "card_image_path": "res://textures/units/hand_crawler.png"}, # 18
+	{"name": "Ebon Phantom", "type": card_type.MELEE, "health": 5, "damage": 8, "mana": 8, "strength_factor": 9, "card_image_path": "res://textures/units/hand_crawler.png"}, # 18
 	{"name": "Abyssal Fiend", "type": card_type.MELEE, "health": 10, "damage": 10, "mana": 10, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"} # 19
 ]
 

@@ -5,7 +5,6 @@ const INITIAL_DECK_SIZE: int = 10
 @onready var card_scene := preload("res://src/card.tscn")
 const hand_unit_texture_path := "res://textures/units/hand_crawler.png"
 const cricket_unit_texture_path := "res://textures/units/cricket.png"
-@onready var unit_list := preload("res://src//unit_list.gd")
 
 var cards: Array[Card] = []
 
@@ -17,13 +16,15 @@ func _ready() -> void:
 	var num_basic_cards := INITIAL_DECK_SIZE
 	for ndx in range(num_basic_cards):
 		if(ndx < 3):
-			var basic_card := unit_list.new_card_by_id(9) #spindler
+		#	var basic_card := UnitList.new_card_by_id(9) #spindler
+			var basic_card := UnitList.new_card_by_name("Gloom") #Give them an airial card for testing
+
 			add_card(basic_card)
 		elif (ndx >= 3 && ndx < 8):
-			var medium_card := unit_list.new_card_by_id(0) #Shriekling
+			var medium_card := UnitList.new_card_by_id(0) #Shriekling
 			add_card(medium_card)
 		else:
-			var rare_card := unit_list.new_card_by_name("Ebon Phantom") #Ebon Phantom
+			var rare_card := UnitList.new_card_by_name("Ebon Phantom") #Ebon Phantom
 			add_card(rare_card)
 
 

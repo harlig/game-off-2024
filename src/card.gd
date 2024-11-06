@@ -6,14 +6,13 @@ static var card_scene := preload("res://src/card.tscn")
 var original_stylebox_override: StyleBoxFlat
 
 class Data:
-	var unit_list := preload("res://src//unit_list.gd")
 	var max_health: int = 5
 	var health: int = max_health
 	var mana: int = 2
 	var damage: int = 2
 	var card_name: String = "Example Creature"
 	var card_image_path: String = "res://logo.png"
-	var card_type: int = unit_list.card_type.MELEE
+	var card_type: int = UnitList.card_type.MELEE
 	func get_card_score() -> int:
 		return health + damage
 
