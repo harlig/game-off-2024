@@ -3,6 +3,7 @@ class_name Combat extends Node3D
 @onready var unit: PackedScene = preload("res://src/unit.tscn")
 @onready var card_scene := preload("res://src/card.tscn")
 @onready var reward := $Reward
+@onready var unit_list := preload("res://src//unit_list.gd")
 
 signal combat_over(combat_state: CombatState)
 signal reward_chosen(reward: Reward.RewardData)
@@ -20,70 +21,16 @@ var can_refresh := false
 var refresh_time_left: float = REFRESH_TIMEOUT
 var difficulty := 1
 
-var creature_cards: Array[Dictionary] = [
-	{"name": "Shriekling", "type": "Air", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/cricket.png"}, # 0
-	{"name": "Murkmouth", "type": "Melee", "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/hand_crawler.png"}, # 1
-	{"name": "Wraithvine", "type": "Ranged", "health": 2, "damage": 4, "mana": 3, "strength_factor": 7, "card_image_path": "res://logo.png"}, # 2
-	{"name": "Gloom", "type": "Air", "health": 1, "damage": 2, "mana": 1, "strength_factor": 1, "card_image_path": "res://logo.png"}, # 3
-	{"name": "Hollowstalkers", "type": "Melee", "health": 4, "damage": 3, "mana": 4, "strength_factor": 8, "card_image_path": "res://textures/units/cricket.png"}, # 4
-	{"name": "Sablemoth", "type": "Air", "health": 2, "damage": 1, "mana": 1, "strength_factor": 2, "card_image_path": "res://logo.png"}, # 5
-	{"name": "Creep", "type": "Melee", "health": 1, "damage": 1, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 6
-	{"name": "Netherlimbs", "type": "Melee", "health": 5, "damage": 5, "mana": 5, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 7
-	{"name": "Phantom Husk", "type": "Ranged", "health": 2, "damage": 3, "mana": 2, "strength_factor": 6, "card_image_path": "res://textures/units/cricket.png"}, # 8
-	{"name": "Spindler", "type": "Ranged", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/hand_crawler.png"}, # 9
-	{"name": "Nightclaw", "type": "Melee", "health": 3, "damage": 4, "mana": 4, "strength_factor": 7, "card_image_path": "res://textures/units/cricket.png"}, # 10
-	{"name": "Rotling", "type": "Melee", "health": 2, "damage": 2, "mana": 2, "strength_factor": 5, "card_image_path": "res://logo.png"}, # 11
-	{"name": "Dreadroot", "type": "Ranged", "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/cricket.png"}, # 12
-	{"name": "Haunt", "type": "Air", "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://logo.png"}, # 13
-	{"name": "Cryptkin", "type": "Melee", "health": 1, "damage": 2, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 14
-	{"name": "Soul Devourer", "type": "Melee", "health": 8, "damage": 9, "mana": 8, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"}, # 15
-	{"name": "Void Tyrant", "type": "Air", "health": 6, "damage": 7, "mana": 7, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 16
-	{"name": "Shadow Colossus", "type": "Ranged", "health": 7, "damage": 6, "mana": 6, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 17
-	{"name": "Ebon Phantom", "type": "Air", "health": 5, "damage": 8, "mana": 8, "strength_factor": 9, "card_image_path": "res://textures/units/hand_crawler.png"}, # 18
-	{"name": "Abyssal Fiend", "type": "Melee", "health": 10, "damage": 10, "mana": 10, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"} # 19
-]
-
-
-func new_card_from_dict(data: Dictionary) -> Card:
-	var newCard := create_card(
-			data["health"], # max_health
-			data["health"], # health
-			data["mana"], # mana
-			data["damage"], # damage
-			data["name"], # card_name
-			data["card_image_path"]
-	)
-	return newCard
-
-func create_card(
-	new_max_health: int,
-	new_health: int,
-	new_mana: int,
-	new_damage: int,
-	new_card_name: String,
-	new_card_image_path: String
-) -> Card:
-	var card_instance: Card = card_scene.instantiate()
-	card_instance.set_stats(
-		new_max_health,
-		new_health,
-		new_mana,
-		new_damage,
-		new_card_name,
-		new_card_image_path
-	)
-	return card_instance
-
 
 func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
 	print("Strength Limit:" + str(strength_limit) + " Difficulty: " + str(single_card_strength_limit))
 	var new_deck: Array[Card] = []
 	var total_strength := 0
-	var strengh_limited_creatures: Array[Dictionary] = creature_cards.filter(func(card: Dictionary) -> bool: return card["strength_factor"] <= single_card_strength_limit)
+	var strengh_limited_creatures: Array[Dictionary] = unit_list.creature_cards.filter(func(card: Dictionary) -> bool: return card["strength_factor"] <= single_card_strength_limit)
 	while total_strength < strength_limit:
 		var dict := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
 		total_strength += dict["strength_factor"]
-		new_deck.append(new_card_from_dict(dict))
+		new_deck.append(unit_list.new_card_from_dict(dict))
 	return new_deck
 
 

@@ -1,17 +1,19 @@
 class_name Card extends AspectRatioContainer
 var is_selected := false
 var times_clicked := 0
+static var card_scene := preload("res://src/card.tscn")
 
 var original_stylebox_override: StyleBoxFlat
 
 class Data:
+	var unit_list := preload("res://src//unit_list.gd")
 	var max_health: int = 5
 	var health: int = max_health
 	var mana: int = 2
 	var damage: int = 2
 	var card_name: String = "Example Creature"
 	var card_image_path: String = "res://logo.png"
-
+	var card_type: int = unit_list.card_type.MELEE
 	func get_card_score() -> int:
 		return health + damage
 
@@ -33,13 +35,14 @@ func update_display() -> void:
 	$Background/Damage.text = str(data.damage)
 	$Background/TextureRect.texture = load(data.card_image_path)
 
-func set_stats(new_max_health: int, new_health: int, new_mana: int, new_damage: int, new_card_name: String, new_card_image_path: String) -> void:
+func set_stats(new_max_health: int, new_health: int, new_mana: int, new_damage: int, new_card_name: String, new_card_image_path: String, new_card_type: int) -> void:
 	data.max_health = new_max_health
 	data.health = new_health
 	data.mana = new_mana
 	data.damage = new_damage
 	data.card_name = new_card_name
 	data.card_image_path = new_card_image_path
+	data.card_type = new_card_type
 	update_display()
 
 func on_select() -> void:
