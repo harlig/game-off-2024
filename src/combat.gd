@@ -86,6 +86,7 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attack
 	resize_unit_target_box(new_unit, card_data)
 	if team == Attackable.Team.ENEMY:
 		new_unit.get_node("TargetArea").scale.x *= -1
+		new_unit.get_node("TargetArea").position.x *= -1
 		new_unit.get_node("Attackable").scale.x *= -1
 	new_unit.get_node("Attackable").team = team
 	add_child(new_unit)
