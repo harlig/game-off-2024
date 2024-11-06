@@ -33,24 +33,6 @@ func add_card(card: Card) -> void:
 	duped_card.data = card.data
 	cards.append(duped_card)
 
-func create_card(
-	new_max_health: int,
-	new_health: int,
-	new_mana: int,
-	new_damage: int,
-	new_card_name: String,
-	new_card_image_path: String
-) -> Card:
-	var card_instance: Card = card_scene.instantiate()
-	card_instance.set_stats(
-		new_max_health,
-		new_health,
-		new_mana,
-		new_damage,
-		new_card_name,
-		new_card_image_path
-	)
-	return card_instance
 
 func toggle_visualize_deck() -> bool:
 	is_visualizing_deck = !is_visualizing_deck
