@@ -1,93 +1,86 @@
-[gd_scene load_steps=6 format=3 uid="uid://dh14vc0cg3k4w"]
+[gd_scene load_steps=4 format=3 uid="uid://dh14vc0cg3k4w"]
 
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
-[ext_resource type="Texture2D" uid="uid://cjg331wylpfd8" path="res://logo.png" id="1_b7j7v"]
+[ext_resource type="Texture2D" uid="uid://b5lca0cmo6ct4" path="res://textures/card_back.png" id="1_casw2"]
+[ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/units/hand_crawler.png" id="2_40l2k"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mxk57"]
-bg_color = Color(0.470588, 0.470588, 0.470588, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_3vhlv"]
-font_color = Color(0, 0.768627, 1, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_0pmfc"]
-font_color = Color(1, 0.309804, 0.309804, 1)
-
-[node name="Card" type="AspectRatioContainer"]
-custom_minimum_size = Vector2(180, 250)
-offset_right = 100.0
-offset_bottom = 100.0
+[node name="Card" type="TextureRect"]
+custom_minimum_size = Vector2(192, 256)
+anchors_preset = -1
+anchor_right = 0.1
+anchor_bottom = 0.236
+size_flags_horizontal = 4
 size_flags_vertical = 4
-ratio = 0.7143
+texture = ExtResource("1_casw2")
+expand_mode = 1
 script = ExtResource("1_0yggd")
 
-[node name="Background" type="Panel" parent="."]
-clip_contents = true
-layout_mode = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_mxk57")
-
-[node name="Title" type="Label" parent="Background"]
+[node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "Example Creature"
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.08
+anchor_right = 0.8
+anchor_bottom = 0.52
+texture = ExtResource("2_40l2k")
+expand_mode = 1
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.7
+anchor_bottom = 0.1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Creature Name"
 horizontal_alignment = 1
 
-[node name="Damage" type="Label" parent="Background"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -23.0
-offset_right = 40.0
-grow_vertical = 0
-text = "5"
-
-[node name="Mana" type="Label" parent="Background"]
+[node name="Mana" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -23.0
-offset_right = 20.0
+offset_left = 32.0
+offset_top = -242.0
+offset_right = 72.0
+offset_bottom = -219.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "2"
-label_settings = SubResource("LabelSettings_3vhlv")
 horizontal_alignment = 1
 
-[node name="Health" type="Label" parent="Background"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -23.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "10"
-label_settings = SubResource("LabelSettings_0pmfc")
-horizontal_alignment = 2
+[node name="Damage" type="Label" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 226.0
+offset_right = 57.0
+offset_bottom = 242.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "52"
 
-[node name="TextureRect" type="TextureRect" parent="Background"]
+[node name="Description" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.15
-anchor_top = 0.15
-anchor_right = 0.9
-anchor_bottom = 0.85
+anchor_top = 0.57
+anchor_right = 0.85
+anchor_bottom = 0.8
 grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_b7j7v")
-expand_mode = 3
-stretch_mode = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "I am a description of this card"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Health" type="Label" parent="."]
+layout_mode = 0
+offset_left = 135.0
+offset_top = 226.0
+offset_right = 154.0
+offset_bottom = 242.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "10"

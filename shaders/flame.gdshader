@@ -24,7 +24,7 @@ void fragment() {
 
     // Apply the rotation
     vec2 uv = rotation_matrix * UV;
-	
+
 	vec4 tex = texture(albedo, uv);
 
 	ALBEDO = color * tex.r * 3.0;
