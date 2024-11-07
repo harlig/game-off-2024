@@ -124,14 +124,17 @@ func visualize() -> void:
 			paths_between[start_pos] = end_pos
 			paths_between[end_pos] = start_pos
 			paths.append(path)
+
+	spawn_bushes(visible_nodes)
+
+func spawn_bushes(visible_nodes: Dictionary) -> void:
 	for node_position: Vector2 in node_instances.keys():
 		var node: MapNode = node_instances[node_position]
 		if node not in visible_nodes:
-			# spawn bush here
 			var bush := tree.duplicate() as MeshInstance3D
 			add_child(bush)
 			bush.show()
-			bush.global_transform.origin = Vector3(node_position.x, 1, node_position.y)
+			bush.global_transform.origin = Vector3(node_position.x, 1, node_position.y - 0.25)
 			bush.rotation_degrees = Vector3(-90, 0, 0)
 			bushes.append(bush)
 
