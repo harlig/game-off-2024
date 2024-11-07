@@ -12,6 +12,7 @@ var all_nodes := []
 var available_nodes := []
 var visited_nodes := []
 var node_instances := {}
+var paths := []
 var can_interact := true
 
 func set_interactable(interactable: bool) -> void:
@@ -30,9 +31,10 @@ func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_
 	map_tree[center_node] = []
 	all_nodes.append(center_node)
 	available_nodes.append(center_node)
-	_generate_map(center_node, initial_spawn_path_directions, 0, max_depth)
+	var start_node := _generate_map(center_node, initial_spawn_path_directions, 0, max_depth)
+	visited_nodes.append(start_node)
 
-func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: int) -> void:
+func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: int) -> MapNode:
 	if depth >= max_depth:
 		return
 
@@ -57,7 +59,6 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 			# Recursively generate more paths from the new node
 			_generate_map(new_node, directions, depth + 1, max_depth)
 
-func visualize_map() -> void:
 	for parent_node: Vector2 in map_tree.keys():
 		for child_node: Vector2 in map_tree[parent_node]:
 			if child_node not in node_instances:
@@ -66,7 +67,24 @@ func visualize_map() -> void:
 				node.scale = Vector3(0.05, 0.05, 0.05)
 				node.connect("node_clicked", _on_node_clicked)
 				add_child(node)
+				node.hide();
 				node_instances[child_node] = node # Store the MapNode instance
+	return node_instances[start_node]
+
+
+func visualize() -> void:
+	paths.clear()
+
+	for parent_node: Vector2 in map_tree.keys():
+		for child_node: Vector2 in map_tree[parent_node]:
+			var map_node: MapNode = node_instances[child_node]
+			if map_node in visited_nodes:
+				map_node.show()
+
+				if child_node in map_tree:
+					for grandchild_node: Vector2 in map_tree[child_node]:
+						var grandchild_map_node: MapNode = node_instances[grandchild_node]
+						grandchild_map_node.show()
 
 			# Create a DottedLine to represent the connection
 			var path := path_scene.instantiate() as MeshInstance3D
@@ -90,6 +108,7 @@ func visualize_map() -> void:
 			path.rotation.y = angle
 			(path.material_override as ShaderMaterial).set_shader_parameter("len", length)
 			(path.mesh as QuadMesh).size.x = length
+			paths.append(path)
 
 func _on_node_clicked(node_position: Vector2) -> void:
 	if can_interact:

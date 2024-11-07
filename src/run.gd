@@ -19,12 +19,12 @@ var bank := 10:
 
 func _ready() -> void:
 	# Define parameters for map generation
-	var initial_spawn_path_directions := 5
-	var max_depth := 6
+	var initial_spawn_path_directions := 8
+	var max_depth := 8
 
 	# Generate the map
 	map.generate_map(Vector2(0, 0), initial_spawn_path_directions, max_depth)
-	map.visualize_map()
+	map.visualize()
 	$Map/BankControl/BankText.text = str(bank)
 
 	# Initialize player position and accessible nodes
@@ -69,6 +69,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			add_child(new_combat)
 
 		map.visited_node(map_node)
+		map.visualize()
 
 		update_accessible_nodes()
 		update_camera_position()
