@@ -20,6 +20,16 @@ func update_display() -> void:
 	$Damage.text = str(creature.damage)
 	$TextureRect.texture = load(creature.card_image_path)
 
+	var creature_type_text := ""
+	match creature.type:
+		UnitList.CardType.RANGED:
+			creature_type_text = "Ranged"
+		UnitList.CardType.MELEE:
+			creature_type_text = "Melee"
+		UnitList.CardType.AIR:
+			creature_type_text = "Air"
+	$Description.text = creature_type_text
+
 func set_stats(from_creature: UnitList.Creature) -> void:
 	creature = from_creature
 	update_display()
