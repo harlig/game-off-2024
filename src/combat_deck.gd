@@ -10,7 +10,7 @@ func prepare_combat_deck(cards: Array[Card]) -> void:
 	for card: Card in cards:
 		var new_card := card.duplicate()
 		# well idk why duplicating the card doesn't duplicate the data, but it doesn't work without this
-		new_card.data = card.data
+		new_card.creature = card.creature
 		all_cards.append(new_card)
 		draw_pile.append(new_card)
 	draw_pile.shuffle()
@@ -39,11 +39,11 @@ func get_best_cards(num_cards: int) -> Array[Card]:
 		var worst_best_card: Card = null
 		var worst_best_card_ndx := -1
 		for ndx in range(best_cards.size()):
-			if worst_best_card == null or worst_best_card.data.get_card_score() > best_cards[ndx].data.get_card_score():
+			if worst_best_card == null or worst_best_card.creature.get_score() > best_cards[ndx].creature.get_score():
 				worst_best_card = best_cards[ndx]
 				worst_best_card_ndx = ndx
 
-		if card.data.get_card_score() > worst_best_card.data.get_card_score():
+		if card.creature.get_score() > worst_best_card.creature.get_score():
 			best_cards[worst_best_card_ndx] = card
 
 	return best_cards

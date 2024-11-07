@@ -69,39 +69,38 @@ func on_refresh_timeout() -> void:
 	$RefreshControl/Button.disabled = false
 	$RefreshControl/Label.text = str(refresh_time_left + 1)
 
-func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team, card_data: Card.Data) -> Unit:
+func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team, card_played: Card) -> Unit:
 	var new_unit: Unit = unit_to_spawn.instantiate()
 	var random_z_offset := randf_range(-1, 1)
 	var y := 0
-	match card_data.card_type:
+	match card_played.creature.type:
 		UnitList.CardType.AIR:
 			y = 5
 		_:
 			y = 0
 	new_unit.position = Vector3(unit_position.x, y, unit_position.z + random_z_offset)
 	new_unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
-	resize_unit_target_box(new_unit, card_data)
+	resize_unit_target_box(new_unit, card_played.creature)
 	if team == Attackable.Team.ENEMY:
 		new_unit.get_node("TargetArea").scale.x *= -1
 		new_unit.get_node("TargetArea").position.x *= -1
 		new_unit.get_node("Attackable").scale.x *= -1
 	new_unit.get_node("Attackable").team = team
+	new_unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false)
 	add_child(new_unit)
 	return new_unit
 
 func _on_player_hand_card_played(played_card: Card) -> void:
 	var unit_x: float = $PlayerBase.position.x + OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $PlayerBase.position.z
-	var created_unit: Unit = spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.PLAYER, played_card.data)
-	created_unit.set_stats(played_card.data)
+	spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.PLAYER, played_card)
 
 func _on_enemy_hand_card_played(played_card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $EnemyBase.position.z
-	var created_unit: Unit = spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY, played_card.data)
-	created_unit.set_stats(played_card.data, true)
+	spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY, played_card)
 
-func resize_unit_target_box(unit_to_change: Unit, card_data: Card.Data) -> void:
+func resize_unit_target_box(unit_to_change: Unit, creature: UnitList.Creature) -> void:
 	# Get the CollisionShape3D node
 	var collision_shape: CollisionShape3D = unit_to_change.get_node("TargetArea").get_node("CollisionShape3D")
 	# Check if the shape is a BoxShape3D
@@ -113,7 +112,7 @@ func resize_unit_target_box(unit_to_change: Unit, card_data: Card.Data) -> void:
 		var y := box_shape.size.y
 		var z := box_shape.size.z
 		var new_box_shape := BoxShape3D.new()
-		match card_data.card_type:
+		match creature.type:
 			UnitList.CardType.AIR:
 				y = 100
 			UnitList.CardType.RANGED:

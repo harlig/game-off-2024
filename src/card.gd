@@ -5,21 +5,7 @@ static var card_scene := preload("res://src/card.tscn")
 
 var original_stylebox_override: StyleBoxFlat
 
-class Data:
-	var max_health: int = 5
-	var health: int = max_health
-	var mana: int = 2
-	var damage: int = 2
-	var card_name: String = "Example Creature"
-	var card_image_path: String = "res://logo.png"
-	var card_type: int = UnitList.CardType.MELEE
-	func get_card_score() -> int:
-		return health + damage
-
-	func _to_string() -> String:
-		return "Card Data: " + card_name + " with " + str(health) + " health, " + str(mana) + " mana, and " + str(damage) + " damage."
-
-var data: Data = Data.new() # Ensure data is instantiated
+var creature: UnitList.Creature
 
 signal card_clicked
 
@@ -28,20 +14,14 @@ func _ready() -> void:
 	update_display()
 
 func update_display() -> void:
-	$Title.text = data.card_name
-	$Health.text = str(data.health)
-	$Mana.text = str(data.mana)
-	$Damage.text = str(data.damage)
-	$TextureRect.texture = load(data.card_image_path)
+	$Title.text = creature.name
+	$Health.text = str(creature.health)
+	$Mana.text = str(creature.mana)
+	$Damage.text = str(creature.damage)
+	$TextureRect.texture = load(creature.card_image_path)
 
-func set_stats(new_max_health: int, new_health: int, new_mana: int, new_damage: int, new_card_name: String, new_card_image_path: String, new_card_type: int) -> void:
-	data.max_health = new_max_health
-	data.health = new_health
-	data.mana = new_mana
-	data.damage = new_damage
-	data.card_name = new_card_name
-	data.card_image_path = new_card_image_path
-	data.card_type = new_card_type
+func set_stats(from_creature: UnitList.Creature) -> void:
+	creature = from_creature
 	update_display()
 
 func on_select() -> void:

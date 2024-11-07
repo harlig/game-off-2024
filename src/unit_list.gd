@@ -1,4 +1,4 @@
-class_name UnitList
+class_name UnitList extends Node
 
 static var card_scene := preload("res://src/card.tscn")
 
@@ -43,6 +43,12 @@ class Creature:
 		self.strength_factor = init_strength_factor
 		self.card_image_path = init_card_image_path
 
+	func get_score() -> int:
+		return health + damage
+
+	func _to_string() -> String:
+		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Strength Factor: " + str(strength_factor) + " Card Image Path: " + card_image_path
+
 
 enum CardType {RANGED, MELEE, AIR}
 
@@ -52,15 +58,7 @@ static func create_card(
 	creature: Creature
 ) -> Card:
 	var card_instance: Card = card_scene.instantiate()
-	card_instance.set_stats(
-		creature.health,
-		creature.health,
-		creature.mana,
-		creature.damage,
-		creature.name,
-		creature.card_image_path,
-		creature.type
-	)
+	card_instance.set_stats(creature)
 	return card_instance
 
 static func new_card_by_id(id: int) -> Card:

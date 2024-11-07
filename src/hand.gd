@@ -70,7 +70,7 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 
 	if times_clicked == 2:
 		# check if we have enough mana
-		if mana_consumed + card_instance.data.mana > MAX_MANA:
+		if mana_consumed + card_instance.creature.mana > MAX_MANA:
 			# TODO: something more disruptive
 			print("Not enough mana")
 			return
@@ -78,7 +78,7 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 
 
 func play_card(card: Card) -> void:
-	use_mana(card.data.mana)
+	use_mana(card.creature.mana)
 	card_played.emit(card)
 	discard(card)
 	cards_in_hand.erase(card)
@@ -96,12 +96,12 @@ func play_best_card() -> void:
 	var best_card: Card = null
 	var best_card_value: float = -1
 	for card in cards_in_hand:
-		var card_value: float = card.data.get_card_score()
+		var card_value: float = card.creature.get_score()
 		if card_value > best_card_value:
 			best_card = card
 			best_card_value = card_value
 	if best_card:
-		print(best_card.data.card_name)
+		print(best_card.creature.name)
 		_on_card_clicked(2, best_card)
 	else:
 		print("No more cards to play")

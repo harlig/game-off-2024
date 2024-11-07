@@ -99,7 +99,7 @@ func _on_map_view_deck_clicked() -> void:
 
 func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 	if reward.type == Reward.RewardData.Type.CARD:
-		print("Received card reward: ", reward.card.data)
+		print("Received card reward: ", reward.card.creature)
 		deck.add_card(reward.card)
 	elif reward.type == Reward.RewardData.Type.GOLD:
 		print("Received gold reward: ", reward.gold)

@@ -75,13 +75,13 @@ func _on_attack_finished(_anim_name: String) -> void:
 	animation_player.play(WALK_ANIMATION)
 
 
-func set_stats(card_data: Card.Data, flip_image: bool = false) -> void:
-	$Attackable.hp = card_data.max_health
-	$MeshInstance3D.material_override.set_shader_parameter("albedo", ResourceLoader.load(card_data.card_image_path))
+func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> void:
+	$Attackable.hp = from_creature.health
+	$MeshInstance3D.material_override.set_shader_parameter("albedo", ResourceLoader.load(from_creature.card_image_path))
 	$MeshInstance3D.material_override.set_shader_parameter("flip_h", flip_image)
 	if flip_image:
 		attack_animation = "attack_reversed"
 
-	damage = card_data.damage
-	unit_name = card_data.card_name
-	unit_type = card_data.card_type
+	damage = from_creature.damage
+	unit_name = from_creature.name
+	unit_type = from_creature.type

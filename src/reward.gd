@@ -28,7 +28,7 @@ class RewardData:
 func add_card_offerings(cards: Array[Card]) -> void:
 	for enemy_card: Card in cards:
 		var card_offered := enemy_card.duplicate()
-		card_offered.data = enemy_card.data
+		card_offered.creature = enemy_card.creature
 		card_offered.connect("card_clicked", _on_reward_clicked)
 		$Offers.add_child(card_offered)
 

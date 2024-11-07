@@ -15,23 +15,22 @@ var is_visualizing_deck: bool = false
 func _ready() -> void:
 	var num_basic_cards := INITIAL_DECK_SIZE
 	for ndx in range(num_basic_cards):
-		if(ndx < 3):
+		if (ndx < 3):
 		#	var basic_card := UnitList.new_card_by_id(9) #spindler
-			var basic_card := UnitList.new_card_by_name("Gloom") #Give them an airial card for testing
+			var basic_card := UnitList.new_card_by_name("Gloom") # Give them an airial card for testing
 
 			add_card(basic_card)
 		elif (ndx >= 3 && ndx < 8):
-			var medium_card := UnitList.new_card_by_id(0) #Shriekling
+			var medium_card := UnitList.new_card_by_id(0) # Shriekling
 			add_card(medium_card)
 		else:
-			var rare_card := UnitList.new_card_by_name("Ebon Phantom") #Ebon Phantom
+			var rare_card := UnitList.new_card_by_name("Ebon Phantom") # Ebon Phantom
 			add_card(rare_card)
-
 
 
 func add_card(card: Card) -> void:
 	var duped_card: Card = card.duplicate()
-	duped_card.data = card.data
+	duped_card.creature = card.creature
 	cards.append(duped_card)
 
 
