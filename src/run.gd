@@ -68,6 +68,8 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
 
+		map.visited_node(map_node)
+
 		update_accessible_nodes()
 		update_camera_position()
 

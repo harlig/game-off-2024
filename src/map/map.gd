@@ -8,8 +8,9 @@ signal view_deck_clicked()
 @onready var tree := $Tree
 
 var map_tree := {}
-var visited_nodes := []
+var all_nodes := []
 var available_nodes := []
+var visited_nodes := []
 var node_instances := {}
 var can_interact := true
 
@@ -22,12 +23,12 @@ func set_interactable(interactable: bool) -> void:
 
 func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_depth: int) -> void:
 	map_tree.clear()
-	visited_nodes.clear()
+	all_nodes.clear()
 	available_nodes.clear()
 	node_instances.clear()
 
 	map_tree[center_node] = []
-	visited_nodes.append(center_node)
+	all_nodes.append(center_node)
 	available_nodes.append(center_node)
 	_generate_map(center_node, initial_spawn_path_directions, 0, max_depth)
 
@@ -43,15 +44,15 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 
 		# Check for overlapping nodes
 		var overlap := false
-		for node: Vector2 in visited_nodes:
+		for node: Vector2 in all_nodes:
 			if node.distance_to(new_node) < 1:
 				overlap = true
 				break
 
-		if not overlap and new_node not in visited_nodes:
+		if not overlap and new_node not in all_nodes:
 			map_tree[start_node].append(new_node)
 			map_tree[new_node] = [start_node]
-			visited_nodes.append(new_node)
+			all_nodes.append(new_node)
 			available_nodes.append(new_node)
 			# Recursively generate more paths from the new node
 			_generate_map(new_node, directions, depth + 1, max_depth)
@@ -96,3 +97,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 
 func _on_view_deck_pressed() -> void:
 	view_deck_clicked.emit()
+
+func visited_node(visited: MapNode) -> void:
+	if visited not in visited_nodes:
+		visited_nodes.append(visited)
