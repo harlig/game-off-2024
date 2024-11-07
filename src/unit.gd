@@ -10,7 +10,7 @@ const WALK_ANIMATION := "walk"
 var speed := 10
 var damage := 5
 var unit_name: String = "Unit"
-var unit_type: int = UnitList.card_type.MELEE
+var unit_type: int = UnitList.CardType.MELEE
 var is_stopped := false
 var currently_attacking: Array[Attackable] = []
 
@@ -53,7 +53,7 @@ func _on_target_area_area_entered(area: Area3D) -> void:
 	var attackable := area as Attackable
 	if attackable.team == $Attackable.team:
 		return
-	if unit_type != UnitList.card_type.RANGED || currently_attacking.size() <= 0:
+	if unit_type != UnitList.CardType.RANGED || currently_attacking.size() <= 0:
 		currently_attacking.append(attackable)
 	is_attacking = true
 	is_stopped = true

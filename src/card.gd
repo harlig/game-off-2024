@@ -12,7 +12,7 @@ class Data:
 	var damage: int = 2
 	var card_name: String = "Example Creature"
 	var card_image_path: String = "res://logo.png"
-	var card_type: int = UnitList.card_type.MELEE
+	var card_type: int = UnitList.CardType.MELEE
 	func get_card_score() -> int:
 		return health + damage
 

@@ -2,72 +2,73 @@ class_name UnitList extends Node
 
 static var card_scene := preload("res://src/card.tscn")
 
-static var creature_cards: Array[Dictionary] = [
-	{"name": "Shriekling", "type": card_type.RANGED, "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/cricket.png"}, # 0
-	{"name": "Murkmouth", "type": card_type.MELEE, "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/hand_crawler.png"}, # 1
-	{"name": "Wraithvine", "type": card_type.RANGED, "health": 2, "damage": 4, "mana": 3, "strength_factor": 7, "card_image_path": "res://logo.png"}, # 2
-	{"name": "Gloom", "type": card_type.AIR, "health": 1, "damage": 2, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 3
-	{"name": "Hollowstalkers", "type": card_type.MELEE, "health": 4, "damage": 3, "mana": 4, "strength_factor": 8, "card_image_path": "res://textures/units/cricket.png"}, # 4
-	{"name": "Sablemoth", "type": card_type.AIR, "health": 2, "damage": 1, "mana": 1, "strength_factor": 2, "card_image_path": "res://logo.png"}, # 5
-	{"name": "Creep", "type": card_type.MELEE, "health": 1, "damage": 1, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 6
-	{"name": "Netherlimbs", "type": card_type.MELEE, "health": 5, "damage": 5, "mana": 5, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 7
-	{"name": "Phantom Husk", "type": card_type.RANGED, "health": 2, "damage": 3, "mana": 2, "strength_factor": 6, "card_image_path": "res://textures/units/cricket.png"}, # 8
-	{"name": "Spindler", "type": card_type.RANGED, "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://textures/units/hand_crawler.png"}, # 9
-	{"name": "Nightclaw", "type": card_type.MELEE, "health": 3, "damage": 4, "mana": 4, "strength_factor": 7, "card_image_path": "res://textures/units/cricket.png"}, # 10
-	{"name": "Rotling", "type": card_type.MELEE, "health": 2, "damage": 2, "mana": 2, "strength_factor": 5, "card_image_path": "res://logo.png"}, # 11
-	{"name": "Dreadroot", "type": card_type.RANGED, "health": 3, "damage": 3, "mana": 3, "strength_factor": 6, "card_image_path": "res://textures/units/cricket.png"}, # 12
-	{"name": "Haunt", "type": card_type.AIR, "health": 1, "damage": 2, "mana": 2, "strength_factor": 4, "card_image_path": "res://logo.png"}, # 13
-	{"name": "Cryptkin", "type": card_type.MELEE, "health": 1, "damage": 2, "mana": 1, "strength_factor": 1, "card_image_path": "res://textures/units/cricket.png"}, # 14
-	{"name": "Soul Devourer", "type": card_type.MELEE, "health": 8, "damage": 9, "mana": 8, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"}, # 15
-	{"name": "Void Tyrant", "type": card_type.AIR, "health": 6, "damage": 7, "mana": 7, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 16
-	{"name": "Shadow Colossus", "type": card_type.RANGED, "health": 7, "damage": 6, "mana": 6, "strength_factor": 9, "card_image_path": "res://logo.png"}, # 17
-	{"name": "Ebon Phantom", "type": card_type.MELEE, "health": 5, "damage": 8, "mana": 8, "strength_factor": 9, "card_image_path": "res://textures/units/hand_crawler.png"}, # 18
-	{"name": "Abyssal Fiend", "type": card_type.MELEE, "health": 10, "damage": 10, "mana": 10, "strength_factor": 10, "card_image_path": "res://textures/units/hand_crawler.png"} # 19
+static var creature_cards: Array[Creature] = [
+	Creature.new("Shriekling", CardType.RANGED, 1, 2, 2, 4, "res://textures/units/cricket.png"),
+	Creature.new("Murkmouth", CardType.MELEE, 3, 3, 3, 6, "res://textures/units/hand_crawler.png"),
+	Creature.new("Wraithvine", CardType.RANGED, 2, 4, 3, 7, "res://logo.png"),
+	Creature.new("Gloom", CardType.AIR, 1, 2, 1, 1, "res://textures/units/cricket.png"),
+	Creature.new("Hollowstalkers", CardType.MELEE, 4, 3, 4, 8, "res://textures/units/cricket.png"),
+	Creature.new("Sablemoth", CardType.AIR, 2, 1, 1, 2, "res://logo.png"),
+	Creature.new("Creep", CardType.MELEE, 1, 1, 1, 1, "res://textures/units/cricket.png"),
+	Creature.new("Netherlimbs", CardType.MELEE, 5, 5, 5, 9, "res://logo.png"),
+	Creature.new("Phantom Husk", CardType.RANGED, 2, 3, 2, 6, "res://textures/units/cricket.png"),
+	Creature.new("Spindler", CardType.RANGED, 1, 2, 2, 4, "res://textures/units/hand_crawler.png"),
+	Creature.new("Nightclaw", CardType.MELEE, 3, 4, 4, 7, "res://textures/units/cricket.png"),
+	Creature.new("Rotling", CardType.MELEE, 2, 2, 2, 5, "res://logo.png"),
+	Creature.new("Dreadroot", CardType.RANGED, 3, 3, 3, 6, "res://textures/units/cricket.png"),
+	Creature.new("Haunt", CardType.AIR, 1, 2, 2, 4, "res://logo.png"),
+	Creature.new("Cryptkin", CardType.MELEE, 1, 2, 1, 1, "res://textures/units/cricket.png"),
+	Creature.new("Soul Devourer", CardType.MELEE, 8, 9, 8, 10, "res://textures/units/hand_crawler.png"),
+	Creature.new("Void Tyrant", CardType.AIR, 6, 7, 7, 9, "res://logo.png"),
+	Creature.new("Shadow Colossus", CardType.RANGED, 7, 6, 6, 9, "res://logo.png"),
+	Creature.new("Ebon Phantom", CardType.MELEE, 5, 8, 8, 9, "res://textures/units/hand_crawler.png"),
+	Creature.new("Abyssal Fiend", CardType.MELEE, 10, 10, 10, 10, "res://textures/units/hand_crawler.png")
 ]
 
-enum card_type {RANGED, MELEE, AIR}
+class Creature:
+	var name: String
+	var type: CardType
+	var health: int
+	var damage: int
+	var mana: int
+	var strength_factor: int
+	var card_image_path: String
+
+	func _init(init_name: String, init_type: CardType, init_health: int, init_damage: int, init_mana: int, init_strength_factor: int, init_card_image_path: String) -> void:
+		self.name = init_name
+		self.type = init_type
+		self.health = init_health
+		self.damage = init_damage
+		self.mana = init_mana
+		self.strength_factor = init_strength_factor
+		self.card_image_path = init_card_image_path
+
+
+enum CardType {RANGED, MELEE, AIR}
 
 static var available_cards := creature_cards.size()
 
-static func new_card_from_dict(data: Dictionary) -> Card:
-	var newCard := create_card(
-			data["health"], # max_health
-			data["health"], # health
-			data["mana"], # mana
-			data["damage"], # damage
-			data["name"], # card_name
-			data["card_image_path"],
-			data["type"]
-	)
-	return newCard
-
 static func create_card(
-	new_max_health: int,
-	new_health: int,
-	new_mana: int,
-	new_damage: int,
-	new_card_name: String,
-	new_card_image_path: String,
-	new_card_type: int
+	creature: Creature
 ) -> Card:
 	var card_instance: Card = card_scene.instantiate()
 	card_instance.set_stats(
-		new_max_health,
-		new_health,
-		new_mana,
-		new_damage,
-		new_card_name,
-		new_card_image_path,
-		new_card_type
+		creature.health,
+		creature.health,
+		creature.mana,
+		creature.damage,
+		creature.name,
+		creature.card_image_path,
+		creature.type
 	)
 	return card_instance
 
 static func new_card_by_id(id: int) -> Card:
-	return new_card_from_dict(creature_cards[id])
+	return create_card(creature_cards[id])
 
 static func new_card_by_name(unit_name: String) -> Card:
-	var unit_arr := creature_cards.filter(func(card: Dictionary) -> bool: return card["name"] == unit_name)
-	return new_card_from_dict(unit_arr[0])
+	var unit_arr := creature_cards.filter(func(creature: Creature) -> bool: return creature.name == unit_name)
+	return create_card(unit_arr[0])
 
 
 # Called when the node enters the scene tree for the first time.

@@ -26,11 +26,11 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 	print("Strength Limit:" + str(strength_limit) + " Difficulty: " + str(single_card_strength_limit))
 	var new_deck: Array[Card] = []
 	var total_strength := 0
-	var strengh_limited_creatures: Array[Dictionary] = UnitList.creature_cards.filter(func(card: Dictionary) -> bool: return card["strength_factor"] <= single_card_strength_limit)
+	var strengh_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(card: UnitList.Creature) -> bool: return card.strength_factor <= single_card_strength_limit)
 	while total_strength < strength_limit:
 		var dict := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
 		total_strength += dict["strength_factor"]
-		new_deck.append(UnitList.new_card_from_dict(dict))
+		new_deck.append(UnitList.create_card(dict))
 	return new_deck
 
 
@@ -45,9 +45,6 @@ func _ready() -> void:
 	$RefreshControl/Label.text = str(refresh_time_left + 1)
 	set_process(true)
 	$Camera3D.make_current()
-
-func testOrder() -> void:
-	print("test")
 
 func _process(delta: float) -> void:
 	if state != CombatState.PLAYING:
@@ -77,7 +74,7 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attack
 	var random_z_offset := randf_range(-1, 1)
 	var y := 0
 	match card_data.card_type:
-		UnitList.card_type.AIR:
+		UnitList.CardType.AIR:
 			y = 5
 		_:
 			y = 0
@@ -110,20 +107,20 @@ func resize_unit_target_box(unit_to_change: Unit, card_data: Card.Data) -> void:
 	# Check if the shape is a BoxShape3D
 	if collision_shape.shape is BoxShape3D:
 		# Cast the shape to a BoxShape3D and modify its size
-		var box_shape: BoxShape3D = collision_shape.shape 
+		var box_shape: BoxShape3D = collision_shape.shape
 
-		var x := box_shape.size.x 
-		var y := box_shape.size.y 
-		var z := box_shape.size.z 
+		var x := box_shape.size.x
+		var y := box_shape.size.y
+		var z := box_shape.size.z
 		var new_box_shape := BoxShape3D.new()
 		match card_data.card_type:
-			UnitList.card_type.AIR:
+			UnitList.CardType.AIR:
 				y = 100
-			UnitList.card_type.RANGED:
+			UnitList.CardType.RANGED:
 				x = 15
 				y = 100
 
-		new_box_shape.size = Vector3(x, y, z)  # Set the new size
+		new_box_shape.size = Vector3(x, y, z) # Set the new size
 		collision_shape.shape = new_box_shape
 
 
