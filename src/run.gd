@@ -89,7 +89,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		print("Combat lost!")
 		$Combat.queue_free()
 		# TODO: probably want to do something else but idk
-		# Restart the game
+		# Move back to start
 		$Map.show()
 		$Map/ViewDeck.show()
 		$Player.show()
