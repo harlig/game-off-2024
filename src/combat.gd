@@ -80,7 +80,6 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attack
 			y = 0
 	new_unit.position = Vector3(unit_position.x, y, unit_position.z + random_z_offset)
 	new_unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
-	resize_unit_target_box(new_unit, card_played.creature)
 	if team == Attackable.Team.ENEMY:
 		new_unit.get_node("TargetArea").scale.x *= -1
 		new_unit.get_node("TargetArea").position.x *= -1
@@ -99,28 +98,6 @@ func _on_enemy_hand_card_played(played_card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $EnemyBase.position.z
 	spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY, played_card)
-
-func resize_unit_target_box(unit_to_change: Unit, creature: UnitList.Creature) -> void:
-	# Get the CollisionShape3D node
-	var collision_shape: CollisionShape3D = unit_to_change.get_node("TargetArea").get_node("CollisionShape3D")
-	# Check if the shape is a BoxShape3D
-	if collision_shape.shape is BoxShape3D:
-		# Cast the shape to a BoxShape3D and modify its size
-		var box_shape: BoxShape3D = collision_shape.shape
-
-		var x := box_shape.size.x
-		var y := box_shape.size.y
-		var z := box_shape.size.z
-		var new_box_shape := BoxShape3D.new()
-		match creature.type:
-			UnitList.CardType.AIR:
-				y = 100
-			UnitList.CardType.RANGED:
-				x = 15
-				y = 100
-
-		new_box_shape.size = Vector3(x, y, z) # Set the new size
-		collision_shape.shape = new_box_shape
 
 
 func _on_player_base_died() -> void:
