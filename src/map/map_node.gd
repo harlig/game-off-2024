@@ -1,7 +1,8 @@
 class_name MapNode extends StaticBody3D
 
 enum NodeType {
-	COMBAT
+	COMBAT,
+	BLANK
 }
 
 @onready var combat_node_sprite := preload("res://textures/combat_node.png")

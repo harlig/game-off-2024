@@ -65,6 +65,7 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 				var node: MapNode = node_scene.instantiate()
 				node.position = Vector3(child_node.x, 1.2, child_node.y)
 				node.scale = Vector3(0.05, 0.05, 0.05)
+				node.node_type = MapNode.NodeType.BLANK
 				node.connect("node_clicked", _on_node_clicked)
 				add_child(node)
 				node.hide();
