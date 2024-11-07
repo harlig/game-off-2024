@@ -65,7 +65,7 @@ func _on_target_area_area_exited(area: Area3D) -> void:
 	if (area as Attackable).team == $Attackable.team:
 		return
 	currently_attacking.erase(area)
-	if currently_attacking.size() == 0:
+	if currently_attacking.size() == 0 and is_attacking:
 		is_stopped = false
 		is_attacking = false
 		animation_player.animation_finished.connect(_on_attack_finished, ConnectFlags.CONNECT_ONE_SHOT)
