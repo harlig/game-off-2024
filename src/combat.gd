@@ -9,16 +9,11 @@ signal reward_chosen(reward: Reward.RewardData)
 
 enum CombatState {PLAYING, WON, LOST}
 
-const REFRESH_TIMEOUT = 10.0
 const ENEMY_SPAWN_TIMER := 4.0
 const OFFSET_FROM_BASE_DISTANCE := 3
 
-
 var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
-
-var can_refresh := false
-var refresh_time_left: float = REFRESH_TIMEOUT
 var difficulty := 1
 
 
@@ -42,7 +37,6 @@ func _ready() -> void:
 	$EnemyCombatDeck.prepare_combat_deck(enemy_cards)
 	$PlayerHand.setup_deck($PlayerCombatDeck)
 	$EnemyHand.setup_deck($EnemyCombatDeck)
-	$RefreshControl/Label.text = str(refresh_time_left + 1)
 	set_process(true)
 	$Camera3D.make_current()
 
@@ -56,18 +50,10 @@ func _process(delta: float) -> void:
 		$EnemyHand.replenish_mana()
 		time_since_last_enemy_spawn = 0
 
-	# update refresh timer
-	refresh_time_left -= delta
-	if refresh_time_left <= 0:
-		on_refresh_timeout()
-	else:
-		$RefreshControl/Label.text = str(int(refresh_time_left + 1))
+	$Draw/Label.text = str(int($Draw/DrawTimer.time_left) + 1);
 
-func on_refresh_timeout() -> void:
-	can_refresh = true
-	refresh_time_left = REFRESH_TIMEOUT
-	$RefreshControl/Button.disabled = false
-	$RefreshControl/Label.text = str(refresh_time_left + 1)
+func _on_draw_timer_timeout() -> void:
+	$Draw.disabled = false
 
 func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team, card_played: Card) -> Unit:
 	var new_unit: Unit = unit_to_spawn.instantiate()
@@ -102,13 +88,13 @@ func _on_enemy_hand_card_played(played_card: Card) -> void:
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
-	$RefreshControl.hide()
+	$Draw.hide()
 	combat_over.emit(state)
 
 
 func _on_enemy_base_died() -> void:
 	state = CombatState.WON
-	$RefreshControl.hide()
+	$Draw.hide()
 	provide_rewards()
 
 func provide_rewards() -> void:
@@ -118,12 +104,8 @@ func provide_rewards() -> void:
 	$PlayerHand.queue_free()
 	$EnemyHand.queue_free()
 
-func _on_refresh_button_pressed() -> void:
-	if not can_refresh:
-		return
-
-	can_refresh = false
-	$RefreshControl/Button.disabled = true
+func _on_draw_pressed() -> void:
+	$Draw.disabled = true
 	$PlayerHand.refresh_hand()
 
 func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:

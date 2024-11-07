@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://cbc5uqxhro0cx"
+path="res://.godot/imported/circle_mask.png-e3f267738a97bdfcdc75e0993124bacf.res"
+
+[deps]
+
+source_file="res://textures/hud/circle_mask.png"
+dest_files=["res://.godot/imported/circle_mask.png-e3f267738a97bdfcdc75e0993124bacf.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

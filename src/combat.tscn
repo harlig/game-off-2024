@@ -1,12 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=14 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_mtl7e"]
 [ext_resource type="Script" path="res://src/combat_camera.gd" id="4_uic0f"]
+[ext_resource type="Script" path="res://src/hand.gd" id="5_3nvnk"]
 [ext_resource type="PackedScene" uid="uid://d2wxwevlcnfik" path="res://src/base.tscn" id="5_d80wm"]
-[ext_resource type="PackedScene" uid="uid://j5yc37j5bbbc" path="res://src/hand.tscn" id="6_br0o2"]
+[ext_resource type="Texture2D" uid="uid://cju5ys6csnnl3" path="res://textures/hud/mana.png" id="6_g70ey"]
 [ext_resource type="PackedScene" uid="uid://deyj5t686af3v" path="res://src/combat_deck.tscn" id="7_bknt5"]
+[ext_resource type="Texture2D" uid="uid://kg1i4rk2x7h3" path="res://textures/hud/circle_tan.png" id="7_ec4of"]
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/reward.tscn" id="8_1gtat"]
+[ext_resource type="Texture2D" uid="uid://b5tmhyemxndr8" path="res://textures/hud/refresh.png" id="8_plgf8"]
+[ext_resource type="Texture2D" uid="uid://biefm1wib5em4" path="res://textures/hud/refresh_disabled.png" id="9_ny73s"]
+[ext_resource type="BitMap" uid="uid://cbc5uqxhro0cx" path="res://textures/hud/circle_mask.png" id="10_y42go"]
+[ext_resource type="Texture2D" uid="uid://ctje46hgm0ial" path="res://textures/hud/refresh_hover.png" id="12_uwamd"]
 
 [node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
@@ -29,14 +35,66 @@ transform = Transform3D(-2, 0, -3.01992e-07, 0, 2, 0, 3.01992e-07, 0, -2, 17.207
 [node name="Attackable" parent="EnemyBase" index="0"]
 team = 1
 
-[node name="PlayerHand" parent="." instance=ExtResource("6_br0o2")]
-offset_left = 320.0
-offset_top = 677.0
-offset_right = 1600.0
-offset_bottom = 1077.0
+[node name="PlayerHand" type="Control" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("5_3nvnk")
+display_hand = true
 
-[node name="EnemyHand" parent="." instance=ExtResource("6_br0o2")]
-visible = false
+[node name="CardsArea" type="HBoxContainer" parent="PlayerHand"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.7
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayerHand"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 700.0
+offset_right = 272.0
+offset_bottom = 772.0
+scale = Vector2(1.6, 1.6)
+theme_override_constants/separation = -24
+
+[node name="TextureRect" type="TextureRect" parent="PlayerHand/HBoxContainer"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("6_g70ey")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="PlayerHand/HBoxContainer"]
+z_index = -1
+custom_minimum_size = Vector2(96, 72)
+layout_mode = 2
+texture = ExtResource("7_ec4of")
+expand_mode = 1
+
+[node name="Label2" type="Label" parent="PlayerHand/HBoxContainer/TextureRect2"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 95.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "7 / 7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyHand" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("5_3nvnk")
 
 [node name="PlayerCombatDeck" parent="." instance=ExtResource("7_bknt5")]
 
@@ -49,46 +107,42 @@ offset_top = 160.0
 offset_right = -320.0
 offset_bottom = -240.0
 
-[node name="RefreshControl" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1.0
-offset_top = 756.0
-offset_right = 121.0
-offset_bottom = 836.0
-scale = Vector2(2.44434, 2.10719)
-
-[node name="Button" type="Button" parent="RefreshControl"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 42.0
-grow_horizontal = 2
+[node name="Draw" type="TextureButton" parent="."]
+offset_left = 88.0
+offset_top = 864.0
+offset_right = 216.0
+offset_bottom = 992.0
 focus_mode = 0
-theme_override_font_sizes/font_size = 12
 disabled = true
-text = "Refresh
-hand + mana"
+texture_normal = ExtResource("8_plgf8")
+texture_pressed = ExtResource("9_ny73s")
+texture_hover = ExtResource("12_uwamd")
+texture_disabled = ExtResource("9_ny73s")
+texture_click_mask = ExtResource("10_y42go")
+ignore_texture_size = true
+stretch_mode = 4
 
-[node name="Label" type="Label" parent="RefreshControl"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -17.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 16
+[node name="Label" type="Label" parent="Draw"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_top = 2.0
+offset_right = 128.0
+offset_bottom = 130.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
 text = "30"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DrawTimer" type="Timer" parent="Draw"]
+wait_time = 10.0
+autostart = true
 
 [connection signal="died" from="PlayerBase/Attackable" to="." method="_on_player_base_died"]
 [connection signal="died" from="EnemyBase/Attackable" to="." method="_on_enemy_base_died"]
-[connection signal="card_played" from="PlayerHand" to="." method="_on_player_hand_card_played"]
-[connection signal="card_played" from="EnemyHand" to="." method="_on_enemy_hand_card_played"]
 [connection signal="reward_chosen" from="Reward" to="." method="_on_reward_reward_chosen"]
-[connection signal="pressed" from="RefreshControl/Button" to="." method="_on_refresh_button_pressed"]
+[connection signal="pressed" from="Draw" to="." method="_on_draw_pressed"]
+[connection signal="timeout" from="Draw/DrawTimer" to="." method="_on_draw_timer_timeout"]
 
 [editable path="PlayerBase"]
 [editable path="PlayerBase/Attackable"]
