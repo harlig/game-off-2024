@@ -13,6 +13,8 @@ signal died()
 # 	$HP.text = str(hp)
 
 func take_damage(damage: int) -> void:
+	if get_parent() is Unit and (get_parent() as Unit).is_invulnerable:
+		return
 	hp -= damage
 	if hp <= 0:
 		get_parent().queue_free()

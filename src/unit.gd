@@ -18,14 +18,27 @@ var units_in_attack_range: Array[Attackable] = []
 var is_attacking := false
 var time_since_last_attack := 0.0
 
-const ATTACK_COOLDOWN := 2.0
+const ATTACK_COOLDOWN := 1.0
+
+# give a unit time to not instantly die
+const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
+var invulnerability_timer := Timer.new()
+
+var is_invulnerable := true
 
 func _ready() -> void:
-	pass
+	add_child(invulnerability_timer)
+	invulnerability_timer.one_shot = true
+	invulnerability_timer.connect("timeout", stop_invulnerability, ConnectFlags.CONNECT_ONE_SHOT);
+	invulnerability_timer.start(INVULNERABLE_TIME)
+
+func stop_invulnerability() -> void:
+	is_invulnerable = false
+	invulnerability_timer.queue_free()
 
 func _process(delta: float) -> void:
 	if !units_in_attack_range.is_empty():
-		if time_since_last_attack >= 1.0:
+		if time_since_last_attack >= ATTACK_COOLDOWN:
 			animation_player.seek(0, true)
 			animation_player.play(attack_animation)
 			animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
@@ -43,6 +56,7 @@ func _process(delta: float) -> void:
 		position.x -= speed * delta
 
 func do_attacks(_anim_name: String) -> void:
+	is_invulnerable = false
 	if unit_type == UnitList.CardType.RANGED:
 		var closest_attackable: Attackable = null
 		for attackable in units_in_attack_range:
