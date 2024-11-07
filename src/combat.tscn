@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=18 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_mtl7e"]
 [ext_resource type="Script" path="res://src/combat_camera.gd" id="4_uic0f"]
+[ext_resource type="Shader" path="res://shaders/spawn_area.gdshader" id="4_yejyx"]
 [ext_resource type="Script" path="res://src/hand.gd" id="5_3nvnk"]
 [ext_resource type="PackedScene" uid="uid://d2wxwevlcnfik" path="res://src/base.tscn" id="5_d80wm"]
 [ext_resource type="Texture2D" uid="uid://cju5ys6csnnl3" path="res://textures/hud/mana.png" id="6_g70ey"]
@@ -14,10 +15,25 @@
 [ext_resource type="BitMap" uid="uid://cbc5uqxhro0cx" path="res://textures/hud/circle_mask.png" id="10_y42go"]
 [ext_resource type="Texture2D" uid="uid://ctje46hgm0ial" path="res://textures/hud/refresh_hover.png" id="12_uwamd"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_kqti8"]
+size = Vector3(36, 1, 6)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x1ilm"]
+render_priority = 0
+shader = ExtResource("4_yejyx")
+shader_parameter/color = Color(0.615907, 0.565972, 0.517489, 1)
+shader_parameter/width = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_tdyly"]
+size = Vector2(10, 6)
+center_offset = Vector3(5, 0, 0)
+orientation = 1
+
 [node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
 
 [node name="Backdrop" parent="." instance=ExtResource("1_mtl7e")]
+metadata/_edit_lock_ = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.913545, 0.406736, 0, -0.406736, 0.913545, 0, 22, 40)
@@ -25,6 +41,17 @@ projection = 1
 size = 25.0
 script = ExtResource("4_uic0f")
 metadata/_edit_lock_ = true
+
+[node name="SpawnArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SpawnArea"]
+shape = SubResource("BoxShape3D_kqti8")
+
+[node name="SpawnMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.1, -11)
+material_override = SubResource("ShaderMaterial_x1ilm")
+mesh = SubResource("QuadMesh_tdyly")
 
 [node name="PlayerBase" parent="." instance=ExtResource("5_d80wm")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -17.207, 0, -10.752)
