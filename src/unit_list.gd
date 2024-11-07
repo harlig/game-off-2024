@@ -69,13 +69,3 @@ static func new_card_by_id(id: int) -> Card:
 static func new_card_by_name(unit_name: String) -> Card:
 	var unit_arr := creature_cards.filter(func(creature: Creature) -> bool: return creature.name == unit_name)
 	return create_card(unit_arr[0])
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
