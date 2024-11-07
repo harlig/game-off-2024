@@ -1,4 +1,4 @@
-class_name UnitList extends Node
+class_name UnitList
 
 static var card_scene := preload("res://src/card.tscn")
 
