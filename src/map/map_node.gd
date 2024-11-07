@@ -7,7 +7,7 @@ enum NodeType {
 
 @onready var combat_node_sprite := preload("res://textures/combat_node.png")
 
-var node_type: NodeType = NodeType.COMBAT
+var type: NodeType = NodeType.COMBAT
 @onready var beat_node_sprite := preload("res://textures/check_box.png")
 
 var has_been_beaten := false
@@ -15,8 +15,12 @@ var has_been_beaten := false
 signal node_clicked(node_position: Vector2)
 
 func _ready() -> void:
-	if node_type == NodeType.COMBAT:
-		$Sprite3D.texture = combat_node_sprite
+	match type:
+		NodeType.COMBAT:
+			$Sprite3D.texture = combat_node_sprite
+		NodeType.BLANK:
+			# TODO: add something here
+			pass
 
 func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if !event.is_pressed():

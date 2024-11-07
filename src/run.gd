@@ -56,7 +56,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		# ignore if node has been beaten
 		if map_node.has_been_beaten:
 			pass
-		elif map_node.node_type == MapNode.NodeType.COMBAT:
+		elif map_node.type == MapNode.NodeType.COMBAT:
 			# Start combat
 			$Map.hide()
 			$Map/ViewDeck.hide()
@@ -67,7 +67,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_combat.connect("reward_chosen", _on_combat_reward_chosen)
 			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
-		elif map_node.node_type == MapNode.NodeType.BLANK:
+		elif map_node.type == MapNode.NodeType.BLANK:
 			current_node.beat_node()
 			pass
 
