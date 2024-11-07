@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dljtnngynioy1"]
 
 [ext_resource type="Script" path="res://src/run.gd" id="1_cnw64"]
-[ext_resource type="PackedScene" uid="uid://dnuxboxdulw4k" path="res://src/map.tscn" id="2_bsm6l"]
+[ext_resource type="PackedScene" uid="uid://dnuxboxdulw4k" path="res://src/map/map.tscn" id="2_bsm6l"]
 [ext_resource type="PackedScene" uid="uid://cih1pigr4i7xh" path="res://src/deck.tscn" id="3_pu7pl"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xa4ld"]
