@@ -12,8 +12,10 @@ var all_nodes := []
 var available_nodes := []
 var visited_nodes := []
 var node_instances := {}
-var paths := []
+var bushes := []
 var can_interact := true
+var paths := []
+var paths_between := {}
 
 func set_interactable(interactable: bool) -> void:
 	can_interact = interactable
@@ -74,25 +76,35 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 
 
 func visualize() -> void:
-	paths.clear()
+	for bush: MeshInstance3D in bushes:
+		bush.queue_free()
+	bushes.clear()
+
+	var visible_nodes := {}
 
 	for parent_node: Vector2 in map_tree.keys():
 		for child_node: Vector2 in map_tree[parent_node]:
 			var map_node: MapNode = node_instances[child_node]
 			if map_node in visited_nodes:
 				map_node.show()
+				visible_nodes[map_node] = true
 
 				if child_node in map_tree:
 					for grandchild_node: Vector2 in map_tree[child_node]:
 						var grandchild_map_node: MapNode = node_instances[grandchild_node]
 						grandchild_map_node.show()
+						visible_nodes[grandchild_map_node] = true
+
+			var start_pos := Vector3(parent_node.x, -1, parent_node.y)
+			var end_pos := Vector3(child_node.x, -1, child_node.y)
+
+			if (start_pos in paths_between and paths_between[start_pos] == end_pos) or (end_pos in paths_between and paths_between[end_pos] == start_pos):
+				continue
 
 			# Create a DottedLine to represent the connection
 			var path := path_scene.instantiate() as MeshInstance3D
 
 			# Calculate the position, rotation, and scale of the dotted line
-			var start_pos := Vector3(parent_node.x, -1, parent_node.y)
-			var end_pos := Vector3(child_node.x, -1, child_node.y)
 			var direction := (end_pos - start_pos)
 			var sine: float = -direction.z / abs(direction.z)
 
@@ -109,7 +121,19 @@ func visualize() -> void:
 			path.rotation.y = angle
 			(path.material_override as ShaderMaterial).set_shader_parameter("len", length)
 			(path.mesh as QuadMesh).size.x = length
+			paths_between[start_pos] = end_pos
+			paths_between[end_pos] = start_pos
 			paths.append(path)
+	for node_position: Vector2 in node_instances.keys():
+		var node: MapNode = node_instances[node_position]
+		if node not in visible_nodes:
+			# spawn bush here
+			var bush := tree.duplicate() as MeshInstance3D
+			add_child(bush)
+			bush.show()
+			bush.global_transform.origin = Vector3(node_position.x, 1, node_position.y)
+			bush.rotation_degrees = Vector3(-90, 0, 0)
+			bushes.append(bush)
 
 func _on_node_clicked(node_position: Vector2) -> void:
 	if can_interact:

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/map/map.gd" id="1_6kf0m"]
 [ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="2_tuh66"]
-[ext_resource type="Texture2D" uid="uid://c1txqload6h2b" path="res://textures/environment/bush_02.png" id="3_g0rnm"]
+[ext_resource type="Texture2D" uid="uid://cj77hir4fwbfj" path="res://textures/environment/grass_01.png" id="3_el7mb"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0krmm"]
 size = Vector2(1154, 1154)
@@ -13,7 +13,7 @@ size = Vector2(1154, 1154)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rcy4q"]
 render_priority = 0
 shader = ExtResource("2_tuh66")
-shader_parameter/albedo = ExtResource("3_g0rnm")
+shader_parameter/albedo = ExtResource("3_el7mb")
 shader_parameter/flip_h = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_vvqva"]
@@ -76,7 +76,7 @@ horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="Tree" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
 visible = false
 material_override = SubResource("ShaderMaterial_rcy4q")
 mesh = SubResource("QuadMesh_vvqva")
