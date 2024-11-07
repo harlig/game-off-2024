@@ -91,8 +91,8 @@ func visualize() -> void:
 			var path := path_scene.instantiate() as MeshInstance3D
 
 			# Calculate the position, rotation, and scale of the dotted line
-			var start_pos := Vector3(parent_node.x, 0, parent_node.y)
-			var end_pos := Vector3(child_node.x, 0, child_node.y)
+			var start_pos := Vector3(parent_node.x, -1, parent_node.y)
+			var end_pos := Vector3(child_node.x, -1, child_node.y)
 			var direction := (end_pos - start_pos)
 			var sine: float = -direction.z / abs(direction.z)
 
