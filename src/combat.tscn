@@ -140,6 +140,8 @@ autostart = true
 
 [connection signal="died" from="PlayerBase/Attackable" to="." method="_on_player_base_died"]
 [connection signal="died" from="EnemyBase/Attackable" to="." method="_on_enemy_base_died"]
+[connection signal="card_played" from="PlayerHand" to="." method="_on_player_hand_card_played"]
+[connection signal="card_played" from="EnemyHand" to="." method="_on_enemy_hand_card_played"]
 [connection signal="reward_chosen" from="Reward" to="." method="_on_reward_reward_chosen"]
 [connection signal="pressed" from="Draw" to="." method="_on_draw_pressed"]
 [connection signal="timeout" from="Draw/DrawTimer" to="." method="_on_draw_timer_timeout"]

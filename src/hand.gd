@@ -1,7 +1,6 @@
 class_name Hand extends Control
 
 const HAND_SIZE := 5
-const MAX_MANA := 10
 
 @export var display_hand := false;
 
@@ -79,7 +78,8 @@ func play_card(card: Card) -> void:
 	last_clicked_card = null
 
 func discard(card: Card) -> void:
-	card.disconnect("card_clicked", _on_card_clicked)
+	if display_hand:
+		card.disconnect("card_clicked", _on_card_clicked)
 	combat_deck.discard(card)
 
 	if display_hand:
