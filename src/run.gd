@@ -5,6 +5,7 @@ class_name Run extends Control
 @onready var deck := $DeckControl/Deck
 @onready var combat_scene := preload("res://src/combat/combat.tscn")
 @onready var shop_scene := preload("res://src/shop.tscn")
+@onready var event_scene := preload("res://src/event.tscn")
 
 var player_position := Vector2(0, 0)
 var accessible_nodes := []
@@ -107,9 +108,10 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_shop.connect("shop_closed", _on_shop_closed)
 			add_child(new_shop)
 		elif map_node.type == MapNode.NodeType.EVENT:
-			print("Event node clicked")
-			current_node.beat_node()
-			pass
+			hide_map()
+			var new_event: Event = event_scene.instantiate()
+			new_event.connect("event_resolved", _on_event_resolved)
+			add_child(new_event)
 		else:
 			current_node.beat_node()
 			pass
@@ -160,5 +162,11 @@ func _on_item_purchased(item: Card, cost: int) -> void:
 
 func _on_shop_closed() -> void:
 	$Shop.queue_free()
+	current_node.beat_node()
+	show_map()
+
+func _on_event_resolved(gold_gained: int) -> void:
+	bank += gold_gained
+	$Event.queue_free()
 	current_node.beat_node()
 	show_map()
