@@ -50,13 +50,18 @@ func _deal_card(card: Card) -> void:
 		_sort_hand()
 
 func _sort_hand() -> void:
-	# TODO: do we also need to sort the order of nodes in the CardsArea? I think yes
+	# Sort the cards in hand
 	cards_in_hand.sort_custom(_compare_cards)
+
+	# Sort the order of nodes in the CardsArea
+	for card in cards_in_hand:
+		var index := cards_in_hand.find(card)
+		$CardsArea.move_child(card, index)
 
 func _compare_cards(a: Card, b: Card) -> int:
 	if a.creature.mana != b.creature.mana:
-		return b.creature.mana < a.creature.mana
-	return b.creature.get_score() < a.creature.get_score()
+		return a.creature.mana < b.creature.mana
+	return a.creature.get_score() < b.creature.get_score()
 
 func _discard_hand() -> void:
 	last_clicked_card = null
