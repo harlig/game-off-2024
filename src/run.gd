@@ -47,6 +47,10 @@ var has_preloaded := false
 func _process(delta: float) -> void:
 	if has_preloaded:
 		return
+	if OS.has_feature("editor"):
+		has_preloaded = true
+		$PreloadedCombat.queue_free()
+		$Loading.hide()
 
 	time_spent += delta
 	print("Preloading combat maybe - time spent waiting: ", time_spent)
