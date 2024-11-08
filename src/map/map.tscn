@@ -61,7 +61,8 @@ anchors_preset = -1
 anchor_right = 0.2
 anchor_bottom = 1.0
 theme_override_font_sizes/font_size = 48
-text = "$$"
+text = "$"
+horizontal_alignment = 2
 
 [node name="BankText" type="Label" parent="BankControl"]
 layout_mode = 1
