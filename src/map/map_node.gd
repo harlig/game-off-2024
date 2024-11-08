@@ -2,13 +2,15 @@ class_name MapNode extends StaticBody3D
 
 enum NodeType {
 	COMBAT,
+	SHOP,
 	BLANK
 }
 
-@onready var combat_node_sprite := preload("res://textures/combat_node.png")
+@onready var combat_node_sprite := preload("res://textures/map/combat_node.png")
+@onready var shop_node_sprite := preload("res://textures/map/shop.png")
+@onready var beat_node_sprite := preload("res://textures/map/check_box.png")
 
 var type: NodeType = NodeType.COMBAT
-@onready var beat_node_sprite := preload("res://textures/check_box.png")
 
 var has_been_beaten := false
 
@@ -18,6 +20,8 @@ func _ready() -> void:
 	match type:
 		NodeType.COMBAT:
 			$Sprite3D.texture = combat_node_sprite
+		NodeType.SHOP:
+			$Sprite3D.texture = shop_node_sprite
 		NodeType.BLANK:
 			# TODO: add something here
 			pass

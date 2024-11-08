@@ -68,13 +68,21 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 				node.position = Vector3(child_node.x, 1.2, child_node.y)
 				node.scale = Vector3(0.05, 0.05, 0.05)
 
-				# TODO: build decision engine around what node to spawn here
-				node.type = MapNode.NodeType.COMBAT if randf() < 0.2 else MapNode.NodeType.BLANK
+				node.type = generate_new_node_type()
 				node.connect("node_clicked", _on_node_clicked)
 				add_child(node)
 				node.hide();
 				node_instances[child_node] = node # Store the MapNode instance
 	return node_instances[start_node]
+
+func generate_new_node_type() -> MapNode.NodeType:
+	var random := randf()
+	if random < 0.1:
+		return MapNode.NodeType.COMBAT
+	elif random < 0.7:
+		return MapNode.NodeType.SHOP
+	else:
+		return MapNode.NodeType.BLANK
 
 
 func visualize() -> void:

@@ -67,6 +67,10 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_combat.connect("reward_chosen", _on_combat_reward_chosen)
 			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
+		elif map_node.type == MapNode.NodeType.SHOP:
+			# Start shop
+			print("Hit shop")
+			pass
 		elif map_node.type == MapNode.NodeType.BLANK:
 			current_node.beat_node()
 			pass
