@@ -47,6 +47,15 @@ func _deal_card(card: Card) -> void:
 	if display_hand:
 		card.card_clicked.connect(_on_card_clicked)
 		$CardsArea.add_child(card)
+		_sort_hand()
+
+func _sort_hand() -> void:
+	cards_in_hand.sort_custom(_compare_cards)
+
+func _compare_cards(a: Card, b: Card) -> int:
+	if a.creature.mana != b.creature.mana:
+		return b.creature.mana < a.creature.mana
+	return b.creature.get_score() < a.creature.get_score()
 
 func _discard_hand() -> void:
 	last_clicked_card = null

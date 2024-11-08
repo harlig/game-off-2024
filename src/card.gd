@@ -56,3 +56,7 @@ func reset_selected() -> void:
 	is_selected = false
 	times_clicked = 0
 	add_theme_stylebox_override("panel", original_stylebox_override)
+
+
+func _to_string() -> String:
+	return str(creature)

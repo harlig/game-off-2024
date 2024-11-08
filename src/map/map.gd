@@ -77,9 +77,9 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 
 func generate_new_node_type() -> MapNode.NodeType:
 	var random := randf()
-	if random < 0.1:
+	if random < 0.7:
 		return MapNode.NodeType.COMBAT
-	elif random < 0.7:
+	elif random < 0.8:
 		return MapNode.NodeType.SHOP
 	else:
 		return MapNode.NodeType.BLANK
