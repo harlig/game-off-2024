@@ -39,6 +39,27 @@ func _ready() -> void:
 	# Connect the node clicked signal
 	map.connect("node_clicked", _on_node_clicked)
 
+var time_for_preload := 0.5
+var time_spent := 0.0
+var has_preloaded := false
+
+func _process(delta: float) -> void:
+	if has_preloaded:
+		return
+
+	time_spent += delta
+	print("Preloading combat maybe - time spent waiting: ", time_spent)
+	if time_spent > time_for_preload:
+		has_preloaded = true
+		await get_tree().create_timer(0.1).timeout
+		$PreloadedCombat.show()
+		$Label.hide()
+
+		await get_tree().create_timer(0.1).timeout
+		$PreloadedCombat.queue_free()
+
+		print("has done preloaded shit")
+
 func update_accessible_nodes() -> void:
 	accessible_nodes = map.map_tree[player_position]
 
@@ -55,7 +76,9 @@ func hide_map() -> void:
 	$Map/ViewDeck.hide()
 	$Player.hide()
 
+
 func _on_node_clicked(node_position: Vector2) -> void:
+
 	if node_position in accessible_nodes:
 		var map_node: MapNode = map.node_instances[node_position]
 		current_node = map_node
