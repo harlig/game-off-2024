@@ -17,6 +17,10 @@ var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
 var difficulty := 1
 
+var drag_card: Card = null
+var drag_start_position: Vector2
+var drag_spawn_position: Vector3
+var drag_over_spawn_area := false
 
 func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
 	print("Strength Limit:" + str(strength_limit) + " Difficulty: " + str(single_card_strength_limit))
@@ -53,6 +57,30 @@ func _process(delta: float) -> void:
 
 	$Draw/Label.text = str(int($Draw/DrawTimer.time_left) + 1);
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
+		if drag_over_spawn_area and drag_card:
+			spawn_unit(unit, drag_spawn_position, Attackable.Team.PLAYER, drag_card)
+			$PlayerHand.play_card(drag_card);
+
+		drag_card = null;
+		drag_over_spawn_area = false;
+		$DragLine.clear_points();
+
+	if event is InputEventMouseMotion and drag_card:
+		$DragLine.clear_points();
+
+		var current_position := drag_start_position;
+		var direction := drag_start_position.direction_to(event.position)
+
+		while current_position.distance_to(event.position) > 0.5:
+			if current_position.distance_to(event.position) < 10:
+				current_position = event.position
+			else:
+				current_position += direction * 10;
+
+			$DragLine.add_point(current_position);
+
 func _on_draw_timer_timeout() -> void:
 	$Draw.disabled = false
 
@@ -76,15 +104,10 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attack
 	add_child(new_unit)
 	return new_unit
 
-func _on_player_hand_card_played(played_card: Card) -> void:
-	var unit_x: float = $PlayerBase.position.x + OFFSET_FROM_BASE_DISTANCE
-	var unit_z: float = $PlayerBase.position.z
-	spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.PLAYER, played_card)
-
-func _on_enemy_hand_card_played(played_card: Card) -> void:
+func spawn_enemy(card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $EnemyBase.position.z
-	spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY, played_card)
+	spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY, card)
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
@@ -112,5 +135,19 @@ func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 	reward_chosen.emit(reward_data)
 	combat_over.emit(state)
 
-func _on_card_clicked(_times_clicked: int, card: Card):
-	pass ;
+func _on_player_hand_card_clicked(card: Card) -> void:
+	drag_card = card
+	drag_start_position = card.global_position + card.size / 2.0
+
+func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
+	if event is InputEventMouseMotion and drag_card:
+		drag_spawn_position = Vector3(event_position.x, 0, event_position.z);
+
+func _on_spawn_area_mouse_entered() -> void:
+	if !drag_card:
+		return
+
+	drag_over_spawn_area = true;
+
+func _on_spawn_area_mouse_exited() -> void:
+	drag_over_spawn_area = false;
