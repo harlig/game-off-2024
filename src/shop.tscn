@@ -26,6 +26,11 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 3
 
+[node name="BlankCard" type="Control" parent="OfferArea"]
+visible = false
+custom_minimum_size = Vector2(192, 256)
+layout_mode = 2
+
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
