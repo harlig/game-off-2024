@@ -42,8 +42,9 @@ offset_bottom = 300.0
 
 [node name="PreloadedCombat" parent="." instance=ExtResource("4_xap8m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0)
+visible = false
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Loading" type="ColorRect" parent="."]
 z_index = 10
 layout_mode = 1
 anchors_preset = 15
@@ -53,7 +54,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.801929, 0.567569, 0.319986, 1)
 
-[node name="Label" type="Label" parent="ColorRect"]
+[node name="Label" type="Label" parent="Loading"]
 layout_mode = 0
 offset_left = 621.0
 offset_top = 282.0

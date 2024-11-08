@@ -53,10 +53,12 @@ func _process(delta: float) -> void:
 		has_preloaded = true
 		await get_tree().create_timer(0.1).timeout
 		$PreloadedCombat.show()
-		$Label.hide()
 
 		await get_tree().create_timer(0.1).timeout
 		$PreloadedCombat.queue_free()
+
+		await get_tree().create_timer(0.1).timeout
+		$Loading.hide()
 
 		print("has done preloaded shit")
 
