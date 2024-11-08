@@ -4,8 +4,9 @@ class_name Combat extends Node3D
 @onready var card_scene := preload("res://src/card.tscn")
 @onready var reward := $Reward
 
-signal combat_over(combat_state: CombatState)
+signal reward_presented()
 signal reward_chosen(reward: Reward.RewardData)
+signal combat_over(combat_state: CombatState)
 
 enum CombatState {PLAYING, WON, LOST}
 
@@ -98,6 +99,7 @@ func _on_enemy_base_died() -> void:
 	provide_rewards()
 
 func provide_rewards() -> void:
+	reward_presented.emit()
 	var best_enemy_cards: Array[Card] = $EnemyCombatDeck.get_best_cards(3)
 	reward.add_card_offerings(best_enemy_cards)
 	reward.show()

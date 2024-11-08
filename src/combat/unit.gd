@@ -41,6 +41,7 @@ func _process(delta: float) -> void:
 		if time_since_last_attack >= ATTACK_COOLDOWN:
 			animation_player.seek(0, true)
 			animation_player.play(attack_animation)
+			is_invulnerable = false
 			animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
 			time_since_last_attack = 0.0
 
@@ -56,7 +57,6 @@ func _process(delta: float) -> void:
 		position.x -= speed * delta
 
 func do_attacks(_anim_name: String) -> void:
-	is_invulnerable = false
 	if unit_type == UnitList.CardType.RANGED:
 		var closest_attackable: Attackable = null
 		for attackable in units_in_attack_range:

@@ -77,15 +77,17 @@ func show_map() -> void:
 	$Map.show()
 	$Map/ViewDeck.show()
 	$Player.show()
+	$Map/BankControl.show()
 
-func hide_map() -> void:
+func hide_map(should_show_bank: bool) -> void:
 	$Map.hide()
 	$Map/ViewDeck.hide()
 	$Player.hide()
+	if not should_show_bank:
+		$Map/BankControl.hide()
 
 
 func _on_node_clicked(node_position: Vector2) -> void:
-
 	if node_position in accessible_nodes:
 		var map_node: MapNode = map.node_instances[node_position]
 		current_node = map_node
@@ -96,15 +98,16 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		if map_node.has_been_beaten:
 			pass
 		elif map_node.type == MapNode.NodeType.COMBAT:
-			hide_map()
+			hide_map(false)
 			var new_combat: Combat = combat_scene.instantiate()
 			new_combat.difficulty = combat_difficulty
 			combat_difficulty += 1
+			new_combat.connect("reward_presented", _on_combat_reward_presented)
 			new_combat.connect("reward_chosen", _on_combat_reward_chosen)
 			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
 		elif map_node.type == MapNode.NodeType.SHOP:
-			hide_map()
+			hide_map(true)
 			var new_shop: Shop = shop_scene.instantiate()
 			new_shop.shop_value = combat_difficulty
 			new_shop.player_gold = bank
@@ -112,7 +115,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_shop.connect("shop_closed", _on_shop_closed)
 			add_child(new_shop)
 		elif map_node.type == MapNode.NodeType.EVENT:
-			hide_map()
+			hide_map(true)
 			var new_event: Event = event_scene.instantiate()
 			new_event.connect("event_resolved", _on_event_resolved)
 			add_child(new_event)
@@ -146,6 +149,9 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 func _on_map_view_deck_clicked() -> void:
 	var is_visualizing_deck: bool = deck.toggle_visualize_deck()
 	map.set_interactable(!is_visualizing_deck)
+
+func _on_combat_reward_presented() -> void:
+	$Map/BankControl.show()
 
 func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 	if reward.type == Reward.RewardData.Type.CARD:
