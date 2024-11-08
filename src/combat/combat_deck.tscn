@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://deyj5t686af3v"]
 
-[ext_resource type="Script" path="res://src/combat_deck.gd" id="1_2lk81"]
+[ext_resource type="Script" path="res://src/combat/combat_deck.gd" id="1_2lk81"]
 
 [node name="CombatDeck" type="Node"]
 script = ExtResource("1_2lk81")

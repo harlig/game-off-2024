@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://dx1mt2klfmktd"]
 
-[ext_resource type="Script" path="res://src/unit.gd" id="1_2p7eh"]
-[ext_resource type="PackedScene" uid="uid://7d2f0g6jswhx" path="res://src/attackable.tscn" id="1_s1phr"]
+[ext_resource type="Script" path="res://src/combat/unit.gd" id="1_2p7eh"]
+[ext_resource type="PackedScene" uid="uid://7d2f0g6jswhx" path="res://src/combat/attackable.tscn" id="1_s1phr"]
 [ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="2_4m4ol"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/units/hand_crawler.png" id="3_6nqad"]
 
@@ -56,35 +56,6 @@ tracks/2/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_weuqb"]
-resource_name = "attack_reversed"
-length = 0.5
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0.5, 1.22, 0), Vector3(0, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:rotation")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.607375), Vector3(0, 0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_ckihm"]
 resource_name = "attack"
 length = 0.5
@@ -112,6 +83,35 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 0.607375), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_weuqb"]
+resource_name = "attack_reversed"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0.5, 1.22, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.607375), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_8vw6h"]

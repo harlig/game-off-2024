@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://7d2f0g6jswhx"]
 
-[ext_resource type="Script" path="res://src/attackable.gd" id="1_5gjtp"]
+[ext_resource type="Script" path="res://src/combat/attackable.gd" id="1_5gjtp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jgdx6"]
 

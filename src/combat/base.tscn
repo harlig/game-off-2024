@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://d2wxwevlcnfik"]
 
-[ext_resource type="PackedScene" uid="uid://7d2f0g6jswhx" path="res://src/attackable.tscn" id="1_nw77x"]
+[ext_resource type="PackedScene" uid="uid://7d2f0g6jswhx" path="res://src/combat/attackable.tscn" id="1_nw77x"]
 [ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="2_p342j"]
 [ext_resource type="Texture2D" uid="uid://jn6tlsaflx1f" path="res://textures/base.png" id="3_h7f2a"]
 
