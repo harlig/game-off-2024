@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=19 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
@@ -28,6 +28,10 @@ shader_parameter/width = 1.0
 size = Vector2(10, 6)
 center_offset = Vector3(5, 0, 0)
 orientation = 1
+
+[sub_resource type="Curve" id="Curve_mvfum"]
+_data = [Vector2(0, 0), 0.0, 2.45344, 0, 0, Vector2(0.505236, 0.679191), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.43652, 0.0, 0, 0]
+point_count = 3
 
 [node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
@@ -61,6 +65,9 @@ transform = Transform3D(-2, 0, -3.01992e-07, 0, 2, 0, 3.01992e-07, 0, -2, 17.207
 
 [node name="Attackable" parent="EnemyBase" index="0"]
 team = 1
+
+[node name="CardDrag" type="Line2D" parent="."]
+width_curve = SubResource("Curve_mvfum")
 
 [node name="PlayerHand" type="Control" parent="."]
 custom_minimum_size = Vector2(1920, 1080)

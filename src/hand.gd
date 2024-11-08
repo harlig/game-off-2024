@@ -4,13 +4,10 @@ const HAND_SIZE := 5
 
 @export var display_hand := false;
 
-var last_clicked_card: Node = null
 var cards_in_hand: Array[Card] = []
 var combat_deck: CombatDeck
 var max_mana := 8
 var cur_mana := 8
-
-signal card_played
 
 func replenish_mana() -> void:
 	cur_mana = max_mana
@@ -45,7 +42,7 @@ func _deal_card(card: Card) -> void:
 	cards_in_hand.append(card)
 
 	if display_hand:
-		card.card_clicked.connect(_on_card_clicked)
+		card.card_clicked.connect(get_parent()._on_card_clicked)
 		$CardsArea.add_child(card)
 		_sort_hand()
 
@@ -64,37 +61,16 @@ func _compare_cards(a: Card, b: Card) -> int:
 	return a.creature.get_score() < b.creature.get_score()
 
 func _discard_hand() -> void:
-	last_clicked_card = null
 	for card in cards_in_hand:
 		discard(card)
 	cards_in_hand.clear()
 
-func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
-	if last_clicked_card and last_clicked_card != card_instance:
-		last_clicked_card.reset_selected()
-
-	last_clicked_card = card_instance
-
-	if times_clicked == 2:
-		# check if we have enough mana
-		if cur_mana < card_instance.creature.mana:
-			# TODO: something more disruptive
-			print("Not enough mana")
-			return
-
-		play_card(last_clicked_card)
-
-
 func play_card(card: Card) -> void:
 	use_mana(card.creature.mana)
-	card_played.emit(card)
 	discard(card)
 	cards_in_hand.erase(card)
-	last_clicked_card = null
 
 func discard(card: Card) -> void:
-	if display_hand:
-		card.disconnect("card_clicked", _on_card_clicked)
 	combat_deck.discard(card)
 
 	if display_hand:
@@ -112,8 +88,9 @@ func play_best_card() -> void:
 		if card_value > best_card_value:
 			best_card = card
 			best_card_value = card_value
-	if best_card:
+	if best_card and cur_mana >= best_card.creature.mana:
 		print(best_card.creature.name)
-		_on_card_clicked(2, best_card)
+		play_card(best_card)
+
 	else:
 		print("No more cards to play")

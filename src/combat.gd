@@ -86,12 +86,10 @@ func _on_enemy_hand_card_played(played_card: Card) -> void:
 	var unit_z: float = $EnemyBase.position.z
 	spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY, played_card)
 
-
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
 	$Draw.hide()
 	combat_over.emit(state)
-
 
 func _on_enemy_base_died() -> void:
 	state = CombatState.WON
@@ -113,3 +111,6 @@ func _on_draw_pressed() -> void:
 func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 	reward_chosen.emit(reward_data)
 	combat_over.emit(state)
+
+func _on_card_clicked(_times_clicked: int, card: Card):
+	pass ;
