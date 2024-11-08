@@ -106,7 +106,11 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_shop.connect("item_purchased", _on_item_purchased)
 			new_shop.connect("shop_closed", _on_shop_closed)
 			add_child(new_shop)
-		elif map_node.type == MapNode.NodeType.BLANK:
+		elif map_node.type == MapNode.NodeType.EVENT:
+			print("Event node clicked")
+			current_node.beat_node()
+			pass
+		else:
 			current_node.beat_node()
 			pass
 
