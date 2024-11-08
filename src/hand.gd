@@ -50,6 +50,7 @@ func _deal_card(card: Card) -> void:
 		_sort_hand()
 
 func _sort_hand() -> void:
+	# TODO: do we also need to sort the order of nodes in the CardsArea? I think yes
 	cards_in_hand.sort_custom(_compare_cards)
 
 func _compare_cards(a: Card, b: Card) -> int:
