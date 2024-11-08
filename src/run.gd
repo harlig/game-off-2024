@@ -1,11 +1,10 @@
-extends Node2D
-
-class_name Run
+class_name Run extends Control
 
 @onready var map := $Map
 @onready var camera := $Map/Camera3D
 @onready var deck := $DeckControl/Deck
 @onready var combat_scene := preload("res://src/combat/combat.tscn")
+@onready var shop_scene := preload("res://src/shop.tscn")
 
 var player_position := Vector2(0, 0)
 var accessible_nodes := []
@@ -46,6 +45,16 @@ func update_accessible_nodes() -> void:
 func update_camera_position() -> void:
 	camera.position = Vector3(player_position.x, camera.position.y, player_position.y)
 
+func show_map() -> void:
+	$Map.show()
+	$Map/ViewDeck.show()
+	$Player.show()
+
+func hide_map() -> void:
+	$Map.hide()
+	$Map/ViewDeck.hide()
+	$Player.hide()
+
 func _on_node_clicked(node_position: Vector2) -> void:
 	if node_position in accessible_nodes:
 		var map_node: MapNode = map.node_instances[node_position]
@@ -57,20 +66,21 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		if map_node.has_been_beaten:
 			pass
 		elif map_node.type == MapNode.NodeType.COMBAT:
-			# Start combat
-			$Map.hide()
-			$Map/ViewDeck.hide()
-			$Player.hide()
-			var new_combat := combat_scene.instantiate()
+			hide_map()
+			var new_combat: Combat = combat_scene.instantiate()
 			new_combat.difficulty = combat_difficulty
 			combat_difficulty += 1
 			new_combat.connect("reward_chosen", _on_combat_reward_chosen)
 			new_combat.connect("combat_over", _on_combat_over)
 			add_child(new_combat)
 		elif map_node.type == MapNode.NodeType.SHOP:
-			# Start shop
-			print("Hit shop")
-			pass
+			hide_map()
+			var new_shop: Shop = shop_scene.instantiate()
+			new_shop.shop_value = combat_difficulty
+			new_shop.player_gold = bank
+			new_shop.connect("item_purchased", _on_item_purchased)
+			new_shop.connect("shop_closed", _on_shop_closed)
+			add_child(new_shop)
 		elif map_node.type == MapNode.NodeType.BLANK:
 			current_node.beat_node()
 			pass
@@ -86,22 +96,17 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		print("Combat won!")
 		$Combat.queue_free()
 		current_node.beat_node()
-		$Map.show()
-		$Map/ViewDeck.show()
-		$Player.show()
+		show_map()
 	elif combat_state == Combat.CombatState.LOST:
 		print("Combat lost!")
 		$Combat.queue_free()
 		# TODO: probably want to do something else but idk
 		# Move back to start
-		$Map.show()
-		$Map/ViewDeck.show()
-		$Player.show()
 		player_position = Vector2(0, 0)
 		$Player.position = Vector3(player_position.x, 2, player_position.y)
+		show_map()
 		update_accessible_nodes()
 		update_camera_position()
-
 
 func _on_map_view_deck_clicked() -> void:
 	var is_visualizing_deck: bool = deck.toggle_visualize_deck()
@@ -114,3 +119,17 @@ func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 	elif reward.type == Reward.RewardData.Type.GOLD:
 		print("Received gold reward: ", reward.gold)
 		bank += reward.gold
+
+func _on_item_purchased(item: Card, cost: int) -> void:
+	deck.add_card(item)
+	bank -= cost
+	# TODO: support items other than cards
+	# if item.type == Shop.Item.Type.CARD:
+	# 	deck.add_card(item.card)
+	# else:
+	# 	push_warning("Item type not supported yet")
+
+func _on_shop_closed() -> void:
+	$Shop.queue_free()
+	current_node.beat_node()
+	show_map()

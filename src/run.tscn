@@ -6,7 +6,11 @@
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xa4ld"]
 
-[node name="Run" type="Node2D"]
+[node name="Run" type="Control"]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
 script = ExtResource("1_cnw64")
 
 [node name="Map" parent="." instance=ExtResource("2_bsm6l")]

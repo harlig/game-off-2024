@@ -52,8 +52,6 @@ class Creature:
 
 enum CardType {RANGED, MELEE, AIR}
 
-static var available_cards := creature_cards.size()
-
 static func create_card(
 	creature: Creature
 ) -> Card:
