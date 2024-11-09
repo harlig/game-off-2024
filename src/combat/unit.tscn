@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://src/combat/unit.gd" id="1_2p7eh"]
 [ext_resource type="PackedScene" uid="uid://7d2f0g6jswhx" path="res://src/combat/attackable.tscn" id="1_s1phr"]
-[ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="2_4m4ol"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/units/hand_crawler.png" id="3_6nqad"]
+[ext_resource type="Shader" path="res://shaders/unit.gdshader" id="3_dhg1t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rflrp"]
 size = Vector3(2, 2, 4)
@@ -14,9 +14,10 @@ size = Vector3(2, 2, 4)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_av3n6"]
 resource_local_to_scene = true
 render_priority = 0
-shader = ExtResource("2_4m4ol")
+shader = ExtResource("3_dhg1t")
 shader_parameter/albedo = ExtResource("3_6nqad")
 shader_parameter/flip_h = false
+shader_parameter/highlight = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_4p5bs"]
 size = Vector2(2, 2)
@@ -60,33 +61,33 @@ tracks/2/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_weuqb"]
-resource_name = "attack_reversed"
-length = 0.5
-step = 0.1
+[sub_resource type="Animation" id="Animation_8vw6h"]
+resource_name = "walk"
+loop_mode = 1
+step = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:position")
-tracks/0/interp = 2
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0.5, 1.22, 0), Vector3(0, 1, 0)]
+"values": [Vector3(1, 1, 1), Vector3(1.1, 0.8, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:rotation")
-tracks/1/interp = 2
+tracks/1/path = NodePath("MeshInstance3D:position")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.607375), Vector3(0, 0, 0)]
+"values": [Vector3(0, 1, 0), Vector3(0, 0.8, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ckihm"]
@@ -118,41 +119,41 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 0.607375), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_8vw6h"]
-resource_name = "walk"
-loop_mode = 1
-step = 0.5
+[sub_resource type="Animation" id="Animation_weuqb"]
+resource_name = "attack_reversed"
+length = 0.5
+step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:scale")
-tracks/0/interp = 1
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(1, 1, 1), Vector3(1.1, 0.8, 1)]
+"values": [Vector3(0, 1, 0), Vector3(0.5, 1.22, 0), Vector3(0, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:position")
-tracks/1/interp = 1
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0, 0.8, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.607375), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vok6h"]
 _data = {
 &"RESET": SubResource("Animation_8afef"),
-&"walk": SubResource("Animation_8vw6h"),
+&"attack_reversed": SubResource("Animation_weuqb"),
 &"attack": SubResource("Animation_ckihm"),
-&"attack_reversed": SubResource("Animation_weuqb")
+&"walk": SubResource("Animation_8vw6h")
 }
 
 [node name="Unit" type="Node3D"]

@@ -7,13 +7,13 @@ uniform bool flip_h = false;
 
 void fragment() {
 	vec2 uv = UV;
-	
+
 	if (flip_h) {
 		uv.x = 1.0 - uv.x;
 	}
-	
+
 	vec4 tex = texture(albedo, uv);
-	
+
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
 	ALBEDO = mix(tex.rgb, color, 0.3);
 	ALPHA = tex.a;
