@@ -65,18 +65,7 @@ func _input(event: InputEvent) -> void:
 		$DragLine.clear_points();
 
 	if event is InputEventMouseMotion and drag_card:
-		$DragLine.clear_points();
-
-		var current_position := drag_start_position;
-		var direction := drag_start_position.direction_to(event.position)
-
-		while current_position.distance_to(event.position) > 0.5:
-			if current_position.distance_to(event.position) < 10:
-				current_position = event.position
-			else:
-				current_position += direction * 10;
-
-			$DragLine.add_point(current_position);
+		draw_drag_line(event)
 
 func play_card(card: Card, card_position: Vector3, team: Attackable.Team) -> void:
 	match card.type:
@@ -145,3 +134,27 @@ func _on_spawn_area_mouse_entered() -> void:
 
 func _on_spawn_area_mouse_exited() -> void:
 	drag_over_spawn_area = false;
+
+
+func draw_drag_line(event: InputEvent) -> void:
+	$DragLine.clear_points();
+
+	var current_position := drag_start_position;
+	var direction := drag_start_position.direction_to(event.position)
+	var total_distance := drag_start_position.distance_to(event.position)
+
+	while current_position.distance_to(event.position) > 0.5:
+		if current_position.distance_to(event.position) < 10:
+			current_position = event.position
+		else:
+			current_position += direction * 10;
+
+		var normal := Vector2(direction.y, -direction.x);
+		if event.position.x < drag_start_position.x:
+			normal *= -1;
+
+		var progress: float = current_position.distance_to(drag_start_position) / total_distance;
+		var quadriatic: float = -4 * progress * (progress - 1);
+
+		$DragLine.add_point(current_position + normal * quadriatic * 100);
+		# $DragLine.add_point(current_position);
