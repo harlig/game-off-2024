@@ -3,11 +3,19 @@ class_name Unit extends Node3D
 enum Direction {LEFT, RIGHT}
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var unit_attackable: Attackable = $Attackable
+
+const ATTACK_COOLDOWN := 1.0
+# give a unit time to not instantly die
+const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
+
+@export var direction: Direction = Direction.RIGHT
+
+
 var attack_animation := "attack"
 const WALK_ANIMATION := "walk"
 
-@export var direction: Direction = Direction.RIGHT
-var speed := 10
+var speed := 1
 var damage := 5
 var unit_name: String = "Unit"
 var unit_type: int = UnitList.CardType.MELEE
@@ -17,13 +25,7 @@ var units_in_attack_range: Array[Attackable] = []
 
 var is_attacking := false
 var time_since_last_attack := 0.0
-
-const ATTACK_COOLDOWN := 1.0
-
-# give a unit time to not instantly die
-const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
 var invulnerability_timer := Timer.new()
-
 var is_invulnerable := true
 
 func _ready() -> void:
@@ -74,7 +76,7 @@ func _on_target_area_area_entered(area: Area3D) -> void:
 	if area is not Attackable or area.get_parent() == self:
 		return
 	var attackable := area as Attackable
-	if attackable.team == $Attackable.team:
+	if attackable.team == unit_attackable.team:
 		return
 
 	units_in_attack_range.append(attackable)
@@ -87,7 +89,7 @@ func _on_target_area_area_entered(area: Area3D) -> void:
 func _on_target_area_area_exited(area: Area3D) -> void:
 	if area is not Attackable:
 		return
-	if (area as Attackable).team == $Attackable.team:
+	if (area as Attackable).team == unit_attackable.team:
 		return
 
 	currently_attacking.erase(area)
@@ -104,7 +106,7 @@ func _on_attack_finished(_anim_name: String) -> void:
 
 
 func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> void:
-	$Attackable.hp = from_creature.health
+	unit_attackable.hp = from_creature.health
 	$MeshInstance3D.material_override.set_shader_parameter("albedo", ResourceLoader.load(from_creature.card_image_path))
 	$MeshInstance3D.material_override.set_shader_parameter("flip_h", flip_image)
 	if flip_image:
@@ -134,3 +136,9 @@ func resize_unit_target_box(creature: UnitList.Creature) -> void:
 
 		new_box_shape.size = Vector3(x, y, z) # Set the new size
 		collision_shape.shape = new_box_shape
+
+func highlight_unit() -> void:
+	$MeshInstance3D.material_override.set_shader_parameter("highlight", true)
+
+func unhighlight_unit() -> void:
+	$MeshInstance3D.material_override.set_shader_parameter("highlight", false)

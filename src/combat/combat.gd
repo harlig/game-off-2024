@@ -1,6 +1,6 @@
 class_name Combat extends Node3D
 
-@onready var unit: PackedScene = preload("res://src/combat/unit.tscn")
+@onready var unit_scene: PackedScene = preload("res://src/combat/unit.tscn")
 @onready var reward := $Reward
 
 signal reward_presented()
@@ -9,7 +9,7 @@ signal combat_over(combat_state: CombatState)
 
 enum CombatState {PLAYING, WON, LOST}
 
-const ENEMY_SPAWN_TIMER := 4.0
+const ENEMY_SPAWN_TIMER := 400.0
 const OFFSET_FROM_BASE_DISTANCE := 3
 
 var state: CombatState = CombatState.PLAYING
@@ -20,6 +20,8 @@ var drag_card: Card = null
 var drag_start_position: Vector2
 var drag_spawn_position: Vector3
 var drag_over_spawn_area := false
+
+var currently_hovered_unit: Unit = null
 
 func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
 	print("Strength Limit:" + str(strength_limit) + " Difficulty: " + str(single_card_strength_limit))
@@ -70,12 +72,14 @@ func _input(event: InputEvent) -> void:
 func play_card(card: Card, card_position: Vector3, team: Attackable.Team) -> void:
 	match card.type:
 		Card.CardType.UNIT:
-			spawn_unit(unit, card_position, team, card)
+			spawn_unit(unit_scene, card_position, team, card)
 		Card.CardType.SPELL:
 			print("Spell card played")
 
 func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team, card_played: Card) -> void:
-	var new_unit: Unit = unit_to_spawn.instantiate()
+	var unit: Unit = unit_to_spawn.instantiate()
+	# gotta add child early so ready is called
+	add_child(unit)
 	var random_z_offset := randf_range(-1, 1)
 	var y := 0
 	match card_played.creature.type:
@@ -83,15 +87,16 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attack
 			y = 5
 		_:
 			y = 0
-	new_unit.position = Vector3(unit_position.x, y, unit_position.z + random_z_offset)
-	new_unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
+	unit.position = Vector3(unit_position.x, y, unit_position.z + random_z_offset)
+	unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
 	if team == Attackable.Team.ENEMY:
-		new_unit.get_node("TargetArea").scale.x *= -1
-		new_unit.get_node("TargetArea").position.x *= -1
-		new_unit.get_node("Attackable").scale.x *= -1
-	new_unit.get_node("Attackable").team = team
-	new_unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false)
-	add_child(new_unit)
+		unit.get_node("TargetArea").scale.x *= -1
+		unit.get_node("TargetArea").position.x *= -1
+		unit.get_node("Attackable").scale.x *= -1
+	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false)
+	unit.unit_attackable.team = team
+	unit.unit_attackable.connect("mouse_entered", _on_unit_mouse_entered.bind(unit))
+	unit.unit_attackable.connect("mouse_exited", _on_unit_mouse_exited.bind(unit))
 
 func spawn_enemy(card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
@@ -134,6 +139,19 @@ func _on_spawn_area_mouse_entered() -> void:
 
 func _on_spawn_area_mouse_exited() -> void:
 	drag_over_spawn_area = false;
+
+func _on_unit_mouse_entered(unit: Unit) -> void:
+	if currently_hovered_unit != null:
+		currently_hovered_unit.unhighlight_unit()
+
+	if drag_card != null and drag_card.type == Card.CardType.SPELL:
+		currently_hovered_unit = unit
+		unit.highlight_unit()
+
+func _on_unit_mouse_exited(unit: Unit) -> void:
+	if currently_hovered_unit == unit:
+		currently_hovered_unit = null
+		unit.unhighlight_unit()
 
 
 func draw_drag_line(event: InputEvent) -> void:

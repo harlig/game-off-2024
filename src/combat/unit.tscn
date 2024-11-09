@@ -6,7 +6,7 @@
 [ext_resource type="Shader" path="res://shaders/unit.gdshader" id="3_dhg1t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rflrp"]
-size = Vector3(2, 2, 4)
+size = Vector3(1, 1.5, 4)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ce7wc"]
 size = Vector3(2, 2, 4)
@@ -62,33 +62,33 @@ tracks/2/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_weuqb"]
-resource_name = "attack_reversed"
-length = 0.5
-step = 0.1
+[sub_resource type="Animation" id="Animation_8vw6h"]
+resource_name = "walk"
+loop_mode = 1
+step = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:position")
-tracks/0/interp = 2
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0.5, 1.22, 0), Vector3(0, 1, 0)]
+"values": [Vector3(1, 1, 1), Vector3(1.1, 0.8, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:rotation")
-tracks/1/interp = 2
+tracks/1/path = NodePath("MeshInstance3D:position")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.607375), Vector3(0, 0, 0)]
+"values": [Vector3(0, 1, 0), Vector3(0, 0.8, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ckihm"]
@@ -120,33 +120,33 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 0.607375), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_8vw6h"]
-resource_name = "walk"
-loop_mode = 1
-step = 0.5
+[sub_resource type="Animation" id="Animation_weuqb"]
+resource_name = "attack_reversed"
+length = 0.5
+step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:scale")
-tracks/0/interp = 1
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(1, 1, 1), Vector3(1.1, 0.8, 1)]
+"values": [Vector3(0, 1, 0), Vector3(0.5, 1.22, 0), Vector3(0, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:position")
-tracks/1/interp = 1
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0, 0.8, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.607375), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vok6h"]
@@ -161,7 +161,6 @@ _data = {
 script = ExtResource("1_2p7eh")
 
 [node name="Attackable" parent="." instance=ExtResource("1_s1phr")]
-input_ray_pickable = false
 
 [node name="CollisionShape3D" parent="Attackable" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
