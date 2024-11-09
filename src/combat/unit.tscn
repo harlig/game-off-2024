@@ -159,8 +159,10 @@ _data = {
 
 [node name="Unit" type="Node3D"]
 script = ExtResource("1_2p7eh")
+direction = null
 
 [node name="Attackable" parent="." instance=ExtResource("1_s1phr")]
+input_ray_pickable = false
 
 [node name="CollisionShape3D" parent="Attackable" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

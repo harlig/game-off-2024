@@ -142,3 +142,7 @@ func highlight_unit() -> void:
 
 func unhighlight_unit() -> void:
 	$MeshInstance3D.material_override.set_shader_parameter("highlight", false)
+
+
+func make_selectable(selectable: bool) -> void:
+	unit_attackable.input_ray_pickable = selectable

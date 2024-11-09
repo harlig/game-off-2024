@@ -7,6 +7,9 @@ signal reward_presented()
 signal reward_chosen(reward: Reward.RewardData)
 signal combat_over(combat_state: CombatState)
 
+signal targetable_card_selected()
+signal targetable_card_deselected()
+
 enum CombatState {PLAYING, WON, LOST}
 
 const ENEMY_SPAWN_TIMER := 400.0
@@ -24,7 +27,6 @@ var drag_over_spawn_area := false
 var currently_hovered_unit: Unit = null
 
 func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
-	print("Strength Limit:" + str(strength_limit) + " Difficulty: " + str(single_card_strength_limit))
 	var new_deck: Array[Card] = []
 	var total_strength := 0
 	var strengh_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(card: UnitList.Creature) -> bool: return card.strength_factor <= single_card_strength_limit)
@@ -36,7 +38,6 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 
 
 func _ready() -> void:
-	print("ready")
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
 	$PlayerCombatDeck.prepare_combat_deck(player_deck.cards)
@@ -51,7 +52,6 @@ func _process(delta: float) -> void:
 		return
 	time_since_last_enemy_spawn += delta
 	if time_since_last_enemy_spawn > ENEMY_SPAWN_TIMER:
-		print("Play enemy")
 		$EnemyHand.play_best_card()
 		$EnemyHand.replenish_mana()
 		time_since_last_enemy_spawn = 0
@@ -77,6 +77,7 @@ func try_play_card() -> void:
 			if currently_hovered_unit:
 				play_spell(drag_card.spell)
 				$PlayerHand.play_card(drag_card)
+			targetable_card_deselected.emit()
 
 	drag_card = null;
 	drag_over_spawn_area = false;
@@ -103,6 +104,8 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	unit.unit_attackable.team = team
 	unit.unit_attackable.connect("mouse_entered", _on_unit_mouse_entered.bind(unit))
 	unit.unit_attackable.connect("mouse_exited", _on_unit_mouse_exited.bind(unit))
+	connect("targetable_card_selected", unit.make_selectable.bind(true))
+	connect("targetable_card_deselected", unit.make_selectable.bind(false))
 
 func spawn_enemy(card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
@@ -141,6 +144,8 @@ func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 
 func _on_player_hand_card_clicked(card: Card) -> void:
 	drag_card = card
+	if card.type == Card.CardType.SPELL:
+		targetable_card_selected.emit()
 	drag_start_position = card.global_position + card.size / 2.0
 
 func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
