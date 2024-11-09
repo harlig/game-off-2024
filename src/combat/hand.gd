@@ -1,20 +1,21 @@
 class_name Hand extends Control
 
 const HAND_SIZE := 5
+const MAX_HAND_SIZE := 8
+const MAX_MANA := 8
 
 @export var player_hand := false;
 
 var cards_in_hand: Array[Card] = []
 var combat_deck: CombatDeck
-var max_mana := 8
 var cur_mana := 8:
 	set(value):
-		if value > max_mana:
-			cur_mana = max_mana
+		if value > MAX_MANA:
+			cur_mana = MAX_MANA
 		else:
 			cur_mana = value
 		if player_hand:
-			$HBoxContainer/TextureRect2/Label2.text = str(cur_mana) + "/" + str(max_mana);
+			$HBoxContainer/TextureRect2/Label2.text = str(cur_mana) + "/" + str(MAX_MANA);
 
 signal card_clicked(card: Card)
 
@@ -35,28 +36,33 @@ func _ready() -> void:
 		add_child(mana_timer)
 
 func _on_draw_timer_timeout() -> void:
+	if cards_in_hand.size() >= MAX_HAND_SIZE:
+		print("Hand full, can't draw a card!")
+		return
 	_deal_card(combat_deck.draw())
 
 func _on_mana_timer_timeout() -> void:
 	cur_mana += 1
 
 func replenish_mana() -> void:
-	cur_mana = max_mana
+	cur_mana = MAX_MANA
 
 func setup_deck(deck: CombatDeck) -> void:
 	combat_deck = deck
 	refresh_hand()
 
 func refresh_hand() -> void:
-	_discard_hand()
-	_deal_full_hand()
-	replenish_mana()
+	# discard hand
+	for card in cards_in_hand:
+		discard(card)
+	cards_in_hand.clear()
 
-func _deal_full_hand() -> void:
+	# deal full hand
 	for ndx in range(HAND_SIZE):
 		_deal_card(combat_deck.draw())
 	if player_hand:
 		_sort_hand()
+	replenish_mana()
 
 func _deal_card(card: Card) -> void:
 	if card == null:
@@ -82,11 +88,6 @@ func _compare_cards(a: Card, b: Card) -> int:
 	if a.creature.mana != b.creature.mana:
 		return a.creature.mana < b.creature.mana
 	return a.creature.get_score() < b.creature.get_score()
-
-func _discard_hand() -> void:
-	for card in cards_in_hand:
-		discard(card)
-	cards_in_hand.clear()
 
 func play_card(card: Card) -> void:
 	cur_mana -= card.creature.mana
