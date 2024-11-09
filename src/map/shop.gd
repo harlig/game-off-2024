@@ -37,7 +37,7 @@ class Item:
 func _ready() -> void:
 	blank_card = $OfferArea/BlankCard
 	for ndx in range(SHOP_SIZE):
-		var new_card := UnitList.new_card_by_id(ndx)
+		var new_card := UnitList.new_card_by_id(randi() % UnitList.creature_cards.size()) if randf() < 0.7 else SpellList.new_card_by_id(randi() % SpellList.spell_cards.size())
 		new_card.connect("card_clicked", _on_card_clicked)
 		cards_in_shop.append(new_card)
 		$OfferArea.add_child(new_card)
