@@ -57,7 +57,7 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
 		if drag_over_spawn_area and drag_card:
-			spawn_unit(unit, drag_spawn_position, Attackable.Team.PLAYER, drag_card)
+			play_card(drag_card, drag_spawn_position, Attackable.Team.PLAYER)
 			$PlayerHand.play_card(drag_card);
 
 		drag_card = null;
@@ -78,7 +78,14 @@ func _input(event: InputEvent) -> void:
 
 			$DragLine.add_point(current_position);
 
-func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team, card_played: Card) -> Unit:
+func play_card(card: Card, card_position: Vector3, team: Attackable.Team) -> void:
+	match card.type:
+		Card.CardType.UNIT:
+			spawn_unit(unit, card_position, team, card)
+		Card.CardType.SPELL:
+			print("Spell card played")
+
+func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team, card_played: Card) -> void:
 	var new_unit: Unit = unit_to_spawn.instantiate()
 	var random_z_offset := randf_range(-1, 1)
 	var y := 0
@@ -96,12 +103,11 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attack
 	new_unit.get_node("Attackable").team = team
 	new_unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false)
 	add_child(new_unit)
-	return new_unit
 
 func spawn_enemy(card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $EnemyBase.position.z
-	spawn_unit(unit, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY, card)
+	play_card(card, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY)
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST

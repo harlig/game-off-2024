@@ -100,7 +100,11 @@ func _compare_cards(a: Card, b: Card) -> int:
 	return 0
 
 func play_card(card: Card) -> void:
-	cur_mana -= card.creature.mana
+	match card.type:
+		Card.CardType.UNIT:
+			cur_mana -= card.creature.mana
+		Card.CardType.SPELL:
+			cur_mana -= card.spell.mana
 	discard(card)
 	cards_in_hand.erase(card)
 
@@ -132,5 +136,12 @@ func play_best_card() -> void:
 		print("No more cards to play")
 
 func _on_card_clicked(_times_clicked: int, card: Card) -> void:
-	if card.creature.mana <= cur_mana:
-		card_clicked.emit(card);
+	match card.type:
+		Card.CardType.UNIT:
+			if card.creature.mana <= cur_mana:
+				card_clicked.emit(card);
+		Card.CardType.SPELL:
+			if card.spell.mana <= cur_mana:
+				card_clicked.emit(card);
+		_:
+			push_error("Unknown card type for card ", card)
