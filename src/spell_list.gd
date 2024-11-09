@@ -3,21 +3,23 @@ class_name SpellList extends Node
 static var card_scene := preload("res://src/card.tscn")
 
 static var spell_cards: Array[Spell] = [
-	Spell.new("Fireball", SpellType.DAMAGE, 5, 1, "res://textures/spells/fireball.png"),
-	Spell.new("Heal", SpellType.HEAL, 6, 1, "res://textures/spells/heal.png"),
-	Spell.new("Mana", SpellType.MANA, 3, 5, "res://textures/spells/mana.png"),
+	Spell.new("Fireball", SpellType.DAMAGE, TargetableType.UNIT, 5, 1, "res://textures/spells/fireball.png"),
+	Spell.new("Heal", SpellType.HEAL, TargetableType.UNIT, 6, 1, "res://textures/spells/heal.png"),
+	Spell.new("Mana", SpellType.MANA, TargetableType.NONE, 5, 1, "res://textures/spells/mana.png"),
 ]
 
 class Spell:
 	var name: String
 	var type: SpellType
+	var targetable_type := TargetableType.NONE
 	var value: int
 	var mana: int
 	var card_image_path: String
 
-	func _init(init_name: String, init_type: SpellType, init_value: int, init_mana: int, init_card_image_path: String) -> void:
+	func _init(init_name: String, init_type: SpellType, init_targetable_type: TargetableType, init_value: int, init_mana: int, init_card_image_path: String) -> void:
 		self.name = init_name
 		self.type = init_type
+		self.targetable_type = init_targetable_type
 		self.value = init_value
 		self.mana = init_mana
 		self.card_image_path = init_card_image_path
@@ -26,13 +28,19 @@ class Spell:
 		return value + mana
 
 	func _to_string() -> String:
-		return "Name: " + name + " Type: " + str(type) + " Value: " + str(value) + " Mana: " + str(mana) + " Card Image Path: " + card_image_path
+		return "Spell: " + name + ", " + " Type: " + str(type) + ", " + " Value: " + str(value) + ", " + " Mana: " + str(mana)
 
 
 enum SpellType {
 	DAMAGE,
 	HEAL,
 	MANA,
+}
+
+enum TargetableType {
+	NONE,
+	UNIT,
+	AREA,
 }
 
 static func create_card(

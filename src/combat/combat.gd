@@ -73,10 +73,13 @@ func try_play_card() -> void:
 				spawn_unit(unit_scene, drag_card, drag_spawn_position, Attackable.Team.PLAYER)
 				$PlayerHand.play_card(drag_card)
 		Card.CardType.SPELL:
-			# TODO: further logic for if a spell affects a unit
-			if currently_hovered_unit:
+			if drag_card.spell.targetable_type == SpellList.TargetableType.NONE:
 				play_spell(drag_card.spell)
 				$PlayerHand.play_card(drag_card)
+			elif currently_hovered_unit:
+				play_spell(drag_card.spell)
+				$PlayerHand.play_card(drag_card)
+
 			targetable_card_deselected.emit()
 
 	drag_card = null;
@@ -117,10 +120,12 @@ func play_spell(spell: SpellList.Spell) -> void:
 	match spell.type:
 		SpellList.SpellType.DAMAGE:
 			if currently_hovered_unit:
-				currently_hovered_unit.unit_attackable.take_damage(5)
+				currently_hovered_unit.unit_attackable.take_damage(spell.value)
 		SpellList.SpellType.HEAL:
 			if currently_hovered_unit:
-				currently_hovered_unit.unit_attackable.heal(5)
+				currently_hovered_unit.unit_attackable.heal(spell.value)
+		SpellList.SpellType.MANA:
+			$PlayerHand.cur_mana += spell.value
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
@@ -144,7 +149,7 @@ func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 
 func _on_player_hand_card_clicked(card: Card) -> void:
 	drag_card = card
-	if card.type == Card.CardType.SPELL:
+	if card.type == Card.CardType.SPELL and card.spell.targetable_type != SpellList.TargetableType.NONE:
 		targetable_card_selected.emit()
 	drag_start_position = card.global_position + card.size / 2.0
 
