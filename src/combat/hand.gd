@@ -3,7 +3,7 @@ class_name Hand extends Control
 const HAND_SIZE := 5
 const MAX_HAND_SIZE := 8
 
-const DRAW_TIMER := 5.0
+const DRAW_TIMER := 10.0
 const MANA_TIMER := 2.0
 
 @export var player_hand := false;
@@ -46,6 +46,14 @@ func _on_draw_timer_timeout() -> void:
 
 func _on_mana_timer_timeout() -> void:
 	cur_mana += 1
+
+func draw_cards(num_cards: int) -> void:
+	for ndx in range(num_cards):
+		if cards_in_hand.size() >= MAX_HAND_SIZE:
+			print("Hand full, can't draw a card!")
+			return
+
+		_deal_card(combat_deck.draw())
 
 func replenish_mana() -> void:
 	cur_mana = max_mana

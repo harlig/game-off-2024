@@ -88,6 +88,10 @@ func update_spell_display() -> void:
 			$Description.text = "Increase max mana by " + str(spell.value) + " for this combat"
 			$Damage.hide()
 			$Health.hide()
+		SpellList.SpellType.DRAW_CARDS:
+			$Description.text = "Draw " + str(spell.value) + " cards"
+			$Damage.hide()
+			$Health.hide()
 
 func set_unit(from_creature: UnitList.Creature) -> void:
 	type = CardType.UNIT

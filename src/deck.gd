@@ -1,6 +1,6 @@
 class_name Deck extends Control
 
-const INITIAL_DECK_SIZE: int = 10
+const INITIAL_DECK_SIZE: int = 4
 
 const hand_unit_texture_path := "res://textures/units/hand_crawler.png"
 const cricket_unit_texture_path := "res://textures/units/cricket.png"
@@ -12,7 +12,7 @@ var is_visualizing_deck: bool = false
 
 
 func _ready() -> void:
-	var num_units := INITIAL_DECK_SIZE - 2
+	var num_units := INITIAL_DECK_SIZE
 	for ndx in range(num_units):
 		if (ndx < 3):
 			var basic_unit_card := UnitList.new_card_by_name("Gloom") # Give them an airial card for testing

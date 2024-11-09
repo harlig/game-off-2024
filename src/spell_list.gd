@@ -7,6 +7,7 @@ static var spell_cards: Array[Spell] = [
 	Spell.new("Heal", SpellType.HEAL, TargetableType.UNIT, 6, 1, "res://textures/spells/heal.png"),
 	Spell.new("Mana", SpellType.CUR_MANA, TargetableType.NONE, 3, 1, "res://textures/spells/mana.png"),
 	Spell.new("++ max mana", SpellType.MAX_MANA, TargetableType.NONE, 1, 5, "res://textures/spells/mana.png"),
+	Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 3, 3, "res://textures/spells/mana.png"),
 ]
 
 class Spell:
@@ -37,6 +38,7 @@ enum SpellType {
 	HEAL,
 	CUR_MANA,
 	MAX_MANA,
+	DRAW_CARDS,
 }
 
 enum TargetableType {

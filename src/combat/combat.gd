@@ -128,6 +128,8 @@ func play_spell(spell: SpellList.Spell) -> void:
 			$PlayerHand.cur_mana += spell.value
 		SpellList.SpellType.MAX_MANA:
 			$PlayerHand.max_mana += spell.value
+		SpellList.SpellType.DRAW_CARDS:
+			$PlayerHand.draw_cards(spell.value)
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
