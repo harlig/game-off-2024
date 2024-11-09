@@ -4,8 +4,8 @@ class_name Run extends Control
 @onready var camera := $Map/Camera3D
 @onready var deck := $DeckControl/Deck
 @onready var combat_scene := preload("res://src/combat/combat.tscn")
-@onready var shop_scene := preload("res://src/shop.tscn")
-@onready var event_scene := preload("res://src/event.tscn")
+@onready var shop_scene := preload("res://src/map/shop.tscn")
+@onready var event_scene := preload("res://src/map/event.tscn")
 
 var player_position := Vector2(0, 0)
 var accessible_nodes := []

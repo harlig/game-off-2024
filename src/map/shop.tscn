@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b7o8cjcb7jpmr"]
 
-[ext_resource type="Script" path="res://src/shop.gd" id="1_2kuu5"]
+[ext_resource type="Script" path="res://src/map/shop.gd" id="1_2kuu5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ia3gg"]
 line_spacing = 12.0

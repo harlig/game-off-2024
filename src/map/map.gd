@@ -3,7 +3,7 @@ class_name Map extends Node3D
 signal node_clicked(node_position: Vector2)
 signal view_deck_clicked()
 
-@onready var path_scene := preload("res://src/path.tscn");
+@onready var path_scene := preload("res://src/map/path.tscn");
 @onready var node_scene := preload("res://src/map/map_node.tscn");
 @onready var tree := $Tree
 
