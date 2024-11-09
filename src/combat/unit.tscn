@@ -1,11 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://dx1mt2klfmktd"]
+[gd_scene load_steps=14 format=3 uid="uid://dx1mt2klfmktd"]
 
 [ext_resource type="Script" path="res://src/combat/unit.gd" id="1_2p7eh"]
 [ext_resource type="PackedScene" uid="uid://7d2f0g6jswhx" path="res://src/combat/attackable.tscn" id="1_s1phr"]
 [ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="2_4m4ol"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/units/hand_crawler.png" id="3_6nqad"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_rflrp"]
+size = Vector3(2, 2, 4)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_ce7wc"]
+size = Vector3(2, 2, 4)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_av3n6"]
 resource_local_to_scene = true
@@ -158,14 +162,15 @@ script = ExtResource("1_2p7eh")
 input_ray_pickable = false
 
 [node name="CollisionShape3D" parent="Attackable" index="0"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_rflrp")
 
 [node name="TargetArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.5, 0)
 input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TargetArea"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_ce7wc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
