@@ -1,7 +1,6 @@
 class_name Combat extends Node3D
 
 @onready var unit: PackedScene = preload("res://src/combat/unit.tscn")
-@onready var card_scene := preload("res://src/card.tscn")
 @onready var reward := $Reward
 
 signal reward_presented()

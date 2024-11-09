@@ -2,7 +2,6 @@ class_name Deck extends Control
 
 const INITIAL_DECK_SIZE: int = 10
 
-@onready var card_scene := preload("res://src/card.tscn")
 const hand_unit_texture_path := "res://textures/units/hand_crawler.png"
 const cricket_unit_texture_path := "res://textures/units/cricket.png"
 

@@ -1,11 +1,16 @@
 class_name Card extends TextureRect
 var is_selected := false
 var times_clicked := 0
-static var card_scene := preload("res://src/card.tscn")
 
 var original_stylebox_override: StyleBoxFlat
 
+var type: CardType
 var creature: UnitList.Creature
+
+enum CardType {
+	UNIT,
+	SPELL
+}
 
 signal card_clicked
 
@@ -30,12 +35,12 @@ func update_display() -> void:
 			creature_type_text = "Air"
 	$Description.text = creature_type_text
 
-func set_stats(from_creature: UnitList.Creature) -> void:
+func set_unit(from_creature: UnitList.Creature) -> void:
+	type = CardType.UNIT
 	creature = from_creature
 	update_display()
 
 func on_select() -> void:
-
 	var style_box := StyleBoxFlat.new()
 	if is_selected:
 		card_clicked.emit(1, self)
@@ -56,7 +61,3 @@ func reset_selected() -> void:
 	is_selected = false
 	times_clicked = 0
 	add_theme_stylebox_override("panel", original_stylebox_override)
-
-
-func _to_string() -> String:
-	return str(creature)

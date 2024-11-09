@@ -56,7 +56,7 @@ static func create_card(
 	creature: Creature
 ) -> Card:
 	var card_instance: Card = card_scene.instantiate()
-	card_instance.set_stats(creature)
+	card_instance.set_unit(creature)
 	return card_instance
 
 static func new_card_by_id(id: int) -> Card:
