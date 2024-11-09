@@ -11,6 +11,18 @@ var cur_mana := 8
 
 signal card_clicked(card: Card)
 
+func _ready() -> void:
+	if player_hand:
+		# draw a card every 2 seconds
+		var timer: Timer = Timer.new()
+		timer.autostart = true
+		timer.wait_time = 2.0
+		timer.connect("timeout", _on_draw_timer_timeout)
+		add_child(timer)
+
+func _on_draw_timer_timeout() -> void:
+	_deal_card(combat_deck.draw())
+
 func replenish_mana() -> void:
 	cur_mana = max_mana
 
@@ -35,6 +47,8 @@ func refresh_hand() -> void:
 func _deal_full_hand() -> void:
 	for ndx in range(HAND_SIZE):
 		_deal_card(combat_deck.draw())
+	if player_hand:
+		_sort_hand()
 
 func _deal_card(card: Card) -> void:
 	if card == null:
@@ -46,7 +60,6 @@ func _deal_card(card: Card) -> void:
 	if player_hand:
 		card.card_clicked.connect(_on_card_clicked)
 		$CardsArea.add_child(card)
-		_sort_hand()
 
 func _sort_hand() -> void:
 	# Sort the cards in hand

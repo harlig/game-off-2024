@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 		$EnemyHand.replenish_mana()
 		time_since_last_enemy_spawn = 0
 
-	$Draw/Label.text = str(int($Draw/DrawTimer.time_left) + 1);
+	# $Draw/Label.text = str(int($Draw/DrawTimer.time_left) + 1);
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
@@ -82,7 +82,8 @@ func _input(event: InputEvent) -> void:
 			$DragLine.add_point(current_position);
 
 func _on_draw_timer_timeout() -> void:
-	$Draw.disabled = false
+	# $Draw.disabled = false
+	pass
 
 func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team, card_played: Card) -> Unit:
 	var new_unit: Unit = unit_to_spawn.instantiate()
@@ -111,12 +112,12 @@ func spawn_enemy(card: Card) -> void:
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
-	$Draw.hide()
+	# $Draw.hide()
 	combat_over.emit(state)
 
 func _on_enemy_base_died() -> void:
 	state = CombatState.WON
-	$Draw.hide()
+	# $Draw.hide()
 	provide_rewards()
 
 func provide_rewards() -> void:
@@ -128,8 +129,9 @@ func provide_rewards() -> void:
 	$EnemyHand.queue_free()
 
 func _on_draw_pressed() -> void:
-	$Draw.disabled = true
-	$PlayerHand.refresh_hand()
+	# $Draw.disabled = true
+	# $PlayerHand.refresh_hand()
+	pass
 
 func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 	reward_chosen.emit(reward_data)

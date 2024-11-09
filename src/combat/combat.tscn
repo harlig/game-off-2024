@@ -143,6 +143,7 @@ offset_right = -320.0
 offset_bottom = -240.0
 
 [node name="Draw" type="TextureButton" parent="."]
+visible = false
 offset_left = 88.0
 offset_top = 864.0
 offset_right = 216.0
