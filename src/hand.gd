@@ -7,33 +7,41 @@ const HAND_SIZE := 5
 var cards_in_hand: Array[Card] = []
 var combat_deck: CombatDeck
 var max_mana := 8
-var cur_mana := 8
+var cur_mana := 8:
+	set(value):
+		if value > max_mana:
+			cur_mana = max_mana
+		else:
+			cur_mana = value
+		if player_hand:
+			$HBoxContainer/TextureRect2/Label2.text = str(cur_mana) + "/" + str(max_mana);
 
 signal card_clicked(card: Card)
 
 func _ready() -> void:
 	if player_hand:
 		# draw a card every 2 seconds
-		var timer: Timer = Timer.new()
-		timer.autostart = true
-		timer.wait_time = 2.0
-		timer.connect("timeout", _on_draw_timer_timeout)
-		add_child(timer)
+		var draw_timer: Timer = Timer.new()
+		draw_timer.autostart = true
+		draw_timer.wait_time = 2.0
+		draw_timer.connect("timeout", _on_draw_timer_timeout)
+
+		var mana_timer: Timer = Timer.new()
+		mana_timer.autostart = true
+		mana_timer.wait_time = 1.0
+		mana_timer.connect("timeout", _on_mana_timer_timeout)
+
+		add_child(draw_timer)
+		add_child(mana_timer)
 
 func _on_draw_timer_timeout() -> void:
 	_deal_card(combat_deck.draw())
 
+func _on_mana_timer_timeout() -> void:
+	cur_mana += 1
+
 func replenish_mana() -> void:
 	cur_mana = max_mana
-
-	if player_hand:
-		$HBoxContainer/TextureRect2/Label2.text = str(cur_mana) + "/" + str(max_mana);
-
-func use_mana(amount: int) -> void:
-	cur_mana -= amount
-
-	if player_hand:
-		$HBoxContainer/TextureRect2/Label2.text = str(cur_mana) + "/" + str(max_mana);
 
 func setup_deck(deck: CombatDeck) -> void:
 	combat_deck = deck
@@ -81,7 +89,7 @@ func _discard_hand() -> void:
 	cards_in_hand.clear()
 
 func play_card(card: Card) -> void:
-	use_mana(card.creature.mana)
+	cur_mana -= card.creature.mana
 	discard(card)
 	cards_in_hand.erase(card)
 
