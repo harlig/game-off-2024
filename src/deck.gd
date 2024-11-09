@@ -28,8 +28,7 @@ func _ready() -> void:
 
 
 func add_card(card: Card) -> void:
-	var duped_card: Card = card.duplicate()
-	duped_card.creature = card.creature
+	var duped_card: Card = Card.duplicate_card(card)
 	cards.append(duped_card)
 
 

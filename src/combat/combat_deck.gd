@@ -8,9 +8,7 @@ var draw_pile: Array[Card] = []
 
 func prepare_combat_deck(cards: Array[Card]) -> void:
 	for card: Card in cards:
-		var new_card := card.duplicate()
-		# well idk why duplicating the card doesn't duplicate the data, but it doesn't work without this
-		new_card.creature = card.creature
+		var new_card := Card.duplicate_card(card)
 		all_cards.append(new_card)
 		draw_pile.append(new_card)
 	draw_pile.shuffle()
