@@ -12,19 +12,21 @@ var is_visualizing_deck: bool = false
 
 
 func _ready() -> void:
-	var num_basic_cards := INITIAL_DECK_SIZE
-	for ndx in range(num_basic_cards):
+	var num_units := INITIAL_DECK_SIZE - 2
+	for ndx in range(num_units):
 		if (ndx < 3):
-		#	var basic_card := UnitList.new_card_by_id(9) #spindler
-			var basic_card := UnitList.new_card_by_name("Gloom") # Give them an airial card for testing
-
-			add_card(basic_card)
+			var basic_unit_card := UnitList.new_card_by_name("Gloom") # Give them an airial card for testing
+			add_card(basic_unit_card)
 		elif (ndx >= 3 && ndx < 8):
-			var medium_card := UnitList.new_card_by_id(0) # Shriekling
-			add_card(medium_card)
+			var medium_unit_card := UnitList.new_card_by_id(0) # Shriekling
+			add_card(medium_unit_card)
 		else:
-			var rare_card := UnitList.new_card_by_name("Ebon Phantom") # Ebon Phantom
-			add_card(rare_card)
+			var rare_unit_card := UnitList.new_card_by_name("Ebon Phantom") # Ebon Phantom
+			add_card(rare_unit_card)
+
+	for ndx in range(0, INITIAL_DECK_SIZE - num_units):
+		var spell_card := SpellList.new_card_by_id(ndx)
+		add_card(spell_card)
 
 
 func add_card(card: Card) -> void:

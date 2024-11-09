@@ -85,9 +85,19 @@ func _sort_hand() -> void:
 		$CardsArea.move_child(card, index)
 
 func _compare_cards(a: Card, b: Card) -> int:
-	if a.creature.mana != b.creature.mana:
-		return a.creature.mana < b.creature.mana
-	return a.creature.get_score() < b.creature.get_score()
+	if a.type != b.type:
+		return a.type < b.type
+	match a.type:
+		Card.CardType.UNIT:
+			if a.creature.mana != b.creature.mana:
+				return a.creature.mana < b.creature.mana
+			return a.creature.get_score() < b.creature.get_score()
+		Card.CardType.SPELL:
+			if a.spell.mana != b.spell.mana:
+				return a.spell.mana < b.spell.mana
+			return a.spell.get_score() < b.spell.get_score()
+
+	return 0
 
 func play_card(card: Card) -> void:
 	cur_mana -= card.creature.mana

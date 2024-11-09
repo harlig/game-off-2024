@@ -6,7 +6,7 @@ var original_stylebox_override: StyleBoxFlat
 
 var type: CardType
 var creature: UnitList.Creature
-var spell: String = "some spell"
+var spell: SpellList.Spell
 
 enum CardType {
 	UNIT,
@@ -17,7 +17,7 @@ signal card_clicked
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")
-	update_unit_display()
+	update_display()
 
 static func duplicate_card(card: Card) -> Card:
 	var new_card := card.duplicate()
@@ -54,26 +54,33 @@ func update_unit_display() -> void:
 	$Description.text = creature_type_text
 
 func update_spell_display() -> void:
-	$Title.text = spell
-	# $Health.text = str(creature.health)
-	# $Mana.text = str(creature.mana)
-	# $Damage.text = str(creature.damage)
+	$Title.text = spell.name
+	$Mana.text = str(spell.mana)
 	# $TextureRect.texture = load(creature.card_image_path)
 
-	# var creature_type_text := ""
-	# match creature.type:
-	# 	UnitList.CardType.RANGED:
-	# 		creature_type_text = "Ranged"
-	# 	UnitList.CardType.MELEE:
-	# 		creature_type_text = "Melee"
-	# 	UnitList.CardType.AIR:
-	# 		creature_type_text = "Air"
-	$Description.text = "Some spell!"
+	match spell.type:
+		SpellList.SpellType.DAMAGE:
+			$Description.text = "Deals " + str(spell.value) + " damage"
+			$Damage.text = str(spell.value)
+			$Health.hide()
+		SpellList.SpellType.HEAL:
+			$Description.text = "Heals " + str(spell.value) + " health"
+			$Health.text = str(spell.value)
+			$Damage.hide()
+		SpellList.SpellType.MANA:
+			$Description.text = "Gives " + str(spell.value) + " mana"
+			$Damage.hide()
+			$Health.hide()
 
 func set_unit(from_creature: UnitList.Creature) -> void:
 	type = CardType.UNIT
 	creature = from_creature
 	update_unit_display()
+
+func set_spell(from_spell: SpellList.Spell) -> void:
+	type = CardType.SPELL
+	spell = from_spell
+	update_spell_display()
 
 func on_select() -> void:
 	var style_box := StyleBoxFlat.new()
