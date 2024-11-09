@@ -106,7 +106,7 @@ func _on_attack_finished(_anim_name: String) -> void:
 
 
 func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> void:
-	unit_attackable.hp = from_creature.health
+	unit_attackable.max_hp = from_creature.health
 	$MeshInstance3D.material_override.set_shader_parameter("albedo", ResourceLoader.load(from_creature.card_image_path))
 	$MeshInstance3D.material_override.set_shader_parameter("flip_h", flip_image)
 	if flip_image:

@@ -58,25 +58,31 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
-		if drag_over_spawn_area and drag_card:
-			play_card(drag_card, drag_spawn_position, Attackable.Team.PLAYER)
-			$PlayerHand.play_card(drag_card);
-
-		drag_card = null;
-		drag_over_spawn_area = false;
-		$DragLine.clear_points();
+		try_play_card()
 
 	if event is InputEventMouseMotion and drag_card:
 		draw_drag_line(event)
 
-func play_card(card: Card, card_position: Vector3, team: Attackable.Team) -> void:
-	match card.type:
-		Card.CardType.UNIT:
-			spawn_unit(unit_scene, card_position, team, card)
-		Card.CardType.SPELL:
-			print("Spell card played")
+func try_play_card() -> void:
+	if not drag_card:
+		return
 
-func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attackable.Team, card_played: Card) -> void:
+	match drag_card.type:
+		Card.CardType.UNIT:
+			if drag_over_spawn_area:
+				spawn_unit(unit_scene, drag_card, drag_spawn_position, Attackable.Team.PLAYER)
+				$PlayerHand.play_card(drag_card)
+		Card.CardType.SPELL:
+			# TODO: further logic for if a spell affects a unit
+			if currently_hovered_unit:
+				play_spell(drag_card.spell)
+				$PlayerHand.play_card(drag_card)
+
+	drag_card = null;
+	drag_over_spawn_area = false;
+	$DragLine.clear_points();
+
+func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Vector3, team: Attackable.Team) -> void:
 	var unit: Unit = unit_to_spawn.instantiate()
 	# gotta add child early so ready is called
 	add_child(unit)
@@ -101,7 +107,17 @@ func spawn_unit(unit_to_spawn: PackedScene, unit_position: Vector3, team: Attack
 func spawn_enemy(card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = $EnemyBase.position.z
-	play_card(card, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY)
+	spawn_unit(unit_scene, card, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY)
+
+func play_spell(spell: SpellList.Spell) -> void:
+	print("Spell played")
+	match spell.type:
+		SpellList.SpellType.DAMAGE:
+			if currently_hovered_unit:
+				currently_hovered_unit.unit_attackable.take_damage(5)
+		SpellList.SpellType.HEAL:
+			if currently_hovered_unit:
+				currently_hovered_unit.unit_attackable.heal(5)
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST

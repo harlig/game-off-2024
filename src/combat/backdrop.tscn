@@ -121,7 +121,7 @@ environment = SubResource("Environment_oe4hh")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.324, -4.18797)
-light_energy = 0.5
+light_energy = 1.5
 omni_range = 30.0
 omni_attenuation = 0.7
 metadata/_edit_lock_ = true
