@@ -87,24 +87,12 @@ func _sort_hand() -> void:
 func _compare_cards(a: Card, b: Card) -> int:
 	if a.type != b.type:
 		return a.type < b.type
-	match a.type:
-		Card.CardType.UNIT:
-			if a.creature.mana != b.creature.mana:
-				return a.creature.mana < b.creature.mana
-			return a.creature.get_score() < b.creature.get_score()
-		Card.CardType.SPELL:
-			if a.spell.mana != b.spell.mana:
-				return a.spell.mana < b.spell.mana
-			return a.spell.get_score() < b.spell.get_score()
-
-	return 0
+	if a.mana != b.mana:
+		return a.mana < b.mana
+	return a.get_score() < b.get_score()
 
 func play_card(card: Card) -> void:
-	match card.type:
-		Card.CardType.UNIT:
-			cur_mana -= card.creature.mana
-		Card.CardType.SPELL:
-			cur_mana -= card.spell.mana
+	cur_mana -= card.mana
 	discard(card)
 	cards_in_hand.erase(card)
 
@@ -123,12 +111,12 @@ func play_best_card() -> void:
 	var best_card: Card = null
 	var best_card_value: float = -1
 	for card in cards_in_hand:
-		var card_value: float = card.creature.get_score()
+		var card_value: float = card.get_score()
 		if card_value > best_card_value:
 			best_card = card
 			best_card_value = card_value
-	if best_card and cur_mana >= best_card.creature.mana:
-		print(best_card.creature.name)
+	if best_card and cur_mana >= best_card.mana:
+		print(best_card.name)
 		get_parent().spawn_enemy(best_card)
 		play_card(best_card)
 
@@ -136,12 +124,5 @@ func play_best_card() -> void:
 		print("No more cards to play")
 
 func _on_card_clicked(_times_clicked: int, card: Card) -> void:
-	match card.type:
-		Card.CardType.UNIT:
-			if card.creature.mana <= cur_mana:
-				card_clicked.emit(card);
-		Card.CardType.SPELL:
-			if card.spell.mana <= cur_mana:
-				card_clicked.emit(card);
-		_:
-			push_error("Unknown card type for card ", card)
+	if card.mana <= cur_mana:
+		card_clicked.emit(card);

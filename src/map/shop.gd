@@ -30,7 +30,7 @@ class Item:
 		var item: Item = Item.new()
 		item.card = new_card
 		item.type = Type.CARD
-		item.cost = new_card.creature.get_score()
+		item.cost = new_card.get_score()
 		return item
 
 
@@ -50,12 +50,12 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 	last_clicked_card = card_instance
 
 	if times_clicked == 2:
-		if player_gold < card_instance.creature.get_score():
+		if player_gold < card_instance.get_score():
 			print("Not enough gold")
 			return
 
 		# TODO: factor in actual cost
-		var cost := card_instance.creature.get_score()
+		var cost := card_instance.get_score()
 		player_gold -= cost
 		item_purchased.emit(last_clicked_card, cost)
 		var index_of := cards_in_shop.find(card_instance)

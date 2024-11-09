@@ -5,6 +5,7 @@ var times_clicked := 0
 var original_stylebox_override: StyleBoxFlat
 
 var type: CardType
+var mana: int
 var creature: UnitList.Creature
 var spell: SpellList.Spell
 
@@ -13,15 +14,27 @@ enum CardType {
 	SPELL
 }
 
+
 signal card_clicked
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")
 	update_display()
 
+func get_score() -> int:
+	match type:
+		CardType.UNIT:
+			return creature.get_score()
+		CardType.SPELL:
+			return spell.get_score()
+		_:
+			push_error("Unknown card type", type)
+	return -1
+
 static func duplicate_card(card: Card) -> Card:
 	var new_card := card.duplicate()
 	new_card.type = card.type
+	new_card.mana = card.mana
 	match card.type:
 		CardType.UNIT:
 			new_card.creature = card.creature
@@ -35,11 +48,11 @@ func update_display() -> void:
 			update_unit_display()
 		CardType.SPELL:
 			update_spell_display()
+	$Mana.text = str(mana)
 
 func update_unit_display() -> void:
 	$Title.text = creature.name
 	$Health.text = str(creature.health)
-	$Mana.text = str(creature.mana)
 	$Damage.text = str(creature.damage)
 	$TextureRect.texture = load(creature.card_image_path)
 
@@ -55,7 +68,7 @@ func update_unit_display() -> void:
 
 func update_spell_display() -> void:
 	$Title.text = spell.name
-	$Mana.text = str(spell.mana)
+	$Mana.text = str(mana)
 	# $TextureRect.texture = load(creature.card_image_path)
 
 	match spell.type:

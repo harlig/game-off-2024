@@ -40,6 +40,7 @@ static func create_card(
 ) -> Card:
 	var card_instance: Card = card_scene.instantiate()
 	card_instance.set_spell(spell)
+	card_instance.mana = spell.mana
 	return card_instance
 
 static func new_card_by_id(id: int) -> Card:

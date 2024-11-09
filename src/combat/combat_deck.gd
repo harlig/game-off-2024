@@ -37,11 +37,11 @@ func get_best_cards(num_cards: int) -> Array[Card]:
 		var worst_best_card: Card = null
 		var worst_best_card_ndx := -1
 		for ndx in range(best_cards.size()):
-			if worst_best_card == null or worst_best_card.creature.get_score() > best_cards[ndx].creature.get_score():
+			if worst_best_card == null or worst_best_card.get_score() > best_cards[ndx].get_score():
 				worst_best_card = best_cards[ndx]
 				worst_best_card_ndx = ndx
 
-		if card.creature.get_score() > worst_best_card.creature.get_score():
+		if card.get_score() > worst_best_card.get_score():
 			best_cards[worst_best_card_ndx] = card
 
 	return best_cards
