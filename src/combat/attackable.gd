@@ -4,13 +4,14 @@ class_name Attackable extends Area3D
 var hp := 75:
 	set(new_hp):
 		if new_hp > max_hp:
-			new_hp = max_hp
+			hp = max_hp
 		else:
 			hp = new_hp
 
 var max_hp := hp:
 	set(new_max_hp):
 		hp = new_max_hp
+		max_hp = new_max_hp
 
 enum Team {PLAYER, ENEMY}
 
