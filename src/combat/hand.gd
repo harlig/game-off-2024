@@ -97,6 +97,7 @@ func discard(card: Card) -> void:
 	combat_deck.discard(card)
 
 	if player_hand:
+		card.card_clicked.disconnect(_on_card_clicked)
 		$CardsArea.remove_child(card)
 
 func play_best_card() -> void:
