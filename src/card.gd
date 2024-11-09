@@ -80,8 +80,12 @@ func update_spell_display() -> void:
 			$Description.text = "Heals " + str(spell.value) + " health"
 			$Health.text = str(spell.value)
 			$Damage.hide()
-		SpellList.SpellType.MANA:
+		SpellList.SpellType.CUR_MANA:
 			$Description.text = "Gives " + str(spell.value) + " mana"
+			$Damage.hide()
+			$Health.hide()
+		SpellList.SpellType.MAX_MANA:
+			$Description.text = "Increase max mana by " + str(spell.value) + " for this combat"
 			$Damage.hide()
 			$Health.hide()
 

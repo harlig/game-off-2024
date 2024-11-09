@@ -2,34 +2,37 @@ class_name Hand extends Control
 
 const HAND_SIZE := 5
 const MAX_HAND_SIZE := 8
-const MAX_MANA := 8
+
+const DRAW_TIMER := 5.0
+const MANA_TIMER := 2.0
 
 @export var player_hand := false;
 
 var cards_in_hand: Array[Card] = []
 var combat_deck: CombatDeck
+var max_mana := 8
+
 var cur_mana := 8:
 	set(value):
-		if value > MAX_MANA:
-			cur_mana = MAX_MANA
+		if value > max_mana:
+			cur_mana = max_mana
 		else:
 			cur_mana = value
 		if player_hand:
-			$HBoxContainer/TextureRect2/Label2.text = str(cur_mana) + "/" + str(MAX_MANA);
+			$HBoxContainer/TextureRect2/Label2.text = str(cur_mana) + "/" + str(max_mana);
 
 signal card_clicked(card: Card)
 
 func _ready() -> void:
 	if player_hand:
-		# draw a card every 2 seconds
 		var draw_timer: Timer = Timer.new()
 		draw_timer.autostart = true
-		draw_timer.wait_time = 2.0
+		draw_timer.wait_time = DRAW_TIMER
 		draw_timer.connect("timeout", _on_draw_timer_timeout)
 
 		var mana_timer: Timer = Timer.new()
 		mana_timer.autostart = true
-		mana_timer.wait_time = 1.0
+		mana_timer.wait_time = MANA_TIMER
 		mana_timer.connect("timeout", _on_mana_timer_timeout)
 
 		add_child(draw_timer)
@@ -45,7 +48,7 @@ func _on_mana_timer_timeout() -> void:
 	cur_mana += 1
 
 func replenish_mana() -> void:
-	cur_mana = MAX_MANA
+	cur_mana = max_mana
 
 func setup_deck(deck: CombatDeck) -> void:
 	combat_deck = deck

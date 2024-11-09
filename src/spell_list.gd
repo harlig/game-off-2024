@@ -5,7 +5,8 @@ static var card_scene := preload("res://src/card.tscn")
 static var spell_cards: Array[Spell] = [
 	Spell.new("Fireball", SpellType.DAMAGE, TargetableType.UNIT, 5, 1, "res://textures/spells/fireball.png"),
 	Spell.new("Heal", SpellType.HEAL, TargetableType.UNIT, 6, 1, "res://textures/spells/heal.png"),
-	Spell.new("Mana", SpellType.MANA, TargetableType.NONE, 5, 1, "res://textures/spells/mana.png"),
+	Spell.new("Mana", SpellType.CUR_MANA, TargetableType.NONE, 3, 1, "res://textures/spells/mana.png"),
+	Spell.new("++ max mana", SpellType.MAX_MANA, TargetableType.NONE, 1, 5, "res://textures/spells/mana.png"),
 ]
 
 class Spell:
@@ -34,7 +35,8 @@ class Spell:
 enum SpellType {
 	DAMAGE,
 	HEAL,
-	MANA,
+	CUR_MANA,
+	MAX_MANA,
 }
 
 enum TargetableType {

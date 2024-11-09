@@ -124,8 +124,10 @@ func play_spell(spell: SpellList.Spell) -> void:
 		SpellList.SpellType.HEAL:
 			if currently_hovered_unit:
 				currently_hovered_unit.unit_attackable.heal(spell.value)
-		SpellList.SpellType.MANA:
+		SpellList.SpellType.CUR_MANA:
 			$PlayerHand.cur_mana += spell.value
+		SpellList.SpellType.MAX_MANA:
+			$PlayerHand.max_mana += spell.value
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
