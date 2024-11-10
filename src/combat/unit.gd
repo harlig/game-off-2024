@@ -44,6 +44,17 @@ class Buff:
 		self.type = init_type
 		self.value = init_value
 
+	func description() -> String:
+		var type_str := ""
+		match type:
+			BuffType.SPEED:
+				type_str = "speed"
+			BuffType.DAMAGE:
+				type_str = "damage"
+			BuffType.HEALTH:
+				type_str = "health"
+		return "While alive, gives other units +" + str(value) + " " + type_str
+
 var buffs_i_apply: Array[Buff] = []
 
 func _ready() -> void:

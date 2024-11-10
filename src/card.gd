@@ -71,6 +71,9 @@ func update_unit_display() -> void:
 			creature_type_text = "Air"
 	$Description.text = creature_type_text
 
+	for buff in creature.buffs_i_apply:
+		$Description.text += "\n" + buff.description()
+
 func update_spell_display() -> void:
 	$Title.text = spell.name
 	$Mana.text = str(mana)
