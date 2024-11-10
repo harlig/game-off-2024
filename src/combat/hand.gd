@@ -3,7 +3,7 @@ class_name Hand extends Control
 const HAND_SIZE := 5
 const MAX_HAND_SIZE := 8
 
-const DRAW_TIMER := 10.0
+const DRAW_TIMER := 5.0
 const MANA_TIMER := 2.0
 
 @export var player_hand := false;
