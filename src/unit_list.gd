@@ -24,6 +24,8 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Ebon Phantom", CardType.MELEE, 5, 8, 8, 9, "res://textures/units/hand_crawler.png"),
 	Creature.new("Abyssal Fiend", CardType.MELEE, 10, 10, 10, 10, "res://textures/units/hand_crawler.png"),
 	Creature.new("Damage Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 2)]),
+	Creature.new("Health Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.HEALTH, 5)]),
+	Creature.new("Speed Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.SPEED, 0.5)]),
 ]
 
 class Creature:

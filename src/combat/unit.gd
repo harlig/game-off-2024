@@ -14,7 +14,7 @@ const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
 var attack_animation := "attack"
 const WALK_ANIMATION := "walk"
 
-var speed := 1
+var speed := 1.0
 var damage := 5:
 	set(value):
 		damage = value
@@ -38,9 +38,9 @@ enum BuffType {
 
 class Buff:
 	var type: BuffType
-	var value: int
+	var value: float
 
-	func _init(init_type: BuffType, init_value: int) -> void:
+	func _init(init_type: BuffType, init_value: float) -> void:
 		self.type = init_type
 		self.value = init_value
 
@@ -135,7 +135,10 @@ func _on_attack_finished(_anim_name: String) -> void:
 
 
 func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> void:
+	# need to set both max and current hp
 	unit_attackable.max_hp = from_creature.health
+	unit_attackable.hp = from_creature.health
+
 	$MeshInstance3D.material_override.set_shader_parameter("albedo", ResourceLoader.load(from_creature.card_image_path))
 	$MeshInstance3D.material_override.set_shader_parameter("flip_h", flip_image)
 	if flip_image:
@@ -183,19 +186,17 @@ func apply_buff(incoming_buff: Buff) -> void:
 		BuffType.SPEED:
 			speed += incoming_buff.value
 		BuffType.DAMAGE:
-			damage += incoming_buff.value
+			damage += int(incoming_buff.value)
 		BuffType.HEALTH:
-			# TODO: this is basically a heal, we need to up the max hp by value and also heal that value
-			# something relies on setting max_hp to set the hp so fix that
-			unit_attackable.hp += incoming_buff.value
+			unit_attackable.max_hp += int(incoming_buff.value)
+			unit_attackable.hp += int(incoming_buff.value)
 
 func remove_buff(buff_to_remove: Buff) -> void:
 	match buff_to_remove.type:
 		BuffType.SPEED:
 			speed -= buff_to_remove.value
 		BuffType.DAMAGE:
-			damage -= buff_to_remove.value
+			damage -= int(buff_to_remove.value)
 		BuffType.HEALTH:
-			# TODO: this is basically a heal, we need to up the max hp by value and also heal that value
-			# something relies on setting max_hp to set the hp so fix that
-			unit_attackable.hp -= buff_to_remove.value
+			unit_attackable.max_hp -= int(buff_to_remove.value)
+			unit_attackable.hp -= int(buff_to_remove.value)

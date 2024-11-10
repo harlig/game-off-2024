@@ -11,7 +11,6 @@ var hp := 75:
 
 var max_hp := hp:
 	set(new_max_hp):
-		hp = new_max_hp
 		max_hp = new_max_hp
 		$Label3D.text = str(hp) + "/" + str(max_hp)
 
