@@ -5,7 +5,12 @@ var times_clicked := 0
 var original_stylebox_override: StyleBoxFlat
 
 var type: CardType
-var mana: int
+var mana: int:
+	set(value):
+		mana = value
+		if mana < 0:
+			mana = 0
+		$Mana.text = str(value)
 var creature: UnitList.Creature
 var spell: SpellList.Spell
 
