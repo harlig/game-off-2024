@@ -15,7 +15,10 @@ var attack_animation := "attack"
 const WALK_ANIMATION := "walk"
 
 var speed := 1
-var damage := 5
+var damage := 5:
+	set(value):
+		damage = value
+		$Label3D.text = str(damage)
 var unit_name: String = "Unit"
 var unit_type: int = UnitList.CardType.MELEE
 var is_stopped := false
@@ -33,7 +36,15 @@ enum BuffType {
 	HEALTH
 }
 
-var buffs_i_apply: Array[BuffType] = []
+class Buff:
+	var type: BuffType
+	var value: int
+
+	func _init(init_type: BuffType, init_value: int) -> void:
+		self.type = init_type
+		self.value = init_value
+
+var buffs_i_apply: Array[Buff] = []
 
 func _ready() -> void:
 	add_child(invulnerability_timer)
@@ -122,6 +133,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	damage = from_creature.damage
 	unit_name = from_creature.name
 	unit_type = from_creature.type
+	buffs_i_apply = from_creature.buffs_i_apply
 
 	resize_unit_target_box(from_creature)
 
@@ -153,3 +165,26 @@ func unhighlight_unit() -> void:
 
 func make_selectable(selectable: bool) -> void:
 	unit_attackable.input_ray_pickable = selectable
+
+func apply_buff(incoming_buff: Buff) -> void:
+	print("Applying buff: " + str(incoming_buff.type) + " " + str(incoming_buff.value))
+	match incoming_buff.type:
+		BuffType.SPEED:
+			speed += incoming_buff.value
+		BuffType.DAMAGE:
+			damage += incoming_buff.value
+		BuffType.HEALTH:
+			# TODO: this is basically a heal, we need to up the max hp by value and also heal that value
+			# something relies on setting max_hp to set the hp so fix that
+			unit_attackable.hp += incoming_buff.value
+
+func remove_buff(buff_to_remove: Buff) -> void:
+	match buff_to_remove.type:
+		BuffType.SPEED:
+			speed -= buff_to_remove.value
+		BuffType.DAMAGE:
+			damage -= buff_to_remove.value
+		BuffType.HEALTH:
+			# TODO: this is basically a heal, we need to up the max hp by value and also heal that value
+			# something relies on setting max_hp to set the hp so fix that
+			unit_attackable.hp -= buff_to_remove.value

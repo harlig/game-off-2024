@@ -24,6 +24,8 @@ func _ready() -> void:
 			var rare_unit_card := UnitList.new_card_by_name("Ebon Phantom") # Ebon Phantom
 			add_card(rare_unit_card)
 
+	add_card(UnitList.new_card_by_name("Damage Buffer")) # Add a buff card
+
 	for ndx in range(0, SpellList.spell_cards.size()):
 		var spell_card := SpellList.new_card_by_id(ndx % SpellList.spell_cards.size())
 		add_card(spell_card)

@@ -99,8 +99,10 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	unit.unit_attackable.team = team
 
 	if team == Attackable.Team.PLAYER:
+		buff_units_from_unit(unit, current_player_units)
 		current_player_units.append(unit)
 	else:
+		buff_units_from_unit(unit, current_enemy_units)
 		current_enemy_units.append(unit)
 
 	unit.unit_attackable.connect("mouse_entered", _on_unit_mouse_entered.bind(unit))
@@ -112,12 +114,35 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 
 func _on_unit_died(unit: Unit) -> void:
 	if unit.unit_attackable.team == Attackable.Team.PLAYER:
+		remove_buffs_from_units_buffed_by_unit(unit, current_player_units)
 		current_player_units.erase(unit)
 	else:
+		remove_buffs_from_units_buffed_by_unit(unit, current_player_units)
 		current_enemy_units.erase(unit)
 
-	# when the unit dies, if the unit was modifying other units, we need to remove those modifications
-	pass
+func buff_units_from_unit(buff_unit: Unit, units_to_buff: Array[Unit]) -> void:
+	print("Checking if I should buff units with my buffs size of " + str(buff_unit.buffs_i_apply.size()))
+	for unit in units_to_buff:
+		if unit == buff_unit:
+			continue
+		for buff in buff_unit.buffs_i_apply:
+			unit.apply_buff(buff)
+		# we also need to apply the buffs from other units to the unit itself
+		if unit.buffs_i_apply.size() > 0:
+			for buff in unit.buffs_i_apply:
+				buff_unit.apply_buff(buff)
+
+
+# sorry for this naming lmfao, change it if you can think of something better
+func remove_buffs_from_units_buffed_by_unit(buff_unit: Unit, units_buffed: Array[Unit]) -> void:
+	if buff_unit.buffs_i_apply.size() == 0:
+		return
+
+	for unit in units_buffed:
+		if unit == buff_unit:
+			continue
+		for buff in buff_unit.buffs_i_apply:
+			unit.remove_buff(buff)
 
 func spawn_enemy(card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE

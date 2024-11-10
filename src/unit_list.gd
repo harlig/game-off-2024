@@ -23,7 +23,7 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Shadow Colossus", CardType.RANGED, 7, 6, 6, 9, "res://logo.png"),
 	Creature.new("Ebon Phantom", CardType.MELEE, 5, 8, 8, 9, "res://textures/units/hand_crawler.png"),
 	Creature.new("Abyssal Fiend", CardType.MELEE, 10, 10, 10, 10, "res://textures/units/hand_crawler.png"),
-	Creature.new("Damage Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.BuffType.DAMAGE]),
+	Creature.new("Damage Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 2)]),
 ]
 
 class Creature:
@@ -34,9 +34,9 @@ class Creature:
 	var mana: int
 	var strength_factor: int
 	var card_image_path: String
-	var buffs_i_apply: Array[Unit.BuffType] = []
+	var buffs_i_apply: Array[Unit.Buff] = []
 
-	func _init(init_name: String, init_type: CardType, init_health: int, init_damage: int, init_mana: int, init_strength_factor: int, init_card_image_path: String, init_buffs_i_apply: Array[Unit.BuffType]=[]) -> void:
+	func _init(init_name: String, init_type: CardType, init_health: int, init_damage: int, init_mana: int, init_strength_factor: int, init_card_image_path: String, init_buffs_i_apply: Array[Unit.Buff]=[]) -> void:
 		self.name = init_name
 		self.type = init_type
 		self.health = init_health

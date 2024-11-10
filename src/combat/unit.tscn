@@ -159,7 +159,6 @@ _data = {
 
 [node name="Unit" type="Node3D"]
 script = ExtResource("1_2p7eh")
-direction = null
 
 [node name="Attackable" parent="." instance=ExtResource("1_s1phr")]
 input_ray_pickable = false
@@ -186,6 +185,11 @@ libraries = {
 &"": SubResource("AnimationLibrary_vok6h")
 }
 autoplay = "walk"
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 0)
+text = "dmg"
+font_size = 72
 
 [connection signal="area_entered" from="TargetArea" to="." method="_on_target_area_area_entered"]
 [connection signal="area_exited" from="TargetArea" to="." method="_on_target_area_area_exited"]

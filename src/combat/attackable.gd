@@ -7,11 +7,13 @@ var hp := 75:
 			hp = max_hp
 		else:
 			hp = new_hp
+		$Label3D.text = str(hp) + "/" + str(max_hp)
 
 var max_hp := hp:
 	set(new_max_hp):
 		hp = new_max_hp
 		max_hp = new_max_hp
+		$Label3D.text = str(hp) + "/" + str(max_hp)
 
 enum Team {PLAYER, ENEMY}
 
