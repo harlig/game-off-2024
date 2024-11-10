@@ -77,29 +77,22 @@ func update_unit_display() -> void:
 func update_spell_display() -> void:
 	$Title.text = spell.name
 	$Mana.text = str(mana)
-	# $TextureRect.texture = load(creature.card_image_path)
+	$Damage.hide()
+	$Health.hide()
+	$TextureRect.texture = load(spell.card_image_path)
+	texture = load("res://textures/card/card_blank.png")
 
 	match spell.type:
 		SpellList.SpellType.DAMAGE:
 			$Description.text = "Deals " + str(spell.value) + " damage"
-			$Damage.text = str(spell.value)
-			$Health.hide()
 		SpellList.SpellType.HEAL:
 			$Description.text = "Heals " + str(spell.value) + " health"
-			$Health.text = str(spell.value)
-			$Damage.hide()
 		SpellList.SpellType.CUR_MANA:
 			$Description.text = "Gives " + str(spell.value) + " mana"
-			$Damage.hide()
-			$Health.hide()
 		SpellList.SpellType.MAX_MANA:
 			$Description.text = "Increase max mana by " + str(spell.value) + " for this combat"
-			$Damage.hide()
-			$Health.hide()
 		SpellList.SpellType.DRAW_CARDS:
 			$Description.text = "Draw " + str(spell.value) + " cards"
-			$Damage.hide()
-			$Health.hide()
 
 func set_unit(from_creature: UnitList.Creature) -> void:
 	type = CardType.UNIT
