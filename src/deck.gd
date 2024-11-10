@@ -34,13 +34,20 @@ func add_card(card: Card) -> void:
 	cards.append(duped_card)
 
 
-func toggle_visualize_deck() -> bool:
+var cards_displayed: Array[Card] = []
+func toggle_visualize_deck(card_types_to_display: Array[Card.CardType]=[]) -> bool:
 	is_visualizing_deck = !is_visualizing_deck
+	print("Toggling visualizing deck with types to display ", card_types_to_display)
 	if is_visualizing_deck:
 		for card in cards:
-			add_child(card)
+			# yikes this is garbage but whatever, would love to set the default to all enum values but too hard rn
+			if card_types_to_display.size() == 0 or card.type in card_types_to_display:
+				cards_displayed.append(card)
+				add_child(card)
+
 	else:
-		for card in cards:
+		for card in cards_displayed:
 			card.reset_selected()
 			remove_child(card)
+		cards_displayed.clear()
 	return is_visualizing_deck

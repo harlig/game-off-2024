@@ -124,3 +124,13 @@ func reset_selected() -> void:
 	is_selected = false
 	times_clicked = 0
 	add_theme_stylebox_override("panel", original_stylebox_override)
+
+
+func _to_string() -> String:
+	var card_string := ""
+	match type:
+		CardType.UNIT:
+			card_string = "Unit: " + creature.name + " - " + str(creature.health) + " health, " + str(creature.damage) + " damage"
+		CardType.SPELL:
+			card_string = "Spell: " + spell.name + " - " + str(spell.value) + " value" + " type " + str(spell.type)
+	return card_string

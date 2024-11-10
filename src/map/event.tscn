@@ -12,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_akuv1")
 
 [node name="Label" type="Label" parent="."]
@@ -31,7 +32,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GetGold" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchor_top = 0.15
 anchor_right = 1.0
@@ -52,11 +52,12 @@ text = "Get 10 gold"
 [node name="BuffCard" type="Control" parent="."]
 visible = false
 layout_mode = 1
-anchors_preset = 15
+anchor_top = 0.15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="BuffCard"]
 layout_mode = 1
@@ -72,5 +73,13 @@ offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Buffing card area"
+
+[node name="Button" type="Button" parent="BuffCard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.6
+anchor_right = 0.6
+anchor_bottom = 0.8
 
 [connection signal="pressed" from="GetGold/Button" to="." method="_on_get_gold_button_pressed"]
