@@ -22,8 +22,8 @@ func take_damage(damage: int) -> void:
 		return
 	hp -= damage
 	if hp <= 0:
-		get_parent().queue_free()
 		emit_signal("died")
+		get_parent().queue_free()
 
 func heal(amount: int) -> void:
 	hp += amount

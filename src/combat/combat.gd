@@ -26,6 +26,9 @@ var drag_over_spawn_area := false
 
 var currently_hovered_unit: Unit = null
 
+var current_player_units: Array[Unit] = []
+var current_enemy_units: Array[Unit] = []
+
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
@@ -94,10 +97,27 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 		unit.get_node("Attackable").scale.x *= -1
 	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false)
 	unit.unit_attackable.team = team
+
+	if team == Attackable.Team.PLAYER:
+		current_player_units.append(unit)
+	else:
+		current_enemy_units.append(unit)
+
 	unit.unit_attackable.connect("mouse_entered", _on_unit_mouse_entered.bind(unit))
 	unit.unit_attackable.connect("mouse_exited", _on_unit_mouse_exited.bind(unit))
+	unit.unit_attackable.connect("died", _on_unit_died.bind(unit))
+
 	connect("targetable_card_selected", unit.make_selectable.bind(true))
 	connect("targetable_card_deselected", unit.make_selectable.bind(false))
+
+func _on_unit_died(unit: Unit) -> void:
+	if unit.unit_attackable.team == Attackable.Team.PLAYER:
+		current_player_units.erase(unit)
+	else:
+		current_enemy_units.erase(unit)
+
+	# when the unit dies, if the unit was modifying other units, we need to remove those modifications
+	pass
 
 func spawn_enemy(card: Card) -> void:
 	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
