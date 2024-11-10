@@ -26,17 +26,6 @@ var drag_over_spawn_area := false
 
 var currently_hovered_unit: Unit = null
 
-func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
-	var new_deck: Array[Card] = []
-	var total_strength := 0
-	var strengh_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(card: UnitList.Creature) -> bool: return card.strength_factor <= single_card_strength_limit)
-	while total_strength < strength_limit:
-		var dict := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
-		total_strength += dict["strength_factor"]
-		new_deck.append(UnitList.create_card(dict))
-	return new_deck
-
-
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
@@ -205,4 +194,13 @@ func draw_drag_line(event: InputEvent) -> void:
 		var quadriatic: float = -4 * progress * (progress - 1);
 
 		$DragLine.add_point(current_position + normal * quadriatic * 100);
-		# $DragLine.add_point(current_position);
+
+func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
+	var new_deck: Array[Card] = []
+	var total_strength := 0
+	var strengh_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(card: UnitList.Creature) -> bool: return card.strength_factor <= single_card_strength_limit)
+	while total_strength < strength_limit:
+		var dict := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
+		total_strength += dict["strength_factor"]
+		new_deck.append(UnitList.create_card(dict))
+	return new_deck

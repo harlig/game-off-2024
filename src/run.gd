@@ -117,6 +117,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		elif map_node.type == MapNode.NodeType.EVENT:
 			hide_map(true)
 			var new_event: Event = event_scene.instantiate()
+			new_event.type = Event.EventType.values()[randi() % Event.EventType.size()]
 			new_event.connect("event_resolved", _on_event_resolved)
 			add_child(new_event)
 		else:
