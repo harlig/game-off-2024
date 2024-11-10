@@ -115,4 +115,5 @@ scale_amount_curve = SubResource("Curve_8gixm")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 mesh = SubResource("CylinderMesh_wpwy8")

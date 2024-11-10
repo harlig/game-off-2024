@@ -1,6 +1,8 @@
 class_name Combat extends Node3D
 
 @onready var unit_scene: PackedScene = preload("res://src/combat/unit.tscn")
+@onready var torch_scene: PackedScene = preload("res://src/torch.tscn")
+
 @onready var reward := $Reward
 
 signal reward_presented()
@@ -14,6 +16,7 @@ enum CombatState {PLAYING, WON, LOST}
 
 const ENEMY_SPAWN_TIMER := 400.0
 const OFFSET_FROM_BASE_DISTANCE := 3
+const NUM_TORCHES := 3
 
 var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
@@ -38,6 +41,17 @@ func _ready() -> void:
 	$EnemyHand.setup_deck($EnemyCombatDeck)
 	set_process(true)
 	$Camera3D.make_current()
+
+	# set up the torches, spanning the width of the map from base to base
+	var player_base_x: float = $PlayerBase.position.x
+	var enemy_base_x: float = $EnemyBase.position.x
+	var interval := (enemy_base_x - player_base_x) / (NUM_TORCHES + 1)
+	for ndx in range(NUM_TORCHES):
+		var torch := torch_scene.instantiate()
+		torch.position = Vector3(player_base_x + interval * (ndx + 1), 0, ($PlayerBase.position.z + $EnemyBase.position.z) / 2.0)
+		(torch.get_node("CPUParticles3D") as CPUParticles3D).emitting = false
+		(torch.get_node("OmniLight3D") as OmniLight3D).hide()
+		add_child(torch)
 
 func _process(delta: float) -> void:
 	if state != CombatState.PLAYING:
