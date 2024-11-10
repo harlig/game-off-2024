@@ -22,7 +22,8 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Void Tyrant", CardType.AIR, 6, 7, 7, 9, "res://logo.png"),
 	Creature.new("Shadow Colossus", CardType.RANGED, 7, 6, 6, 9, "res://logo.png"),
 	Creature.new("Ebon Phantom", CardType.MELEE, 5, 8, 8, 9, "res://textures/units/hand_crawler.png"),
-	Creature.new("Abyssal Fiend", CardType.MELEE, 10, 10, 10, 10, "res://textures/units/hand_crawler.png")
+	Creature.new("Abyssal Fiend", CardType.MELEE, 10, 10, 10, 10, "res://textures/units/hand_crawler.png"),
+	Creature.new("Damage Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.BuffType.DAMAGE]),
 ]
 
 class Creature:
@@ -33,8 +34,9 @@ class Creature:
 	var mana: int
 	var strength_factor: int
 	var card_image_path: String
+	var buffs_i_apply: Array[Unit.BuffType] = []
 
-	func _init(init_name: String, init_type: CardType, init_health: int, init_damage: int, init_mana: int, init_strength_factor: int, init_card_image_path: String) -> void:
+	func _init(init_name: String, init_type: CardType, init_health: int, init_damage: int, init_mana: int, init_strength_factor: int, init_card_image_path: String, init_buffs_i_apply: Array[Unit.BuffType]=[]) -> void:
 		self.name = init_name
 		self.type = init_type
 		self.health = init_health
@@ -42,6 +44,7 @@ class Creature:
 		self.mana = init_mana
 		self.strength_factor = init_strength_factor
 		self.card_image_path = init_card_image_path
+		self.buffs_i_apply = init_buffs_i_apply
 
 	func get_score() -> int:
 		return health + damage

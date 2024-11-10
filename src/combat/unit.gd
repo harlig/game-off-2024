@@ -11,7 +11,6 @@ const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
 
 @export var direction: Direction = Direction.RIGHT
 
-
 var attack_animation := "attack"
 const WALK_ANIMATION := "walk"
 
@@ -27,6 +26,14 @@ var is_attacking := false
 var time_since_last_attack := 0.0
 var invulnerability_timer := Timer.new()
 var is_invulnerable := true
+
+enum BuffType {
+	SPEED,
+	DAMAGE,
+	HEALTH
+}
+
+var buffs_i_apply: Array[BuffType] = []
 
 func _ready() -> void:
 	add_child(invulnerability_timer)
