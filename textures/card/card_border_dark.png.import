@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btn3cqk3vyobv"
-path="res://.godot/imported/card_border_brown.png-17f8926bd7e2f266ccc20935dbbe616b.ctex"
+uid="uid://5iveimlmwv6e"
+path="res://.godot/imported/card_border_dark.png-e9cdeaddec8f2e0dc0c45e69c987f854.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/card_border_brown.png"
-dest_files=["res://.godot/imported/card_border_brown.png-17f8926bd7e2f266ccc20935dbbe616b.ctex"]
+source_file="res://textures/card/card_border_dark.png"
+dest_files=["res://.godot/imported/card_border_dark.png-e9cdeaddec8f2e0dc0c45e69c987f854.ctex"]
 
 [params]
 

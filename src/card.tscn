@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dh14vc0cg3k4w"]
 
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
-[ext_resource type="Texture2D" uid="uid://b5lca0cmo6ct4" path="res://textures/card_back.png" id="1_casw2"]
+[ext_resource type="Texture2D" uid="uid://b5lca0cmo6ct4" path="res://textures/card/card_back.png" id="1_casw2"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/units/hand_crawler.png" id="2_40l2k"]
 
 [node name="Card" type="TextureRect"]
