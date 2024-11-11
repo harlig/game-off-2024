@@ -136,12 +136,13 @@ func _on_target_area_area_exited(area: Area3D) -> void:
 
 	if currently_attacking.size() == 0 and is_attacking:
 		is_attacking = false
-		animation_player.animation_finished.connect(_on_attack_finished, ConnectFlags.CONNECT_ONE_SHOT)
+		if not animation_player.animation_finished.is_connected(_on_attack_finished):
+			animation_player.animation_finished.connect(_on_attack_finished)
 
 func _on_attack_finished(_anim_name: String) -> void:
 	animation_player.seek(0, true)
 	animation_player.play(WALK_ANIMATION)
-
+	animation_player.animation_finished.disconnect(_on_attack_finished)
 
 func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> void:
 	# need to set both max and current hp
