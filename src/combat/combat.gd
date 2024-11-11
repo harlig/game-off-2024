@@ -117,7 +117,7 @@ func try_play_card() -> void:
 
 	match drag_card.type:
 		Card.CardType.UNIT:
-			if drag_over_spawn_area:
+			if drag_over_spawn_area and drag_spawn_position.x < all_torches[furthest_torch_lit].position.x:
 				spawn_unit(unit_scene, drag_card, drag_spawn_position, Attackable.Team.PLAYER)
 				$Hand.play_card(drag_card)
 		Card.CardType.SPELL:
