@@ -17,7 +17,6 @@ signal targetable_card_deselected()
 
 enum CombatState {PLAYING, WON, LOST}
 
-const ENEMY_SPAWN_TIMER := 4.0
 const OFFSET_FROM_BASE_DISTANCE := 3
 const NUM_TORCHES := 3
 
@@ -43,8 +42,9 @@ func _ready() -> void:
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
 	$PlayerCombatDeck.prepare_combat_deck(player_deck.cards)
 	$EnemyCombatDeck.prepare_combat_deck(enemy_cards)
-	$PlayerHand.setup_deck($PlayerCombatDeck)
-	$EnemyHand.setup_deck($EnemyCombatDeck)
+	$Hand.initialize($PlayerCombatDeck)
+	$Opponent/Hand.initialize($EnemyCombatDeck)
+
 	set_process(true)
 	$Camera3D.make_current()
 
@@ -82,15 +82,6 @@ func _ready() -> void:
 	all_torches.append(enemy_base_torch)
 
 
-func _process(delta: float) -> void:
-	if state != CombatState.PLAYING:
-		return
-	time_since_last_enemy_spawn += delta
-	if time_since_last_enemy_spawn > ENEMY_SPAWN_TIMER:
-		$EnemyHand.play_best_card()
-		$EnemyHand.replenish_mana()
-		time_since_last_enemy_spawn = 0
-
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
 		try_play_card()
@@ -119,14 +110,14 @@ func try_play_card() -> void:
 		Card.CardType.UNIT:
 			if drag_over_spawn_area:
 				spawn_unit(unit_scene, drag_card, drag_spawn_position, Attackable.Team.PLAYER)
-				$PlayerHand.play_card(drag_card)
+				$Hand.play_card(drag_card)
 		Card.CardType.SPELL:
 			if drag_card.spell.targetable_type == SpellList.TargetableType.NONE:
 				play_spell(drag_card.spell)
-				$PlayerHand.play_card(drag_card)
+				$Hand.play_card(drag_card)
 			elif currently_hovered_unit:
 				play_spell(drag_card.spell)
-				$PlayerHand.play_card(drag_card)
+				$Hand.play_card(drag_card)
 
 			targetable_card_deselected.emit()
 
@@ -202,7 +193,7 @@ func remove_buffs_from_units_buffed_by_unit(buff_unit: Unit, units_buffed: Array
 		for buff in buff_unit.buffs_i_apply:
 			unit.remove_buff(buff)
 
-func spawn_enemy(card: Card) -> void:
+func _on_enemy_spawn(card: Card) -> void:
 	var unit_x: float = enemy_base_torch_position.position.x + OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = enemy_base_torch_position.position.z
 	spawn_unit(unit_scene, card, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY)
@@ -217,11 +208,11 @@ func play_spell(spell: SpellList.Spell) -> void:
 			if currently_hovered_unit:
 				currently_hovered_unit.unit_attackable.heal(spell.value)
 		SpellList.SpellType.CUR_MANA:
-			$PlayerHand.cur_mana += spell.value
+			$Hand.cur_mana += spell.value
 		SpellList.SpellType.MAX_MANA:
-			$PlayerHand.max_mana += spell.value
+			$Hand.max_mana += spell.value
 		SpellList.SpellType.DRAW_CARDS:
-			$PlayerHand.draw_cards(spell.value)
+			$Hand.draw_cards(spell.value)
 
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
@@ -251,14 +242,14 @@ func provide_rewards() -> void:
 	var best_enemy_cards: Array[Card] = $EnemyCombatDeck.get_best_cards(3)
 	reward.add_card_offerings(best_enemy_cards)
 	reward.show()
-	$PlayerHand.queue_free()
-	$EnemyHand.queue_free()
+	$HandDisplay.queue_free()
+	$Opponent.queue_free()
 
 func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 	reward_chosen.emit(reward_data)
 	combat_over.emit(state)
 
-func _on_player_hand_card_clicked(card: Card) -> void:
+func _on_hand_display_card_clicked(card: Card) -> void:
 	drag_card = card
 	if card.type == Card.CardType.SPELL and card.spell.targetable_type != SpellList.TargetableType.NONE:
 		targetable_card_selected.emit()

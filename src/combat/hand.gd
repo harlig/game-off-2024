@@ -1,139 +1,132 @@
-class_name Hand extends Control
+class_name Hand extends Node
 
 const HAND_SIZE := 5
 const MAX_HAND_SIZE := 8
 
-const DRAW_TIMER := 5.0
-const MANA_TIMER := 2.0
+@export var draw_time := 5.0
+@export var mana_time := 2.0
 
-@export var player_hand := false;
-
-var cards_in_hand: Array[Card] = []
-var combat_deck: CombatDeck
+var cards: Array[Card] = []
+var deck: CombatDeck;
 var max_mana := 8
-
 var cur_mana := 8:
 	set(value):
-		if value > max_mana:
-			cur_mana = max_mana
-		else:
-			cur_mana = value
-		if player_hand:
-			$HBoxContainer/TextureRect2/Label2.text = str(cur_mana) + "/" + str(max_mana);
+		cur_mana = min(value, max_mana)
 
-signal card_clicked(card: Card)
+var draw_time_remaining := draw_time
+var mana_time_remaining := mana_time
 
-func _ready() -> void:
-	if player_hand:
-		var draw_timer: Timer = Timer.new()
-		draw_timer.autostart = true
-		draw_timer.wait_time = DRAW_TIMER
-		draw_timer.connect("timeout", _on_draw_timer_timeout)
+signal drew(card: Card)
+signal discarded(card: Card)
+signal mana_updated(cur: int, max: int)
 
-		var mana_timer: Timer = Timer.new()
-		mana_timer.autostart = true
-		mana_timer.wait_time = MANA_TIMER
-		mana_timer.connect("timeout", _on_mana_timer_timeout)
+func _physics_process(delta: float) -> void:
+	draw_time_remaining -= delta
 
-		add_child(draw_timer)
-		add_child(mana_timer)
+	if draw_time_remaining <= 0:
+		draw_time_remaining = draw_time
+		try_draw_card()
 
-func _on_draw_timer_timeout() -> void:
-	if cards_in_hand.size() >= MAX_HAND_SIZE:
+	mana_time_remaining -= delta
+
+	if mana_time_remaining <= 0:
+		cur_mana += 1
+		mana_time_remaining = mana_time
+		mana_updated.emit(cur_mana, max_mana)
+
+
+func initialize(combat_deck: CombatDeck) -> void:
+	deck = combat_deck;
+
+	for i in range(5):
+		try_draw_card();
+
+
+func try_draw_card() -> void:
+	if cards.size() >= MAX_HAND_SIZE:
 		print("Hand full, can't draw a card!")
 		return
-	_deal_card(combat_deck.draw())
 
-func _on_mana_timer_timeout() -> void:
-	cur_mana += 1
+	var card := deck.draw()
+	cards.append(card)
+	drew.emit(card)
 
-func draw_cards(num_cards: int) -> void:
-	for ndx in range(num_cards):
-		if cards_in_hand.size() >= MAX_HAND_SIZE:
-			print("Hand full, can't draw a card!")
-			return
 
-		_deal_card(combat_deck.draw())
+func draw_cards(n: int) -> void:
+	for i in range(n):
+		try_draw_card()
 
-func replenish_mana() -> void:
-	cur_mana = max_mana
-
-func setup_deck(deck: CombatDeck) -> void:
-	combat_deck = deck
-	refresh_hand()
-
-func refresh_hand() -> void:
-	# discard hand
-	for card in cards_in_hand:
-		discard(card)
-	cards_in_hand.clear()
-
-	# deal full hand
-	for ndx in range(HAND_SIZE):
-		_deal_card(combat_deck.draw())
-	if player_hand:
-		_sort_hand()
-	replenish_mana()
-
-func _deal_card(card: Card) -> void:
-	if card == null:
-		print("No card to deal")
-		return
-
-	cards_in_hand.append(card)
-
-	if player_hand:
-		card.card_clicked.connect(_on_card_clicked)
-		$CardsArea.add_child(card)
-
-func _sort_hand() -> void:
-	# Sort the cards in hand
-	cards_in_hand.sort_custom(_compare_cards)
-
-	# Sort the order of nodes in the CardsArea
-	for card in cards_in_hand:
-		var index := cards_in_hand.find(card)
-		$CardsArea.move_child(card, index)
-
-func _compare_cards(a: Card, b: Card) -> int:
-	if a.type != b.type:
-		return a.type < b.type
-	if a.mana != b.mana:
-		return a.mana < b.mana
-	return a.get_score() < b.get_score()
 
 func play_card(card: Card) -> void:
 	cur_mana -= card.mana
+	mana_updated.emit(cur_mana, max_mana)
 	discard(card)
-	cards_in_hand.erase(card)
+
 
 func discard(card: Card) -> void:
-	combat_deck.discard(card)
+	deck.discard(card)
+	cards.erase(card)
+	discarded.emit(card)
 
-	if player_hand:
-		card.card_clicked.disconnect(_on_card_clicked)
-		$CardsArea.remove_child(card)
 
-func play_best_card() -> void:
-	if cards_in_hand.size() == 0:
-		refresh_hand()
+func can_play(card: Card) -> bool:
+	return card.mana <= cur_mana
 
-	replenish_mana()
-	var best_card: Card = null
-	var best_card_value: float = -1
-	for card in cards_in_hand:
-		var card_value: float = card.get_score()
-		if card_value > best_card_value:
-			best_card = card
-			best_card_value = card_value
-	if best_card and cur_mana >= best_card.mana:
-		print(best_card.name)
-		get_parent().spawn_enemy(best_card)
-		play_card(best_card)
 
-	else:
-		print("No more cards to play")
+func is_empty() -> bool:
+	return cards.size() == 0
 
-func _on_card_clicked(_times_clicked: int, card: Card) -> void:
-	if card.mana <= cur_mana:
-		card_clicked.emit(card);
+
+# TODO: Confirm this works
+func swap(card1: Card, card2: Card) -> void:
+	var card1_ndx := cards.find(card1)
+	var card2_ndx := cards.find(card2)
+
+	cards[card1_ndx] = card2
+	cards[card2_ndx] = card1
+
+
+# func refresh_hand() -> void:
+# 	# discard hand
+# 	for card in cards:
+# 		discard(card)
+# 	cards.clear()
+
+# 	# deal full hand
+# 	for ndx in range(HAND_SIZE):
+# 		_deal_card(deck.draw())
+# 	if player_hand:
+# 		_sort_hand()
+# 	replenish_mana()
+
+# func _deal_card(card: Card) -> void:
+# 	if card == null:
+# 		print("No card to deal")
+# 		return
+
+# 	cards.append(card)
+
+# 	if player_hand:
+# 		card.card_clicked.connect(_on_card_clicked)
+# 		$CardsArea.add_child(card)
+
+# func _sort_hand() -> void:
+# 	# Sort the cards in hand
+# 	cards.sort_custom(_compare_cards)
+
+# 	# Sort the order of nodes in the CardsArea
+# 	for card in cards:
+# 		var index := cards.find(card)
+# 		$CardsArea.move_child(card, index)
+
+# func _compare_cards(a: Card, b: Card) -> int:
+# 	if a.type != b.type:
+# 		return a.type < b.type
+# 	if a.mana != b.mana:
+# 		return a.mana < b.mana
+# 	return a.get_score() < b.get_score()
+
+
+# func _on_card_clicked(_times_clicked: int, card: Card) -> void:
+# 	if card.mana <= cur_mana:
+# 		card_clicked.emit(card);
