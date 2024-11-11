@@ -22,24 +22,3 @@ func try_play_card() -> void:
 			spawn_time_remaining = SPAWN_INTERVAL;
 			spawn.emit(card);
 			return
-
-
-# func play_best_card() -> void:
-#     if hand.is_empty():
-#         return ;
-
-# 	replenish_mana()
-# 	var best_card: Card = null
-# 	var best_card_value: float = -1
-# 	for card in cards_in_hand:
-# 		var card_value: float = card.get_score()
-# 		if card_value > best_card_value:
-# 			best_card = card
-# 			best_card_value = card_value
-# 	if best_card and cur_mana >= best_card.mana:
-# 		print(best_card.name)
-# 		get_parent().spawn_enemy(best_card)
-# 		play_card(best_card)
-
-# 	else:
-# 		print("No more cards to play")
