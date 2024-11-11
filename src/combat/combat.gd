@@ -9,13 +9,9 @@ class_name Combat extends Node3D
 @onready var player_base_torch_location: Node3D = $PlayerBaseTorchLocation
 @onready var enemy_base_torch_position: Node3D = $EnemyBaseTorchLocation
 
-
 signal reward_presented()
 signal reward_chosen(reward: Reward.RewardData)
 signal combat_over(combat_state: CombatState)
-
-signal targetable_card_selected()
-signal targetable_card_deselected()
 
 enum CombatState {PLAYING, WON, LOST}
 
@@ -26,10 +22,8 @@ var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
 var difficulty := 1
 
-var drag_card: Card = null
-var drag_start_position: Vector2
-var drag_spawn_position: Vector3
-var drag_over_spawn_area := false
+var play_location_valid := false
+var play_location: Vector3
 
 var currently_hovered_unit: Unit = null
 
@@ -90,13 +84,6 @@ func _ready() -> void:
 	spawn_mesh.position.x = spawn_mesh_base_x
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
-		try_play_card()
-
-	if event is InputEventMouseMotion and drag_card:
-		draw_drag_line(event)
-
 func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 	if area is not Attackable:
 		return
@@ -110,32 +97,30 @@ func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 			return
 		unit.try_light_torch(torch)
 
-func try_play_card() -> void:
-	if not drag_card:
-		return
-	if not $Hand.can_play(drag_card):
-		return
-
-	match drag_card.type:
-		Card.CardType.UNIT:
-			# TODO: maybe this should instead check if you're hovered over the spawn mesh like the drag+drop code does
-			if drag_over_spawn_area and drag_spawn_position.x < all_torches[furthest_torch_lit].position.x:
-				spawn_unit(unit_scene, drag_card, drag_spawn_position, Attackable.Team.PLAYER)
-				$Hand.play_card(drag_card)
-		Card.CardType.SPELL:
-			if drag_card.spell.targetable_type == SpellList.TargetableType.NONE:
-				play_spell(drag_card.spell)
-				$Hand.play_card(drag_card)
-			elif currently_hovered_unit:
-				play_spell(drag_card.spell)
-				$Hand.play_card(drag_card)
-
-			targetable_card_deselected.emit()
-
-	drag_card = null;
-	drag_over_spawn_area = false;
-	$DragLine.clear_points();
+func _on_hand_display_try_play_card(card: Card) -> void:
 	reset_spawn_mesh()
+
+	if not $Hand.can_play(card):
+		return
+
+	print("playing")
+	print(play_location_valid)
+
+	match card.type:
+		Card.CardType.UNIT when play_location_valid:
+			print("unit")
+			# TODO: maybe this should instead check if you're hovered over the spawn mesh like the drag+drop code does
+			spawn_unit(unit_scene, card, play_location, Attackable.Team.PLAYER)
+			$Hand.play_card(card)
+
+		Card.CardType.SPELL:
+			if card.spell.targetable_type == SpellList.TargetableType.NONE and play_location_valid:
+				play_spell(card.spell)
+				$Hand.play_card(card)
+			elif currently_hovered_unit:
+				play_spell(card.spell)
+				$Hand.play_card(card)
+
 
 func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Vector3, team: Attackable.Team) -> void:
 	var unit: Unit = unit_to_spawn.instantiate()
@@ -170,8 +155,8 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	unit.unit_attackable.connect("mouse_exited", _on_unit_mouse_exited.bind(unit))
 	unit.unit_attackable.connect("died", _on_unit_died.bind(unit))
 
-	connect("targetable_card_selected", unit.make_selectable.bind(true))
-	connect("targetable_card_deselected", unit.make_selectable.bind(false))
+	$HandDisplay.targetable_card_selected.connect(unit.make_selectable.bind(true))
+	$HandDisplay.card_deselected.connect(unit.make_selectable.bind(false))
 
 func _on_unit_died(unit: Unit) -> void:
 	if unit.unit_attackable.team == Attackable.Team.PLAYER:
@@ -268,88 +253,62 @@ func provide_rewards() -> void:
 	$HandDisplay.queue_free()
 	$Opponent.queue_free()
 
+
 func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 	reward_chosen.emit(reward_data)
 	combat_over.emit(state)
 
-func _on_hand_display_card_clicked(card: Card) -> void:
-	drag_card = card
-	if card.type == Card.CardType.SPELL and card.spell.targetable_type != SpellList.TargetableType.NONE:
-		targetable_card_selected.emit()
-	drag_start_position = card.global_position + card.size / 2.0
 
 func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if event is InputEventMouseMotion and drag_card:
-		drag_spawn_position = Vector3(event_position.x, 0, event_position.z);
-		# only highlight spawn area for unit spawns, for now
-		if drag_card.type != Card.CardType.UNIT:
-			return
-
-		var spawn_mesh_position_min_x := spawn_mesh.position.x - (spawn_mesh.mesh as QuadMesh).size.x / 2.0
-		var spawn_mesh_position_max_x := spawn_mesh.position.x + (spawn_mesh.mesh as QuadMesh).size.x / 2.0
-		var spawn_mesh_position_min_z := spawn_mesh.position.z - (spawn_mesh.mesh as QuadMesh).size.y / 2.0
-		var spawn_mesh_position_max_z := spawn_mesh.position.z + (spawn_mesh.mesh as QuadMesh).size.y / 2.0
-
-		if drag_spawn_position.x > spawn_mesh_position_min_x and drag_spawn_position.x < spawn_mesh_position_max_x and drag_spawn_position.z > spawn_mesh_position_min_z and drag_spawn_position.z < spawn_mesh_position_max_z:
-			var relative_x_position := (drag_spawn_position.x - spawn_mesh_position_min_x) / (spawn_mesh_position_max_x - spawn_mesh_position_min_x)
-			var relative_z_position := (drag_spawn_position.z - spawn_mesh_position_min_z) / (spawn_mesh_position_max_z - spawn_mesh_position_min_z)
-			spawn_mesh.material_override.set_shader_parameter("x_scale", spawn_mesh.mesh.size.x / spawn_mesh.mesh.size.y)
-			spawn_mesh.material_override.set_shader_parameter("is_hovered", true)
-			spawn_mesh.material_override.set_shader_parameter("hover_loc", Vector2(relative_x_position, relative_z_position))
-			spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN)
-		else:
-			reset_spawn_mesh()
-
-
-func _on_spawn_area_mouse_entered() -> void:
-	if !drag_card:
+	if !$HandDisplay.clicked:
 		return
 
-	drag_over_spawn_area = true;
+
+	if event is not InputEventMouseMotion:
+		return
+
+	play_location = Vector3(event_position.x, 0, event_position.z);
+	var type: Card.CardType = $HandDisplay.current_hover.type;
+
+	match type:
+		Card.CardType.SPELL:
+			play_location_valid = true
+
+		Card.CardType.UNIT:
+			play_location_valid = event_position.x < all_torches[furthest_torch_lit].position.x
+
+			if play_location_valid:
+				spawn_mesh.material_override.set_shader_parameter("x_scale", spawn_mesh.mesh.size.x / spawn_mesh.mesh.size.y)
+				spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN)
+				# spawn_mesh.material_override.set_shader_parameter("is_hovered", true)
+				# spawn_mesh.material_override.set_shader_parameter("hover_loc", Vector2(relative_x_position, relative_z_position))
+			else:
+				reset_spawn_mesh()
+
 
 func _on_spawn_area_mouse_exited() -> void:
-	drag_over_spawn_area = false;
 	reset_spawn_mesh()
+
 
 func reset_spawn_mesh() -> void:
 	spawn_mesh.material_override.set_shader_parameter("is_hovered", false)
 	spawn_mesh.material_override.set_shader_parameter("color", original_spawn_mesh_color)
 
+
 func _on_unit_mouse_entered(unit: Unit) -> void:
 	if currently_hovered_unit != null:
 		currently_hovered_unit.unhighlight_unit()
 
-	if drag_card != null and drag_card.type == Card.CardType.SPELL:
-		currently_hovered_unit = unit
-		unit.highlight_unit()
+	# This check shouldn't be necessary if unit input handling has been removed properly
+	# if drag_card != null and drag_card.type == Card.CardType.SPELL:
+	currently_hovered_unit = unit
+	unit.highlight_unit()
 
 func _on_unit_mouse_exited(unit: Unit) -> void:
 	if currently_hovered_unit == unit:
 		currently_hovered_unit = null
 		unit.unhighlight_unit()
 
-
-func draw_drag_line(event: InputEvent) -> void:
-	$DragLine.clear_points();
-
-	var current_position := drag_start_position;
-	var direction := drag_start_position.direction_to(event.position)
-	var total_distance := drag_start_position.distance_to(event.position)
-
-	while current_position.distance_to(event.position) > 0.5:
-		if current_position.distance_to(event.position) < 10:
-			current_position = event.position
-		else:
-			current_position += direction * 10;
-
-		var normal := Vector2(direction.y, -direction.x);
-		if event.position.x < drag_start_position.x:
-			normal *= -1;
-
-		var progress: float = current_position.distance_to(drag_start_position) / total_distance;
-		var quadriatic: float = -4 * progress * (progress - 1);
-
-		$DragLine.add_point(current_position + normal * quadriatic * 100);
 
 func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
 	var new_deck: Array[Card] = []

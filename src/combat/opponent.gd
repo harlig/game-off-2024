@@ -1,10 +1,10 @@
 class_name Opponent extends Node;
 
-const SPAWN_INTERVAL := 4.0
+const SPAWN_INTERVAL := 6.0
 
 @onready var hand := $Hand;
 
-var spawn_time_remaining := SPAWN_INTERVAL
+var spawn_time_remaining := 1.0
 
 signal spawn(card: Card)
 

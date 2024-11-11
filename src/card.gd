@@ -1,4 +1,5 @@
 class_name Card extends TextureRect
+
 var is_selected := false
 var times_clicked := 0
 
@@ -14,13 +15,15 @@ var mana: int:
 var creature: UnitList.Creature
 var spell: SpellList.Spell
 
+# TODO: Seperating AOE spell vs targeted spell here might remove some nested match logic in combat
 enum CardType {
 	UNIT,
 	SPELL
 }
 
 
-signal card_clicked
+signal card_clicked(times_clicked: int, card: Card)
+signal cancel_tween()
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")

@@ -23,6 +23,7 @@ anchor_left = 0.24
 anchor_top = 0.16
 anchor_right = 0.76
 anchor_bottom = 0.52
+mouse_filter = 2
 texture = ExtResource("2_40l2k")
 expand_mode = 1
 

@@ -67,11 +67,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -10.752)
 [node name="EnemyBaseTorchLocation" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -10.752)
 
-[node name="DragLine" type="Line2D" parent="."]
-width = 140.0
-width_curve = SubResource("Curve_mvfum")
-gradient = SubResource("Gradient_wpnv1")
-
 [node name="Hand" type="Node" parent="."]
 script = ExtResource("5_3nvnk")
 
@@ -129,6 +124,11 @@ text = "7 / 7"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="DragLine" type="Line2D" parent="HandDisplay"]
+width = 140.0
+width_curve = SubResource("Curve_mvfum")
+gradient = SubResource("Gradient_wpnv1")
+
 [node name="Opponent" type="Node" parent="."]
 script = ExtResource("9_i3xgm")
 
@@ -152,6 +152,6 @@ offset_bottom = -240.0
 [connection signal="discarded" from="Hand" to="HandDisplay" method="_on_hand_discarded"]
 [connection signal="drew" from="Hand" to="HandDisplay" method="_on_hand_drew"]
 [connection signal="mana_updated" from="Hand" to="HandDisplay" method="_on_hand_mana_updated"]
-[connection signal="card_clicked" from="HandDisplay" to="." method="_on_hand_display_card_clicked"]
+[connection signal="try_play_card" from="HandDisplay" to="." method="_on_hand_display_try_play_card"]
 [connection signal="spawn" from="Opponent" to="." method="_on_opponent_spawn"]
 [connection signal="reward_chosen" from="Reward" to="." method="_on_reward_reward_chosen"]
