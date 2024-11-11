@@ -72,23 +72,21 @@ func _on_card_mouse_entered(card: Card) -> void:
 	update_hand_positions()
 
 
-func _on_card_mouse_exited(card: Card) -> void:
+func _on_card_mouse_exited(_card: Card) -> void:
 	if clicked:
 		return
 
 	place_back_in_hand();
 
-	if current_hover == card:
-		current_hover = null
-
-	update_hand_positions()
-
 
 func place_back_in_hand() -> void:
+	current_hover.cancel_tween.emit()
 	current_hover.z_index = 0
 	current_hover.scale = Vector2(1.0, 1.0)
 	current_hover.position = current_hover_new_position
 	current_hover.rotation = current_hover_new_rotation
+
+	current_hover = null;
 
 
 func update_hand_positions() -> void:
