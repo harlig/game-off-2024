@@ -27,6 +27,10 @@ func _ready() -> void:
 	add_card(UnitList.new_card_by_name("Damage Buffer")) # Add a buff card
 	add_card(UnitList.new_card_by_name("Health Buffer")) # Add a buff card
 	add_card(UnitList.new_card_by_name("Speed Buffer")) # Add a buff card
+
+	add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
+	add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
+	add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
 	add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
 
 	for ndx in range(0, SpellList.spell_cards.size()):

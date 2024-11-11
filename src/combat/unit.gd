@@ -218,3 +218,4 @@ func try_light_torch(torch: Torch) -> void:
 	await get_tree().create_timer(2.0).timeout
 	torch.light_torch()
 	is_lighting_torch = false
+	animation_player.play(WALK_ANIMATION)
