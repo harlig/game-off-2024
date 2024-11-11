@@ -57,10 +57,10 @@ material_override = SubResource("ShaderMaterial_x1ilm")
 mesh = SubResource("QuadMesh_tdyly")
 
 [node name="PlayerBaseTorchLocation" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.207, 0, -10.752)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 0, -10.752)
 
 [node name="EnemyBaseTorchLocation" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.207, 0, -10.752)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, -10.752)
 
 [node name="DragLine" type="Line2D" parent="."]
 width = 140.0
