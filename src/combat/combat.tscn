@@ -20,6 +20,8 @@ render_priority = 0
 shader = ExtResource("4_yejyx")
 shader_parameter/color = Color(0.615907, 0.565972, 0.517489, 1)
 shader_parameter/width = 1.0
+shader_parameter/is_hovered = false
+shader_parameter/hover_loc = Vector2(0.5, 0.5)
 
 [sub_resource type="QuadMesh" id="QuadMesh_tdyly"]
 size = Vector2(10, 6)
