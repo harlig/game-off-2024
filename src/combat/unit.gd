@@ -14,7 +14,7 @@ const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
 const WALK_ANIMATION := "walk"
 var attack_animation := "attack"
 
-var speed := 1.0
+var speed := 1.5
 var damage := 5:
 	set(value):
 		damage = value
@@ -216,6 +216,9 @@ func try_light_torch(torch: Torch) -> void:
 	is_lighting_torch = true
 	animation_player.play("light_torch")
 	await get_tree().create_timer(2.0).timeout
-	torch.light_torch()
+
+	if not torch.is_lit:
+		torch.light_torch()
+
 	is_lighting_torch = false
 	animation_player.play(WALK_ANIMATION)
