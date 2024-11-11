@@ -100,13 +100,9 @@ func _on_hand_display_try_play_card(card: Card) -> void:
 	if not $Hand.can_play(card):
 		return
 
-	print("playing")
-	print(play_location_valid)
 
 	match card.type:
 		Card.CardType.UNIT when play_location_valid:
-			print("unit")
-			# TODO: maybe this should instead check if you're hovered over the spawn mesh like the drag+drop code does
 			spawn_unit(unit_scene, card, play_location, Attackable.Team.PLAYER)
 			$Hand.play_card(card)
 

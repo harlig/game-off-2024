@@ -7,7 +7,7 @@ uniform vec2 hover_loc = vec2(0.5);
 uniform float x_scale = 1.667;
 
 void fragment() {
-	float border = smoothstep(1.0, 0.96, UV.x)
+	float border = smoothstep(1.0, 0.8, UV.x)
 	* smoothstep(1.0, 0.7, UV.y)
 	* smoothstep(0.0, 0.3, UV.y);
 
@@ -23,5 +23,5 @@ void fragment() {
 	}
 
 	ALBEDO = color.rgb;
-	ALPHA = max(alpha, 0.0);
+	ALPHA = max(alpha, 0.0) * 0.4;
 }
