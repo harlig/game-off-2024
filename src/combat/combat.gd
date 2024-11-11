@@ -4,6 +4,7 @@ class_name Combat extends Node3D
 @onready var torch_scene: PackedScene = preload("res://src/torch.tscn")
 
 @onready var reward := $Reward
+@onready var spawn_mesh: MeshInstance3D = $SpawnMesh
 @onready var player_base_torch_location: Node3D = $PlayerBaseTorchLocation
 @onready var enemy_base_torch_position: Node3D = $EnemyBaseTorchLocation
 
@@ -37,6 +38,8 @@ var current_enemy_units: Array[Unit] = []
 var all_torches: Array[Torch] = []
 var furthest_torch_lit := 0
 
+var spawn_mesh_base_x: float
+
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
@@ -59,6 +62,7 @@ func _ready() -> void:
 	var enemy_base_x: float = enemy_base_torch_position.position.x
 	var interval := (enemy_base_x - player_base_x) / (NUM_TORCHES + 1)
 
+	# TODO: should spawn torches with fibonacci sequence so the furthest torch is the hardest to light
 	for ndx in range(NUM_TORCHES):
 		var torch := torch_scene.instantiate()
 		torch.position = Vector3(player_base_x + interval * (ndx + 1), 0, (player_base_torch_location.position.z + enemy_base_torch_position.position.z) / 2.0)
@@ -80,6 +84,9 @@ func _ready() -> void:
 	(enemy_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(enemy_base_torch))
 	add_child(enemy_base_torch)
 	all_torches.append(enemy_base_torch)
+
+	spawn_mesh_base_x = player_base_x - ((spawn_mesh.mesh as QuadMesh).size.x / 2.0)
+	spawn_mesh.position.x = spawn_mesh_base_x
 
 
 func _input(event: InputEvent) -> void:
@@ -228,6 +235,10 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 
 	for unit in current_enemy_units:
 		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx].position.x
+
+	var furthest_torch_x := all_torches[furthest_torch_lit].position.x
+	(spawn_mesh.mesh as QuadMesh).size.x = abs(furthest_torch_x - spawn_mesh_base_x)
+	spawn_mesh.position.x = (spawn_mesh_base_x + furthest_torch_x) / 2.0
 
 
 func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:

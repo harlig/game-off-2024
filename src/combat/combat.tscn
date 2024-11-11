@@ -23,7 +23,6 @@ shader_parameter/width = 1.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_tdyly"]
 size = Vector2(10, 6)
-center_offset = Vector3(5, 0, 0)
 orientation = 1
 
 [sub_resource type="Curve" id="Curve_mvfum"]
@@ -59,10 +58,10 @@ material_override = SubResource("ShaderMaterial_x1ilm")
 mesh = SubResource("QuadMesh_tdyly")
 
 [node name="PlayerBaseTorchLocation" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 0, -10.752)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -10.752)
 
 [node name="EnemyBaseTorchLocation" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, -10.752)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -10.752)
 
 [node name="DragLine" type="Line2D" parent="."]
 width = 140.0
