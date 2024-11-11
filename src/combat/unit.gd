@@ -81,21 +81,24 @@ func _process(delta: float) -> void:
 
 	if !enemies_in_attack_range.is_empty() || (unit_type == UnitList.CardType.HEALER && !allies_in_attack_range.is_empty()):
 		if time_since_last_attack >= ATTACK_COOLDOWN:
-			animation_player.seek(0, true)
-			animation_player.play(attack_animation)
 			is_invulnerable = false
 			var found_ally_to_heal := true
 			if unit_type == UnitList.CardType.HEALER:
 				found_ally_to_heal = false
+				var lowest_hp_ally: Attackable = null
 				# if there are any allies that need healing, heal them
 				for attackable in allies_in_attack_range:
 					if attackable.hp < attackable.max_hp:
-						attackable.heal(damage)
-						attackable.get_node("HealParticles").emitting = true
-						found_ally_to_heal = true
-						break
+						if lowest_hp_ally == null || (attackable.max_hp - attackable.hp) < (lowest_hp_ally.max_hp - lowest_hp_ally.hp):
+							lowest_hp_ally = attackable
+				if lowest_hp_ally != null:
+					found_ally_to_heal = true
+					lowest_hp_ally.heal(damage)
+					lowest_hp_ally.get_node("HealParticles").emitting = true
 
-			if found_ally_to_heal:
+			if unit_type != UnitList.CardType.HEALER || found_ally_to_heal:
+				animation_player.seek(0, true)
+				animation_player.play(attack_animation)
 				animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
 				time_since_last_attack = 0.0
 
@@ -182,7 +185,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 		attack_animation = "attack_reversed"
 	if from_creature.type == UnitList.CardType.HEALER:
 		attack_animation = "heal"
-		$TargetArea/CollisionShape3D.shape.size.x *= 2
+		$TargetArea/CollisionShape3D.shape.size.x *= 3
 
 	damage = from_creature.damage
 	unit_name = from_creature.name
