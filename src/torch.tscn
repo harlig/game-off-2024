@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c0paiugr6o31v"]
+[gd_scene load_steps=16 format=3 uid="uid://c0paiugr6o31v"]
 
 [ext_resource type="Script" path="res://src/torch.gd" id="1_4uofj"]
 [ext_resource type="Shader" path="res://shaders/flame.gdshader" id="1_y7x14"]
@@ -54,6 +54,9 @@ shader_parameter/flip_h = false
 [sub_resource type="QuadMesh" id="QuadMesh_ss086"]
 size = Vector2(1.6, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_paisv"]
+size = Vector3(1, 1, 4)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jp4rg"]
 render_priority = 0
 shader = ExtResource("1_y7x14")
@@ -84,6 +87,11 @@ autoplay = "play"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 material_override = SubResource("ShaderMaterial_r7033")
 mesh = SubResource("QuadMesh_ss086")
+
+[node name="Area3D" type="Area3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/Area3D"]
+shape = SubResource("BoxShape3D_paisv")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)

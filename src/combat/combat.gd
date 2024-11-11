@@ -51,6 +51,7 @@ func _ready() -> void:
 		torch.position = Vector3(player_base_x + interval * (ndx + 1), 0, ($PlayerBase.position.z + $EnemyBase.position.z) / 2.0)
 		(torch.get_node("CPUParticles3D") as CPUParticles3D).emitting = false
 		(torch.get_node("OmniLight3D") as OmniLight3D).hide()
+		(torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(torch))
 		add_child(torch)
 
 func _process(delta: float) -> void:
@@ -68,6 +69,17 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventMouseMotion and drag_card:
 		draw_drag_line(event)
+
+func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
+	print("Something entered the torch area: ", area)
+	if area is not Attackable:
+		return
+	var attackable := area as Attackable
+	if attackable.team != Attackable.Team.PLAYER:
+		return
+
+	torch.get_node("CPUParticles3D").emitting = true
+	torch.get_node("OmniLight3D").show()
 
 func try_play_card() -> void:
 	if not drag_card:
