@@ -89,7 +89,7 @@ func _process(delta: float) -> void:
 				# if there are any allies that need healing, heal them
 				for attackable in allies_in_attack_range:
 					if attackable.hp < attackable.max_hp:
-						if lowest_hp_ally == null || (attackable.max_hp - attackable.hp) < (lowest_hp_ally.max_hp - lowest_hp_ally.hp):
+						if lowest_hp_ally == null || (attackable.max_hp - attackable.hp) > (lowest_hp_ally.max_hp - lowest_hp_ally.hp):
 							lowest_hp_ally = attackable
 				if lowest_hp_ally != null:
 					found_ally_to_heal = true
@@ -105,7 +105,8 @@ func _process(delta: float) -> void:
 	if is_attacking:
 		time_since_last_attack += delta
 		# return early here to not move the unit
-		return
+		if unit_type != UnitList.CardType.HEALER || !enemies_in_attack_range.is_empty():
+			return
 
 	if direction == Direction.RIGHT:
 		if !can_light_torches and position.x >= furthest_x_position_allowed:
@@ -185,7 +186,8 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 		attack_animation = "attack_reversed"
 	if from_creature.type == UnitList.CardType.HEALER:
 		attack_animation = "heal"
-		$TargetArea/CollisionShape3D.shape.size.x *= 3
+		$TargetArea/CollisionShape3D.shape.size.x *= 4
+		$TargetArea/CollisionShape3D.shape.size.y *= 4
 
 	damage = from_creature.damage
 	unit_name = from_creature.name
