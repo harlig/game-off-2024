@@ -1,9 +1,11 @@
 class_name Deck extends Control
 
-const INITIAL_DECK_SIZE: int = 4
+const INITIAL_BASE_UNITS_COUNT: int = 6
+const INITIAL_TORCHLIGHTER_COUNT: int = 2
+const INITIAL_HEALER_COUNT: int = 2
 
-const hand_unit_texture_path := "res://textures/units/hand_crawler.png"
-const cricket_unit_texture_path := "res://textures/units/cricket.png"
+const hand_unit_texture_path := "res://textures/unit/hand_crawler.png"
+const cricket_unit_texture_path := "res://textures/unit/cricket.png"
 
 var cards: Array[Card] = []
 
@@ -12,13 +14,13 @@ var is_visualizing_deck: bool = false
 
 
 func _ready() -> void:
-	var num_units := INITIAL_DECK_SIZE
+	var num_units := INITIAL_BASE_UNITS_COUNT
 	for ndx in range(num_units):
-		if (ndx < 3):
+		if (ndx < 2):
 			var basic_unit_card := UnitList.new_card_by_name("Gloom") # Give them an airial card for testing
 			add_card(basic_unit_card)
-		elif (ndx >= 3 && ndx < 8):
-			var medium_unit_card := UnitList.new_card_by_id(0) # Shriekling
+		elif (ndx >= 2 && ndx < 5):
+			var medium_unit_card := UnitList.new_card_by_id(ndx) # Shriekling
 			add_card(medium_unit_card)
 		else:
 			var rare_unit_card := UnitList.new_card_by_name("Ebon Phantom") # Ebon Phantom
@@ -28,14 +30,10 @@ func _ready() -> void:
 	add_card(UnitList.new_card_by_name("Health Buffer")) # Add a buff card
 	add_card(UnitList.new_card_by_name("Speed Buffer")) # Add a buff card
 
-	add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
-	add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
-	add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
-	add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
-
-	add_card(UnitList.new_card_by_name("Healer")) # Add a healer card
-	add_card(UnitList.new_card_by_name("Healer")) # Add a healer card
-	add_card(UnitList.new_card_by_name("Healer")) # Add a healer card
+	for ndx in range(INITIAL_TORCHLIGHTER_COUNT):
+		add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
+	for ndx in range(INITIAL_HEALER_COUNT):
+		add_card(UnitList.new_card_by_name("Healer")) # Add a healer card
 
 	for ndx in range(0, SpellList.spell_cards.size()):
 		var spell_card := SpellList.new_card_by_id(ndx % SpellList.spell_cards.size())

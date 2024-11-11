@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
 [ext_resource type="Texture2D" uid="uid://b5lca0cmo6ct4" path="res://textures/card/card_back.png" id="1_casw2"]
-[ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/units/hand_crawler.png" id="2_40l2k"]
+[ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/unit/hand_crawler.png" id="2_40l2k"]
 
 [node name="Card" type="TextureRect"]
 custom_minimum_size = Vector2(192, 256)
@@ -57,7 +57,7 @@ horizontal_alignment = 1
 layout_mode = 0
 offset_left = 36.0
 offset_top = 226.0
-offset_right = 57.0
+offset_right = 75.0
 offset_bottom = 242.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "52"
@@ -78,9 +78,10 @@ autowrap_mode = 2
 
 [node name="Health" type="Label" parent="."]
 layout_mode = 0
-offset_left = 135.0
+offset_left = 120.0
 offset_top = 226.0
 offset_right = 154.0
 offset_bottom = 242.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "10"
+horizontal_alignment = 2

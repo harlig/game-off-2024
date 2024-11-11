@@ -33,7 +33,7 @@ var drag_over_spawn_area := false
 
 var currently_hovered_unit: Unit = null
 
-var current_player_units: Array[Unit] = []
+var current_ally_units: Array[Unit] = []
 var current_enemy_units: Array[Unit] = []
 
 var all_torches: Array[Torch] = []
@@ -159,8 +159,8 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 
 	if team == Attackable.Team.PLAYER:
 		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit + 1].position.x
-		buff_units_from_unit(unit, current_player_units)
-		current_player_units.append(unit)
+		buff_units_from_unit(unit, current_ally_units)
+		current_ally_units.append(unit)
 	else:
 		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit].position.x
 		buff_units_from_unit(unit, current_enemy_units)
@@ -175,10 +175,10 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 
 func _on_unit_died(unit: Unit) -> void:
 	if unit.unit_attackable.team == Attackable.Team.PLAYER:
-		remove_buffs_from_units_buffed_by_unit(unit, current_player_units)
-		current_player_units.erase(unit)
+		remove_buffs_from_units_buffed_by_unit(unit, current_ally_units)
+		current_ally_units.erase(unit)
 	else:
-		remove_buffs_from_units_buffed_by_unit(unit, current_player_units)
+		remove_buffs_from_units_buffed_by_unit(unit, current_ally_units)
 		current_enemy_units.erase(unit)
 		if unit == currently_hovered_unit:
 			currently_hovered_unit = null
@@ -237,7 +237,7 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 		return
 	furthest_torch_lit = torch_lit_ndx
 
-	for unit in current_player_units:
+	for unit in current_ally_units:
 		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx + 1].position.x
 
 	for unit in current_enemy_units:
@@ -254,7 +254,7 @@ func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 	if not torch_lit:
 		return
 
-	for unit in current_enemy_units:
+	for unit in current_ally_units:
 		unit.furthest_x_position_allowed = 1000.0;
 
 	state = CombatState.WON
