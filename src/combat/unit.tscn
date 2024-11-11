@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dx1mt2klfmktd"]
+[gd_scene load_steps=16 format=3 uid="uid://dx1mt2klfmktd"]
 
 [ext_resource type="Script" path="res://src/combat/unit.gd" id="1_2p7eh"]
 [ext_resource type="PackedScene" uid="uid://7d2f0g6jswhx" path="res://src/combat/attackable.tscn" id="1_s1phr"]
@@ -179,12 +179,40 @@ tracks/1/keys = {
 "values": [Vector3(0, 1, 0), Vector3(0, 0.8, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_evayf"]
+resource_name = "heal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 2, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.347321), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vok6h"]
 _data = {
 &"light_torch": SubResource("Animation_ttp57"),
 &"RESET": SubResource("Animation_8afef"),
 &"attack": SubResource("Animation_ckihm"),
 &"attack_reversed": SubResource("Animation_weuqb"),
+&"heal": SubResource("Animation_evayf"),
 &"walk": SubResource("Animation_8vw6h")
 }
 

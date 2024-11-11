@@ -69,6 +69,8 @@ func update_unit_display() -> void:
 			creature_type_text = "Melee"
 		UnitList.CardType.AIR:
 			creature_type_text = "Air"
+		UnitList.CardType.HEALER:
+			creature_type_text = "Healer"
 	$Description.text = creature_type_text
 
 	for buff in creature.buffs_i_apply:
@@ -76,6 +78,9 @@ func update_unit_display() -> void:
 
 	if creature.can_light_torches:
 		$Description.text += "\nCan light torches"
+
+	if creature.type == UnitList.CardType.HEALER:
+		$Description.text += "\nHeals nearby allies for " + str(creature.damage) + " health"
 
 func update_spell_display() -> void:
 	$Title.text = spell.name

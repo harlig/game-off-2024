@@ -27,6 +27,7 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Health Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.HEALTH, 5)]),
 	Creature.new("Speed Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.SPEED, 0.5)]),
 	Creature.new("Torchlighter", CardType.MELEE, 5, 1, 2, 10, "res://textures/units/hand_crawler.png", [], true),
+	Creature.new("Healer", CardType.HEALER, 1, 3, 3, 10, "res://textures/units/hand_crawler.png"),
 ]
 
 class Creature:
@@ -58,7 +59,7 @@ class Creature:
 		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Strength Factor: " + str(strength_factor) + " Card Image Path: " + card_image_path + " Buffs I Apply: " + str(buffs_i_apply) + " Can Light Torches: " + str(can_light_torches)
 
 
-enum CardType {RANGED, MELEE, AIR}
+enum CardType {RANGED, MELEE, AIR, HEALER}
 
 static func create_card(
 	creature: Creature
