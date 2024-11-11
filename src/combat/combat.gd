@@ -118,6 +118,7 @@ func try_play_card() -> void:
 
 	match drag_card.type:
 		Card.CardType.UNIT:
+			# TODO: maybe this should instead check if you're hovered over the spawn mesh like the drag+drop code does
 			if drag_over_spawn_area and drag_spawn_position.x < all_torches[furthest_torch_lit].position.x:
 				spawn_unit(unit_scene, drag_card, drag_spawn_position, Attackable.Team.PLAYER)
 				$Hand.play_card(drag_card)
