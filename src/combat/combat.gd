@@ -278,12 +278,11 @@ func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position
 		var spawn_mesh_position_min_z := spawn_mesh.position.z - (spawn_mesh.mesh as QuadMesh).size.y / 2.0
 		var spawn_mesh_position_max_z := spawn_mesh.position.z + (spawn_mesh.mesh as QuadMesh).size.y / 2.0
 
-		print("Spawn mesh position min x: " + str(spawn_mesh_position_min_x) + " Spawn mesh position max x: " + str(spawn_mesh_position_max_x) + " Spawn mesh position min z: " + str(spawn_mesh_position_min_z) + " Spawn mesh position max z: " + str(spawn_mesh_position_max_z))
 		if drag_spawn_position.x > spawn_mesh_position_min_x and drag_spawn_position.x < spawn_mesh_position_max_x and drag_spawn_position.z > spawn_mesh_position_min_z and drag_spawn_position.z < spawn_mesh_position_max_z:
+			var relative_x_position := (drag_spawn_position.x - spawn_mesh_position_min_x) / (spawn_mesh_position_max_x - spawn_mesh_position_min_x)
+			var relative_z_position := (drag_spawn_position.z - spawn_mesh_position_min_z) / (spawn_mesh_position_max_z - spawn_mesh_position_min_z)
 			spawn_mesh.material_override.set_shader_parameter("is_hovered", true)
-			var relative_x_position := (drag_spawn_position.x) / (spawn_mesh_position_max_x - spawn_mesh_position_min_x)
-			var relative_z_position := (drag_spawn_position.z) / (spawn_mesh_position_max_z - spawn_mesh_position_min_z)
-			print("Relative x position: " + str(relative_x_position) + " Relative z position: " + str(relative_z_position))
+			spawn_mesh.material_override.set_shader_parameter("hover_loc", Vector2(relative_x_position, relative_z_position))
 			pass
 
 func _on_spawn_area_mouse_entered() -> void:
