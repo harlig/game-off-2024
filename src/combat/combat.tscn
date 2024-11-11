@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=16 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
@@ -30,12 +30,8 @@ center_offset = Vector3(3, 0, 0)
 orientation = 1
 
 [sub_resource type="Curve" id="Curve_mvfum"]
-_data = [Vector2(0, 0), 0.0, 0.417172, 0, 0, Vector2(0.507853, 0.117217), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.46764, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="Gradient" id="Gradient_wpnv1"]
-offsets = PackedFloat32Array(0.43, 1)
-colors = PackedColorArray(0.21181, 0.10076, 0.00812115, 1, 0.94079, 0.562748, 0.242093, 1)
+_data = [Vector2(0, 0), 0.0, 0.417172, 0, 0, Vector2(0.0863874, 0.101156), 0.0, 0.0, 0, 0, Vector2(0.942408, 0.104046), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.46764, 0.0, 0, 0]
+point_count = 4
 
 [node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
@@ -125,9 +121,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="DragLine" type="Line2D" parent="HandDisplay"]
+z_index = 2
+texture_repeat = 2
 width = 140.0
 width_curve = SubResource("Curve_mvfum")
-gradient = SubResource("Gradient_wpnv1")
+texture = ExtResource("7_ec4of")
+texture_mode = 1
 
 [node name="Opponent" type="Node" parent="."]
 script = ExtResource("9_i3xgm")

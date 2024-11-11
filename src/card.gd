@@ -22,8 +22,9 @@ enum CardType {
 }
 
 
-signal card_clicked(times_clicked: int, card: Card)
+@warning_ignore("unused_signal")
 signal cancel_tween()
+signal card_clicked(times_clicked: int, card: Card)
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")

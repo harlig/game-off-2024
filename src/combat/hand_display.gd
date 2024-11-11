@@ -53,7 +53,7 @@ func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
 
 func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 	clicked = true
-	drag_start_position = card.global_position + card.size / 2.0
+	drag_start_position = card.global_position + card.size * card.scale / 2.0
 
 	if card.type == Card.CardType.SPELL and card.spell.targetable_type != SpellList.TargetableType.NONE:
 		targetable_card_selected.emit()
@@ -90,6 +90,10 @@ func place_back_in_hand() -> void:
 
 
 func update_hand_positions() -> void:
+	# Avoid tween warnings for preloaded combat
+	if get_parent().name == "PreloadedCombat":
+		return ;
+
 	var hand_size := $HandArea.get_child_count()
 	var card_spacing: float = max(CARD_X_SIZE - 12.0 * hand_size, 60.0)
 	var hand_width := card_spacing * hand_size
@@ -110,17 +114,15 @@ func update_hand_positions() -> void:
 			current_hover_new_position = Vector2(x_pos, y_pos)
 			current_hover_new_rotation = deg_to_rad(current_rotation)
 		else:
-			card.position = Vector2(x_pos, y_pos)
-			card.rotation = deg_to_rad(current_rotation)
+			card.cancel_tween.emit()
 
+			var tween := get_tree().create_tween()
+			tween.parallel().tween_property(card, "position", Vector2(x_pos, y_pos), 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+			tween.parallel().tween_property(card, "rotation", deg_to_rad(current_rotation), 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+			card.cancel_tween.connect(tween.stop)
 
-		# var tween := get_tree().create_tween()
-		# tween.tween_property(card, "position", Vector2(x_pos, y_pos), 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-		# card.cancel_tween.connect(tween.stop)
-
-		# tween = get_tree().create_tween()
-		# tween.tween_property(card, "rotation", deg_to_rad(current_rotation), 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-		# card.cancel_tween.connect(tween.stop)
+			# card.position = Vector2(x_pos, y_pos)
+			# card.rotation = deg_to_rad(current_rotation)
 
 
 func draw_drag_line(event: InputEvent) -> void:
@@ -141,7 +143,7 @@ func draw_drag_line(event: InputEvent) -> void:
 			normal *= -1;
 
 		var progress: float = current_position.distance_to(drag_start_position) / total_distance;
-		var quadriatic: float = -4 * progress * (progress - 1);
+		var quadriatic: float = -8 * progress * (progress - 1);
 
 		$DragLine.add_point(current_position + normal * quadriatic * 100);
 
