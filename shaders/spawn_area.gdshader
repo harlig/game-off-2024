@@ -11,12 +11,13 @@ void fragment() {
 	* smoothstep(0.0, 0.3, UV.y);
 
 	float dist = distance(UV, hover_loc);
-	float ripple = sin(dist * 200.0 + TIME * 10.0);
+	float ripple = sin(dist * 85.0 + TIME * 10.0);
 	ripple *= smoothstep(0.15, 0.12, dist);
 
-	float alpha = (UV.x) * border * color.a;
+	float alpha = min((UV.x * 7.5), 1.0) * border * color.a;
 
 	if (is_hovered) {
+		alpha *= smoothstep(0.12, 0.15, dist);
 		alpha += ripple;
 	}
 
