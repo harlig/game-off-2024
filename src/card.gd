@@ -74,6 +74,9 @@ func update_unit_display() -> void:
 	for buff in creature.buffs_i_apply:
 		$Description.text += "\n" + buff.description()
 
+	if creature.can_light_torches:
+		$Description.text += "\nCan light torches"
+
 func update_spell_display() -> void:
 	$Title.text = spell.name
 	$Mana.text = str(mana)
