@@ -16,7 +16,7 @@ func _process(delta: float) -> void:
 
 
 func try_play_card() -> void:
-	for card: Card in hand.cards_in_hand:
+	for card: Card in hand.cards:
 		if hand.can_play(card):
 			hand.play_card(card)
 			spawn_time_remaining = SPAWN_INTERVAL;

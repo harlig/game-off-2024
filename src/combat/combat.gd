@@ -193,7 +193,7 @@ func remove_buffs_from_units_buffed_by_unit(buff_unit: Unit, units_buffed: Array
 		for buff in buff_unit.buffs_i_apply:
 			unit.remove_buff(buff)
 
-func _on_enemy_spawn(card: Card) -> void:
+func _on_opponent_spawn(card: Card) -> void:
 	var unit_x: float = enemy_base_torch_position.position.x + OFFSET_FROM_BASE_DISTANCE
 	var unit_z: float = enemy_base_torch_position.position.z
 	spawn_unit(unit_scene, card, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY)

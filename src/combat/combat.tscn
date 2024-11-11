@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=17 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://deyj5t686af3v" path="res://src/combat/combat_deck.tscn" id="7_bknt5"]
 [ext_resource type="Texture2D" uid="uid://kg1i4rk2x7h3" path="res://textures/hud/circle_tan.png" id="7_ec4of"]
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/combat/reward.tscn" id="8_1gtat"]
+[ext_resource type="Script" path="res://src/combat/opponent.gd" id="9_i3xgm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kqti8"]
 size = Vector3(46, 1, 6)
@@ -127,6 +128,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Opponent" type="Node" parent="."]
+script = ExtResource("9_i3xgm")
 
 [node name="Hand" type="Node" parent="Opponent"]
 script = ExtResource("5_3nvnk")
@@ -149,4 +151,5 @@ offset_bottom = -240.0
 [connection signal="drew" from="Hand" to="HandDisplay" method="_on_hand_drew"]
 [connection signal="mana_updated" from="Hand" to="HandDisplay" method="_on_hand_mana_updated"]
 [connection signal="card_clicked" from="HandDisplay" to="." method="_on_hand_display_card_clicked"]
+[connection signal="spawn" from="Opponent" to="." method="_on_opponent_spawn"]
 [connection signal="reward_chosen" from="Reward" to="." method="_on_reward_reward_chosen"]

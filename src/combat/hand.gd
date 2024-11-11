@@ -38,7 +38,7 @@ func _physics_process(delta: float) -> void:
 func initialize(combat_deck: CombatDeck) -> void:
 	deck = combat_deck;
 
-	for i in range(5):
+	for i in range(HAND_SIZE):
 		try_draw_card();
 
 
