@@ -5,6 +5,7 @@ class_name Combat extends Node3D
 
 @onready var reward := $Reward
 @onready var spawn_mesh: MeshInstance3D = $SpawnMesh
+@onready var original_spawn_mesh_color: Color = spawn_mesh.material_override.get_shader_parameter("color")
 @onready var player_base_torch_location: Node3D = $PlayerBaseTorchLocation
 @onready var enemy_base_torch_position: Node3D = $EnemyBaseTorchLocation
 
@@ -133,6 +134,7 @@ func try_play_card() -> void:
 	drag_card = null;
 	drag_over_spawn_area = false;
 	$DragLine.clear_points();
+	reset_spawn_mesh()
 
 func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Vector3, team: Attackable.Team) -> void:
 	var unit: Unit = unit_to_spawn.instantiate()
@@ -249,6 +251,9 @@ func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 	if not torch_lit:
 		return
 
+	for unit in current_enemy_units:
+		unit.furthest_x_position_allowed = 1000.0;
+
 	state = CombatState.WON
 	provide_rewards()
 
@@ -273,6 +278,10 @@ func _on_hand_display_card_clicked(card: Card) -> void:
 func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseMotion and drag_card:
 		drag_spawn_position = Vector3(event_position.x, 0, event_position.z);
+		# only highlight spawn area for unit spawns, for now
+		if drag_card.type != Card.CardType.UNIT:
+			return
+
 		var spawn_mesh_position_min_x := spawn_mesh.position.x - (spawn_mesh.mesh as QuadMesh).size.x / 2.0
 		var spawn_mesh_position_max_x := spawn_mesh.position.x + (spawn_mesh.mesh as QuadMesh).size.x / 2.0
 		var spawn_mesh_position_min_z := spawn_mesh.position.z - (spawn_mesh.mesh as QuadMesh).size.y / 2.0
@@ -283,7 +292,10 @@ func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position
 			var relative_z_position := (drag_spawn_position.z - spawn_mesh_position_min_z) / (spawn_mesh_position_max_z - spawn_mesh_position_min_z)
 			spawn_mesh.material_override.set_shader_parameter("is_hovered", true)
 			spawn_mesh.material_override.set_shader_parameter("hover_loc", Vector2(relative_x_position, relative_z_position))
-			pass
+			spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN)
+		else:
+			reset_spawn_mesh()
+
 
 func _on_spawn_area_mouse_entered() -> void:
 	if !drag_card:
@@ -293,6 +305,11 @@ func _on_spawn_area_mouse_entered() -> void:
 
 func _on_spawn_area_mouse_exited() -> void:
 	drag_over_spawn_area = false;
+	reset_spawn_mesh()
+
+func reset_spawn_mesh() -> void:
+	spawn_mesh.material_override.set_shader_parameter("is_hovered", false)
+	spawn_mesh.material_override.set_shader_parameter("color", original_spawn_mesh_color)
 
 func _on_unit_mouse_entered(unit: Unit) -> void:
 	if currently_hovered_unit != null:
