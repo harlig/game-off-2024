@@ -232,9 +232,11 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 		return
 	furthest_torch_lit = torch_lit_ndx
 
-	var next_torch := all_torches[torch_lit_ndx + 1]
 	for unit in current_player_units:
-		unit.furthest_x_position_allowed = next_torch.position.x
+		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx + 1].position.x
+
+	for unit in current_enemy_units:
+		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx].position.x
 
 
 func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
