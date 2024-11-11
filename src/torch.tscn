@@ -84,6 +84,7 @@ material_override = SubResource("ShaderMaterial_r7033")
 mesh = SubResource("QuadMesh_ss086")
 
 [node name="Area3D" type="Area3D" parent="MeshInstance3D"]
+input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/Area3D"]
 shape = SubResource("BoxShape3D_paisv")
