@@ -180,6 +180,8 @@ func _on_unit_died(unit: Unit) -> void:
 	else:
 		remove_buffs_from_units_buffed_by_unit(unit, current_player_units)
 		current_enemy_units.erase(unit)
+		if unit == currently_hovered_unit:
+			currently_hovered_unit = null
 
 func buff_units_from_unit(buff_unit: Unit, units_to_buff: Array[Unit]) -> void:
 	print("Checking if I should buff units with my buffs size of " + str(buff_unit.buffs_i_apply.size()))
