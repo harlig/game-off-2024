@@ -210,7 +210,7 @@ func remove_buff(buff_to_remove: Buff) -> void:
 			unit_attackable.hp -= int(buff_to_remove.value)
 
 func try_light_torch(torch: Torch) -> void:
-	if !can_light_torches:
+	if !can_light_torches or torch.is_lit:
 		return
 
 	is_lighting_torch = true

@@ -71,7 +71,6 @@ func _input(event: InputEvent) -> void:
 		draw_drag_line(event)
 
 func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
-	print("Something entered the torch area: ", area)
 	if area is not Attackable:
 		return
 	var attackable := area as Attackable

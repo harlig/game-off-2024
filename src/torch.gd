@@ -1,5 +1,7 @@
 class_name Torch extends Node3D;
 
+var is_lit := false
+
 func _ready() -> void:
 	var seek_time := randf();
 	$AnimationPlayer.seek(seek_time);
@@ -9,3 +11,4 @@ func _ready() -> void:
 func light_torch() -> void:
 	$CPUParticles3D.emitting = true
 	$OmniLight3D.show()
+	is_lit = true
