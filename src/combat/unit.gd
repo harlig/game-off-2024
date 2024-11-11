@@ -72,6 +72,8 @@ func stop_invulnerability() -> void:
 	is_invulnerable = false
 	invulnerability_timer.queue_free()
 
+var closest_ally_attackable_needing_heal_before_heal: Attackable = null
+
 func _process(delta: float) -> void:
 	# can't do any other actions while lighting a torch
 	if is_lighting_torch:
@@ -82,8 +84,20 @@ func _process(delta: float) -> void:
 			animation_player.seek(0, true)
 			animation_player.play(attack_animation)
 			is_invulnerable = false
-			animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
-			time_since_last_attack = 0.0
+			var found_ally_to_heal := true
+			if unit_type == UnitList.CardType.HEALER:
+				found_ally_to_heal = false
+				# if there are any allies that need healing, heal them
+				for attackable in allies_in_attack_range:
+					if attackable.hp < attackable.max_hp:
+						attackable.heal(damage)
+						attackable.get_node("HealParticles").emitting = true
+						found_ally_to_heal = true
+						break
+
+			if found_ally_to_heal:
+				animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
+				time_since_last_attack = 0.0
 
 	if is_attacking:
 		time_since_last_attack += delta
@@ -109,9 +123,11 @@ func do_attacks(_anim_name: String) -> void:
 			if closest_attackable != null:
 				closest_attackable.take_damage(damage)
 		UnitList.CardType.HEALER:
-			for attackable in allies_in_attack_range:
-				attackable.heal(damage)
-				attackable.get_node("HealParticles").emitting = true
+			# AOE Heal
+			# for attackable in allies_in_attack_range:
+			# 	attackable.heal(damage)
+			# 	attackable.get_node("HealParticles").emitting = true
+			pass
 		_:
 			for attackable in currently_attacking:
 				attackable.take_damage(damage)

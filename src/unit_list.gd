@@ -3,10 +3,10 @@ class_name UnitList extends Node
 static var card_scene := preload("res://src/card.tscn")
 
 static var creature_cards: Array[Creature] = [
-	Creature.new("Shriekling", CardType.RANGED, 1, 2, 2, 4, "res://textures/units/cricket.png"),
-	Creature.new("Murkmouth", CardType.MELEE, 3, 3, 3, 6, "res://textures/units/hand_crawler.png"),
-	Creature.new("Wraithvine", CardType.RANGED, 2, 4, 3, 7, "res://logo.png"),
-	Creature.new("Gloom", CardType.AIR, 1, 2, 1, 1, "res://textures/units/cricket.png"),
+	Creature.new("Shriekling", CardType.RANGED, 10, 2, 2, 4, "res://textures/units/cricket.png"),
+	Creature.new("Murkmouth", CardType.MELEE, 30, 3, 3, 6, "res://textures/units/hand_crawler.png"),
+	Creature.new("Wraithvine", CardType.RANGED, 20, 4, 3, 7, "res://logo.png"),
+	Creature.new("Gloom", CardType.AIR, 10, 2, 1, 1, "res://textures/units/cricket.png"),
 	Creature.new("Hollowstalkers", CardType.MELEE, 4, 3, 4, 8, "res://textures/units/cricket.png"),
 	Creature.new("Sablemoth", CardType.AIR, 2, 1, 1, 2, "res://logo.png"),
 	Creature.new("Creep", CardType.MELEE, 1, 1, 1, 1, "res://textures/units/cricket.png"),
@@ -26,8 +26,8 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Damage Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 2)]),
 	Creature.new("Health Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.HEALTH, 5)]),
 	Creature.new("Speed Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.SPEED, 0.5)]),
-	Creature.new("Torchlighter", CardType.MELEE, 5, 1, 2, 10, "res://textures/units/hand_crawler.png", [], true),
-	Creature.new("Healer", CardType.HEALER, 1, 3, 3, 10, "res://textures/units/hand_crawler.png"),
+	Creature.new("Torchlighter", CardType.MELEE, 50, 1, 2, 10, "res://textures/units/hand_crawler.png", [], true),
+	Creature.new("Healer", CardType.HEALER, 100, 3, 3, 10, "res://textures/units/hand_crawler.png"),
 ]
 
 class Creature:
