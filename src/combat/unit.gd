@@ -111,6 +111,7 @@ func do_attacks(_anim_name: String) -> void:
 		UnitList.CardType.HEALER:
 			for attackable in allies_in_attack_range:
 				attackable.heal(damage)
+				attackable.get_node("HealParticles").emitting = true
 		_:
 			for attackable in currently_attacking:
 				attackable.take_damage(damage)

@@ -1,12 +1,21 @@
-[gd_scene load_steps=16 format=3 uid="uid://dx1mt2klfmktd"]
+[gd_scene load_steps=19 format=3 uid="uid://dx1mt2klfmktd"]
 
 [ext_resource type="Script" path="res://src/combat/unit.gd" id="1_2p7eh"]
 [ext_resource type="PackedScene" uid="uid://7d2f0g6jswhx" path="res://src/combat/attackable.tscn" id="1_s1phr"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/units/hand_crawler.png" id="3_6nqad"]
 [ext_resource type="Shader" path="res://shaders/unit.gdshader" id="3_dhg1t"]
+[ext_resource type="Shader" path="res://shaders/flame.gdshader" id="3_te8yo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rflrp"]
 size = Vector3(1, 1.5, 4)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dnfef"]
+render_priority = 0
+shader = ExtResource("3_te8yo")
+shader_parameter/color = Color(6.8827e-06, 0.803262, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_4a8qx"]
+size = Vector2(0.2, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ce7wc"]
 size = Vector3(2, 2, 4)
@@ -226,12 +235,27 @@ input_ray_pickable = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_rflrp")
 
+[node name="HealParticles" type="CPUParticles3D" parent="Attackable"]
+material_override = SubResource("ShaderMaterial_dnfef")
+emitting = false
+lifetime = 0.3
+one_shot = true
+mesh = SubResource("QuadMesh_4a8qx")
+direction = Vector3(0, 1, 0)
+spread = 80.0
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 2.0
+linear_accel_min = 0.3
+linear_accel_max = 0.3
+scale_amount_min = 0.6
+scale_amount_max = 0.8
+
 [node name="TargetArea" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
 input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TargetArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_ce7wc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
