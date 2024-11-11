@@ -17,7 +17,7 @@ signal targetable_card_deselected()
 
 enum CombatState {PLAYING, WON, LOST}
 
-const ENEMY_SPAWN_TIMER := 400.0
+const ENEMY_SPAWN_TIMER := 4.0
 const OFFSET_FROM_BASE_DISTANCE := 3
 const NUM_TORCHES := 3
 
@@ -35,6 +35,9 @@ var currently_hovered_unit: Unit = null
 var current_player_units: Array[Unit] = []
 var current_enemy_units: Array[Unit] = []
 
+var all_torches: Array[Torch] = []
+var furthest_torch_lit := 0
+
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
@@ -49,14 +52,7 @@ func _ready() -> void:
 	var player_base_torch := torch_scene.instantiate()
 	player_base_torch.position = player_base_torch_location.position
 	add_child(player_base_torch)
-
-	var enemy_base_torch := torch_scene.instantiate()
-	enemy_base_torch.position = enemy_base_torch_position.position
-	enemy_base_torch.connect("torch_state_changed", _on_enemy_base_torch_state_changed)
-	(enemy_base_torch.get_node("CPUParticles3D") as CPUParticles3D).emitting = false
-	(enemy_base_torch.get_node("OmniLight3D") as OmniLight3D).hide()
-	(enemy_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(enemy_base_torch))
-	add_child(enemy_base_torch)
+	all_torches.append(player_base_torch)
 
 	# set up the torches, spanning the width of the map from base to base
 	var player_base_x: float = player_base_torch_location.position.x
@@ -66,10 +62,25 @@ func _ready() -> void:
 	for ndx in range(NUM_TORCHES):
 		var torch := torch_scene.instantiate()
 		torch.position = Vector3(player_base_x + interval * (ndx + 1), 0, (player_base_torch_location.position.z + enemy_base_torch_position.position.z) / 2.0)
+
+		# a little hacky, but this assumes the player base torch is the first one so we add one
+		torch.connect("torch_state_changed", _on_middle_area_torch_state_changed.bind(ndx + 1))
+
 		(torch.get_node("CPUParticles3D") as CPUParticles3D).emitting = false
 		(torch.get_node("OmniLight3D") as OmniLight3D).hide()
 		(torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(torch))
 		add_child(torch)
+		all_torches.append(torch)
+
+	var enemy_base_torch := torch_scene.instantiate()
+	enemy_base_torch.position = enemy_base_torch_position.position
+	enemy_base_torch.connect("torch_state_changed", _on_enemy_base_torch_state_changed)
+	(enemy_base_torch.get_node("CPUParticles3D") as CPUParticles3D).emitting = false
+	(enemy_base_torch.get_node("OmniLight3D") as OmniLight3D).hide()
+	(enemy_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(enemy_base_torch))
+	add_child(enemy_base_torch)
+	all_torches.append(enemy_base_torch)
+
 
 func _process(delta: float) -> void:
 	if state != CombatState.PLAYING:
@@ -144,9 +155,11 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	unit.unit_attackable.team = team
 
 	if team == Attackable.Team.PLAYER:
+		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit + 1].position.x
 		buff_units_from_unit(unit, current_player_units)
 		current_player_units.append(unit)
 	else:
+		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit].position.x
 		buff_units_from_unit(unit, current_enemy_units)
 		current_enemy_units.append(unit)
 
@@ -213,6 +226,16 @@ func play_spell(spell: SpellList.Spell) -> void:
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
 	combat_over.emit(state)
+
+func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> void:
+	if not is_lit:
+		return
+	furthest_torch_lit = torch_lit_ndx
+
+	var next_torch := all_torches[torch_lit_ndx + 1]
+	for unit in current_player_units:
+		unit.furthest_x_position_allowed = next_torch.position.x
+
 
 func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 	if not torch_lit:

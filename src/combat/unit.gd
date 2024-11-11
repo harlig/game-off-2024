@@ -21,9 +21,10 @@ var damage := 5:
 		$Label3D.text = str(damage)
 var unit_name: String = "Unit"
 var unit_type: int = UnitList.CardType.MELEE
-var is_stopped := false
 var currently_attacking: Array[Attackable] = []
 var units_in_attack_range: Array[Attackable] = []
+
+var furthest_x_position_allowed: float = 0
 
 var is_attacking := false
 var time_since_last_attack := 0.0
@@ -85,13 +86,16 @@ func _process(delta: float) -> void:
 
 	if is_attacking:
 		time_since_last_attack += delta
-
-	if is_stopped:
+		# return early here to not move the unit
 		return
 
 	if direction == Direction.RIGHT:
+		if !can_light_torches and position.x >= furthest_x_position_allowed:
+			return
 		position.x += speed * delta
 	else:
+		if !can_light_torches and position.x <= furthest_x_position_allowed:
+			return
 		position.x -= speed * delta
 
 func do_attacks(_anim_name: String) -> void:
@@ -119,7 +123,6 @@ func _on_target_area_area_entered(area: Area3D) -> void:
 	if unit_type != UnitList.CardType.RANGED || currently_attacking.size() <= 0:
 		currently_attacking.append(attackable)
 	is_attacking = true
-	is_stopped = true
 
 
 func _on_target_area_area_exited(area: Area3D) -> void:
@@ -132,7 +135,6 @@ func _on_target_area_area_exited(area: Area3D) -> void:
 	units_in_attack_range.erase(area)
 
 	if currently_attacking.size() == 0 and is_attacking:
-		is_stopped = false
 		is_attacking = false
 		animation_player.animation_finished.connect(_on_attack_finished, ConnectFlags.CONNECT_ONE_SHOT)
 
