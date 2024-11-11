@@ -57,7 +57,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
 shape = SubResource("BoxShape3D_kqti8")
 
 [node name="SpawnMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.1, -11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0.1, -11)
 material_override = SubResource("ShaderMaterial_x1ilm")
 mesh = SubResource("QuadMesh_tdyly")
 

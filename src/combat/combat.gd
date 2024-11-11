@@ -17,6 +17,8 @@ enum CombatState {PLAYING, WON, LOST}
 
 const OFFSET_FROM_BASE_DISTANCE := 3
 const NUM_TORCHES := 3
+const BATTLFIELD_START_X := -23
+const BATTLFIELD_Z = 6;
 
 var state: CombatState = CombatState.PLAYING
 var time_since_last_enemy_spawn: float = 0
@@ -32,8 +34,6 @@ var current_enemy_units: Array[Unit] = []
 
 var all_torches: Array[Torch] = []
 var furthest_torch_lit := 0
-
-var spawn_mesh_base_x: float
 
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
@@ -79,9 +79,6 @@ func _ready() -> void:
 	(enemy_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(enemy_base_torch))
 	add_child(enemy_base_torch)
 	all_torches.append(enemy_base_torch)
-
-	spawn_mesh_base_x = player_base_x - ((spawn_mesh.mesh as QuadMesh).size.x / 2.0)
-	spawn_mesh.position.x = spawn_mesh_base_x
 
 
 func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
@@ -232,8 +229,10 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 
 	# tween to new positions in parallel
 	var tween: Tween = get_tree().create_tween();
-	tween.parallel().tween_property(spawn_mesh.mesh, "size", Vector2(abs(furthest_torch_x - spawn_mesh_base_x), (spawn_mesh.mesh as QuadMesh).size.y), 1.0).set_trans(Tween.TRANS_CUBIC);
-	tween.parallel().tween_property(spawn_mesh, "position", Vector3((spawn_mesh_base_x + furthest_torch_x) / 2.0, spawn_mesh.position.y, spawn_mesh.position.z), 1.0).set_trans(Tween.TRANS_CUBIC);
+	var new_size := Vector2(abs(furthest_torch_x - BATTLFIELD_START_X), BATTLFIELD_Z)
+	var new_offset := Vector3(new_size.x / 2.0, 0.0, 0.0)
+	tween.parallel().tween_property(spawn_mesh.mesh, "size", new_size, 1.0).set_trans(Tween.TRANS_CUBIC);
+	tween.parallel().tween_property(spawn_mesh.mesh, "center_offset", new_offset, 1.0).set_trans(Tween.TRANS_CUBIC);
 
 func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 	if not torch_lit:
@@ -275,7 +274,7 @@ func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position
 			play_location_valid = true
 
 		Card.CardType.UNIT:
-			play_location_valid = event_position.x < all_torches[furthest_torch_lit].position.x
+			play_location_valid = event_position.x < all_torches[furthest_torch_lit].global_position.x
 
 			if play_location_valid:
 				spawn_mesh.material_override.set_shader_parameter("x_scale", spawn_mesh.mesh.size.x / spawn_mesh.mesh.size.y)
