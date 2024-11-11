@@ -48,10 +48,10 @@ size = 31.0
 script = ExtResource("4_uic0f")
 metadata/_edit_lock_ = true
 
-[node name="SpawnArea" type="Area3D" parent="."]
+[node name="Battlefield" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SpawnArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Battlefield"]
 shape = SubResource("BoxShape3D_kqti8")
 
 [node name="SpawnMesh" type="MeshInstance3D" parent="."]
@@ -145,9 +145,9 @@ offset_top = 160.0
 offset_right = -320.0
 offset_bottom = -240.0
 
-[connection signal="input_event" from="SpawnArea" to="." method="_on_spawn_area_input_event"]
-[connection signal="mouse_entered" from="SpawnArea" to="." method="_on_spawn_area_mouse_entered"]
-[connection signal="mouse_exited" from="SpawnArea" to="." method="_on_spawn_area_mouse_exited"]
+[connection signal="input_event" from="Battlefield" to="." method="_on_spawn_area_input_event"]
+[connection signal="mouse_entered" from="Battlefield" to="." method="_on_spawn_area_mouse_entered"]
+[connection signal="mouse_exited" from="Battlefield" to="." method="_on_spawn_area_mouse_exited"]
 [connection signal="discarded" from="Hand" to="HandDisplay" method="_on_hand_discarded"]
 [connection signal="drew" from="Hand" to="HandDisplay" method="_on_hand_drew"]
 [connection signal="mana_updated" from="Hand" to="HandDisplay" method="_on_hand_mana_updated"]
