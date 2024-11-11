@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c0paiugr6o31v"]
+[gd_scene load_steps=15 format=3 uid="uid://c0paiugr6o31v"]
 
 [ext_resource type="Script" path="res://src/torch.gd" id="1_4uofj"]
 [ext_resource type="Shader" path="res://shaders/flame.gdshader" id="1_y7x14"]
@@ -69,11 +69,6 @@ shader_parameter/color = Color(0.75, 0.55425, 0.345, 1)
 _data = [Vector2(0, 0.51829), 0.0, 1.94463, 0, 0, Vector2(0.304469, 0.944418), -0.562429, -0.562429, 0, 0, Vector2(0.988827, 0.0273159), -1.35576, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_wpwy8"]
-top_radius = 0.03
-bottom_radius = 0.03
-height = 0.03
-
 [node name="Torch" type="Node3D"]
 script = ExtResource("1_4uofj")
 
@@ -120,8 +115,3 @@ linear_accel_max = -0.2
 scale_amount_min = 0.6
 scale_amount_max = 0.8
 scale_amount_curve = SubResource("Curve_8gixm")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-visible = false
-mesh = SubResource("CylinderMesh_wpwy8")

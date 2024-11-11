@@ -290,6 +290,7 @@ func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position
 		if drag_spawn_position.x > spawn_mesh_position_min_x and drag_spawn_position.x < spawn_mesh_position_max_x and drag_spawn_position.z > spawn_mesh_position_min_z and drag_spawn_position.z < spawn_mesh_position_max_z:
 			var relative_x_position := (drag_spawn_position.x - spawn_mesh_position_min_x) / (spawn_mesh_position_max_x - spawn_mesh_position_min_x)
 			var relative_z_position := (drag_spawn_position.z - spawn_mesh_position_min_z) / (spawn_mesh_position_max_z - spawn_mesh_position_min_z)
+			spawn_mesh.material_override.set_shader_parameter("x_scale", spawn_mesh.mesh.size.x / spawn_mesh.mesh.size.y)
 			spawn_mesh.material_override.set_shader_parameter("is_hovered", true)
 			spawn_mesh.material_override.set_shader_parameter("hover_loc", Vector2(relative_x_position, relative_z_position))
 			spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN)
