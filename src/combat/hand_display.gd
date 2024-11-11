@@ -24,6 +24,7 @@ func _input(event: InputEvent) -> void:
 			try_play_card.emit(current_hover)
 
 			$DragLine.clear_points()
+			$DragEnd.hide()
 			place_back_in_hand()
 			clicked = false
 
@@ -127,6 +128,7 @@ func update_hand_positions() -> void:
 
 func draw_drag_line(event: InputEvent) -> void:
 	$DragLine.clear_points();
+	$DragEnd.show();
 
 	var current_position := drag_start_position;
 	var direction := drag_start_position.direction_to(event.position)
@@ -146,6 +148,10 @@ func draw_drag_line(event: InputEvent) -> void:
 		var quadriatic: float = -8 * progress * (progress - 1);
 
 		$DragLine.add_point(current_position + normal * quadriatic * 100);
+
+	var drag_end_direction := -1 if direction.x < 0 else 1
+	$DragEnd.rotation = direction.angle() + deg_to_rad(50) * drag_end_direction;
+	$DragEnd.global_position = current_position;
 
 # Move hover card down a bit
 # var hand_size := $HandArea.get_child_count()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=17 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
@@ -10,7 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://deyj5t686af3v" path="res://src/combat/combat_deck.tscn" id="7_bknt5"]
 [ext_resource type="Texture2D" uid="uid://kg1i4rk2x7h3" path="res://textures/hud/circle_tan.png" id="7_ec4of"]
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/combat/reward.tscn" id="8_1gtat"]
+[ext_resource type="Texture2D" uid="uid://c8qybgyq1afys" path="res://textures/hud/line_arrow_small.png" id="9_g3f32"]
 [ext_resource type="Script" path="res://src/combat/opponent.gd" id="9_i3xgm"]
+[ext_resource type="Texture2D" uid="uid://c3jkkh3b5cmr7" path="res://textures/hud/line_arrow_big.png" id="10_07yon"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kqti8"]
 size = Vector3(46, 1, 6)
@@ -28,10 +30,6 @@ shader_parameter/x_scale = 1.0
 size = Vector2(5, 6)
 center_offset = Vector3(3, 0, 0)
 orientation = 1
-
-[sub_resource type="Curve" id="Curve_mvfum"]
-_data = [Vector2(0, 0), 0.0, 0.417172, 0, 0, Vector2(0.0863874, 0.101156), 0.0, 0.0, 0, 0, Vector2(0.942408, 0.104046), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.46764, 0.0, 0, 0]
-point_count = 4
 
 [node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
@@ -74,6 +72,7 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 script = ExtResource("6_ojwhk")
+metadata/_edit_lock_ = true
 
 [node name="HandArea" type="Control" parent="HandDisplay"]
 layout_mode = 1
@@ -123,10 +122,15 @@ vertical_alignment = 1
 [node name="DragLine" type="Line2D" parent="HandDisplay"]
 z_index = 2
 texture_repeat = 2
-width = 140.0
-width_curve = SubResource("Curve_mvfum")
-texture = ExtResource("7_ec4of")
+width = 64.0
+texture = ExtResource("9_g3f32")
 texture_mode = 1
+
+[node name="DragEnd" type="Sprite2D" parent="HandDisplay"]
+z_index = 3
+scale = Vector2(0.64, 0.64)
+texture = ExtResource("10_07yon")
+offset = Vector2(-24, 0)
 
 [node name="Opponent" type="Node" parent="."]
 script = ExtResource("9_i3xgm")
