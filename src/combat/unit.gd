@@ -186,8 +186,6 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 		attack_animation = "attack_reversed"
 	if from_creature.type == UnitList.CardType.HEALER:
 		attack_animation = "heal"
-		$TargetArea/CollisionShape3D.shape.size.x *= 4
-		$TargetArea/CollisionShape3D.shape.size.y *= 4
 
 	damage = from_creature.damage
 	unit_name = from_creature.name
@@ -210,6 +208,9 @@ func resize_unit_target_box(creature: UnitList.Creature) -> void:
 			UnitList.CardType.AIR:
 				y = 100
 			UnitList.CardType.RANGED:
+				x = 15
+				y = 100
+			UnitList.CardType.HEALER:
 				x = 15
 				y = 100
 
