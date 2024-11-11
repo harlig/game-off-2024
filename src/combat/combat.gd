@@ -78,8 +78,11 @@ func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 	if attackable.team != Attackable.Team.PLAYER:
 		return
 
-	torch.get_node("CPUParticles3D").emitting = true
-	torch.get_node("OmniLight3D").show()
+	if attackable.get_parent() is Unit:
+		var unit := attackable.get_parent() as Unit
+		if !unit.can_light_torches:
+			return
+		unit.try_light_torch(torch)
 
 func try_play_card() -> void:
 	if not drag_card:

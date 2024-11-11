@@ -11,8 +11,8 @@ const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
 
 @export var direction: Direction = Direction.RIGHT
 
-var attack_animation := "attack"
 const WALK_ANIMATION := "walk"
+var attack_animation := "attack"
 
 var speed := 1.0
 var damage := 5:
@@ -29,6 +29,9 @@ var is_attacking := false
 var time_since_last_attack := 0.0
 var invulnerability_timer := Timer.new()
 var is_invulnerable := true
+
+var can_light_torches := false
+var is_lighting_torch := false
 
 enum BuffType {
 	SPEED,
@@ -68,6 +71,10 @@ func stop_invulnerability() -> void:
 	invulnerability_timer.queue_free()
 
 func _process(delta: float) -> void:
+	# can't do any other actions while lighting a torch
+	if is_lighting_torch:
+		return
+
 	if !units_in_attack_range.is_empty():
 		if time_since_last_attack >= ATTACK_COOLDOWN:
 			animation_player.seek(0, true)
@@ -148,6 +155,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	unit_name = from_creature.name
 	unit_type = from_creature.type
 	buffs_i_apply = from_creature.buffs_i_apply
+	can_light_torches = from_creature.can_light_torches
 
 	resize_unit_target_box(from_creature)
 
@@ -200,3 +208,13 @@ func remove_buff(buff_to_remove: Buff) -> void:
 		BuffType.HEALTH:
 			unit_attackable.max_hp -= int(buff_to_remove.value)
 			unit_attackable.hp -= int(buff_to_remove.value)
+
+func try_light_torch(torch: Torch) -> void:
+	if !can_light_torches:
+		return
+
+	is_lighting_torch = true
+	animation_player.play("light_torch")
+	await get_tree().create_timer(2.0).timeout
+	torch.light_torch()
+	is_lighting_torch = false

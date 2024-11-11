@@ -26,6 +26,7 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Damage Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 2)]),
 	Creature.new("Health Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.HEALTH, 5)]),
 	Creature.new("Speed Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/units/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.SPEED, 0.5)]),
+	Creature.new("Torchlighter", CardType.MELEE, 5, 1, 2, 10, "res://textures/units/hand_crawler.png", [], true),
 ]
 
 class Creature:
@@ -37,8 +38,9 @@ class Creature:
 	var strength_factor: int
 	var card_image_path: String
 	var buffs_i_apply: Array[Unit.Buff] = []
+	var can_light_torches: bool = false
 
-	func _init(init_name: String, init_type: CardType, init_health: int, init_damage: int, init_mana: int, init_strength_factor: int, init_card_image_path: String, init_buffs_i_apply: Array[Unit.Buff]=[]) -> void:
+	func _init(init_name: String, init_type: CardType, init_health: int, init_damage: int, init_mana: int, init_strength_factor: int, init_card_image_path: String, init_buffs_i_apply: Array[Unit.Buff]=[], init_can_light_torches: bool = false) -> void:
 		self.name = init_name
 		self.type = init_type
 		self.health = init_health
@@ -47,12 +49,13 @@ class Creature:
 		self.strength_factor = init_strength_factor
 		self.card_image_path = init_card_image_path
 		self.buffs_i_apply = init_buffs_i_apply
+		self.can_light_torches = init_can_light_torches
 
 	func get_score() -> int:
 		return health + damage
 
 	func _to_string() -> String:
-		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Strength Factor: " + str(strength_factor) + " Card Image Path: " + card_image_path
+		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Strength Factor: " + str(strength_factor) + " Card Image Path: " + card_image_path + " Buffs I Apply: " + str(buffs_i_apply) + " Can Light Torches: " + str(can_light_torches)
 
 
 enum CardType {RANGED, MELEE, AIR}
