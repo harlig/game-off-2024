@@ -239,9 +239,11 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx].position.x
 
 	var furthest_torch_x := all_torches[furthest_torch_lit].position.x
-	(spawn_mesh.mesh as QuadMesh).size.x = abs(furthest_torch_x - spawn_mesh_base_x)
-	spawn_mesh.position.x = (spawn_mesh_base_x + furthest_torch_x) / 2.0
 
+	# tween to new positions in parallel
+	var tween: Tween = get_tree().create_tween();
+	tween.parallel().tween_property(spawn_mesh.mesh, "size", Vector2(abs(furthest_torch_x - spawn_mesh_base_x), (spawn_mesh.mesh as QuadMesh).size.y), 1.0).set_trans(Tween.TRANS_CUBIC);
+	tween.parallel().tween_property(spawn_mesh, "position", Vector3((spawn_mesh_base_x + furthest_torch_x) / 2.0, spawn_mesh.position.y, spawn_mesh.position.z), 1.0).set_trans(Tween.TRANS_CUBIC);
 
 func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 	if not torch_lit:
