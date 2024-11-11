@@ -112,6 +112,8 @@ func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 func try_play_card() -> void:
 	if not drag_card:
 		return
+	if not $Hand.can_play(drag_card):
+		return
 
 	match drag_card.type:
 		Card.CardType.UNIT:
