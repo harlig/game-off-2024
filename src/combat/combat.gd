@@ -4,6 +4,9 @@ class_name Combat extends Node3D
 @onready var torch_scene: PackedScene = preload("res://src/torch.tscn")
 
 @onready var reward := $Reward
+@onready var player_base_torch_location: Node3D = $PlayerBaseTorchLocation
+@onready var enemy_base_torch_position: Node3D = $EnemyBaseTorchLocation
+
 
 signal reward_presented()
 signal reward_chosen(reward: Reward.RewardData)
@@ -42,13 +45,27 @@ func _ready() -> void:
 	set_process(true)
 	$Camera3D.make_current()
 
+	# spawn torch at player base, and enemy base
+	var player_base_torch := torch_scene.instantiate()
+	player_base_torch.position = player_base_torch_location.position
+	add_child(player_base_torch)
+
+	var enemy_base_torch := torch_scene.instantiate()
+	enemy_base_torch.position = enemy_base_torch_position.position
+	enemy_base_torch.connect("torch_state_changed", _on_enemy_base_torch_state_changed)
+	(enemy_base_torch.get_node("CPUParticles3D") as CPUParticles3D).emitting = false
+	(enemy_base_torch.get_node("OmniLight3D") as OmniLight3D).hide()
+	(enemy_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(enemy_base_torch))
+	add_child(enemy_base_torch)
+
 	# set up the torches, spanning the width of the map from base to base
-	var player_base_x: float = $PlayerBase.position.x
-	var enemy_base_x: float = $EnemyBase.position.x
+	var player_base_x: float = player_base_torch_location.position.x
+	var enemy_base_x: float = enemy_base_torch_position.position.x
 	var interval := (enemy_base_x - player_base_x) / (NUM_TORCHES + 1)
+
 	for ndx in range(NUM_TORCHES):
 		var torch := torch_scene.instantiate()
-		torch.position = Vector3(player_base_x + interval * (ndx + 1), 0, ($PlayerBase.position.z + $EnemyBase.position.z) / 2.0)
+		torch.position = Vector3(player_base_x + interval * (ndx + 1), 0, (player_base_torch_location.position.z + enemy_base_torch_position.position.z) / 2.0)
 		(torch.get_node("CPUParticles3D") as CPUParticles3D).emitting = false
 		(torch.get_node("OmniLight3D") as OmniLight3D).hide()
 		(torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(torch))
@@ -173,8 +190,8 @@ func remove_buffs_from_units_buffed_by_unit(buff_unit: Unit, units_buffed: Array
 			unit.remove_buff(buff)
 
 func spawn_enemy(card: Card) -> void:
-	var unit_x: float = $EnemyBase.position.x - OFFSET_FROM_BASE_DISTANCE
-	var unit_z: float = $EnemyBase.position.z
+	var unit_x: float = enemy_base_torch_position.position.x + OFFSET_FROM_BASE_DISTANCE
+	var unit_z: float = enemy_base_torch_position.position.z
 	spawn_unit(unit_scene, card, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY)
 
 func play_spell(spell: SpellList.Spell) -> void:
@@ -197,7 +214,10 @@ func _on_player_base_died() -> void:
 	state = CombatState.LOST
 	combat_over.emit(state)
 
-func _on_enemy_base_died() -> void:
+func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
+	if not torch_lit:
+		return
+
 	state = CombatState.WON
 	provide_rewards()
 

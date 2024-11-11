@@ -1,11 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=15 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
 [ext_resource type="Script" path="res://src/combat/combat_camera.gd" id="4_uic0f"]
 [ext_resource type="Shader" path="res://shaders/spawn_area.gdshader" id="4_yejyx"]
 [ext_resource type="Script" path="res://src/combat/hand.gd" id="5_3nvnk"]
-[ext_resource type="PackedScene" uid="uid://d2wxwevlcnfik" path="res://src/combat/base.tscn" id="5_d80wm"]
 [ext_resource type="Texture2D" uid="uid://cju5ys6csnnl3" path="res://textures/hud/mana.png" id="6_g70ey"]
 [ext_resource type="PackedScene" uid="uid://deyj5t686af3v" path="res://src/combat/combat_deck.tscn" id="7_bknt5"]
 [ext_resource type="Texture2D" uid="uid://kg1i4rk2x7h3" path="res://textures/hud/circle_tan.png" id="7_ec4of"]
@@ -57,14 +56,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.1, -11)
 material_override = SubResource("ShaderMaterial_x1ilm")
 mesh = SubResource("QuadMesh_tdyly")
 
-[node name="PlayerBase" parent="." instance=ExtResource("5_d80wm")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -17.207, 0, -10.752)
+[node name="PlayerBaseTorchLocation" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.207, 0, -10.752)
 
-[node name="EnemyBase" parent="." instance=ExtResource("5_d80wm")]
-transform = Transform3D(-2, 0, -3.01992e-07, 0, 2, 0, 3.01992e-07, 0, -2, 17.207, 0, -10.752)
-
-[node name="Attackable" parent="EnemyBase" index="0"]
-team = 1
+[node name="EnemyBaseTorchLocation" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.207, 0, -10.752)
 
 [node name="DragLine" type="Line2D" parent="."]
 width = 140.0
@@ -146,12 +142,5 @@ offset_bottom = -240.0
 [connection signal="input_event" from="SpawnArea" to="." method="_on_spawn_area_input_event"]
 [connection signal="mouse_entered" from="SpawnArea" to="." method="_on_spawn_area_mouse_entered"]
 [connection signal="mouse_exited" from="SpawnArea" to="." method="_on_spawn_area_mouse_exited"]
-[connection signal="died" from="PlayerBase/Attackable" to="." method="_on_player_base_died"]
-[connection signal="died" from="EnemyBase/Attackable" to="." method="_on_enemy_base_died"]
 [connection signal="card_clicked" from="PlayerHand" to="." method="_on_player_hand_card_clicked"]
 [connection signal="reward_chosen" from="Reward" to="." method="_on_reward_reward_chosen"]
-
-[editable path="PlayerBase"]
-[editable path="PlayerBase/Attackable"]
-[editable path="EnemyBase"]
-[editable path="EnemyBase/Attackable"]
