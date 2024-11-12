@@ -188,6 +188,7 @@ func hide_node(unvisited: MapNode) -> void:
 
 const BLANK_SPACE_RADIUS := 2.0
 const NUM_TREES_TO_SPAWN_PER_NODE := 5
+const DISTANCE_FROM_PATH_OR_NODE := 0.4
 func _compute_blank_spaces() -> void:
 	for node_position: Vector2 in all_node_positions:
 		var node_blank_spaces: Array[Vector2] = []
@@ -198,11 +199,11 @@ func _compute_blank_spaces() -> void:
 			var maybe_blank_space_position := node_position + random_offset
 			var valid := true
 
-			if maybe_blank_space_position.distance_to(node_position) < 0.2:
+			if maybe_blank_space_position.distance_to(node_position) < DISTANCE_FROM_PATH_OR_NODE:
 				valid = false
 
 			for other_node in all_node_positions:
-				if maybe_blank_space_position.distance_to(other_node) < 0.2:
+				if maybe_blank_space_position.distance_to(other_node) < DISTANCE_FROM_PATH_OR_NODE:
 					valid = false
 					break
 
@@ -215,7 +216,7 @@ func _compute_blank_spaces() -> void:
 					path_points_to_check.append(path_start.lerp(path_end, (1.0 / path_points_to_add * ndx) * randf_range(0.7, 1.3)))
 
 				for path_point: Vector3 in path_points_to_check:
-					if maybe_blank_space_position.distance_to(Vector2(path_point.x, path_point.z)) < 0.2:
+					if maybe_blank_space_position.distance_to(Vector2(path_point.x, path_point.z)) < DISTANCE_FROM_PATH_OR_NODE:
 						valid = false
 						break
 

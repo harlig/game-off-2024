@@ -95,6 +95,7 @@ mesh = SubResource("QuadMesh_vvqva")
 
 [node name="Tree2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_kt05t")
 gi_lightmap_scale = 3
 mesh = SubResource("QuadMesh_ywn5p")
