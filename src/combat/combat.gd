@@ -282,6 +282,7 @@ func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position
 
 
 func _on_spawn_area_mouse_exited() -> void:
+	play_location_valid = false;
 	reset_spawn_mesh()
 
 
