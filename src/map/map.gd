@@ -8,15 +8,16 @@ signal view_deck_clicked()
 @onready var tree := $Tree
 
 var map_tree := {}
-var all_node_positions := []
-var visited_nodes := []
-var nodes_explicitly_hidden := []
+var all_node_positions: Array[Vector2] = []
+var visited_nodes: Array[MapNode] = []
+var nodes_explicitly_hidden: Array[MapNode] = []
 var node_instance_positions := {}
 var bushes := []
 var can_interact := true
 var paths := []
 var paths_between := {}
 var visible_nodes := {}
+var blank_spaces := {}
 
 func set_interactable(interactable: bool) -> void:
 	can_interact = interactable
@@ -29,11 +30,16 @@ func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_
 	map_tree.clear()
 	all_node_positions.clear()
 	node_instance_positions.clear()
+	blank_spaces.clear()
 
 	map_tree[center_node] = []
 	all_node_positions.append(center_node)
 	var start_node := _generate_map(center_node, initial_spawn_path_directions, 0, max_depth)
 	visited_node(start_node)
+
+	_compute_blank_spaces()
+	spawn_on_blank_spaces()
+	print("Blank spaces: ", blank_spaces)
 
 func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: int) -> MapNode:
 	if depth >= max_depth:
@@ -180,3 +186,50 @@ func hide_node(unvisited: MapNode) -> void:
 	if unvisited not in nodes_explicitly_hidden:
 		nodes_explicitly_hidden.append(unvisited)
 	unvisited.hide()
+
+const BLANK_SPACE_RADIUS := 2.0
+const NUM_TREES_TO_SPAWN_PER_NODE := 5
+func _compute_blank_spaces() -> void:
+	for node_position: Vector2 in all_node_positions:
+		var node_blank_spaces: Array[Vector2] = []
+		var attempts := 0
+		while len(node_blank_spaces) < NUM_TREES_TO_SPAWN_PER_NODE and attempts < 100:
+			attempts += 1
+			var random_offset := Vector2(randf_range(-BLANK_SPACE_RADIUS, BLANK_SPACE_RADIUS), randf_range(-BLANK_SPACE_RADIUS, BLANK_SPACE_RADIUS))
+			var maybe_blank_space_position := node_position + random_offset
+			var valid := true
+
+			if maybe_blank_space_position.distance_to(node_position) < 0.2:
+				valid = false
+
+			for other_node in all_node_positions:
+				if maybe_blank_space_position.distance_to(other_node) < 0.2:
+					valid = false
+					break
+
+			for path_start: Vector3 in paths_between.keys():
+				var path_end: Vector3 = paths_between[path_start]
+				var path_midpoint: Vector3 = (path_start + path_end) / 2
+				var path_points_to_check: Array[Vector3] = [path_start, path_midpoint, path_end]
+				var path_points_to_add := 5
+				for ndx in range(path_points_to_add):
+					path_points_to_check.append(path_start.lerp(path_end, (1.0 / path_points_to_add * ndx) * randf_range(0.7, 1.3)))
+
+				for path_point: Vector3 in path_points_to_check:
+					if maybe_blank_space_position.distance_to(Vector2(path_point.x, path_point.z)) < 0.2:
+						valid = false
+						break
+
+			if valid:
+				node_blank_spaces.append(maybe_blank_space_position)
+
+		blank_spaces[node_position] = node_blank_spaces
+
+func spawn_on_blank_spaces() -> void:
+	for node_position: Vector2 in blank_spaces.keys():
+		for blank_space: Vector2 in blank_spaces[node_position]:
+			var new_tree := tree.duplicate() as MeshInstance3D
+			new_tree.show()
+			new_tree.global_transform.origin = Vector3(blank_space.x, 1, blank_space.y)
+			new_tree.rotation_degrees = Vector3(-90, 0, 0)
+			add_child(new_tree)
