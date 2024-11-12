@@ -56,8 +56,14 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 	clicked = true
 	drag_start_position = card.global_position + card.size * card.scale / 2.0
 
-	if card.type == Card.CardType.SPELL and card.spell.targetable_type != SpellList.TargetableType.NONE:
+	if is_holding_targetable_spell():
 		targetable_card_selected.emit()
+
+
+func is_holding_targetable_spell() -> bool:
+	return clicked \
+	and current_hover.type == Card.CardType.SPELL \
+	and current_hover.spell.targetable_type != SpellList.TargetableType.NONE;
 
 
 func _on_card_mouse_entered(card: Card) -> void:

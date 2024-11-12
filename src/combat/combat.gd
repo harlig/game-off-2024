@@ -151,6 +151,9 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	$HandDisplay.targetable_card_selected.connect(unit.make_selectable.bind(true))
 	$HandDisplay.card_deselected.connect(unit.make_selectable.bind(false))
 
+	if $HandDisplay.is_holding_targetable_spell():
+		unit.make_selectable(true)
+
 func _on_unit_died(unit: Unit) -> void:
 	if unit.unit_attackable.team == Attackable.Team.PLAYER:
 		remove_buffs_from_units_buffed_by_unit(unit, current_ally_units)
