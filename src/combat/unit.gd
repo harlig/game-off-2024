@@ -13,6 +13,7 @@ const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
 
 const WALK_ANIMATION := "walk"
 var attack_animation := "attack"
+var change_torch_animation := "light_torch"
 
 var speed := 1.5
 var damage := 5:
@@ -32,8 +33,8 @@ var time_since_last_attack := 0.0
 var invulnerability_timer := Timer.new()
 var is_invulnerable := true
 
-var can_light_torches := false
-var is_lighting_torch := false
+var can_change_torches := false
+var is_changing_torch := false
 
 enum BuffType {
 	SPEED,
@@ -76,7 +77,7 @@ var closest_ally_attackable_needing_heal_before_heal: Attackable = null
 
 func _process(delta: float) -> void:
 	# can't do any other actions while lighting a torch
-	if is_lighting_torch:
+	if is_changing_torch:
 		return
 
 	if !enemies_in_attack_range.is_empty() || (unit_type == UnitList.CardType.HEALER && !allies_in_attack_range.is_empty()):
@@ -109,11 +110,11 @@ func _process(delta: float) -> void:
 			return
 
 	if direction == Direction.RIGHT:
-		if !can_light_torches and position.x >= furthest_x_position_allowed:
+		if !can_change_torches and position.x >= furthest_x_position_allowed:
 			return
 		position.x += speed * delta
 	else:
-		if !can_light_torches and position.x <= furthest_x_position_allowed:
+		if !can_change_torches and position.x <= furthest_x_position_allowed:
 			return
 		position.x -= speed * delta
 
@@ -184,6 +185,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	$MeshInstance3D.material_override.set_shader_parameter("flip_h", flip_image)
 	if flip_image:
 		attack_animation = "attack_reversed"
+		change_torch_animation = "light_torch_reversed"
 	if from_creature.type == UnitList.CardType.HEALER:
 		attack_animation = "heal"
 
@@ -191,7 +193,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	unit_name = from_creature.name
 	unit_type = from_creature.type
 	buffs_i_apply = from_creature.buffs_i_apply
-	can_light_torches = from_creature.can_light_torches
+	can_change_torches = from_creature.can_change_torches
 
 	resize_unit_target_box(from_creature)
 
@@ -249,15 +251,29 @@ func remove_buff(buff_to_remove: Buff) -> void:
 			unit_attackable.hp -= int(buff_to_remove.value)
 
 func try_light_torch(torch: Torch) -> void:
-	if !can_light_torches or torch.is_lit:
+	if !can_change_torches or torch.is_lit:
 		return
 
-	is_lighting_torch = true
-	animation_player.play("light_torch")
+	is_changing_torch = true
+	animation_player.play(change_torch_animation)
 	await get_tree().create_timer(2.0).timeout
 
 	if not torch.is_lit:
 		torch.light_torch()
 
-	is_lighting_torch = false
+	is_changing_torch = false
+	animation_player.play(WALK_ANIMATION)
+
+func try_extinguish_torch(torch: Torch) -> void:
+	if !can_change_torches or !torch.is_lit:
+		return
+
+	is_changing_torch = true
+	animation_player.play(change_torch_animation)
+	await get_tree().create_timer(2.0).timeout
+
+	if torch.is_lit:
+		torch.extinguish_torch()
+
+	is_changing_torch = false
 	animation_player.play(WALK_ANIMATION)

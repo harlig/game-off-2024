@@ -103,7 +103,7 @@ func update_unit_display() -> void:
 	for buff in creature.buffs_i_apply:
 		$Description.text += "\n" + buff.description()
 
-	if creature.can_light_torches:
+	if creature.can_change_torches:
 		$Description.text += "\nCan light torches"
 
 	if creature.type == UnitList.CardType.HEALER:

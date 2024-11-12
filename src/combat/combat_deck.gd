@@ -23,7 +23,7 @@ func draw() -> Card:
 
 func try_draw_torchlighter() -> Card:
 	for card in draw_pile:
-		if card.type == Card.CardType.UNIT and card.creature.can_light_torches:
+		if card.type == Card.CardType.UNIT and card.creature.can_change_torches:
 			draw_pile.erase(card)
 			return card
 	return null

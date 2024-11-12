@@ -106,14 +106,16 @@ func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 	if area is not Attackable:
 		return
 	var attackable := area as Attackable
-	if attackable.team != Attackable.Team.PLAYER:
-		return
 
 	if attackable.get_parent() is Unit:
 		var unit := attackable.get_parent() as Unit
-		if !unit.can_light_torches:
+		if !unit.can_change_torches:
 			return
-		unit.try_light_torch(torch)
+		if attackable.team == Attackable.Team.PLAYER:
+			unit.try_light_torch(torch)
+		else:
+			unit.try_extinguish_torch(torch)
+
 
 func _on_hand_display_try_play_card(card: Card) -> void:
 	reset_spawn_mesh()
@@ -148,10 +150,6 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 			y = 0
 	unit.position = Vector3(unit_position.x, y, unit_position.z + random_z_offset)
 	unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
-	if team == Attackable.Team.ENEMY:
-		unit.get_node("TargetArea").scale.x *= -1
-		unit.get_node("TargetArea").position.x *= -1
-		unit.get_node("Attackable").scale.x *= -1
 	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false)
 	unit.unit_attackable.team = team
 
@@ -163,6 +161,14 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit].position.x
 		buff_units_from_unit(unit, current_enemy_units)
 		current_enemy_units.append(unit)
+
+		# all enemies can extinguish torches
+		unit.can_change_torches = true
+
+		unit.get_node("TargetArea").scale.x *= -1
+		unit.get_node("TargetArea").position.x *= -1
+		unit.get_node("Attackable").scale.x *= -1
+		unit.get_node("Label3D").position.x *= -1
 
 	unit.unit_attackable.connect("mouse_entered", _on_unit_mouse_entered.bind(unit))
 	unit.unit_attackable.connect("mouse_exited", _on_unit_mouse_exited.bind(unit))
@@ -235,9 +241,7 @@ func _on_player_base_died() -> void:
 	reset_spawn_mesh()
 
 func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> void:
-	if not is_lit:
-		return
-	furthest_torch_lit = torch_lit_ndx
+	furthest_torch_lit = torch_lit_ndx if is_lit else torch_lit_ndx - 1
 
 	for unit in current_ally_units:
 		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx + 1].position.x
