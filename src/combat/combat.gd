@@ -247,16 +247,6 @@ func play_spell(spell: SpellList.Spell) -> void:
 		SpellList.SpellType.DRAW_CARDS:
 			$Hand.draw_cards(spell.value)
 
-func _on_player_base_torch_state_changed(torch_lit: bool) -> void:
-	# this should always be false
-	if torch_lit:
-		push_error("Player base torch should never become lit after it's been extinguished")
-		return
-
-	state = CombatState.LOST
-	combat_over.emit(state)
-	reset_spawn_mesh()
-
 func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> void:
 	furthest_torch_lit = torch_lit_ndx if is_lit else torch_lit_ndx - 1
 
@@ -275,16 +265,30 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 	tween.parallel().tween_property(spawn_mesh.mesh, "size", new_size, 1.0).set_trans(Tween.TRANS_CUBIC);
 	tween.parallel().tween_property(spawn_mesh.mesh, "center_offset", new_offset, 1.0).set_trans(Tween.TRANS_CUBIC);
 
+func _on_player_base_torch_state_changed(torch_lit: bool) -> void:
+	# this should always be false
+	if torch_lit:
+		push_error("Player base torch should never become lit after it's been extinguished")
+		return
+	finish_combat(CombatState.LOST)
+
 func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 	if not torch_lit:
 		return
-
 	for unit in current_ally_units:
 		unit.furthest_x_position_allowed = 1000.0;
+	finish_combat(CombatState.WON)
 
-	state = CombatState.WON
-	provide_rewards()
+func finish_combat(new_state: CombatState) -> void:
+	state = new_state
 	reset_spawn_mesh()
+	$HandDisplay.hide()
+	$Opponent.should_spawn = false
+
+	if state == CombatState.WON:
+		provide_rewards()
+	else:
+		show_combat_lost()
 
 func provide_rewards() -> void:
 	reward_presented.emit()
@@ -294,11 +298,12 @@ func provide_rewards() -> void:
 	$HandDisplay.queue_free()
 	$Opponent.queue_free()
 
+func show_combat_lost() -> void:
+	$Lost.show()
 
 func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 	reward_chosen.emit(reward_data)
 	combat_over.emit(state)
-
 
 func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if !$HandDisplay or !$HandDisplay.current_selected:
@@ -360,3 +365,7 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 		total_strength += creature.strength_factor
 		new_deck.append(Card.create_creature_card(creature))
 	return new_deck
+
+
+func _on_combat_lost_button_pressed() -> void:
+	combat_over.emit(state)

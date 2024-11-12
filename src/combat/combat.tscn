@@ -161,6 +161,53 @@ offset_top = 160.0
 offset_right = -320.0
 offset_bottom = -240.0
 
+[node name="Lost" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(1200, 800)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -600.0
+offset_top = -400.0
+offset_right = 600.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="Lost"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.7
+anchor_right = 0.8
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 0
+theme_override_font_sizes/font_size = 64
+text = "Wake up"
+
+[node name="Label" type="Label" parent="Lost"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "The creatures overran you.
+
+You feel their legs skittering around you as you're dragged along the ground.
+
+You lose consciousness..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [connection signal="input_event" from="Battlefield" to="." method="_on_spawn_area_input_event"]
 [connection signal="mouse_entered" from="Battlefield" to="." method="_on_spawn_area_mouse_entered"]
 [connection signal="mouse_exited" from="Battlefield" to="." method="_on_spawn_area_mouse_exited"]
@@ -169,3 +216,4 @@ offset_bottom = -240.0
 [connection signal="mana_updated" from="Hand" to="HandDisplay" method="_on_hand_mana_updated"]
 [connection signal="spawn" from="Opponent" to="." method="_on_opponent_spawn"]
 [connection signal="reward_chosen" from="Reward" to="." method="_on_reward_reward_chosen"]
+[connection signal="pressed" from="Lost/Button" to="." method="_on_combat_lost_button_pressed"]

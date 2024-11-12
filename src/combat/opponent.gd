@@ -5,13 +5,14 @@ const SPAWN_INTERVAL := 6.0
 @onready var hand := $Hand;
 
 var spawn_time_remaining := 1.0
+var should_spawn := true
 
 signal spawn(card: Card)
 
 func _process(delta: float) -> void:
 	spawn_time_remaining -= delta
 
-	if spawn_time_remaining <= 0.0:
+	if should_spawn and spawn_time_remaining <= 0.0:
 		try_play_card()
 
 
