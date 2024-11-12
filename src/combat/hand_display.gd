@@ -4,32 +4,48 @@ const MAX_HAND_WIDTH = 512.0
 const ROTATION_PER_CARD = 4.0
 const CARD_X_SIZE = 192.0
 const CARD_Y_SIZE = 256.0
+const CARD_PLAY_HEIGHT = 300.0
+const CARD_CANCEL_HEIGHT = 40.0
 
 var current_hover: Card = null
-var current_hover_new_position: Vector2
-var current_hover_new_rotation: float
-var clicked: bool = false
+var current_hover_return_pos: Vector2
+var current_hover_return_rot: float
+
+var current_selected: Card = null
+var current_selected_return_pos: Vector2
+var current_selected_return_rot: float
 
 var drag_start_position: Vector2
+var is_dragging := false
 
-signal try_play_card(card: Card)
-
-signal targetable_card_selected()
+signal unit_spell_selected()
 signal card_deselected()
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and clicked:
-		if event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
-			card_deselected.emit()
-			try_play_card.emit(current_hover)
+	# Try to play current seleceted on left mouse button event
+	if event is InputEventMouseButton \
+	and event.button_index == MOUSE_BUTTON_LEFT \
+	and current_selected:
+		# Always safe to deselect card (for unit raypickable) and clear line2d
+		card_deselected.emit()
+		is_dragging = false
+		$DragLine.clear_points()
+		$DragEnd.hide()
 
-			$DragLine.clear_points()
-			$DragEnd.hide()
-			place_back_in_hand()
-			clicked = false
+		if event.position.y < $PlayHeight.position.y:
+			get_parent().try_play_card(current_selected)
 
-	if event is InputEventMouseMotion and clicked:
-		draw_drag_line(event)
+		if current_hover != current_selected:
+			show_hovered_card()
+
+		place_back_in_hand(current_selected, current_selected_return_pos, current_selected_return_rot)
+		current_selected = null
+
+	if event is InputEventMouseMotion:
+		if is_dragging:
+			draw_drag_line(event)
+		elif current_selected:
+			current_selected.global_position = event.position - current_selected.size * current_selected.scale / 2.0
 
 
 func _on_hand_drew(card: Card) -> void:
@@ -53,49 +69,66 @@ func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
 
 
 func _on_card_clicked(_times_clicked: int, card: Card) -> void:
-	clicked = true
-	drag_start_position = card.global_position + card.size * card.scale / 2.0
+	if current_selected:
+		return
 
-	if is_holding_targetable_spell():
-		targetable_card_selected.emit()
+	current_selected = card
 
+	if !card.is_none_spell():
+		drag_start_position = card.global_position + card.size * card.scale / 2.0
+		is_dragging = true
 
-func is_holding_targetable_spell() -> bool:
-	return clicked \
-	and current_hover.type == Card.CardType.SPELL \
-	and current_hover.spell.targetable_type != SpellList.TargetableType.NONE;
+	if card.is_unit_spell():
+		unit_spell_selected.emit()
 
 
 func _on_card_mouse_entered(card: Card) -> void:
-	if clicked:
+	current_hover = card
+
+	if current_selected:
 		return
 
-	card.cancel_tween.emit()
-	current_hover = card
-	card.z_index = 1
-	card.position.y = -300.0
-	card.scale = Vector2(1.3, 1.3)
+	show_hovered_card()
+
+
+func show_hovered_card() -> void:
+	if !current_hover:
+		return
+
+	current_hover.cancel_tween.emit()
+	current_hover.z_index = 1
+	current_hover.position.y = -300.0
+	current_hover.scale = Vector2(1.3, 1.3)
 
 	update_hand_positions()
 
 
-func _on_card_mouse_exited(_card: Card) -> void:
-	if clicked:
-		return
-
-	place_back_in_hand();
-
-
-func place_back_in_hand() -> void:
-	current_hover.cancel_tween.emit()
-	current_hover.z_index = 0
-	current_hover.scale = Vector2(1.0, 1.0)
-	current_hover.position = current_hover_new_position
-	current_hover.rotation = current_hover_new_rotation
-
+func _on_card_mouse_exited(card: Card) -> void:
 	current_hover = null;
 
+	if current_selected:
+		return
 
+	place_back_in_hand(card, current_hover_return_pos, current_hover_return_rot);
+
+
+func _on_drop_box_entered() -> void:
+	if !current_selected:
+		return ;
+
+	place_back_in_hand(current_selected, current_selected_return_pos, current_selected_return_rot)
+	current_selected = null
+
+
+func place_back_in_hand(card: Card, pos: Vector2, rot: float) -> void:
+	card.cancel_tween.emit()
+	card.z_index = 0
+	card.scale = Vector2(1.0, 1.0)
+	card.position = pos
+	card.rotation = rot
+
+
+# TODO: Spread around i
 func update_hand_positions() -> void:
 	# Avoid tween warnings for preloaded combat
 	if get_parent().name == "PreloadedCombat":
@@ -117,15 +150,21 @@ func update_hand_positions() -> void:
 		var center_dist: float = abs(i - (hand_size - 1) / 2.0)
 		y_pos += 4.0 * center_dist * center_dist
 
+		var pos := Vector2(x_pos, y_pos)
+		var rot := deg_to_rad(current_rotation)
+
 		if card == current_hover:
-			current_hover_new_position = Vector2(x_pos, y_pos)
-			current_hover_new_rotation = deg_to_rad(current_rotation)
+			current_hover_return_pos = pos
+			current_hover_return_rot = rot
+		elif card == current_selected:
+			current_selected_return_pos = pos
+			current_selected_return_rot = rot
 		else:
 			card.cancel_tween.emit()
 
 			var tween := get_tree().create_tween()
-			tween.parallel().tween_property(card, "position", Vector2(x_pos, y_pos), 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-			tween.parallel().tween_property(card, "rotation", deg_to_rad(current_rotation), 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+			tween.parallel().tween_property(card, "position", pos, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+			tween.parallel().tween_property(card, "rotation", rot, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 			card.cancel_tween.connect(tween.stop)
 
 			# card.position = Vector2(x_pos, y_pos)

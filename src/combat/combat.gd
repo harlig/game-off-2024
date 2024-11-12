@@ -120,24 +120,35 @@ func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 			unit.try_extinguish_torch(torch)
 
 
-func _on_hand_display_try_play_card(card: Card) -> void:
+# Attempt to play card and return whether it was played
+func try_play_card(card: Card) -> bool:
 	reset_spawn_mesh()
 
 	if not $Hand.can_play(card):
-		return
+		return false
 
 	match card.type:
 		Card.CardType.UNIT when play_location_valid:
 			spawn_unit(unit_scene, card, play_location, Attackable.Team.PLAYER)
 			$Hand.play_card(card)
+			return true
 
 		Card.CardType.SPELL:
-			if card.spell.targetable_type == SpellList.TargetableType.NONE and play_location_valid:
+			if card.is_none_spell():
 				play_spell(card.spell)
 				$Hand.play_card(card)
-			elif currently_hovered_unit:
+				return true
+
+			elif card.is_unit_spell():
 				play_spell(card.spell)
 				$Hand.play_card(card)
+				return true
+
+			elif card.is_area_spell() and play_location_valid:
+				#TODO
+				pass ;
+
+	return false
 
 
 func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Vector3, team: Attackable.Team) -> void:
@@ -177,10 +188,10 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	unit.unit_attackable.connect("mouse_exited", _on_unit_mouse_exited.bind(unit))
 	unit.unit_attackable.connect("died", _on_unit_died.bind(unit))
 
-	$HandDisplay.targetable_card_selected.connect(unit.make_selectable.bind(true))
+	$HandDisplay.unit_spell_selected.connect(unit.make_selectable.bind(true))
 	$HandDisplay.card_deselected.connect(unit.make_selectable.bind(false))
 
-	if $HandDisplay.is_holding_targetable_spell():
+	if $HandDisplay.current_selected and $HandDisplay.current_selected.is_unit_spell():
 		unit.make_selectable(true)
 
 func _on_unit_died(unit: Unit) -> void:
@@ -290,15 +301,14 @@ func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 
 
 func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	# check if it's null in case the hand display is destroyed
-	if !$HandDisplay or !$HandDisplay.clicked:
+	if !$HandDisplay or !$HandDisplay.current_selected:
 		return
 
 	if event is not InputEventMouseMotion:
 		return
 
 	play_location = Vector3(event_position.x, 0, event_position.z);
-	var type: Card.CardType = $HandDisplay.current_hover.type;
+	var type: Card.CardType = $HandDisplay.current_selected.type;
 
 	match type:
 		Card.CardType.SPELL:

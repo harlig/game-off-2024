@@ -171,6 +171,18 @@ func reset_selected() -> void:
 	add_theme_stylebox_override("panel", original_stylebox_override)
 
 
+func is_area_spell() -> bool:
+	return type == CardType.SPELL and spell.targetable_type == SpellList.TargetableType.AREA;
+
+
+func is_unit_spell() -> bool:
+	return type == CardType.SPELL and spell.targetable_type == SpellList.TargetableType.UNIT;
+
+
+func is_none_spell() -> bool:
+	return type == CardType.SPELL and spell.targetable_type == SpellList.TargetableType.NONE;
+
+
 func _to_string() -> String:
 	var card_string := ""
 	match type:
