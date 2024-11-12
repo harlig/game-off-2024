@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://duddh6mfcbacf"]
+
+[ext_resource type="Texture2D" uid="uid://5be6i1sy4drf" path="res://textures/relic/health_secret.jpg" id="1_v2t4q"]
+[ext_resource type="Script" path="res://src/relic.gd" id="2_t1ey0"]
+
+[node name="Relic" type="TextureRect"]
+custom_minimum_size = Vector2(80, 80)
+offset_right = 80.0
+offset_bottom = 80.0
+texture = ExtResource("1_v2t4q")
+expand_mode = 2
+script = ExtResource("2_t1ey0")

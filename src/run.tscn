@@ -45,6 +45,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0)
 visible = false
 
 [node name="Loading" type="ColorRect" parent="."]
+visible = false
 z_index = 10
 layout_mode = 1
 anchors_preset = 15
@@ -67,5 +68,16 @@ label_settings = SubResource("LabelSettings_4r0vh")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="RelicArea" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.05
+anchor_right = 0.8
+anchor_bottom = 0.15
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
 
 [connection signal="view_deck_clicked" from="Map" to="." method="_on_map_view_deck_clicked"]

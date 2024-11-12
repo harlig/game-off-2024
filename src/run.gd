@@ -3,6 +3,7 @@ class_name Run extends Control
 @onready var map := $Map
 @onready var camera := $Map/Camera3D
 @onready var deck := $DeckControl/Deck
+@onready var relic_area := $RelicArea
 @onready var combat_scene := preload("res://src/combat/combat.tscn")
 @onready var shop_scene := preload("res://src/map/shop.tscn")
 @onready var event_scene := preload("res://src/map/event.tscn")
@@ -16,6 +17,11 @@ var bank := 10:
 		print("Bank value changed to: ", value)
 		bank = value
 		$Map/BankControl/BankText.text = str(value)
+var relics: Array[Relic] = [Relic.create_relic("Test Relic", "When you spawn a unit, give it +5 max hp")]
+
+var time_for_preload := 0.5
+var time_spent := 0.0
+var has_preloaded := false
 
 func _ready() -> void:
 	# Define parameters for map generation
@@ -40,9 +46,9 @@ func _ready() -> void:
 	# Connect the node clicked signal
 	map.connect("node_clicked", _on_node_clicked)
 
-var time_for_preload := 0.5
-var time_spent := 0.0
-var has_preloaded := false
+	# TODO: need to figure out how to dynamically do this when a relic is added
+	for relic in relics:
+		relic_area.add_child(relic)
 
 func _process(delta: float) -> void:
 	if has_preloaded:
