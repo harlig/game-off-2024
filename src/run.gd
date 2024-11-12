@@ -39,7 +39,7 @@ func _ready() -> void:
 
 	# Initialize player position and accessible nodes
 	player_position = Vector2(0, 0)
-	current_node = map.node_instances[player_position]
+	current_node = map.node_instance_positions[player_position]
 	# set the starting node as beat
 	current_node.beat_node()
 
@@ -99,7 +99,7 @@ func hide_map(should_show_bank: bool) -> void:
 
 func _on_node_clicked(node_position: Vector2) -> void:
 	if node_position in accessible_nodes:
-		var map_node: MapNode = map.node_instances[node_position]
+		var map_node: MapNode = map.node_instance_positions[node_position]
 		current_node = map_node
 		player_position = node_position
 		$Player.position = Vector3(player_position.x, $Player.position.y, player_position.y)
@@ -124,6 +124,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_shop.connect("item_purchased", _on_item_purchased)
 			new_shop.connect("shop_closed", _on_shop_closed)
 			add_child(new_shop)
+			map.visited_node(current_node)
 		elif map_node.type == MapNode.NodeType.EVENT:
 			hide_map(true)
 			var new_event: Event = event_scene.instantiate()
@@ -132,11 +133,12 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			print("Made new event type be ", new_event.type)
 			new_event.connect("event_resolved", _on_event_resolved)
 			add_child(new_event)
+			map.visited_node(current_node)
 		else:
 			current_node.beat_node()
+			map.visited_node(current_node)
 			pass
 
-		map.visited_node(map_node)
 		map.visualize()
 
 		update_accessible_nodes()
@@ -146,6 +148,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	if combat_state == Combat.CombatState.WON:
 		print("Combat won!")
 		$Combat.queue_free()
+		map.visited_node(current_node)
 		current_node.beat_node()
 		show_map()
 	elif combat_state == Combat.CombatState.LOST:
@@ -157,12 +160,12 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 func move_to_unvisited_node() -> void:
 	# Move to an unvisited node deep in the tree
 	var unvisited_nodes := []
-	for node_position: Vector2 in map.node_instances.keys():
-		if not map.node_instances[node_position].has_been_beaten:
+	for node_position: Vector2 in map.node_instance_positions.keys():
+		if not map.node_instance_positions[node_position].has_been_beaten:
 			unvisited_nodes.append(node_position)
 	if unvisited_nodes.size() > 0:
 		player_position = unvisited_nodes[randi() % unvisited_nodes.size()]
-		current_node = map.node_instances[player_position]
+		current_node = map.node_instance_positions[player_position]
 		$Player.position = Vector3(player_position.x, $Player.position.y, player_position.y)
 	show_map()
 	update_accessible_nodes()
@@ -174,15 +177,15 @@ func move_to_unvisited_node() -> void:
 	# Unbeat and hide some of the previously visited nodes
 	var nodes_to_unbeat := 2
 	var beaten_nodes: Array[MapNode] = []
-	for node_position: Vector2 in map.node_instances.keys():
-		var node: MapNode = map.node_instances[node_position]
+	for node_position: Vector2 in map.node_instance_positions.keys():
+		var node: MapNode = map.node_instance_positions[node_position]
 		if node.has_been_beaten and node != current_node:
 			beaten_nodes.append(node)
 	beaten_nodes.shuffle()
 	for i in range(min(nodes_to_unbeat, beaten_nodes.size())):
 		var node_to_unbeat := beaten_nodes[i]
 		node_to_unbeat.unbeat_node()
-		map.unvisit_node(node_to_unbeat)
+		map.unvisit_and_hide_node(node_to_unbeat)
 	map.visualize()
 
 func _on_map_view_deck_clicked() -> void:

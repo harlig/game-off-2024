@@ -8,10 +8,11 @@ signal view_deck_clicked()
 @onready var tree := $Tree
 
 var map_tree := {}
-var all_nodes := []
+var all_node_positions := []
 var available_nodes := []
 var visited_nodes := []
-var node_instances := {}
+var nodes_explicitly_hidden := []
+var node_instance_positions := {}
 var bushes := []
 var can_interact := true
 var paths := []
@@ -26,12 +27,12 @@ func set_interactable(interactable: bool) -> void:
 
 func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_depth: int) -> void:
 	map_tree.clear()
-	all_nodes.clear()
+	all_node_positions.clear()
 	available_nodes.clear()
-	node_instances.clear()
+	node_instance_positions.clear()
 
 	map_tree[center_node] = []
-	all_nodes.append(center_node)
+	all_node_positions.append(center_node)
 	available_nodes.append(center_node)
 	var start_node := _generate_map(center_node, initial_spawn_path_directions, 0, max_depth)
 	visited_nodes.append(start_node)
@@ -44,36 +45,36 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 	while len(map_tree[start_node]) < directions and attempts < directions * 10:
 		attempts += 1
 		var direction := Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
-		var new_node := start_node + direction
+		var new_node_position := start_node + direction
 
 		# Check for overlapping nodes
 		var overlap := false
-		for node: Vector2 in all_nodes:
-			if node.distance_to(new_node) < 1:
+		for node: Vector2 in all_node_positions:
+			if node.distance_to(new_node_position) < 1:
 				overlap = true
 				break
 
-		if not overlap and new_node not in all_nodes:
-			map_tree[start_node].append(new_node)
-			map_tree[new_node] = [start_node]
-			all_nodes.append(new_node)
-			available_nodes.append(new_node)
+		if not overlap and new_node_position not in all_node_positions:
+			map_tree[start_node].append(new_node_position)
+			map_tree[new_node_position] = [start_node]
+			all_node_positions.append(new_node_position)
+			available_nodes.append(new_node_position)
 			# Recursively generate more paths from the new node
-			_generate_map(new_node, directions, depth + 1, max_depth)
+			_generate_map(new_node_position, directions, depth + 1, max_depth)
 
-	for parent_node: Vector2 in map_tree.keys():
-		for child_node: Vector2 in map_tree[parent_node]:
-			if child_node not in node_instances:
+	for parent_node_position: Vector2 in map_tree.keys():
+		for child_node_position: Vector2 in map_tree[parent_node_position]:
+			if child_node_position not in node_instance_positions:
 				var node: MapNode = node_scene.instantiate()
-				node.position = Vector3(child_node.x, 1.2, child_node.y)
+				node.position = Vector3(child_node_position.x, 1.2, child_node_position.y)
 				node.scale = Vector3(0.05, 0.05, 0.05)
 
 				node.type = generate_new_node_type()
 				node.connect("node_clicked", _on_node_clicked)
 				add_child(node)
 				node.hide();
-				node_instances[child_node] = node # Store the MapNode instance
-	return node_instances[start_node]
+				node_instance_positions[child_node_position] = node # Store the MapNode instance
+	return node_instance_positions[start_node]
 
 func generate_new_node_type() -> MapNode.NodeType:
 	var random := randf()
@@ -96,16 +97,24 @@ func visualize() -> void:
 
 	for parent_node: Vector2 in map_tree.keys():
 		for child_node: Vector2 in map_tree[parent_node]:
-			var map_node: MapNode = node_instances[child_node]
+			var map_node: MapNode = node_instance_positions[child_node]
 			if map_node in visited_nodes:
-				map_node.show()
-				visible_nodes[map_node] = true
+				if map_node in nodes_explicitly_hidden:
+					print("This map node is explicitly hidden, ", map_node)
+					map_node.hide()
+				else:
+					map_node.show()
+					visible_nodes[map_node] = true
 
 				if child_node in map_tree:
 					for grandchild_node: Vector2 in map_tree[child_node]:
-						var grandchild_map_node: MapNode = node_instances[grandchild_node]
-						grandchild_map_node.show()
-						visible_nodes[grandchild_map_node] = true
+						var grandchild_map_node: MapNode = node_instance_positions[grandchild_node]
+						if grandchild_map_node in nodes_explicitly_hidden:
+							print("This grandchild node is explicitly hidden, ", grandchild_map_node)
+							grandchild_map_node.hide()
+						else:
+							grandchild_map_node.show()
+							visible_nodes[grandchild_map_node] = true
 
 			var start_pos := Vector3(parent_node.x, -1, parent_node.y)
 			var end_pos := Vector3(child_node.x, -1, child_node.y)
@@ -140,8 +149,8 @@ func visualize() -> void:
 	spawn_bushes(visible_nodes)
 
 func spawn_bushes(visible_nodes: Dictionary) -> void:
-	for node_position: Vector2 in node_instances.keys():
-		var node: MapNode = node_instances[node_position]
+	for node_position: Vector2 in node_instance_positions.keys():
+		var node: MapNode = node_instance_positions[node_position]
 		if node not in visible_nodes:
 			var bush := tree.duplicate() as MeshInstance3D
 			add_child(bush)
@@ -160,8 +169,18 @@ func _on_view_deck_pressed() -> void:
 func visited_node(visited: MapNode) -> void:
 	if visited not in visited_nodes:
 		visited_nodes.append(visited)
+	if visited in nodes_explicitly_hidden:
+		nodes_explicitly_hidden.erase(visited)
+	for grandchild_node_position: Vector2 in map_tree[Vector2(visited.position.x, visited.position.z)]:
+		var grandchild_map_node: MapNode = node_instance_positions[grandchild_node_position]
+		if grandchild_map_node in nodes_explicitly_hidden:
+			nodes_explicitly_hidden.erase(grandchild_map_node)
 
-func unvisit_node(unvisited: MapNode) -> void:
-	if unvisited in visited_nodes:
-		visited_nodes.erase(unvisited)
+
+func unvisit_and_hide_node(unvisited: MapNode) -> void:
+	# if unvisited in visited_nodes:
+	# 	visited_nodes.erase(unvisited)
+
+	if unvisited not in nodes_explicitly_hidden:
+		nodes_explicitly_hidden.append(unvisited)
 	unvisited.hide()

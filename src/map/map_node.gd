@@ -20,7 +20,6 @@ var original_texture: Texture
 signal node_clicked(node_position: Vector2)
 
 func _ready() -> void:
-	original_texture = $Sprite3D.texture
 	match type:
 		NodeType.COMBAT:
 			$Sprite3D.texture = combat_node_sprite
@@ -28,9 +27,7 @@ func _ready() -> void:
 			$Sprite3D.texture = shop_node_sprite
 		NodeType.EVENT:
 			$Sprite3D.texture = event_node_sprite
-		NodeType.BLANK:
-			# TODO: add something here
-			pass
+	original_texture = $Sprite3D.texture
 
 func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if !event.is_pressed():
