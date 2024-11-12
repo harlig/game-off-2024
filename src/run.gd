@@ -155,7 +155,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		# TODO: maybe also want to remove a card from the deck or something
 
 func move_to_unvisited_node() -> void:
-		# Move to an unvisited node deep in the tree
+	# Move to an unvisited node deep in the tree
 	var unvisited_nodes := []
 	for node_position: Vector2 in map.node_instances.keys():
 		if not map.node_instances[node_position].has_been_beaten:
@@ -170,6 +170,19 @@ func move_to_unvisited_node() -> void:
 
 	current_node.beat_node()
 	map.visited_node(current_node)
+
+	# Unbeat and hide some of the previously visited nodes
+	var nodes_to_unbeat := 2
+	var beaten_nodes: Array[MapNode] = []
+	for node_position: Vector2 in map.node_instances.keys():
+		var node: MapNode = map.node_instances[node_position]
+		if node.has_been_beaten and node != current_node:
+			beaten_nodes.append(node)
+	beaten_nodes.shuffle()
+	for i in range(min(nodes_to_unbeat, beaten_nodes.size())):
+		var node_to_unbeat := beaten_nodes[i]
+		node_to_unbeat.unbeat_node()
+		map.unvisit_node(node_to_unbeat)
 	map.visualize()
 
 func _on_map_view_deck_clicked() -> void:

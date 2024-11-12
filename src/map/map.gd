@@ -160,3 +160,8 @@ func _on_view_deck_pressed() -> void:
 func visited_node(visited: MapNode) -> void:
 	if visited not in visited_nodes:
 		visited_nodes.append(visited)
+
+func unvisit_node(unvisited: MapNode) -> void:
+	if unvisited in visited_nodes:
+		visited_nodes.erase(unvisited)
+	unvisited.hide()
