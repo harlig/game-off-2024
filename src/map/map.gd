@@ -39,7 +39,6 @@ func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_
 
 	_compute_blank_spaces()
 	spawn_on_blank_spaces()
-	print("Blank spaces: ", blank_spaces)
 
 func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: int) -> MapNode:
 	if depth >= max_depth:
@@ -228,8 +227,8 @@ func _compute_blank_spaces() -> void:
 func spawn_on_blank_spaces() -> void:
 	for node_position: Vector2 in blank_spaces.keys():
 		for blank_space: Vector2 in blank_spaces[node_position]:
-			var new_tree := tree.duplicate() as MeshInstance3D
+			var new_tree := $Tree2.duplicate() as MeshInstance3D
 			new_tree.show()
-			new_tree.global_transform.origin = Vector3(blank_space.x, 1, blank_space.y)
-			new_tree.rotation_degrees = Vector3(-90, 0, 0)
+			new_tree.position = Vector3(blank_space.x, 1, blank_space.y)
+			new_tree.rotation_degrees = Vector3(-70, 0, 0)
 			add_child(new_tree)

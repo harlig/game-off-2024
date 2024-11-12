@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dnuxboxdulw4k"]
+[gd_scene load_steps=11 format=3 uid="uid://dnuxboxdulw4k"]
 
 [ext_resource type="Script" path="res://src/map/map.gd" id="1_6kf0m"]
 [ext_resource type="Shader" path="res://shaders/texture_3D.gdshader" id="2_tuh66"]
 [ext_resource type="Texture2D" uid="uid://cj77hir4fwbfj" path="res://textures/environment/grass_01.png" id="3_el7mb"]
+[ext_resource type="Texture2D" uid="uid://d3l1w8s7ku206" path="res://textures/map/tree.png" id="4_77wie"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0krmm"]
 size = Vector2(1154, 1154)
@@ -17,6 +18,15 @@ shader_parameter/albedo = ExtResource("3_el7mb")
 shader_parameter/flip_h = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_vvqva"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kt05t"]
+render_priority = 0
+shader = ExtResource("2_tuh66")
+shader_parameter/albedo = ExtResource("4_77wie")
+shader_parameter/flip_h = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_ywn5p"]
+size = Vector2(0.3, 0.3)
 
 [node name="Map" type="Node3D"]
 script = ExtResource("1_6kf0m")
@@ -82,5 +92,12 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5
 visible = false
 material_override = SubResource("ShaderMaterial_rcy4q")
 mesh = SubResource("QuadMesh_vvqva")
+
+[node name="Tree2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+material_override = SubResource("ShaderMaterial_kt05t")
+gi_lightmap_scale = 3
+mesh = SubResource("QuadMesh_ywn5p")
+metadata/_edit_group_ = true
 
 [connection signal="pressed" from="ViewDeck" to="." method="_on_view_deck_pressed"]
