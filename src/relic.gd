@@ -32,5 +32,7 @@ func apply_to_card(card: Card) -> void:
 	match card.type:
 		Card.CardType.UNIT:
 			card.creature.health += 5
+			card.highlight_attribute("health")
 		Card.CardType.SPELL:
 			card.mana -= 1
+			card.highlight_attribute("mana")

@@ -1,9 +1,6 @@
 class_name Card extends TextureRect
 
-var is_selected := false
-var times_clicked := 0
-
-var original_stylebox_override: StyleBoxFlat
+const card_scene := preload("res://src/card.tscn")
 
 var type: CardType
 var mana: int:
@@ -15,16 +12,42 @@ var mana: int:
 var creature: UnitList.Creature
 var spell: SpellList.Spell
 
+var is_selected := false
+var times_clicked := 0
+
+var original_stylebox_override: StyleBoxFlat
+
 # TODO: Seperating AOE spell vs targeted spell here might remove some nested match logic in combat
 enum CardType {
 	UNIT,
 	SPELL
 }
 
-
 @warning_ignore("unused_signal")
 signal cancel_tween()
 signal card_clicked(times_clicked: int, card: Card)
+
+####################################################
+####################################################
+# This is how you should instantiate a combat scene
+####################################################
+####################################################
+static func create_creature_card(init_creature: UnitList.Creature) -> Card:
+	var card_instance: Card = card_scene.instantiate()
+	card_instance.set_unit(init_creature)
+	card_instance.mana = init_creature.mana
+	return card_instance
+
+static func create_spell_card(init_spell: SpellList.Spell) -> Card:
+	var card_instance: Card = card_scene.instantiate()
+	card_instance.set_spell(init_spell)
+	card_instance.mana = init_spell.mana
+	return card_instance
+####################################################
+####################################################
+####################################################
+####################################################
+
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")
@@ -105,6 +128,15 @@ func update_spell_display() -> void:
 			$Description.text = "Increase max mana by " + str(spell.value) + " for this combat"
 		SpellList.SpellType.DRAW_CARDS:
 			$Description.text = "Draw " + str(spell.value) + " cards"
+
+func highlight_attribute(attribute: String) -> void:
+	match attribute:
+		"health":
+			$Health.add_theme_color_override("font_color", Color.GREEN)
+		"damage":
+			$Damage.add_theme_color_override("font_color", Color.GREEN)
+		"mana":
+			$Mana.add_theme_color_override("font_color", Color.GREEN)
 
 func set_unit(from_creature: UnitList.Creature) -> void:
 	type = CardType.UNIT

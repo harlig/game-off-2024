@@ -47,17 +47,9 @@ enum TargetableType {
 	AREA,
 }
 
-static func create_card(
-	spell: Spell
-) -> Card:
-	var card_instance: Card = card_scene.instantiate()
-	card_instance.set_spell(spell)
-	card_instance.mana = spell.mana
-	return card_instance
-
 static func new_card_by_id(id: int) -> Card:
-	return create_card(spell_cards[id])
+	return Card.create_spell_card(spell_cards[id])
 
 static func new_card_by_name(spell_name: String) -> Card:
 	var spell_arr := spell_cards.filter(func(spell: Spell) -> bool: return spell.name == spell_name)
-	return create_card(spell_arr[0])
+	return Card.create_spell_card(spell_arr[0])

@@ -1,6 +1,5 @@
 class_name UnitList extends Node
 
-static var card_scene := preload("res://src/card.tscn")
 
 static var creature_cards: Array[Creature] = [
 	Creature.new("Shriekling", CardType.RANGED, 10, 2, 2, 4, "res://textures/unit/hunchy.png"),
@@ -61,17 +60,9 @@ class Creature:
 
 enum CardType {RANGED, MELEE, AIR, HEALER}
 
-static func create_card(
-	creature: Creature
-) -> Card:
-	var card_instance: Card = card_scene.instantiate()
-	card_instance.set_unit(creature)
-	card_instance.mana = creature.mana
-	return card_instance
-
 static func new_card_by_id(id: int) -> Card:
-	return create_card(creature_cards[id])
+	return Card.create_creature_card(creature_cards[id])
 
 static func new_card_by_name(unit_name: String) -> Card:
 	var unit_arr := creature_cards.filter(func(creature: Creature) -> bool: return creature.name == unit_name)
-	return create_card(unit_arr[0])
+	return Card.create_creature_card(unit_arr[0])

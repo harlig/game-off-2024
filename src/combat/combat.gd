@@ -332,7 +332,7 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 	var total_strength := 0
 	var strengh_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(card: UnitList.Creature) -> bool: return card.strength_factor <= single_card_strength_limit)
 	while total_strength < strength_limit:
-		var dict := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
-		total_strength += dict["strength_factor"]
-		new_deck.append(UnitList.create_card(dict))
+		var creature := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
+		total_strength += creature.strength_factor
+		new_deck.append(Card.create_creature_card(creature))
 	return new_deck
