@@ -9,7 +9,6 @@ signal view_deck_clicked()
 
 var map_tree := {}
 var all_node_positions := []
-var available_nodes := []
 var visited_nodes := []
 var nodes_explicitly_hidden := []
 var node_instance_positions := {}
@@ -28,12 +27,10 @@ func set_interactable(interactable: bool) -> void:
 func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_depth: int) -> void:
 	map_tree.clear()
 	all_node_positions.clear()
-	available_nodes.clear()
 	node_instance_positions.clear()
 
 	map_tree[center_node] = []
 	all_node_positions.append(center_node)
-	available_nodes.append(center_node)
 	var start_node := _generate_map(center_node, initial_spawn_path_directions, 0, max_depth)
 	visited_nodes.append(start_node)
 
@@ -58,7 +55,6 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 			map_tree[start_node].append(new_node_position)
 			map_tree[new_node_position] = [start_node]
 			all_node_positions.append(new_node_position)
-			available_nodes.append(new_node_position)
 			# Recursively generate more paths from the new node
 			_generate_map(new_node_position, directions, depth + 1, max_depth)
 
