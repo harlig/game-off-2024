@@ -16,6 +16,7 @@ var bushes := []
 var can_interact := true
 var paths := []
 var paths_between := {}
+var visible_nodes := {}
 
 func set_interactable(interactable: bool) -> void:
 	can_interact = interactable
@@ -32,7 +33,7 @@ func generate_map(center_node: Vector2, initial_spawn_path_directions: int, max_
 	map_tree[center_node] = []
 	all_node_positions.append(center_node)
 	var start_node := _generate_map(center_node, initial_spawn_path_directions, 0, max_depth)
-	visited_nodes.append(start_node)
+	visited_node(start_node)
 
 func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: int) -> MapNode:
 	if depth >= max_depth:
@@ -89,28 +90,22 @@ func visualize() -> void:
 		bush.queue_free()
 	bushes.clear()
 
-	var visible_nodes := {}
-
 	for parent_node: Vector2 in map_tree.keys():
 		for child_node: Vector2 in map_tree[parent_node]:
 			var map_node: MapNode = node_instance_positions[child_node]
 			if map_node in visited_nodes:
 				if map_node in nodes_explicitly_hidden:
-					print("This map node is explicitly hidden, ", map_node)
 					map_node.hide()
 				else:
 					map_node.show()
-					visible_nodes[map_node] = true
 
 				if child_node in map_tree:
 					for grandchild_node: Vector2 in map_tree[child_node]:
 						var grandchild_map_node: MapNode = node_instance_positions[grandchild_node]
 						if grandchild_map_node in nodes_explicitly_hidden:
-							print("This grandchild node is explicitly hidden, ", grandchild_map_node)
 							grandchild_map_node.hide()
 						else:
 							grandchild_map_node.show()
-							visible_nodes[grandchild_map_node] = true
 
 			var start_pos := Vector3(parent_node.x, -1, parent_node.y)
 			var end_pos := Vector3(child_node.x, -1, child_node.y)
@@ -142,12 +137,12 @@ func visualize() -> void:
 			paths_between[end_pos] = start_pos
 			paths.append(path)
 
-	spawn_bushes(visible_nodes)
+	spawn_bushes()
 
-func spawn_bushes(visible_nodes: Dictionary) -> void:
+func spawn_bushes() -> void:
 	for node_position: Vector2 in node_instance_positions.keys():
 		var node: MapNode = node_instance_positions[node_position]
-		if node not in visible_nodes:
+		if node not in visible_nodes or not visible_nodes[node]:
 			var bush := tree.duplicate() as MeshInstance3D
 			add_child(bush)
 			bush.show()
@@ -163,20 +158,23 @@ func _on_view_deck_pressed() -> void:
 	view_deck_clicked.emit()
 
 func visited_node(visited: MapNode) -> void:
+	visible_nodes[visited] = true
+
 	if visited not in visited_nodes:
 		visited_nodes.append(visited)
+
 	if visited in nodes_explicitly_hidden:
 		nodes_explicitly_hidden.erase(visited)
+
 	for grandchild_node_position: Vector2 in map_tree[Vector2(visited.position.x, visited.position.z)]:
 		var grandchild_map_node: MapNode = node_instance_positions[grandchild_node_position]
 		if grandchild_map_node in nodes_explicitly_hidden:
 			nodes_explicitly_hidden.erase(grandchild_map_node)
+		visible_nodes[grandchild_map_node] = true
 
 
-func unvisit_and_hide_node(unvisited: MapNode) -> void:
-	# if unvisited in visited_nodes:
-	# 	visited_nodes.erase(unvisited)
-
+func hide_node(unvisited: MapNode) -> void:
+	visible_nodes[unvisited] = false
 	if unvisited not in nodes_explicitly_hidden:
 		nodes_explicitly_hidden.append(unvisited)
 	unvisited.hide()

@@ -154,22 +154,23 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	elif combat_state == Combat.CombatState.LOST:
 		print("Combat lost!")
 		$Combat.queue_free()
+		map.hide_node(current_node)
 		move_to_unvisited_node()
 		# TODO: maybe also want to remove a card from the deck or something
 
 func move_to_unvisited_node() -> void:
 	# Unbeat and hide some of the previously visited nodes
-	var nodes_to_unbeat := combat_difficulty
-	var beaten_nodes: Array[MapNode] = []
+	var nodes_to_unvisit := combat_difficulty
+	var previously_visible_nodes: Array[MapNode] = []
 	for node_position: Vector2 in map.node_instance_positions.keys():
 		var node: MapNode = map.node_instance_positions[node_position]
-		if node.has_been_beaten and node != current_node:
-			beaten_nodes.append(node)
-	beaten_nodes.shuffle()
-	for i in range(min(nodes_to_unbeat, beaten_nodes.size())):
-		var node_to_unbeat := beaten_nodes[i]
+		if node in map.visible_nodes and node != current_node:
+			previously_visible_nodes.append(node)
+	previously_visible_nodes.shuffle()
+	for i in range(min(nodes_to_unvisit, previously_visible_nodes.size())):
+		var node_to_unbeat := previously_visible_nodes[i]
 		node_to_unbeat.unbeat_node()
-		map.unvisit_and_hide_node(node_to_unbeat)
+		map.hide_node(node_to_unbeat)
 
 	# Move to an unvisited node deep in the tree
 	var unvisited_nodes := []
