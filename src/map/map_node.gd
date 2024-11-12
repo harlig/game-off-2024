@@ -15,10 +15,12 @@ enum NodeType {
 var type: NodeType = NodeType.COMBAT
 
 var has_been_beaten := false
+var original_texture: Texture
 
 signal node_clicked(node_position: Vector2)
 
 func _ready() -> void:
+	original_texture = $Sprite3D.texture
 	match type:
 		NodeType.COMBAT:
 			$Sprite3D.texture = combat_node_sprite
@@ -42,3 +44,7 @@ func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _norm
 func beat_node() -> void:
 	$Sprite3D.texture = beat_node_sprite
 	has_been_beaten = true
+
+func unbeat_node() -> void:
+	$Sprite3D.texture = original_texture
+	has_been_beaten = false

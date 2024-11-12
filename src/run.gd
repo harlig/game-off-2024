@@ -102,7 +102,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		var map_node: MapNode = map.node_instances[node_position]
 		current_node = map_node
 		player_position = node_position
-		$Player.position = Vector3(player_position.x, 2, player_position.y)
+		$Player.position = Vector3(player_position.x, $Player.position.y, player_position.y)
 
 		# ignore if node has been beaten
 		if map_node.has_been_beaten:
@@ -151,13 +151,26 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	elif combat_state == Combat.CombatState.LOST:
 		print("Combat lost!")
 		$Combat.queue_free()
-		# TODO: probably want to do something else but idk
-		# Move back to start
-		player_position = Vector2(0, 0)
-		$Player.position = Vector3(player_position.x, 2, player_position.y)
-		show_map()
-		update_accessible_nodes()
-		update_camera_position()
+		move_to_unvisited_node()
+		# TODO: maybe also want to remove a card from the deck or something
+
+func move_to_unvisited_node() -> void:
+		# Move to an unvisited node deep in the tree
+	var unvisited_nodes := []
+	for node_position: Vector2 in map.node_instances.keys():
+		if not map.node_instances[node_position].has_been_beaten:
+			unvisited_nodes.append(node_position)
+	if unvisited_nodes.size() > 0:
+		player_position = unvisited_nodes[randi() % unvisited_nodes.size()]
+		current_node = map.node_instances[player_position]
+		$Player.position = Vector3(player_position.x, $Player.position.y, player_position.y)
+	show_map()
+	update_accessible_nodes()
+	update_camera_position()
+
+	current_node.beat_node()
+	map.visited_node(current_node)
+	map.visualize()
 
 func _on_map_view_deck_clicked() -> void:
 	var is_visualizing_deck: bool = deck.toggle_visualize_deck()
