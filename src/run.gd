@@ -41,7 +41,7 @@ func _ready() -> void:
 	player_position = Vector2(0, 0)
 	current_node = map.node_instance_positions[player_position]
 	# set the starting node as beat
-	current_node.beat_node()
+	map.visited_node(current_node)
 
 	$Player.position = Vector3(player_position.x, 2, player_position.y)
 	update_accessible_nodes()
@@ -135,7 +135,6 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			add_child(new_event)
 			map.visited_node(current_node)
 		else:
-			current_node.beat_node()
 			map.visited_node(current_node)
 			pass
 
@@ -149,7 +148,6 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		print("Combat won!")
 		$Combat.queue_free()
 		map.visited_node(current_node)
-		current_node.beat_node()
 		show_map()
 	elif combat_state == Combat.CombatState.LOST:
 		print("Combat lost!")
@@ -185,10 +183,7 @@ func move_to_unvisited_node() -> void:
 	update_accessible_nodes()
 	update_camera_position()
 
-	current_node.beat_node()
 	map.visited_node(current_node)
-
-	map.visualize()
 
 func _on_map_view_deck_clicked() -> void:
 	var is_visualizing_deck: bool = deck.toggle_visualize_deck()
@@ -216,11 +211,11 @@ func _on_item_purchased(item: Card, cost: int) -> void:
 
 func _on_shop_closed() -> void:
 	$Shop.queue_free()
-	current_node.beat_node()
+	map.visited_node(current_node)
 	show_map()
 
 func _on_event_resolved(gold_gained: int) -> void:
 	bank += gold_gained
 	$Event.queue_free()
-	current_node.beat_node()
+	map.visited_node(current_node)
 	show_map()

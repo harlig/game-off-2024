@@ -27,6 +27,7 @@ shader_parameter/hover_loc = Vector2(0.5, 0.5)
 shader_parameter/x_scale = 1.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_tdyly"]
+resource_local_to_scene = true
 size = Vector2(5, 6)
 center_offset = Vector3(3, 0, 0)
 orientation = 1

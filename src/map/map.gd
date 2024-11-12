@@ -159,6 +159,7 @@ func _on_view_deck_pressed() -> void:
 
 func visited_node(visited: MapNode) -> void:
 	visible_nodes[visited] = true
+	visited.beat_node()
 
 	if visited not in visited_nodes:
 		visited_nodes.append(visited)
@@ -171,6 +172,7 @@ func visited_node(visited: MapNode) -> void:
 		if grandchild_map_node in nodes_explicitly_hidden:
 			nodes_explicitly_hidden.erase(grandchild_map_node)
 		visible_nodes[grandchild_map_node] = true
+	visualize()
 
 
 func hide_node(unvisited: MapNode) -> void:
