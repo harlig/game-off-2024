@@ -69,7 +69,10 @@ func _ready() -> void:
 
 	# spawn torch at player base, and enemy base
 	var player_base_torch := torch_scene.instantiate()
+	player_base_torch.is_lit = true
 	player_base_torch.position = player_base_torch_location.position
+	player_base_torch.connect("torch_state_changed", _on_player_base_torch_state_changed)
+	(player_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(player_base_torch))
 	add_child(player_base_torch)
 	all_torches.append(player_base_torch)
 
@@ -191,7 +194,6 @@ func _on_unit_died(unit: Unit) -> void:
 			currently_hovered_unit = null
 
 func buff_units_from_unit(buff_unit: Unit, units_to_buff: Array[Unit]) -> void:
-	print("Checking if I should buff units with my buffs size of " + str(buff_unit.buffs_i_apply.size()))
 	for unit in units_to_buff:
 		if unit == buff_unit:
 			continue
@@ -220,7 +222,6 @@ func _on_opponent_spawn(card: Card) -> void:
 	spawn_unit(unit_scene, card, Vector3(unit_x, 0, unit_z), Attackable.Team.ENEMY)
 
 func play_spell(spell: SpellList.Spell) -> void:
-	print("Spell played")
 	match spell.type:
 		SpellList.SpellType.DAMAGE:
 			if currently_hovered_unit:
@@ -235,7 +236,12 @@ func play_spell(spell: SpellList.Spell) -> void:
 		SpellList.SpellType.DRAW_CARDS:
 			$Hand.draw_cards(spell.value)
 
-func _on_player_base_died() -> void:
+func _on_player_base_torch_state_changed(torch_lit: bool) -> void:
+	# this should always be false
+	if torch_lit:
+		push_error("Player base torch should never become lit after it's been extinguished")
+		return
+
 	state = CombatState.LOST
 	combat_over.emit(state)
 	reset_spawn_mesh()
