@@ -17,7 +17,10 @@ var bank := 10:
 		print("Bank value changed to: ", value)
 		bank = value
 		$Map/BankControl/BankText.text = str(value)
-var relics: Array[Relic] = [Relic.create_relic("Test Relic", "When you spawn a unit, give it +5 max hp")]
+var relics: Array[Relic] = [
+	Relic.create_relic("Health Relic", "When you spawn a unit, give it +5 max hp", "res://textures/relic/health_secret.jpg", [Card.CardType.UNIT]),
+	Relic.create_relic("Spells Mana Relic", "Your spells each cost -1 mana", "res://textures/relic/mana_secret.jpg", [Card.CardType.SPELL]),
+	]
 
 var time_for_preload := 0.5
 var time_spent := 0.0
