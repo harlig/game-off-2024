@@ -35,11 +35,20 @@ func _physics_process(delta: float) -> void:
 		mana_updated.emit(cur_mana, max_mana)
 
 
-func initialize(combat_deck: CombatDeck) -> void:
+func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) -> void:
 	deck = combat_deck;
 
-	for i in range(HAND_SIZE):
+	var cards_drawn := 0
+	if first_card_torchlighter:
+		var torchlighter := deck.try_draw_torchlighter()
+		if torchlighter:
+			cards.append(torchlighter)
+			drew.emit(torchlighter)
+			cards_drawn += 1
+
+	for i in range(HAND_SIZE - cards_drawn):
 		try_draw_card();
+		cards_drawn += 1
 
 
 func try_draw_card() -> void:

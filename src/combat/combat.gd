@@ -59,7 +59,9 @@ func _ready() -> void:
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
 	$PlayerCombatDeck.prepare_combat_deck(player_deck.cards, relics)
 	$EnemyCombatDeck.prepare_combat_deck(enemy_cards)
-	$Hand.initialize($PlayerCombatDeck)
+
+	# TODO: Oof the second arg, let's fix this at some point
+	$Hand.initialize($PlayerCombatDeck, relics.filter(func(relic: Relic) -> bool: return relic.relic_name == 'Torchlighter Relic').size() > 0)
 	$Opponent/Hand.initialize($EnemyCombatDeck)
 
 	set_process(true)
@@ -230,6 +232,7 @@ func play_spell(spell: SpellList.Spell) -> void:
 func _on_player_base_died() -> void:
 	state = CombatState.LOST
 	combat_over.emit(state)
+	reset_spawn_mesh()
 
 func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> void:
 	if not is_lit:
@@ -260,6 +263,7 @@ func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 
 	state = CombatState.WON
 	provide_rewards()
+	reset_spawn_mesh()
 
 func provide_rewards() -> void:
 	reward_presented.emit()
@@ -276,9 +280,9 @@ func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 
 
 func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if !$HandDisplay.clicked:
+	# check if it's null in case the hand display is destroyed
+	if !$HandDisplay or !$HandDisplay.clicked:
 		return
-
 
 	if event is not InputEventMouseMotion:
 		return

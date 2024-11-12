@@ -21,6 +21,13 @@ func draw() -> Card:
 		shuffle_discard_into_draw()
 	return draw_pile.pop_back()
 
+func try_draw_torchlighter() -> Card:
+	for card in draw_pile:
+		if card.type == Card.CardType.UNIT and card.creature.can_light_torches:
+			draw_pile.erase(card)
+			return card
+	return null
+
 func shuffle_discard_into_draw() -> void:
 	draw_pile = discard_pile
 	discard_pile = []
