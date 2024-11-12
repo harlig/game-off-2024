@@ -1,7 +1,8 @@
 class_name Combat extends Node3D
 
-@onready var unit_scene: PackedScene = preload("res://src/combat/unit.tscn")
-@onready var torch_scene: PackedScene = preload("res://src/torch.tscn")
+const combat_scene := preload("res://src/combat/combat.tscn")
+const unit_scene: PackedScene = preload("res://src/combat/unit.tscn")
+const torch_scene: PackedScene = preload("res://src/torch.tscn")
 
 @onready var reward := $Reward
 @onready var spawn_mesh: MeshInstance3D = $SpawnMesh
@@ -35,10 +36,28 @@ var current_enemy_units: Array[Unit] = []
 var all_torches: Array[Torch] = []
 var furthest_torch_lit := 0
 
+var relics: Array[Relic] = []
+
+####################################################
+####################################################
+# This is how you should instantiate a combat scene
+####################################################
+####################################################
+static func create_combat(combat_difficulty: int, relics_for_combat: Array[Relic]) -> Combat:
+	var combat_instance: Combat = combat_scene.instantiate()
+	combat_instance.difficulty = combat_difficulty
+	combat_instance.relics = relics_for_combat
+	return combat_instance
+####################################################
+####################################################
+####################################################
+####################################################
+
+
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
-	$PlayerCombatDeck.prepare_combat_deck(player_deck.cards)
+	$PlayerCombatDeck.prepare_combat_deck(player_deck.cards, relics)
 	$EnemyCombatDeck.prepare_combat_deck(enemy_cards)
 	$Hand.initialize($PlayerCombatDeck)
 	$Opponent/Hand.initialize($EnemyCombatDeck)
@@ -99,7 +118,6 @@ func _on_hand_display_try_play_card(card: Card) -> void:
 
 	if not $Hand.can_play(card):
 		return
-
 
 	match card.type:
 		Card.CardType.UNIT when play_location_valid:

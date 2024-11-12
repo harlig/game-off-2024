@@ -6,9 +6,12 @@ var all_cards: Array[Card] = []
 var discard_pile: Array[Card] = []
 var draw_pile: Array[Card] = []
 
-func prepare_combat_deck(cards: Array[Card]) -> void:
+func prepare_combat_deck(cards: Array[Card], relics: Array[Relic]=[]) -> void:
 	for card: Card in cards:
 		var new_card := Card.duplicate_card(card)
+		for relic in relics:
+			relic.apply_to_card(new_card)
+
 		all_cards.append(new_card)
 		draw_pile.append(new_card)
 	draw_pile.shuffle()

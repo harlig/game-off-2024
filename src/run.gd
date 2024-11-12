@@ -105,9 +105,9 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			pass
 		elif map_node.type == MapNode.NodeType.COMBAT:
 			hide_map(false)
-			var new_combat: Combat = combat_scene.instantiate()
-			new_combat.difficulty = combat_difficulty
+			var new_combat: Combat = Combat.create_combat(combat_difficulty, relics)
 			combat_difficulty += 1
+
 			new_combat.connect("reward_presented", _on_combat_reward_presented)
 			new_combat.connect("reward_chosen", _on_combat_reward_chosen)
 			new_combat.connect("combat_over", _on_combat_over)
