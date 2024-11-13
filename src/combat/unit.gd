@@ -1,5 +1,8 @@
 class_name Unit extends Node3D
 
+const ProjectileScene = preload("res://src/combat/projectile.tscn")
+
+
 enum Direction {LEFT, RIGHT}
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -126,7 +129,8 @@ func do_attacks(_anim_name: String) -> void:
 				if closest_attackable == null || attackable.global_transform.origin.distance_to(global_transform.origin) < closest_attackable.global_transform.origin.distance_to(global_transform.origin):
 					closest_attackable = attackable
 			if closest_attackable != null:
-				closest_attackable.take_damage(damage)
+				# closest_attackable.take_damage(damage)
+				fire_projectile(closest_attackable)
 		UnitList.CardType.HEALER:
 			# AOE Heal
 			# for attackable in allies_in_attack_range:
@@ -277,3 +281,21 @@ func try_extinguish_torch(torch: Torch) -> void:
 
 	is_changing_torch = false
 	animation_player.play(WALK_ANIMATION)
+
+func fire_projectile(target_unit: Attackable) -> void:
+	# Instance the projectile
+	var projectile_instance: Projectile = ProjectileScene.instantiate()
+	
+	# Set the projectile's initial position to the unit's position
+	projectile_instance.global_transform.origin = global_transform.origin
+	
+	# Calculate the direction towards the target unit
+	var projectile_direction := (target_unit.global_transform.origin - global_transform.origin).normalized()
+	
+	# Set the projectile's velocity or direction
+	projectile_instance.velocity = projectile_direction * projectile_instance.speed
+	projectile_instance.damage = damage
+	projectile_instance.team = unit_attackable.team
+	
+	# Add the projectile to the 'combat' node
+	get_parent().add_child(projectile_instance)

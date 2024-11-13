@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://oq0qwdp6b00v"]
+
+[ext_resource type="Shader" path="res://shaders/Projectile.gdshader" id="1_2cv1c"]
+[ext_resource type="Script" path="res://src/combat/projectile.gd" id="1_fdmq7"]
+[ext_resource type="Texture2D" uid="uid://cli1c24784ogd" path="res://textures/projectile/splat.png" id="2_egru3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jfyse"]
+render_priority = 0
+shader = ExtResource("1_2cv1c")
+shader_parameter/albedo = ExtResource("2_egru3")
+shader_parameter/flip_h = false
+shader_parameter/highlight = false
+shader_parameter/highlight_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_5rqfl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eseq8"]
+size = Vector3(0.5, 2, 10)
+
+[node name="Projectile" type="Node3D"]
+script = ExtResource("1_fdmq7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+material_override = SubResource("ShaderMaterial_jfyse")
+mesh = SubResource("QuadMesh_5rqfl")
+
+[node name="TargetArea" type="Area3D" parent="."]
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TargetArea"]
+shape = SubResource("BoxShape3D_eseq8")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+
+[connection signal="area_entered" from="TargetArea" to="." method="_on_target_area_area_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]
