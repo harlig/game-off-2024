@@ -4,13 +4,15 @@ enum NodeType {
 	COMBAT,
 	SHOP,
 	EVENT,
+	SECRET,
 	BLANK
 }
 
-@onready var combat_node_sprite := preload("res://textures/map/combat_node.png")
-@onready var shop_node_sprite := preload("res://textures/map/shop.png")
-@onready var event_node_sprite := preload("res://textures/map/event_node.png")
-@onready var beat_node_sprite := preload("res://textures/map/check_box.png")
+const combat_node_sprite := preload("res://textures/map/combat_node.png")
+const shop_node_sprite := preload("res://textures/map/shop.png")
+const event_node_sprite := preload("res://textures/map/event_node.png")
+const secret_node_sprite := preload("res://textures/map/check_box.png")
+const beat_node_sprite := preload("res://textures/map/check_box.png")
 
 var type: NodeType = NodeType.COMBAT
 
@@ -27,6 +29,8 @@ func _ready() -> void:
 			$Sprite3D.texture = shop_node_sprite
 		NodeType.EVENT:
 			$Sprite3D.texture = event_node_sprite
+		NodeType.SECRET:
+			$Sprite3D.texture = secret_node_sprite
 	original_texture = $Sprite3D.texture
 
 func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:

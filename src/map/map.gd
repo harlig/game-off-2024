@@ -78,14 +78,21 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 				node_instance_positions[child_node_position] = node # Store the MapNode instance
 	return node_instance_positions[start_node]
 
+# TODO: test this
+func replace_node(node_position: Vector2, new_node_type: MapNode.NodeType) -> void:
+	var node: MapNode = node_instance_positions[node_position]
+	node.type = new_node_type
+
 func generate_new_node_type() -> MapNode.NodeType:
 	var random := randf()
-	if random < 0.5:
+	if random < 0.0:
 		return MapNode.NodeType.COMBAT
-	elif random < 0.6:
+	elif random < 0.0:
 		return MapNode.NodeType.SHOP
-	elif random < 0.9:
+	elif random < 0.0:
 		return MapNode.NodeType.EVENT
+	elif random < 1.0:
+		return MapNode.NodeType.SECRET
 	else:
 		return MapNode.NodeType.BLANK
 
@@ -182,6 +189,8 @@ func visited_node(visited: MapNode) -> void:
 
 func hide_node(unvisited: MapNode) -> void:
 	visible_nodes[unvisited] = false
+	unvisited.unbeat_node()
+
 	if unvisited not in nodes_explicitly_hidden:
 		nodes_explicitly_hidden.append(unvisited)
 	unvisited.hide()

@@ -1,12 +1,14 @@
 class_name Run extends Control
 
+const combat_scene := preload("res://src/combat/combat.tscn")
+const shop_scene := preload("res://src/map/shop.tscn")
+const event_scene := preload("res://src/map/event.tscn")
+const secret_scene := preload("res://src/map/secret.tscn")
+
 @onready var map := $Map
 @onready var camera := $Map/Camera3D
 @onready var deck := $DeckControl/Deck
 @onready var relic_area := $RelicArea
-@onready var combat_scene := preload("res://src/combat/combat.tscn")
-@onready var shop_scene := preload("res://src/map/shop.tscn")
-@onready var event_scene := preload("res://src/map/event.tscn")
 
 var player_position := Vector2(0, 0)
 var accessible_nodes := []
@@ -26,6 +28,8 @@ var relics: Array[Relic] = [
 var time_for_preload := 0.5
 var time_spent := 0.0
 var has_preloaded := false
+
+var secrets_gained: Array[String] = []
 
 func _ready() -> void:
 	# Define parameters for map generation
@@ -134,6 +138,12 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_event.connect("event_resolved", _on_event_resolved)
 			add_child(new_event)
 			map.visited_node(current_node)
+		elif map_node.type == MapNode.NodeType.SECRET:
+			hide_map(true)
+			var secret: Secret = Secret.create_secret_trial(combat_difficulty)
+			secret.connect("gained_secret", _on_gained_secret.bind(secret))
+			secret.connect("lost_secret", _on_lost_secret.bind(secret))
+			add_child(secret)
 		else:
 			map.visited_node(current_node)
 			pass
@@ -142,6 +152,19 @@ func _on_node_clicked(node_position: Vector2) -> void:
 
 		update_accessible_nodes()
 		update_camera_position()
+
+func _on_gained_secret(gained_secret: String, secret_scene_to_delete: Secret) -> void:
+	secrets_gained.append(gained_secret)
+	map.visited_node(current_node)
+	show_map()
+	print("Secrets list is now ", secrets_gained)
+	secret_scene_to_delete.queue_free()
+
+func _on_lost_secret(secret_scene_to_delete: Secret) -> void:
+	map.hide_node(current_node)
+	# TODO: we also want to replace the touching nodes with combat nodes
+	move_to_unvisited_node()
+	secret_scene_to_delete.queue_free()
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	if combat_state == Combat.CombatState.WON:
@@ -167,7 +190,6 @@ func move_to_unvisited_node() -> void:
 	previously_visible_nodes.shuffle()
 	for i in range(min(nodes_to_unvisit, previously_visible_nodes.size())):
 		var node_to_unbeat := previously_visible_nodes[i]
-		node_to_unbeat.unbeat_node()
 		map.hide_node(node_to_unbeat)
 
 	# Move to an unvisited node deep in the tree

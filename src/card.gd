@@ -29,7 +29,7 @@ signal card_clicked(times_clicked: int, card: Card)
 
 ####################################################
 ####################################################
-# This is how you should instantiate a combat scene
+# This is how you should instantiate a card scene
 ####################################################
 ####################################################
 static func create_creature_card(init_creature: UnitList.Creature) -> Card:
