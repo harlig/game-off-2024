@@ -95,13 +95,13 @@ func replace_node(node_position: Vector2, new_node_type: MapNode.NodeType) -> vo
 
 func generate_new_node_type() -> MapNode.NodeType:
 	var random := randf()
-	if random < 0.0:
+	if random < 0.7:
 		return MapNode.NodeType.COMBAT
-	elif random < 0.0:
+	elif random < 0.8:
 		return MapNode.NodeType.SHOP
-	elif random < 0.0:
+	elif random < 0.9:
 		return MapNode.NodeType.EVENT
-	elif random < 1.0:
+	elif random < 0.95:
 		return MapNode.NodeType.SECRET
 	else:
 		return MapNode.NodeType.BLANK
