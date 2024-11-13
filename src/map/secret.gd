@@ -11,8 +11,20 @@ enum TrialType {
 	DAMAGE,
 	HEALTH,
 	DAMAGE_AND_HEALTH,
-	MANA,
+	MANA
 }
+func trial_type_string(trial_type: TrialType) -> String:
+	match trial_type:
+		TrialType.DAMAGE:
+			return "damage"
+		TrialType.HEALTH:
+			return "health"
+		TrialType.DAMAGE_AND_HEALTH:
+			return "damage + health"
+		TrialType.MANA:
+			return "mana"
+		_:
+			return "unknown"
 
 signal gained_secret(secret: String)
 signal lost_secret()
@@ -33,11 +45,15 @@ static func create_secret_trial(combat_difficulty: int) -> Secret:
 ####################################################
 
 func _ready() -> void:
-
-	#TODO: make the trial types unique
+	var used_trial_types := []
 	for ndx in range(TRIALS_OFFERED_COUNT):
 		var button := $SecretsArea/HBoxContainer/Button.duplicate()
-		var trial_type: TrialType = TrialType.values()[randi() % TrialType.size()]
+		var trial_type: TrialType
+		while true:
+			trial_type = TrialType.values()[randi() % TrialType.size()]
+			if trial_type not in used_trial_types:
+				used_trial_types.append(trial_type)
+				break
 		var trial_value := 0
 		match trial_type:
 			TrialType.DAMAGE:
@@ -50,10 +66,10 @@ func _ready() -> void:
 				trial_value = 1 + difficulty
 			_:
 				push_error("Unknown trial type", trial_type)
-		button.text = str(trial_value) + " " + TrialType.keys()[trial_type].to_lower()
+		button.text = str(trial_value) + " " + trial_type_string(trial_type)
 		button.connect("pressed", _on_trial_button_pressed.bind(trial_type, trial_value))
 		button.show()
 		$SecretsArea/HBoxContainer.add_child(button)
 
 func _on_trial_button_pressed(trial_type: TrialType, trial_value: int) -> void:
-	gained_secret.emit(str(trial_value) + " " + str(TrialType.keys()[trial_type]))
+	gained_secret.emit(str(trial_value) + " " + trial_type_string(trial_type))
