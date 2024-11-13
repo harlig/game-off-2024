@@ -38,6 +38,9 @@ var furthest_torch_lit := 0
 
 var relics: Array[Relic] = []
 
+var player_combat_deck: CombatDeck
+var enemy_combat_deck: CombatDeck
+
 ####################################################
 ####################################################
 # This is how you should instantiate a combat scene
@@ -57,12 +60,14 @@ static func create_combat(combat_difficulty: int, relics_for_combat: Array[Relic
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
-	$PlayerCombatDeck.prepare_combat_deck(player_deck.cards, relics)
-	$EnemyCombatDeck.prepare_combat_deck(enemy_cards)
+	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, relics)
+	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
+	add_child(player_combat_deck)
+	add_child(enemy_combat_deck)
 
 	# TODO: Oof the second arg, let's fix this at some point
-	$Hand.initialize($PlayerCombatDeck, relics.filter(func(relic: Relic) -> bool: return relic.relic_name == 'Torchlighter Relic').size() > 0)
-	$Opponent/Hand.initialize($EnemyCombatDeck)
+	$Hand.initialize(player_combat_deck, relics.filter(func(relic: Relic) -> bool: return relic.relic_name == 'Torchlighter Relic').size() > 0)
+	$Opponent/Hand.initialize(enemy_combat_deck)
 
 	set_process(true)
 	$Camera3D.make_current()
@@ -292,7 +297,7 @@ func finish_combat(new_state: CombatState) -> void:
 
 func provide_rewards() -> void:
 	reward_presented.emit()
-	var best_enemy_cards: Array[Card] = $EnemyCombatDeck.get_best_cards(3)
+	var best_enemy_cards: Array[Card] = enemy_combat_deck.get_best_cards(3)
 	reward.add_card_offerings(best_enemy_cards)
 	reward.show()
 	$HandDisplay.queue_free()

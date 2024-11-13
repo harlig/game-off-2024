@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=16 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://src/combat/hand.gd" id="5_3nvnk"]
 [ext_resource type="Texture2D" uid="uid://cju5ys6csnnl3" path="res://textures/hud/mana.png" id="6_g70ey"]
 [ext_resource type="Script" path="res://src/combat/hand_display.gd" id="6_ojwhk"]
-[ext_resource type="PackedScene" uid="uid://deyj5t686af3v" path="res://src/combat/combat_deck.tscn" id="7_bknt5"]
 [ext_resource type="Texture2D" uid="uid://kg1i4rk2x7h3" path="res://textures/hud/circle_tan.png" id="7_ec4of"]
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/combat/reward.tscn" id="8_1gtat"]
 [ext_resource type="Texture2D" uid="uid://c8qybgyq1afys" path="res://textures/hud/line_arrow_small.png" id="9_g3f32"]
@@ -150,10 +149,6 @@ script = ExtResource("9_i3xgm")
 
 [node name="Hand" type="Node" parent="Opponent"]
 script = ExtResource("5_3nvnk")
-
-[node name="PlayerCombatDeck" parent="." instance=ExtResource("7_bknt5")]
-
-[node name="EnemyCombatDeck" parent="." instance=ExtResource("7_bknt5")]
 
 [node name="Reward" parent="." instance=ExtResource("8_1gtat")]
 visible = false

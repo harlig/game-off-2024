@@ -2,19 +2,24 @@
 # This exists as a separate node so that the deck can be passed to the Hand nodes, and in case there are any temporary changes to the deck during combat that don't persist between combats
 class_name CombatDeck extends Node
 
+const combat_deck_scene := preload("res://src/combat/combat_deck.tscn")
+
 var all_cards: Array[Card] = []
 var discard_pile: Array[Card] = []
 var draw_pile: Array[Card] = []
 
-func prepare_combat_deck(cards: Array[Card], relics: Array[Relic]=[]) -> void:
+static func create_combat_deck(cards: Array[Card], relics: Array[Relic]=[]) -> CombatDeck:
+	var combat_deck: CombatDeck = combat_deck_scene.instantiate()
+
 	for card: Card in cards:
 		var new_card := Card.duplicate_card(card)
 		for relic in relics:
 			relic.apply_to_card(new_card)
 
-		all_cards.append(new_card)
-		draw_pile.append(new_card)
-	draw_pile.shuffle()
+		combat_deck.all_cards.append(new_card)
+		combat_deck.draw_pile.append(new_card)
+	combat_deck.draw_pile.shuffle()
+	return combat_deck
 
 func draw(should_shuffle_if_empty: bool = true) -> Card:
 	if draw_pile.size() == 0 and should_shuffle_if_empty:
