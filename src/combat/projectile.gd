@@ -1,7 +1,5 @@
 class_name Projectile extends Node3D
 
-@onready var unit_attackable: Attackable = $Attackable
-
 @export var direction: Direction = Direction.RIGHT
 
 var team: Attackable.Team
