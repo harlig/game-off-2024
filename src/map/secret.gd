@@ -35,9 +35,9 @@ signal lost_secret()
 # This is how you should instantiate a secret scene
 ####################################################
 ####################################################
-static func create_secret_trial(combat_difficulty: int) -> Secret:
+static func create_secret_trial(secret_difficulty: int) -> Secret:
 	var secret := secret_scene.instantiate()
-	secret.difficulty = combat_difficulty
+	secret.difficulty = secret_difficulty
 	return secret
 ####################################################
 ####################################################
@@ -57,13 +57,13 @@ func _ready() -> void:
 		var trial_value := 0
 		match trial_type:
 			TrialType.DAMAGE:
-				trial_value = 5 + difficulty
+				trial_value = 5 * difficulty
 			TrialType.HEALTH:
-				trial_value = 10 + difficulty
+				trial_value = 10 * difficulty
 			TrialType.DAMAGE_AND_HEALTH:
-				trial_value = 15 + difficulty
+				trial_value = 15 * difficulty
 			TrialType.MANA:
-				trial_value = 1 + difficulty
+				trial_value = 3 * difficulty
 			_:
 				push_error("Unknown trial type", trial_type)
 		button.text = str(trial_value) + " " + trial_type_string(trial_type)
