@@ -10,6 +10,7 @@ var difficulty: int
 var deck: CombatDeck
 
 var buttons: Array[Button] = []
+var cards: Array[Card] = []
 
 enum TrialType {
 	CREATURE,
@@ -91,7 +92,7 @@ func _ready() -> void:
 		$ButtonArea.add_child(button)
 
 func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pressed_ndx: int) -> void:
-	$SecretText.text = "Dealing your fate..."
+	$SecretText.hide()
 	var button_pressed: Button = buttons[button_pressed_ndx]
 	button_pressed.disabled = true
 	var button_size := button_pressed.size
@@ -160,15 +161,36 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pr
 	var value_from_cards: int = values_to_count.reduce(func(acc: int, val: int) -> int: return acc + val)
 	print("Value from cards: ", value_from_cards, "... trial value: ", trial_value)
 
-	await get_tree().create_timer(2.0).timeout
+	var secret_text := str(trial_value) + " " + trial_type_string(trial_type)
+	var passed_trial := value_from_cards >= trial_value
+	var continue_text := "Continue" if passed_trial else "The mysterious figure gets up, turns around, and walks away"
 
-	if value_from_cards >= trial_value:
-		gained_secret.emit(str(trial_value) + " " + trial_type_string(trial_type))
+	if passed_trial:
+		var new_text := "Very well, since you must know..."
+		# TODO: italicize secret_text
+		new_text += "\n\n\"" + secret_text + "\""
+		$SecretText.text = new_text
+		$SecretText.show()
+		for card in cards:
+			card.queue_free()
+		cards.clear()
+
+	$ButtonArea.hide()
+
+	$ContinueButton.text = continue_text
+	$ContinueButton.connect("pressed", _on_continue_button_pressed.bind(passed_trial, secret_text))
+	$ContinueButton.show()
+
+func _on_continue_button_pressed(passed_trial: bool, secret_gained: String) -> void:
+	if passed_trial:
+		gained_secret.emit(secret_gained)
 	else:
 		lost_secret.emit()
 
+
 func draw_and_tween_card(ndx: int) -> Card:
 	var card := deck.draw(false)
+	cards.append(card)
 	if card != null:
 		card.position = $DrawCardLocation.global_position
 		add_child(card)
