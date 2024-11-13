@@ -103,6 +103,14 @@ func _process(delta: float) -> void:
 			if unit_type != UnitList.CardType.HEALER || found_ally_to_heal:
 				animation_player.seek(0, true)
 				animation_player.play(attack_animation)
+				if unit_type == UnitList.CardType.RANGED:
+					var closest_attackable: Attackable = null
+					for attackable in enemies_in_attack_range:
+						if closest_attackable == null || attackable.position.distance_to(position) < closest_attackable.position.distance_to(position):
+							closest_attackable = attackable
+					if closest_attackable != null:
+						# closest_attackable.take_damage(damage)
+						fire_projectile(closest_attackable)
 				# are you seeing an error that says this is already connected? that probably means the attack animation used here is longer than the attack cooldown!
 				animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
 				time_since_last_attack = 0.0
@@ -125,13 +133,14 @@ func _process(delta: float) -> void:
 func do_attacks(_anim_name: String) -> void:
 	match unit_type:
 		UnitList.CardType.RANGED:
-			var closest_attackable: Attackable = null
-			for attackable in enemies_in_attack_range:
-				if closest_attackable == null || attackable.position.distance_to(position) < closest_attackable.position.distance_to(position):
-					closest_attackable = attackable
-			if closest_attackable != null:
-				# closest_attackable.take_damage(damage)
-				fire_projectile(closest_attackable)
+			# var closest_attackable: Attackable = null
+			# for attackable in enemies_in_attack_range:
+			# 	if closest_attackable == null || attackable.position.distance_to(position) < closest_attackable.position.distance_to(position):
+			# 		closest_attackable = attackable
+			# if closest_attackable != null:
+			# 	# closest_attackable.take_damage(damage)
+			# 	fire_projectile(closest_attackable)
+			pass
 		UnitList.CardType.HEALER:
 			# AOE Heal
 			# for attackable in allies_in_attack_range:
