@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bk7qns1che2xa"]
+
+[node name="BlankCard" type="Control"]
+visible = false
+custom_minimum_size = Vector2(192, 256)
+layout_mode = 3
+anchors_preset = 0

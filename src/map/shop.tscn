@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://b7o8cjcb7jpmr"]
+[gd_scene load_steps=4 format=3 uid="uid://b7o8cjcb7jpmr"]
 
 [ext_resource type="Script" path="res://src/map/shop.gd" id="1_2kuu5"]
+[ext_resource type="PackedScene" uid="uid://bk7qns1che2xa" path="res://src/map/blank_card.tscn" id="2_2833r"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ia3gg"]
 line_spacing = 12.0
@@ -26,9 +27,7 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 3
 
-[node name="BlankCard" type="Control" parent="OfferArea"]
-visible = false
-custom_minimum_size = Vector2(192, 256)
+[node name="BlankCard" parent="OfferArea" instance=ExtResource("2_2833r")]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="."]

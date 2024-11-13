@@ -56,7 +56,7 @@ static func create_secret_trial(init_difficulty: int, init_deck: Deck) -> Secret
 func _ready() -> void:
 	var used_trial_types := []
 	for ndx in range(TRIALS_OFFERED_COUNT):
-		var button := $SecretsArea/HBoxContainer/Button.duplicate()
+		var button := $ButtonsArea/Button.duplicate()
 		var trial_type: TrialType
 		while true:
 			trial_type = TrialType.values()[randi() % TrialType.size()]
@@ -84,7 +84,7 @@ func _ready() -> void:
 		button.text = str(trial_value) + " " + trial_type_string(trial_type)
 		button.connect("pressed", _on_trial_button_pressed.bind(trial_type, trial_value))
 		button.show()
-		$SecretsArea/HBoxContainer.add_child(button)
+		$ButtonsArea.add_child(button)
 
 func _on_trial_button_pressed(trial_type: TrialType, trial_value: int) -> void:
 	var cards_drawn: Array[Card] = []

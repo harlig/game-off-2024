@@ -34,7 +34,6 @@ func _physics_process(delta: float) -> void:
 		mana_time_remaining = mana_time
 		mana_updated.emit(cur_mana, max_mana)
 
-
 func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) -> void:
 	deck = combat_deck;
 
