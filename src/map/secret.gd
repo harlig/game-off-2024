@@ -58,7 +58,7 @@ static func create_secret_trial(init_difficulty: int, init_deck: Deck) -> Secret
 func _ready() -> void:
 	var used_trial_types := []
 	for ndx in range(TRIALS_OFFERED_COUNT):
-		var button: Button = $ButtonsArea/Button.duplicate()
+		var button: Button = $ButtonArea/Button.duplicate()
 		var trial_type: TrialType
 		while true:
 			trial_type = TrialType.values()[randi() % TrialType.size()]
@@ -88,7 +88,7 @@ func _ready() -> void:
 		button.show()
 
 		buttons.append(button)
-		$ButtonsArea.add_child(button)
+		$ButtonArea.add_child(button)
 
 func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pressed_ndx: int) -> void:
 	$SecretText.text = "Dealing your fate..."
@@ -98,7 +98,7 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pr
 	for ndx in range(len(buttons)):
 		if ndx != button_pressed_ndx:
 			buttons[ndx].hide()
-	for child in $ButtonsArea.get_children():
+	for child in $ButtonArea.get_children():
 		if child != button_pressed:
 			child.queue_free()
 	for ndx in range(len(buttons)):
@@ -107,16 +107,25 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pr
 
 		var button_size_blank_area: Control = Control.new()
 		button_size_blank_area.custom_minimum_size = button_size
-		$ButtonsArea.add_child(button_size_blank_area)
+		$ButtonArea.add_child(button_size_blank_area)
 		if ndx < button_pressed_ndx:
-			$ButtonsArea.move_child(button_size_blank_area, ndx)
+			$ButtonArea.move_child(button_size_blank_area, ndx)
 
 	var cards_drawn: Array[Card] = []
 	# animate this
 	for ndx in range(NUM_CARDS_TO_DRAW):
 		var card := deck.draw(false)
 		if card != null:
+			card.position = $DrawCardLocation.global_position
 			cards_drawn.append(card)
+			add_child(card)
+
+			# 0th card gets 0th slot in card area, 1st gets 2nd, 2nd gets 4th
+			var desired_blank_card_slot_ndx := 2 * ndx
+			var blank_card_slot: Control = $BlankCardArea.get_child(desired_blank_card_slot_ndx)
+			var blank_card_position := blank_card_slot.global_position
+			var tween := get_tree().create_tween()
+			tween.tween_property(card, "position", blank_card_position, 1.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 
 	print("Drew these cards ", cards_drawn)
 	var values_to_count: Array = []
@@ -159,7 +168,9 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pr
 			push_error("Unknown trial type", trial_type)
 	var value_from_cards: int = values_to_count.reduce(func(acc: int, val: int) -> int: return acc + val)
 	print("Value from cards: ", value_from_cards, "... trial value: ", trial_value)
+
 	await get_tree().create_timer(2.0).timeout
+
 	if value_from_cards >= trial_value:
 		gained_secret.emit(str(trial_value) + " " + trial_type_string(trial_type))
 	else:
