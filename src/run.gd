@@ -139,11 +139,13 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			add_child(new_event)
 			map.visited_node(current_node)
 		elif map_node.type == MapNode.NodeType.SECRET:
-			hide_map(true)
+			# TODO: should be able to view deck while in a secret
+			hide_map(false)
 			# each secret is harder to obtain than the last
 			var secret: Secret = Secret.create_secret_trial(len(secrets_gained) + 1, deck)
 			secret.connect("gained_secret", _on_gained_secret.bind(secret))
 			secret.connect("lost_secret", _on_lost_secret.bind(secret))
+			relic_area.hide()
 			add_child(secret)
 		else:
 			map.visited_node(current_node)
@@ -159,12 +161,14 @@ func _on_gained_secret(gained_secret: String, secret_scene_to_delete: Secret) ->
 	map.visited_node(current_node)
 	show_map()
 	print("Secrets list is now ", secrets_gained)
+	relic_area.show()
 	secret_scene_to_delete.queue_free()
 
 func _on_lost_secret(secret_scene_to_delete: Secret) -> void:
 	# replace some existing node which isn't a secret now with a secret node
 	# TODO: we also want to replace the touching nodes with combat nodes
 	show_map()
+	relic_area.show()
 	secret_scene_to_delete.queue_free()
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:

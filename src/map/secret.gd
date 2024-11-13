@@ -9,6 +9,8 @@ var difficulty: int
 # we use a combat deck here bc we need to draw cards
 var deck: CombatDeck
 
+var buttons: Array[Button] = []
+
 enum TrialType {
 	CREATURE,
 	SPELL,
@@ -56,7 +58,7 @@ static func create_secret_trial(init_difficulty: int, init_deck: Deck) -> Secret
 func _ready() -> void:
 	var used_trial_types := []
 	for ndx in range(TRIALS_OFFERED_COUNT):
-		var button := $ButtonsArea/Button.duplicate()
+		var button: Button = $ButtonsArea/Button.duplicate()
 		var trial_type: TrialType
 		while true:
 			trial_type = TrialType.values()[randi() % TrialType.size()]
@@ -82,11 +84,33 @@ func _ready() -> void:
 			_:
 				push_error("Unknown trial type", trial_type)
 		button.text = str(trial_value) + " " + trial_type_string(trial_type)
-		button.connect("pressed", _on_trial_button_pressed.bind(trial_type, trial_value))
+		button.connect("pressed", _on_trial_button_pressed.bind(trial_type, trial_value, ndx))
 		button.show()
+
+		buttons.append(button)
 		$ButtonsArea.add_child(button)
 
-func _on_trial_button_pressed(trial_type: TrialType, trial_value: int) -> void:
+func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pressed_ndx: int) -> void:
+	$SecretText.text = "Dealing your fate..."
+	var button_pressed: Button = buttons[button_pressed_ndx]
+	button_pressed.disabled = true
+	var button_size := button_pressed.size
+	for ndx in range(len(buttons)):
+		if ndx != button_pressed_ndx:
+			buttons[ndx].hide()
+	for child in $ButtonsArea.get_children():
+		if child != button_pressed:
+			child.queue_free()
+	for ndx in range(len(buttons)):
+		if ndx == button_pressed_ndx:
+			continue
+
+		var button_size_blank_area: Control = Control.new()
+		button_size_blank_area.custom_minimum_size = button_size
+		$ButtonsArea.add_child(button_size_blank_area)
+		if ndx < button_pressed_ndx:
+			$ButtonsArea.move_child(button_size_blank_area, ndx)
+
 	var cards_drawn: Array[Card] = []
 	# animate this
 	for ndx in range(NUM_CARDS_TO_DRAW):
@@ -135,7 +159,7 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int) -> void:
 			push_error("Unknown trial type", trial_type)
 	var value_from_cards: int = values_to_count.reduce(func(acc: int, val: int) -> int: return acc + val)
 	print("Value from cards: ", value_from_cards, "... trial value: ", trial_value)
-
+	await get_tree().create_timer(2.0).timeout
 	if value_from_cards >= trial_value:
 		gained_secret.emit(str(trial_value) + " " + trial_type_string(trial_type))
 	else:
