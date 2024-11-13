@@ -151,7 +151,7 @@ func spawn_bushes() -> void:
 			var bush := tree.duplicate() as MeshInstance3D
 			add_child(bush)
 			bush.show()
-			bush.global_transform.origin = Vector3(node_position.x, 1, node_position.y - 0.25)
+			bush.position = Vector3(node_position.x, 1, node_position.y - 0.25)
 			bush.rotation_degrees = Vector3(-90, 0, 0)
 			bushes.append(bush)
 

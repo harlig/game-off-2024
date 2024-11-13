@@ -126,7 +126,7 @@ func do_attacks(_anim_name: String) -> void:
 		UnitList.CardType.RANGED:
 			var closest_attackable: Attackable = null
 			for attackable in enemies_in_attack_range:
-				if closest_attackable == null || attackable.global_transform.origin.distance_to(global_transform.origin) < closest_attackable.global_transform.origin.distance_to(global_transform.origin):
+				if closest_attackable == null || attackable.position.distance_to(position) < closest_attackable.position.distance_to(position):
 					closest_attackable = attackable
 			if closest_attackable != null:
 				# closest_attackable.take_damage(damage)
@@ -287,10 +287,10 @@ func fire_projectile(target_unit: Attackable) -> void:
 	var projectile_instance: Projectile = projectile_scene.instantiate()
 
 	# Set the projectile's initial position to the unit's position
-	projectile_instance.global_transform.origin = global_transform.origin
+	projectile_instance.position = position
 
 	# Calculate the direction towards the target unit
-	var projectile_direction := (target_unit.global_transform.origin - global_transform.origin).normalized()
+	var projectile_direction := (target_unit.global_position - position).normalized()
 
 	# Set the projectile's velocity or direction
 	projectile_instance.velocity = projectile_direction * projectile_instance.speed

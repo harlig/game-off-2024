@@ -307,7 +307,7 @@ func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 
 func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	# check if it's null in case the hand display is destroyed
-	if !$HandDisplay or !$HandDisplay.current_selected:
+	if get_node_or_null("HandDisplay") == null or !$HandDisplay.current_selected:
 		return
 
 	if event is not InputEventMouseMotion:
