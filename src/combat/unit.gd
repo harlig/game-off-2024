@@ -1,6 +1,6 @@
 class_name Unit extends Node3D
 
-const ProjectileScene = preload("res://src/combat/projectile.tscn")
+const projectile_scene := preload("res://src/combat/projectile.tscn")
 
 
 enum Direction {LEFT, RIGHT}
@@ -284,18 +284,18 @@ func try_extinguish_torch(torch: Torch) -> void:
 
 func fire_projectile(target_unit: Attackable) -> void:
 	# Instance the projectile
-	var projectile_instance: Projectile = ProjectileScene.instantiate()
-	
+	var projectile_instance: Projectile = projectile_scene.instantiate()
+
 	# Set the projectile's initial position to the unit's position
 	projectile_instance.global_transform.origin = global_transform.origin
-	
+
 	# Calculate the direction towards the target unit
 	var projectile_direction := (target_unit.global_transform.origin - global_transform.origin).normalized()
-	
+
 	# Set the projectile's velocity or direction
 	projectile_instance.velocity = projectile_direction * projectile_instance.speed
 	projectile_instance.damage = damage
 	projectile_instance.team = unit_attackable.team
-	
+
 	# Add the projectile to the 'combat' node
 	get_parent().add_child(projectile_instance)
