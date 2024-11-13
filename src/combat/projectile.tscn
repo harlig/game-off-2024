@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://oq0qwdp6b00v"]
+[gd_scene load_steps=7 format=3 uid="uid://brab37f81ohc5"]
 
 [ext_resource type="Shader" path="res://shaders/Projectile.gdshader" id="1_2cv1c"]
 [ext_resource type="Script" path="res://src/combat/projectile.gd" id="1_fdmq7"]
 [ext_resource type="Texture2D" uid="uid://cli1c24784ogd" path="res://textures/projectile/splat.png" id="2_egru3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jfyse"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("1_2cv1c")
 shader_parameter/albedo = ExtResource("2_egru3")
