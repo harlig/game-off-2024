@@ -18,7 +18,6 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-
 	global_position += velocity * delta
 
 # when something runs into my target area

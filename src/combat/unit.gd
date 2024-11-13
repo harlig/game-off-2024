@@ -8,7 +8,7 @@ enum Direction {LEFT, RIGHT}
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var unit_attackable: Attackable = $Attackable
 
-const ATTACK_COOLDOWN := 1.0
+const ATTACK_COOLDOWN := 1.2
 # give a unit time to not instantly die
 const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
 
@@ -86,9 +86,9 @@ func _process(delta: float) -> void:
 	if !enemies_in_attack_range.is_empty() || (unit_type == UnitList.CardType.HEALER && !allies_in_attack_range.is_empty()):
 		if time_since_last_attack >= ATTACK_COOLDOWN:
 			is_invulnerable = false
-			var found_ally_to_heal := true
+
+			var found_ally_to_heal := false
 			if unit_type == UnitList.CardType.HEALER:
-				found_ally_to_heal = false
 				var lowest_hp_ally: Attackable = null
 				# if there are any allies that need healing, heal them
 				for attackable in allies_in_attack_range:
@@ -103,6 +103,7 @@ func _process(delta: float) -> void:
 			if unit_type != UnitList.CardType.HEALER || found_ally_to_heal:
 				animation_player.seek(0, true)
 				animation_player.play(attack_animation)
+				# are you seeing an error that says this is already connected? that probably means the attack animation used here is longer than the attack cooldown!
 				animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
 				time_since_last_attack = 0.0
 
@@ -173,12 +174,11 @@ func _on_target_area_area_exited(area: Area3D) -> void:
 	if currently_attacking.size() == 0 and is_attacking:
 		is_attacking = false
 		if not animation_player.animation_finished.is_connected(_on_attack_finished):
-			animation_player.animation_finished.connect(_on_attack_finished)
+			animation_player.animation_finished.connect(_on_attack_finished, ConnectFlags.CONNECT_ONE_SHOT)
 
 func _on_attack_finished(_anim_name: String) -> void:
 	animation_player.seek(0, true)
 	animation_player.play(WALK_ANIMATION)
-	animation_player.animation_finished.disconnect(_on_attack_finished)
 
 func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> void:
 	# need to set both max and current hp
