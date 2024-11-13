@@ -43,10 +43,10 @@ signal lost_secret()
 # This is how you should instantiate a secret scene
 ####################################################
 ####################################################
-static func create_secret_trial(init_difficulty: int, init_deck: CombatDeck) -> Secret:
+static func create_secret_trial(init_difficulty: int, init_deck: Deck) -> Secret:
 	var secret := secret_scene.instantiate()
 	secret.difficulty = init_difficulty
-	secret.deck = init_deck
+	secret.deck = CombatDeck.create_combat_deck(init_deck.cards)
 	return secret
 ####################################################
 ####################################################
@@ -95,7 +95,7 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int) -> void:
 			cards_drawn.append(card)
 
 	print("Drew these cards ", cards_drawn)
-	var values_to_count: Array[int] = []
+	var values_to_count: Array = []
 	match trial_type:
 		TrialType.CREATURE:
 			values_to_count = cards_drawn.map(func(card: Card) -> int:
@@ -133,11 +133,10 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int) -> void:
 			)
 		_:
 			push_error("Unknown trial type", trial_type)
-	print("Values to count ", values_to_count)
 	var value_from_cards: int = values_to_count.reduce(func(acc: int, val: int) -> int: return acc + val)
-	print("Value from cards ", value_from_cards, " trial value ", trial_value)
+	print("Value from cards: ", value_from_cards, "... trial value: ", trial_value)
 
-	if value_from_cards > trial_value:
+	if value_from_cards >= trial_value:
 		gained_secret.emit(str(trial_value) + " " + trial_type_string(trial_type))
 	else:
 		lost_secret.emit()

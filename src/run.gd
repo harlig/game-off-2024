@@ -162,9 +162,9 @@ func _on_gained_secret(gained_secret: String, secret_scene_to_delete: Secret) ->
 	secret_scene_to_delete.queue_free()
 
 func _on_lost_secret(secret_scene_to_delete: Secret) -> void:
-	map.hide_node(current_node)
+	# replace some existing node which isn't a secret now with a secret node
 	# TODO: we also want to replace the touching nodes with combat nodes
-	move_to_unvisited_node()
+	show_map()
 	secret_scene_to_delete.queue_free()
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:

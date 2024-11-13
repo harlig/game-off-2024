@@ -69,9 +69,19 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 			if child_node_position not in node_instance_positions:
 				var node: MapNode = node_scene.instantiate()
 				node.position = Vector3(child_node_position.x, 1.2, child_node_position.y)
-				node.scale = Vector3(0.05, 0.05, 0.05)
 
 				node.type = generate_new_node_type()
+				match node.type:
+					MapNode.NodeType.COMBAT:
+						node.scale = Vector3(0.05, 0.05, 0.05)
+					MapNode.NodeType.SHOP:
+						node.scale = Vector3(0.15, 0.15, 0.15)
+					MapNode.NodeType.EVENT:
+						node.scale = Vector3(0.15, 0.15, 0.15)
+					MapNode.NodeType.SECRET:
+						node.scale = Vector3(0.15, 0.15, 0.15)
+					MapNode.NodeType.BLANK:
+						node.scale = Vector3(0.05, 0.05, 0.05)
 				node.connect("node_clicked", _on_node_clicked)
 				add_child(node)
 				node.hide();

@@ -11,7 +11,7 @@ enum NodeType {
 const combat_node_sprite := preload("res://textures/map/combat_node.png")
 const shop_node_sprite := preload("res://textures/map/shop.png")
 const event_node_sprite := preload("res://textures/map/event_node.png")
-const secret_node_sprite := preload("res://textures/map/check_box.png")
+const secret_node_sprite := preload("res://textures/map/secret.png")
 const beat_node_sprite := preload("res://textures/map/check_box.png")
 
 var type: NodeType = NodeType.COMBAT
@@ -45,6 +45,7 @@ func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _norm
 func beat_node() -> void:
 	$Sprite3D.texture = beat_node_sprite
 	has_been_beaten = true
+	scale = Vector3(0.05, 0.05, 0.05)
 
 func unbeat_node() -> void:
 	$Sprite3D.texture = original_texture
