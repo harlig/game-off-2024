@@ -75,9 +75,9 @@ func _generate_map(start_node: Vector2, directions: int, depth: int, max_depth: 
 					MapNode.NodeType.COMBAT:
 						node.scale = Vector3(0.05, 0.05, 0.05)
 					MapNode.NodeType.SHOP:
-						node.scale = Vector3(0.15, 0.15, 0.15)
+						node.scale = Vector3(0.07, 0.07, 0.07)
 					MapNode.NodeType.EVENT:
-						node.scale = Vector3(0.15, 0.15, 0.15)
+						node.scale = Vector3(0.07, 0.07, 0.07)
 					MapNode.NodeType.SECRET:
 						node.scale = Vector3(0.15, 0.15, 0.15)
 					MapNode.NodeType.BLANK:

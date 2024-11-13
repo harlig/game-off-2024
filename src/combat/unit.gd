@@ -83,73 +83,65 @@ func _process(delta: float) -> void:
 	if is_changing_torch:
 		return
 
-	if !enemies_in_attack_range.is_empty() || (unit_type == UnitList.CardType.HEALER && !allies_in_attack_range.is_empty()):
+	if !enemies_in_attack_range.is_empty() or (unit_type == UnitList.CardType.HEALER and not allies_in_attack_range.is_empty()):
 		if time_since_last_attack >= ATTACK_COOLDOWN:
 			is_invulnerable = false
 
-			var found_ally_to_heal := false
 			if unit_type == UnitList.CardType.HEALER:
-				var lowest_hp_ally: Attackable = null
-				# if there are any allies that need healing, heal them
-				for attackable in allies_in_attack_range:
-					if attackable.hp < attackable.max_hp:
-						if lowest_hp_ally == null || (attackable.max_hp - attackable.hp) > (lowest_hp_ally.max_hp - lowest_hp_ally.hp):
-							lowest_hp_ally = attackable
-				if lowest_hp_ally != null:
-					found_ally_to_heal = true
-					lowest_hp_ally.heal(damage)
-					lowest_hp_ally.get_node("HealParticles").emitting = true
-
-			if unit_type != UnitList.CardType.HEALER || found_ally_to_heal:
-				animation_player.seek(0, true)
-				animation_player.play(attack_animation)
-				if unit_type == UnitList.CardType.RANGED:
-					var closest_attackable: Attackable = null
-					for attackable in enemies_in_attack_range:
-						if closest_attackable == null || attackable.position.distance_to(position) < closest_attackable.position.distance_to(position):
-							closest_attackable = attackable
-					if closest_attackable != null:
-						# closest_attackable.take_damage(damage)
-						fire_projectile(closest_attackable)
-				# are you seeing an error that says this is already connected? that probably means the attack animation used here is longer than the attack cooldown!
-				animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
-				time_since_last_attack = 0.0
+				perform_heal()
+			elif unit_type == UnitList.CardType.RANGED:
+				perform_ranged_attack()
+			else:
+				play_attack_animation_and_reset()
 
 	if is_attacking:
 		time_since_last_attack += delta
 		# return early here to not move the unit
-		if unit_type != UnitList.CardType.HEALER || !enemies_in_attack_range.is_empty():
+		if unit_type != UnitList.CardType.HEALER or not enemies_in_attack_range.is_empty():
 			return
 
 	if direction == Direction.RIGHT:
-		if !can_change_torches and position.x >= furthest_x_position_allowed:
+		if not can_change_torches and position.x >= furthest_x_position_allowed:
 			return
 		position.x += speed * delta
 	else:
-		if !can_change_torches and position.x <= furthest_x_position_allowed:
+		if not can_change_torches and position.x <= furthest_x_position_allowed:
 			return
 		position.x -= speed * delta
 
+func perform_heal() -> void:
+	var lowest_hp_ally: Attackable = null
+	for attackable in allies_in_attack_range:
+		if attackable.hp < attackable.max_hp:
+			if lowest_hp_ally == null or (attackable.max_hp - attackable.hp) > (lowest_hp_ally.max_hp - lowest_hp_ally.hp):
+				lowest_hp_ally = attackable
+	if lowest_hp_ally != null:
+		lowest_hp_ally.heal(damage)
+		lowest_hp_ally.get_node("HealParticles").emitting = true
+		play_attack_animation_and_reset()
+
+
+func perform_ranged_attack() -> void:
+	var closest_attackable: Attackable = null
+	for attackable in enemies_in_attack_range:
+		if closest_attackable == null or attackable.position.distance_to(position) < closest_attackable.position.distance_to(position):
+			closest_attackable = attackable
+	if closest_attackable != null:
+		fire_projectile(closest_attackable)
+		play_attack_animation_and_reset()
+
+func play_attack_animation_and_reset() -> void:
+	animation_player.seek(0, true)
+	animation_player.play(attack_animation)
+	# are you seeing an error that says this is already connected? that probably means the attack animation used here is longer than the attack cooldown!
+	animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
+	time_since_last_attack = 0.0
+
+
 func do_attacks(_anim_name: String) -> void:
-	match unit_type:
-		UnitList.CardType.RANGED:
-			# var closest_attackable: Attackable = null
-			# for attackable in enemies_in_attack_range:
-			# 	if closest_attackable == null || attackable.position.distance_to(position) < closest_attackable.position.distance_to(position):
-			# 		closest_attackable = attackable
-			# if closest_attackable != null:
-			# 	# closest_attackable.take_damage(damage)
-			# 	fire_projectile(closest_attackable)
-			pass
-		UnitList.CardType.HEALER:
-			# AOE Heal
-			# for attackable in allies_in_attack_range:
-			# 	attackable.heal(damage)
-			# 	attackable.get_node("HealParticles").emitting = true
-			pass
-		_:
-			for attackable in currently_attacking:
-				attackable.take_damage(damage)
+	if unit_type != UnitList.CardType.RANGED and unit_type != UnitList.CardType.HEALER:
+		for attackable in currently_attacking:
+			attackable.take_damage(damage)
 	animation_player.play(WALK_ANIMATION)
 
 # when something runs into my target area
@@ -164,7 +156,7 @@ func _on_target_area_area_entered(area: Area3D) -> void:
 		return
 
 	enemies_in_attack_range.append(attackable)
-	if unit_type != UnitList.CardType.RANGED || currently_attacking.size() <= 0:
+	if unit_type != UnitList.CardType.RANGED or currently_attacking.size() <= 0:
 		currently_attacking.append(attackable)
 	is_attacking = true
 
@@ -264,7 +256,7 @@ func remove_buff(buff_to_remove: Buff) -> void:
 			unit_attackable.hp -= int(buff_to_remove.value)
 
 func try_light_torch(torch: Torch) -> void:
-	if !can_change_torches or torch.is_lit:
+	if not can_change_torches or torch.is_lit:
 		return
 
 	is_changing_torch = true
@@ -278,7 +270,7 @@ func try_light_torch(torch: Torch) -> void:
 	animation_player.play(WALK_ANIMATION)
 
 func try_extinguish_torch(torch: Torch) -> void:
-	if !can_change_torches or !torch.is_lit:
+	if not can_change_torches or not torch.is_lit:
 		return
 
 	is_changing_torch = true
