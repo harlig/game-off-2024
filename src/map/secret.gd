@@ -114,18 +114,9 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pr
 	var cards_drawn: Array[Card] = []
 	# animate this
 	for ndx in range(NUM_CARDS_TO_DRAW):
-		var card := deck.draw(false)
+		var card := await draw_and_tween_card(ndx)
 		if card != null:
-			card.position = $DrawCardLocation.global_position
 			cards_drawn.append(card)
-			add_child(card)
-
-			# 0th card gets 0th slot in card area, 1st gets 2nd, 2nd gets 4th
-			var desired_blank_card_slot_ndx := 2 * ndx
-			var blank_card_slot: Control = $BlankCardArea.get_child(desired_blank_card_slot_ndx)
-			var blank_card_position := blank_card_slot.global_position
-			var tween := get_tree().create_tween()
-			tween.tween_property(card, "position", blank_card_position, 1.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 
 	print("Drew these cards ", cards_drawn)
 	var values_to_count: Array = []
@@ -175,3 +166,18 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pr
 		gained_secret.emit(str(trial_value) + " " + trial_type_string(trial_type))
 	else:
 		lost_secret.emit()
+
+func draw_and_tween_card(ndx: int) -> Card:
+	var card := deck.draw(false)
+	if card != null:
+		card.position = $DrawCardLocation.global_position
+		add_child(card)
+
+		# 0th card gets 0th slot in card area, 1st gets 2nd, 2nd gets 4th
+		var desired_blank_card_slot_ndx := 2 * ndx
+		var blank_card_slot: Control = $BlankCardArea.get_child(desired_blank_card_slot_ndx)
+		var blank_card_position := blank_card_slot.global_position
+		var tween := get_tree().create_tween()
+		tween.tween_property(card, "position", blank_card_position, 1.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
+	return card
