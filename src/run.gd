@@ -141,7 +141,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		elif map_node.type == MapNode.NodeType.SECRET:
 			hide_map(true)
 			# each secret is harder to obtain than the last
-			var secret: Secret = Secret.create_secret_trial(len(secrets_gained) + 1)
+			var secret: Secret = Secret.create_secret_trial(len(secrets_gained) + 1, deck)
 			secret.connect("gained_secret", _on_gained_secret.bind(secret))
 			secret.connect("lost_secret", _on_lost_secret.bind(secret))
 			add_child(secret)

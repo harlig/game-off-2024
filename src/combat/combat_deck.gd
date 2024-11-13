@@ -16,8 +16,8 @@ func prepare_combat_deck(cards: Array[Card], relics: Array[Relic]=[]) -> void:
 		draw_pile.append(new_card)
 	draw_pile.shuffle()
 
-func draw() -> Card:
-	if draw_pile.size() == 0:
+func draw(should_shuffle_if_empty: bool = true) -> Card:
+	if draw_pile.size() == 0 and should_shuffle_if_empty:
 		shuffle_discard_into_draw()
 	return draw_pile.pop_back()
 

@@ -2,12 +2,16 @@ class_name Secret extends Control
 
 const secret_scene := preload("res://src/map/secret.tscn")
 
-
 const TRIALS_OFFERED_COUNT := 3
+const NUM_CARDS_TO_DRAW := 3
 
 var difficulty: int
+# we use a combat deck here bc we need to draw cards
+var deck: CombatDeck
 
 enum TrialType {
+	CREATURE,
+	SPELL,
 	DAMAGE,
 	HEALTH,
 	DAMAGE_AND_HEALTH,
@@ -15,6 +19,10 @@ enum TrialType {
 }
 func trial_type_string(trial_type: TrialType) -> String:
 	match trial_type:
+		TrialType.CREATURE:
+			return "creatures"
+		TrialType.SPELL:
+			return "spells"
 		TrialType.DAMAGE:
 			return "damage"
 		TrialType.HEALTH:
@@ -35,9 +43,10 @@ signal lost_secret()
 # This is how you should instantiate a secret scene
 ####################################################
 ####################################################
-static func create_secret_trial(secret_difficulty: int) -> Secret:
+static func create_secret_trial(init_difficulty: int, init_deck: CombatDeck) -> Secret:
 	var secret := secret_scene.instantiate()
-	secret.difficulty = secret_difficulty
+	secret.difficulty = init_difficulty
+	secret.deck = init_deck
 	return secret
 ####################################################
 ####################################################
@@ -56,6 +65,12 @@ func _ready() -> void:
 				break
 		var trial_value := 0
 		match trial_type:
+			TrialType.CREATURE:
+				# we can't draw more creatures than total number of cards we draw
+				trial_value = min(difficulty, NUM_CARDS_TO_DRAW)
+			TrialType.SPELL:
+				# we can't draw more spells than total number of cards we draw
+				trial_value = min(difficulty, NUM_CARDS_TO_DRAW)
 			TrialType.DAMAGE:
 				trial_value = 5 * difficulty
 			TrialType.HEALTH:
@@ -72,4 +87,57 @@ func _ready() -> void:
 		$SecretsArea/HBoxContainer.add_child(button)
 
 func _on_trial_button_pressed(trial_type: TrialType, trial_value: int) -> void:
-	gained_secret.emit(str(trial_value) + " " + trial_type_string(trial_type))
+	var cards_drawn: Array[Card] = []
+	# animate this
+	for ndx in range(NUM_CARDS_TO_DRAW):
+		var card := deck.draw(false)
+		if card != null:
+			cards_drawn.append(card)
+
+	print("Drew these cards ", cards_drawn)
+	var values_to_count: Array[int] = []
+	match trial_type:
+		TrialType.CREATURE:
+			values_to_count = cards_drawn.map(func(card: Card) -> int:
+				if card.type == Card.CardType.UNIT:
+					return 1
+				return 0
+			)
+		TrialType.SPELL:
+			values_to_count = cards_drawn.map(func(card: Card) -> int:
+				if card.type == Card.CardType.SPELL:
+					return 1
+				return 0
+			)
+		TrialType.DAMAGE:
+			values_to_count = cards_drawn.map(func(card: Card) -> int:
+				if card.type == Card.CardType.UNIT:
+					return card.creature.damage
+				return 0
+			)
+		TrialType.HEALTH:
+			values_to_count = cards_drawn.map(func(card: Card) -> int:
+				if card.type == Card.CardType.UNIT:
+					return card.creature.health
+				return 0
+			)
+		TrialType.DAMAGE_AND_HEALTH:
+			values_to_count = cards_drawn.map(func(card: Card) -> int:
+				if card.type == Card.CardType.UNIT:
+					return card.creature.damage + card.creature.health
+				return 0
+			)
+		TrialType.MANA:
+			values_to_count = cards_drawn.map(func(card: Card) -> int:
+				return card.mana
+			)
+		_:
+			push_error("Unknown trial type", trial_type)
+	print("Values to count ", values_to_count)
+	var value_from_cards: int = values_to_count.reduce(func(acc: int, val: int) -> int: return acc + val)
+	print("Value from cards ", value_from_cards, " trial value ", trial_value)
+
+	if value_from_cards > trial_value:
+		gained_secret.emit(str(trial_value) + " " + trial_type_string(trial_type))
+	else:
+		lost_secret.emit()
