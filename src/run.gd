@@ -92,6 +92,7 @@ func show_map() -> void:
 	$Map/ViewDeck.show()
 	$Player.show()
 	$Map/BankControl.show()
+	relic_area.show()
 
 func hide_map(should_show_bank: bool) -> void:
 	$Map.hide()
@@ -136,6 +137,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 			new_event.deck = deck
 			print("Made new event type be ", new_event.type)
 			new_event.connect("event_resolved", _on_event_resolved)
+			relic_area.hide()
 			add_child(new_event)
 			map.visited_node(current_node)
 		elif map_node.type == MapNode.NodeType.SECRET:
@@ -161,14 +163,12 @@ func _on_gained_secret(gained_secret: String, secret_scene_to_delete: Secret) ->
 	map.visited_node(current_node)
 	show_map()
 	print("Secrets list is now ", secrets_gained)
-	relic_area.show()
 	secret_scene_to_delete.queue_free()
 
 func _on_lost_secret(secret_scene_to_delete: Secret) -> void:
 	# replace some existing node which isn't a secret now with a secret node
 	# TODO: we also want to replace the touching nodes with combat nodes
 	show_map()
-	relic_area.show()
 	secret_scene_to_delete.queue_free()
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:

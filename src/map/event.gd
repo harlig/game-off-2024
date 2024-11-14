@@ -3,7 +3,12 @@ class_name Event extends Control
 
 enum EventType {GET_GOLD, BUFF_CARD}
 
-enum BuffType {DAMAGE, HEALTH, MANA}
+enum BuffType {
+	DAMAGE,
+	HEALTH,
+	MANA,
+	MAKE_TORCHLIGHTER
+}
 
 var type: EventType
 var deck: Deck
@@ -38,6 +43,8 @@ func offer_buff_card() -> void:
 		BuffType.MANA:
 			value = 1
 			$Label.text = "Decrease a creature card's mana cost by " + str(value)
+		BuffType.MAKE_TORCHLIGHTER:
+			$Label.text = "Choose a unit to now be able to light torches"
 		_:
 			push_error("Unknown buff type", buff_type)
 	$BuffCard.show()
@@ -63,6 +70,8 @@ func _on_card_clicked(_times_clicked: int, card: Card, buff_type: BuffType, valu
 				card.creature.health += value
 			BuffType.MANA:
 				card.mana -= value
+			BuffType.MAKE_TORCHLIGHTER:
+				card.creature.can_change_torches = true
 
 		card.update_display()
 	else:
