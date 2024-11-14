@@ -48,10 +48,17 @@ modulate = Color(0.362022, 0.808241, 1, 1)
 texture = SubResource("PlaceholderTexture2D_y8fa8")
 
 [node name="ViewDeck" type="Button" parent="."]
-offset_left = 1757.0
-offset_top = 914.0
-offset_right = 1817.0
-offset_bottom = 974.0
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -150.0
+offset_right = -150.0
+offset_bottom = -100.0
+grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(2.16736, 2.28852)
 focus_mode = 0
 text = "View
