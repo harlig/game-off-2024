@@ -51,6 +51,18 @@ class Creature:
 		self.buffs_i_apply = init_buffs_i_apply
 		self.can_change_torches = init_can_change_torches
 
+	static func copy_of(existing: Creature) -> Creature:
+		return Creature.new(existing.name,
+			existing.type,
+			existing.health,
+			existing.damage,
+			existing.mana,
+			existing.strength_factor,
+			existing.card_image_path,
+			existing.buffs_i_apply,
+			existing.can_change_torches
+		)
+
 	func get_score() -> int:
 		return health + damage
 

@@ -26,6 +26,16 @@ class Spell:
 		self.mana = init_mana
 		self.card_image_path = init_card_image_path
 
+	static func copy_of(existing: Spell):
+		return Spell.new(
+			existing.name,
+			existing.type,
+			existing.targetable_type,
+			existing.value,
+			existing.mana,
+			existing.card_image_path
+		)
+
 	func get_score() -> int:
 		return value + mana
 

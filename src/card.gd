@@ -69,9 +69,9 @@ static func duplicate_card(card: Card) -> Card:
 	new_card.mana = card.mana
 	match card.type:
 		CardType.UNIT:
-			new_card.creature = card.creature
+			new_card.creature = UnitList.Creature.copy_of(card.creature)
 		CardType.SPELL:
-			new_card.spell = card.spell
+			new_card.spell = SpellList.Spell.copy_of(card.spell)
 	return new_card
 
 func update_display() -> void:
