@@ -1,9 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://dh14vc0cg3k4w"]
+[gd_scene load_steps=12 format=3 uid="uid://dh14vc0cg3k4w"]
 
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
 [ext_resource type="Shader" path="res://shaders/card.gdshader" id="1_beeq6"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/unit/hand_crawler.png" id="2_40l2k"]
+[ext_resource type="Texture2D" uid="uid://ccgvh2yxqxblc" path="res://textures/card/mana.png" id="4_aqkru"]
+[ext_resource type="Texture2D" uid="uid://dmcv0hb47jq57" path="res://textures/card/damage.png" id="5_mlvi7"]
 [ext_resource type="Texture2D" uid="uid://djmxoep3ddp8y" path="res://textures/card/card_blank.png" id="5_r6g8e"]
+[ext_resource type="Texture2D" uid="uid://cghe2c7fxdgfg" path="res://textures/card/health.png" id="6_ff6p8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1taja"]
 font_color = Color(0, 0, 0, 1)
@@ -44,49 +47,96 @@ expand_mode = 1
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.05
+anchor_left = 0.3
 anchor_top = 0.05
-anchor_right = 0.7
+anchor_right = 0.95
 anchor_bottom = 0.1
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Creature Name"
-horizontal_alignment = 1
 
-[node name="Mana" type="Label" parent="."]
+[node name="ManaArea" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchor_left = 0.05
+anchor_top = 0.025
+anchor_right = 0.3
+anchor_bottom = 0.135
+
+[node name="Mana" type="Label" parent="ManaArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = -242.0
-offset_right = 72.0
-offset_bottom = -219.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "2"
-horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Damage" type="Label" parent="."]
+[node name="TextureRect" type="TextureRect" parent="ManaArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.6
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_aqkru")
+expand_mode = 1
+
+[node name="DamageArea" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.05
+anchor_top = 0.875
+anchor_right = 0.5
+anchor_bottom = 0.975
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Damage" type="Label" parent="DamageArea"]
 layout_mode = 0
-offset_left = 36.0
-offset_top = 226.0
-offset_right = 75.0
-offset_bottom = 242.0
+offset_left = 24.4
+offset_top = 5.0
+offset_right = 64.4
+offset_bottom = 25.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "52"
+vertical_alignment = 1
 
-[node name="Health" type="Label" parent="."]
+[node name="TextureRect" type="TextureRect" parent="DamageArea"]
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 0
-offset_left = 120.0
-offset_top = 226.0
-offset_right = 154.0
-offset_bottom = 242.0
+offset_right = 26.0
+offset_bottom = 26.0
+texture = ExtResource("5_mlvi7")
+expand_mode = 1
+
+[node name="HealthArea" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.875
+anchor_right = 0.95
+anchor_bottom = 0.975
+
+[node name="Health" type="Label" parent="HealthArea"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 5.0
+offset_right = 66.0
+offset_bottom = 25.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "10"
 horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HealthArea"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 0
+offset_left = 63.0
+offset_top = 2.0
+offset_right = 89.0
+offset_bottom = 28.0
+texture = ExtResource("6_ff6p8")
+expand_mode = 1
 
 [node name="DescriptionArea" type="Control" parent="."]
 layout_mode = 1

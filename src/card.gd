@@ -9,7 +9,7 @@ var mana: int:
 		mana = value
 		if mana < 0:
 			mana = 0
-		$Mana.text = str(value)
+		$ManaArea/Mana.text = str(value)
 var creature: UnitList.Creature
 var spell: SpellList.Spell
 
@@ -83,12 +83,12 @@ func update_display() -> void:
 			update_unit_display()
 		CardType.SPELL:
 			update_spell_display()
-	$Mana.text = str(mana)
+	$ManaArea/Mana.text = str(mana)
 
 func update_unit_display() -> void:
 	$Title.text = creature.name
-	$Health.text = str(creature.health)
-	$Damage.text = str(creature.damage)
+	$HealthArea/Health.text = str(creature.health)
+	$DamageArea/Damage.text = str(creature.damage)
 	$TextureRect.texture = load(creature.card_image_path)
 
 	var creature_type_text := ""
@@ -125,9 +125,9 @@ func display_icon(icon_texture: Texture2D, icon_help_text: String) -> void:
 
 func update_spell_display() -> void:
 	$Title.text = spell.name
-	$Mana.text = str(mana)
-	$Damage.hide()
-	$Health.hide()
+	$ManaArea/Mana.text = str(mana)
+	$DamageArea/Damage.hide()
+	$HealthArea/Health.hide()
 	$TextureRect.texture = load(spell.card_image_path)
 	texture = load("res://textures/card/card_blank.png")
 
@@ -153,11 +153,11 @@ func update_spell_display() -> void:
 func highlight_attribute(attribute: String) -> void:
 	match attribute:
 		"health":
-			$Health.add_theme_color_override("font_color", Color.GREEN)
+			$HealthArea/Health.add_theme_color_override("font_color", Color.GREEN)
 		"damage":
-			$Damage.add_theme_color_override("font_color", Color.GREEN)
+			$DamageArea/Damage.add_theme_color_override("font_color", Color.GREEN)
 		"mana":
-			$Mana.add_theme_color_override("font_color", Color.GREEN)
+			$ManaArea/Mana.add_theme_color_override("font_color", Color.GREEN)
 
 func set_unit(from_creature: UnitList.Creature) -> void:
 	type = CardType.UNIT
