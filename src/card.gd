@@ -2,6 +2,7 @@ class_name Card extends TextureRect
 
 const card_scene := preload("res://src/card.tscn")
 const heal_icon_texture: Texture2D = preload("res://textures/card/heal.png")
+const torchlighter_icon_texture: Texture2D = preload("res://textures/card/torch.png")
 
 var type: CardType
 var mana: int:
@@ -111,7 +112,7 @@ func add_buff_icons() -> void:
 		display_icon(buff.texture(), buff.description())
 
 	if creature.can_change_torches:
-		display_icon(UnitList.torchlighter_icon_texture, "Can light torches")
+		display_icon(torchlighter_icon_texture, "Can light torches")
 
 	if creature.type == UnitList.CardType.HEALER:
 		display_icon(heal_icon_texture, "Rather than attacking, this unit heals ally units")
