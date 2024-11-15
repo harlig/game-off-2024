@@ -1,7 +1,7 @@
 class_name Card extends TextureRect
 
 const card_scene := preload("res://src/card.tscn")
-const heal_icon_texture: Texture2D = preload("res://textures/spell/heal.png")
+const heal_icon_texture: Texture2D = preload("res://textures/card/heal.png")
 
 var type: CardType
 var mana: int:
@@ -101,6 +101,7 @@ func update_unit_display() -> void:
 			creature_type_text = "Air"
 		UnitList.CardType.HEALER:
 			creature_type_text = "Healer"
+			$DamageArea/TextureRect.texture = heal_icon_texture
 	$DescriptionArea/Type.text = creature_type_text
 
 	add_buff_icons()
@@ -113,7 +114,7 @@ func add_buff_icons() -> void:
 		display_icon(UnitList.torchlighter_icon_texture, "Can light torches")
 
 	if creature.type == UnitList.CardType.HEALER:
-		display_icon(heal_icon_texture, "Heals nearby allies for " + str(creature.damage) + " health")
+		display_icon(heal_icon_texture, "Rather than attacking, this unit heals ally units")
 
 func display_icon(icon_texture: Texture2D, icon_help_text: String) -> void:
 	var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
@@ -126,8 +127,8 @@ func display_icon(icon_texture: Texture2D, icon_help_text: String) -> void:
 func update_spell_display() -> void:
 	$Title.text = spell.name
 	$ManaArea/Mana.text = str(mana)
-	$DamageArea/Damage.hide()
-	$HealthArea/Health.hide()
+	$DamageArea.hide()
+	$HealthArea.hide()
 	$TextureRect.texture = load(spell.card_image_path)
 	texture = load("res://textures/card/card_blank.png")
 
