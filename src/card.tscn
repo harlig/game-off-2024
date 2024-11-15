@@ -21,10 +21,8 @@ shader_parameter/color = Color(8.54321e-07, 0.369877, 0.13724, 1)
 
 [node name="Card" type="TextureRect"]
 custom_minimum_size = Vector2(192, 256)
-anchors_preset = -1
-anchor_right = 0.1
-anchor_bottom = 0.236
-offset_bottom = 1.12
+offset_right = 192.0
+offset_bottom = 256.0
 pivot_offset = Vector2(96, 256)
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -96,6 +94,7 @@ anchor_left = 0.15
 anchor_top = 0.57
 anchor_right = 0.85
 anchor_bottom = 0.85
+mouse_filter = 2
 
 [node name="Type" type="Label" parent="DescriptionArea"]
 layout_mode = 1
@@ -152,5 +151,6 @@ offset_left = -8.0
 offset_top = -8.0
 offset_right = 200.0
 offset_bottom = 264.0
+mouse_filter = 2
 texture = ExtResource("5_r6g8e")
 expand_mode = 1

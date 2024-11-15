@@ -32,13 +32,17 @@ func _input(event: InputEvent) -> void:
 		$DragLine.clear_points()
 		$DragEnd.hide()
 
+		var tried_play_card_and_failed: bool = false
 		if event.position.y < $PlayHeight.position.y:
-			get_parent().try_play_card(current_selected)
+			tried_play_card_and_failed = !(get_parent().try_play_card(current_selected))
 
 		if current_hover != current_selected:
 			show_hovered_card()
 
-		place_back_in_hand(current_selected, current_selected_return_pos, current_selected_return_rot)
+		if tried_play_card_and_failed:
+			place_back_in_hand(current_selected, current_selected_return_pos, current_selected_return_rot, Color.RED)
+		else:
+			place_back_in_hand(current_selected, current_selected_return_pos, current_selected_return_rot)
 		current_selected = null
 
 	if event is InputEventMouseMotion:
@@ -134,12 +138,15 @@ func _on_drop_box_entered() -> void:
 	current_selected = null
 
 
-func place_back_in_hand(card: Card, pos: Vector2, rot: float) -> void:
+func place_back_in_hand(card: Card, pos: Vector2, rot: float, color_to_highlight_then_unhighlight: Color = Color.WHITE) -> void:
 	card.cancel_tween.emit()
 	card.z_index = 0
 	card.scale = Vector2(1.0, 1.0)
 	card.position = pos
 	card.rotation = rot
+	if color_to_highlight_then_unhighlight != Color.WHITE:
+		card.highlight(color_to_highlight_then_unhighlight)
+		await get_tree().create_timer(0.5).timeout
 	card.unhighlight()
 
 
