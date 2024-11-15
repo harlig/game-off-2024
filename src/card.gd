@@ -1,6 +1,7 @@
 class_name Card extends TextureRect
 
 const card_scene := preload("res://src/card.tscn")
+const heal_icon_texture: Texture2D = preload("res://textures/spell/heal.png")
 
 var type: CardType
 var mana: int:
@@ -102,24 +103,24 @@ func update_unit_display() -> void:
 			creature_type_text = "Healer"
 	$DescriptionArea/Type.text = creature_type_text
 
-	# TODO: remove these from description and instead use icons
+	add_buff_icons()
+
+func add_buff_icons() -> void:
 	for buff in creature.buffs_i_apply:
-		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
-		new_texture_rect.tooltip_text = buff.description()
-		new_texture_rect.show()
-		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
+		display_icon(buff.texture(), buff.description())
 
 	if creature.can_change_torches:
-		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
-		new_texture_rect.tooltip_text = "Can light torches"
-		new_texture_rect.show()
-		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
+		display_icon(UnitList.torchlighter_icon_texture, "Can light torches")
 
 	if creature.type == UnitList.CardType.HEALER:
-		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
-		new_texture_rect.tooltip_text = "Heals nearby allies for " + str(creature.damage) + " health"
-		new_texture_rect.show()
-		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
+		display_icon(heal_icon_texture, "Heals nearby allies for " + str(creature.damage) + " health")
+
+func display_icon(icon_texture: Texture2D, icon_help_text: String) -> void:
+	var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
+	new_texture_rect.tooltip_text = icon_help_text
+	new_texture_rect.texture = icon_texture
+	new_texture_rect.show()
+	$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
 
 func update_spell_display() -> void:
 	$Title.text = spell.name

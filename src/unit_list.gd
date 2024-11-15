@@ -1,5 +1,6 @@
 class_name UnitList extends Node
 
+const torchlighter_icon_texture: Texture2D = preload("res://textures/relic/torchlighter_secret.png")
 
 static var creature_cards: Array[Creature] = [
 	Creature.new("Shriekling", CardType.RANGED, 10, 2, 2, 4, "res://textures/unit/hunchy.png"),

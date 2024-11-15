@@ -1,7 +1,9 @@
 class_name Unit extends Node3D
 
 const projectile_scene := preload("res://src/combat/projectile.tscn")
-
+const damage_buff_texture: Texture2D = preload("res://textures/card/augment/buff_damage.jpg")
+const health_buff_texture: Texture2D = preload("res://textures/card/augment/buff_health.png")
+const speed_buff_texture: Texture2D = preload("res://textures/card/augment/buff_speed.png")
 
 enum Direction {LEFT, RIGHT}
 
@@ -63,6 +65,16 @@ class Buff:
 			BuffType.HEALTH:
 				type_str = "health"
 		return "While alive, gives other units +" + str(value) + " " + type_str
+
+	func texture() -> Texture2D:
+		match type:
+			BuffType.SPEED:
+				return speed_buff_texture
+			BuffType.DAMAGE:
+				return damage_buff_texture
+			BuffType.HEALTH:
+				return health_buff_texture
+		return null
 
 var buffs_i_apply: Array[Buff] = []
 
