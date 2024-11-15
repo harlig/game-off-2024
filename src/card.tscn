@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dh14vc0cg3k4w"]
+[gd_scene load_steps=13 format=3 uid="uid://dh14vc0cg3k4w"]
 
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
 [ext_resource type="Shader" path="res://shaders/card.gdshader" id="1_beeq6"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/unit/hand_crawler.png" id="2_40l2k"]
+[ext_resource type="Texture2D" uid="uid://cki4ay85hae0q" path="res://textures/card/back/card_back_3.png" id="3_2axgn"]
 [ext_resource type="Texture2D" uid="uid://ccgvh2yxqxblc" path="res://textures/card/mana.png" id="4_aqkru"]
 [ext_resource type="Texture2D" uid="uid://dmcv0hb47jq57" path="res://textures/card/damage.png" id="5_mlvi7"]
 [ext_resource type="Texture2D" uid="uid://djmxoep3ddp8y" path="res://textures/card/card_blank.png" id="5_r6g8e"]
@@ -32,6 +33,18 @@ size_flags_vertical = 4
 texture = ExtResource("5_r6g8e")
 expand_mode = 1
 script = ExtResource("1_0yggd")
+
+[node name="CardBack" type="TextureRect" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_2axgn")
+expand_mode = 1
+stretch_mode = 4
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
