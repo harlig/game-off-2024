@@ -81,6 +81,8 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 	if card.is_unit_spell():
 		unit_spell_selected.emit()
 
+	# set shader on card to highlight it. when you have enough mana it's green, otherwise it's gray. updates when mana changes
+
 
 func _on_card_mouse_entered(card: Card) -> void:
 	current_hover = card
@@ -138,8 +140,6 @@ func update_hand_positions() -> void:
 	var card_spacing: float = max(CARD_X_SIZE - 12.0 * hand_size, 60.0)
 	var hand_width := card_spacing * hand_size
 	var current_rotation := -ROTATION_PER_CARD * (hand_size - 1) / 2.0 - ROTATION_PER_CARD
-
-	# print(card_spacing);
 
 	for i in range(hand_size):
 		var card := $HandArea.get_child(i)
