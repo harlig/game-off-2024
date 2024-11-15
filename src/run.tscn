@@ -36,10 +36,6 @@ mouse_filter = 2
 
 [node name="Deck" parent="DeckControl" instance=ExtResource("3_pu7pl")]
 layout_mode = 1
-offset_left = -450.0
-offset_top = -300.0
-offset_right = 450.0
-offset_bottom = 300.0
 
 [node name="PreloadedCombat" parent="." instance=ExtResource("4_xap8m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0)
@@ -48,7 +44,6 @@ visible = false
 [node name="Projectile" parent="PreloadedCombat" instance=ExtResource("5_awlrp")]
 
 [node name="Loading" type="ColorRect" parent="."]
-visible = false
 z_index = 10
 layout_mode = 1
 anchors_preset = 15

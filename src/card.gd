@@ -236,13 +236,13 @@ func _to_string() -> String:
 
 
 func highlight(highlight_color: Color) -> void:
-	if not is_visible_in_tree():
+	if not is_inside_tree():
 		return
 	$Highlight.material.set_shader_parameter("color", highlight_color)
 	$Highlight.show()
 
 func unhighlight() -> void:
-	if not is_visible_in_tree():
+	if not is_inside_tree():
 		return
 
 	$Highlight.hide()
