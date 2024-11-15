@@ -69,6 +69,9 @@ func _ready() -> void:
 	$Hand.initialize(player_combat_deck, relics.filter(func(relic: Relic) -> bool: return relic.relic_name == 'Torchlighter Relic').size() > 0)
 	$Opponent/Hand.initialize(enemy_combat_deck)
 
+	# do this so the hand display shows the proper mana
+	$HandDisplay._on_hand_mana_updated($Hand.cur_mana, $Hand.max_mana)
+
 	set_process(true)
 	$Camera3D.make_current()
 
