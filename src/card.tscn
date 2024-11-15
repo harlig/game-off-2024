@@ -1,8 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://dh14vc0cg3k4w"]
+[gd_scene load_steps=6 format=3 uid="uid://dh14vc0cg3k4w"]
 
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
 [ext_resource type="Texture2D" uid="uid://b5lca0cmo6ct4" path="res://textures/card/card_back.png" id="1_casw2"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/unit/hand_crawler.png" id="2_40l2k"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1taja"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_2dqc6"]
+font_size = 14
+font_color = Color(0, 0, 0, 1)
 
 [node name="Card" type="TextureRect"]
 custom_minimum_size = Vector2(192, 256)
@@ -64,20 +71,6 @@ offset_bottom = 242.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "52"
 
-[node name="Description" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.15
-anchor_top = 0.57
-anchor_right = 0.85
-anchor_bottom = 0.8
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 16
-text = "I am a description of this card"
-horizontal_alignment = 1
-autowrap_mode = 2
-
 [node name="Health" type="Label" parent="."]
 layout_mode = 0
 offset_left = 120.0
@@ -87,3 +80,54 @@ offset_bottom = 242.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "10"
 horizontal_alignment = 2
+
+[node name="DescriptionArea" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.15
+anchor_top = 0.57
+anchor_right = 0.85
+anchor_bottom = 0.85
+
+[node name="Type" type="Label" parent="DescriptionArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.2
+text = "Type text"
+label_settings = SubResource("LabelSettings_1taja")
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="SpellDescription" type="Label" parent="DescriptionArea"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+tooltip_text = "test"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "I am a description of this card"
+label_settings = SubResource("LabelSettings_2dqc6")
+horizontal_alignment = 1
+autowrap_mode = 2
+text_overrun_behavior = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DescriptionArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="DescriptionArea/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4

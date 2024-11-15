@@ -36,12 +36,14 @@ static func create_creature_card(init_creature: UnitList.Creature) -> Card:
 	var card_instance: Card = card_scene.instantiate()
 	card_instance.set_unit(init_creature)
 	card_instance.mana = init_creature.mana
+	card_instance.name = init_creature.name
 	return card_instance
 
 static func create_spell_card(init_spell: SpellList.Spell) -> Card:
 	var card_instance: Card = card_scene.instantiate()
 	card_instance.set_spell(init_spell)
 	card_instance.mana = init_spell.mana
+	card_instance.name = init_spell.name
 	return card_instance
 ####################################################
 ####################################################
@@ -98,16 +100,26 @@ func update_unit_display() -> void:
 			creature_type_text = "Air"
 		UnitList.CardType.HEALER:
 			creature_type_text = "Healer"
-	$Description.text = creature_type_text
+	$DescriptionArea/Type.text = creature_type_text
 
+	# TODO: remove these from description and instead use icons
 	for buff in creature.buffs_i_apply:
-		$Description.text += "\n" + buff.description()
+		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
+		new_texture_rect.show()
+		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
+		# $Description.text += "\n" + buff.description()
 
 	if creature.can_change_torches:
-		$Description.text += "\nCan light torches"
+		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
+		new_texture_rect.show()
+		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
+		# $Description.text += "\nCan light torches"
 
 	if creature.type == UnitList.CardType.HEALER:
-		$Description.text += "\nHeals nearby allies for " + str(creature.damage) + " health"
+		# $Description.text += "\nHeals nearby allies for " + str(creature.damage) + " health"
+		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
+		new_texture_rect.show()
+		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
 
 func update_spell_display() -> void:
 	$Title.text = spell.name
@@ -117,17 +129,24 @@ func update_spell_display() -> void:
 	$TextureRect.texture = load(spell.card_image_path)
 	texture = load("res://textures/card/card_blank.png")
 
+	$DescriptionArea/Type.text = "Spell"
+
+	var description_text := ""
 	match spell.type:
 		SpellList.SpellType.DAMAGE:
-			$Description.text = "Deals " + str(spell.value) + " damage"
+			description_text = "Deals " + str(spell.value) + " damage"
 		SpellList.SpellType.HEAL:
-			$Description.text = "Heals " + str(spell.value) + " health"
+			description_text = "Heals " + str(spell.value) + " health"
 		SpellList.SpellType.CUR_MANA:
-			$Description.text = "Gives " + str(spell.value) + " mana"
+			description_text = "Gives " + str(spell.value) + " mana"
 		SpellList.SpellType.MAX_MANA:
-			$Description.text = "Increase max mana by " + str(spell.value) + " for this combat"
+			description_text = "Increase max mana by " + str(spell.value) + " for this combat"
 		SpellList.SpellType.DRAW_CARDS:
-			$Description.text = "Draw " + str(spell.value) + " cards"
+			description_text = "Draw " + str(spell.value) + " cards"
+
+	$DescriptionArea/SpellDescription.show()
+	$DescriptionArea/SpellDescription.text = description_text
+	$DescriptionArea/SpellDescription.tooltip_text = description_text
 
 func highlight_attribute(attribute: String) -> void:
 	match attribute:
