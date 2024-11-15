@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dh14vc0cg3k4w"]
+[gd_scene load_steps=7 format=3 uid="uid://dh14vc0cg3k4w"]
 
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
 [ext_resource type="Texture2D" uid="uid://b5lca0cmo6ct4" path="res://textures/card/card_back.png" id="1_casw2"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/unit/hand_crawler.png" id="2_40l2k"]
+[ext_resource type="Texture2D" uid="uid://bg3cw7agq5t30" path="res://textures/relic/torchlighter_secret.png" id="4_wdg48"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1taja"]
 font_color = Color(0, 0, 0, 1)
@@ -131,3 +132,5 @@ custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+texture = ExtResource("4_wdg48")
+expand_mode = 1

@@ -105,19 +105,19 @@ func update_unit_display() -> void:
 	# TODO: remove these from description and instead use icons
 	for buff in creature.buffs_i_apply:
 		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
+		new_texture_rect.tooltip_text = buff.description()
 		new_texture_rect.show()
 		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
-		# $Description.text += "\n" + buff.description()
 
 	if creature.can_change_torches:
 		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
+		new_texture_rect.tooltip_text = "Can light torches"
 		new_texture_rect.show()
 		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
-		# $Description.text += "\nCan light torches"
 
 	if creature.type == UnitList.CardType.HEALER:
-		# $Description.text += "\nHeals nearby allies for " + str(creature.damage) + " health"
 		var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
+		new_texture_rect.tooltip_text = "Heals nearby allies for " + str(creature.damage) + " health"
 		new_texture_rect.show()
 		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
 
