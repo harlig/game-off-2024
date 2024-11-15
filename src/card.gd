@@ -39,6 +39,7 @@ static func create_creature_card(init_creature: UnitList.Creature) -> Card:
 	card_instance.set_unit(init_creature)
 	card_instance.mana = init_creature.mana
 	card_instance.name = init_creature.name
+	card_instance.get_node("CardBack").texture = get_random_card_back()
 	return card_instance
 
 static func create_spell_card(init_spell: SpellList.Spell) -> Card:
@@ -46,7 +47,20 @@ static func create_spell_card(init_spell: SpellList.Spell) -> Card:
 	card_instance.set_spell(init_spell)
 	card_instance.mana = init_spell.mana
 	card_instance.name = init_spell.name
+	card_instance.get_node("CardBack").texture = get_random_card_back()
 	return card_instance
+
+static func get_random_card_back() -> Texture:
+	var card_backs := [
+		"res://textures/card/back/card_back_1.png",
+		"res://textures/card/back/card_back_2.png",
+		"res://textures/card/back/card_back_3.png",
+		"res://textures/card/back/card_back_4.png",
+		"res://textures/card/back/card_back_5.png",
+		"res://textures/card/back/card_back_6.png",
+		"res://textures/card/back/card_back_7.png",
+	]
+	return load(card_backs[randi() % card_backs.size()])
 ####################################################
 ####################################################
 ####################################################
@@ -115,7 +129,7 @@ func add_buff_icons() -> void:
 		display_icon(torchlighter_icon_texture, "Can light torches")
 
 	if creature.type == UnitList.CardType.HEALER:
-		display_icon(heal_icon_texture, "Rather than attacking, this unit heals ally units")
+		$DescriptionArea/Type.tooltip_text = "Rather than attacking, this unit heals ally units"
 
 func display_icon(icon_texture: Texture2D, icon_help_text: String) -> void:
 	var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
