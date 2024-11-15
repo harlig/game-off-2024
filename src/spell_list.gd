@@ -26,7 +26,7 @@ class Spell:
 		self.mana = init_mana
 		self.card_image_path = init_card_image_path
 
-	static func copy_of(existing: Spell):
+	static func copy_of(existing: Spell) -> Spell:
 		return Spell.new(
 			existing.name,
 			existing.type,
