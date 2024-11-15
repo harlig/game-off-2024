@@ -1,6 +1,7 @@
 class_name Card extends TextureRect
 
 const card_scene := preload("res://src/card.tscn")
+const card_back_spell := preload("res://textures/card/back/card_back_spell.png")
 const heal_icon_texture: Texture2D = preload("res://textures/card/heal.png")
 const torchlighter_icon_texture: Texture2D = preload("res://textures/card/torch.png")
 
@@ -47,7 +48,11 @@ static func create_spell_card(init_spell: SpellList.Spell) -> Card:
 	card_instance.set_spell(init_spell)
 	card_instance.mana = init_spell.mana
 	card_instance.name = init_spell.name
-	card_instance.get_node("CardBack").texture = get_random_card_back()
+
+	card_instance.get_node("CardBack").texture = card_back_spell
+	(card_instance.get_node("CardBack") as TextureRect).custom_minimum_size = Vector2(186, 186)
+	(card_instance.get_node("CardBack") as TextureRect).size = Vector2.ZERO
+	(card_instance.get_node("CardBack") as TextureRect).position = Vector2(0, 20)
 	return card_instance
 
 static func get_random_card_back() -> Texture:
