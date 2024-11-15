@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
 [ext_resource type="Shader" path="res://shaders/card.gdshader" id="1_beeq6"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/unit/hand_crawler.png" id="2_40l2k"]
-[ext_resource type="Texture2D" uid="uid://3fayevt5ghoj" path="res://textures/card/back/card_back_spell.png" id="3_wgrbw"]
+[ext_resource type="Texture2D" uid="uid://cki4ay85hae0q" path="res://textures/card/back/card_back_3.png" id="3_2axgn"]
 [ext_resource type="Texture2D" uid="uid://ccgvh2yxqxblc" path="res://textures/card/mana.png" id="4_aqkru"]
 [ext_resource type="Texture2D" uid="uid://dmcv0hb47jq57" path="res://textures/card/damage.png" id="5_mlvi7"]
 [ext_resource type="Texture2D" uid="uid://djmxoep3ddp8y" path="res://textures/card/card_blank.png" id="5_r6g8e"]
@@ -36,11 +36,13 @@ script = ExtResource("1_0yggd")
 
 [node name="CardBack" type="TextureRect" parent="."]
 show_behind_parent = true
-custom_minimum_size = Vector2(192, 192)
+custom_minimum_size = Vector2(153.6, 115.2)
 layout_mode = 0
-offset_right = 192.0
-offset_bottom = 192.0
-texture = ExtResource("3_wgrbw")
+offset_left = 19.2
+offset_top = 22.0
+offset_right = 172.8
+offset_bottom = 137.2
+texture = ExtResource("3_2axgn")
 expand_mode = 1
 stretch_mode = 4
 
