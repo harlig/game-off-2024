@@ -62,7 +62,7 @@ func _on_hand_discarded(card: Card) -> void:
 	card.card_clicked.disconnect(_on_card_clicked)
 	card.mouse_entered.disconnect(_on_card_mouse_entered)
 	card.mouse_exited.disconnect(_on_card_mouse_exited)
-	# TODO: reset shader
+	card.unhighlight()
 
 
 func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
@@ -72,12 +72,9 @@ func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
 		return
 
 	if get_parent().get_node("Hand").can_play(current_selected):
-		print("On mana change, would set shader to green")
-		# current_selected.material.set_shader_parameter("res://shaders/card_shader_green.shader")
-
+		current_selected.highlight(Color.DARK_GREEN)
 	else:
-		print("On mana change, would set shader to grey")
-		# current_selected.material.set_shader_parameter("res://shaders/card_shader_gray.shader")
+		current_selected.highlight(Color.DIM_GRAY)
 
 
 func _on_card_clicked(_times_clicked: int, card: Card) -> void:
@@ -93,17 +90,10 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 	if card.is_unit_spell():
 		unit_spell_selected.emit()
 
-	current_selected.material.set_shader_parameter("highlight", true)
-
-	# set shader on card to highlight it. when you have enough mana it's green, otherwise it's gray. updates when mana changes
-	# current_selected.material
-	print("Would set up shader highlight")
 	if get_parent().get_node("Hand").can_play(current_selected):
-		print("Would set shader to green")
-		# current_selected.material.set_shader_parameter("res://shaders/card_shader_green.shader")
+		current_selected.highlight(Color.DARK_GREEN)
 	else:
-		print("Would set shader to grey")
-		# current_selected.material.set_shader_parameter("res://shaders/card_shader_gray.shader")
+		current_selected.highlight(Color.DIM_GRAY)
 
 
 func _on_card_mouse_entered(card: Card) -> void:
@@ -150,7 +140,7 @@ func place_back_in_hand(card: Card, pos: Vector2, rot: float) -> void:
 	card.scale = Vector2(1.0, 1.0)
 	card.position = pos
 	card.rotation = rot
-	# TODO: reset shader
+	card.unhighlight()
 
 
 # TODO: Spread around i

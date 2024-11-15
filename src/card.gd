@@ -212,3 +212,16 @@ func _to_string() -> String:
 		CardType.SPELL:
 			card_string = "Spell: " + spell.name + " - " + str(spell.value) + " value" + " type " + str(spell.type)
 	return card_string
+
+
+func highlight(highlight_color: Color) -> void:
+	if not is_visible_in_tree():
+		return
+	$Highlight.material.set_shader_parameter("color", highlight_color)
+	$Highlight.show()
+
+func unhighlight() -> void:
+	if not is_visible_in_tree():
+		return
+
+	$Highlight.hide()

@@ -248,12 +248,12 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vok6h"]
 _data = {
 &"RESET": SubResource("Animation_8afef"),
-&"light_torch_reversed": SubResource("Animation_kmiha"),
-&"walk": SubResource("Animation_8vw6h"),
-&"attack_reversed": SubResource("Animation_weuqb"),
+&"heal": SubResource("Animation_evayf"),
 &"attack": SubResource("Animation_ckihm"),
+&"attack_reversed": SubResource("Animation_weuqb"),
+&"light_torch_reversed": SubResource("Animation_kmiha"),
 &"light_torch": SubResource("Animation_ttp57"),
-&"heal": SubResource("Animation_evayf")
+&"walk": SubResource("Animation_8vw6h")
 }
 
 [node name="Unit" type="Node3D"]

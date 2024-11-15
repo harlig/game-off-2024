@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dh14vc0cg3k4w"]
+[gd_scene load_steps=9 format=3 uid="uid://dh14vc0cg3k4w"]
 
 [ext_resource type="Script" path="res://src/card.gd" id="1_0yggd"]
-[ext_resource type="Texture2D" uid="uid://b5lca0cmo6ct4" path="res://textures/card/card_back.png" id="1_casw2"]
+[ext_resource type="Shader" path="res://shaders/card.gdshader" id="1_beeq6"]
 [ext_resource type="Texture2D" uid="uid://kisn6i5twkbp" path="res://textures/unit/hand_crawler.png" id="2_40l2k"]
+[ext_resource type="Texture2D" uid="uid://djmxoep3ddp8y" path="res://textures/card/card_blank.png" id="5_r6g8e"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1taja"]
 font_color = Color(0, 0, 0, 1)
@@ -14,15 +15,20 @@ font_color = Color(0, 0, 0, 1)
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ptvro"]
 load_path = "res://.godot/imported/torchlighter_secret.png-8b93fc9b04623fc69be8c51335aee7b3.s3tc.ctex"
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3nwe0"]
+shader = ExtResource("1_beeq6")
+shader_parameter/color = Color(8.54321e-07, 0.369877, 0.13724, 1)
+
 [node name="Card" type="TextureRect"]
 custom_minimum_size = Vector2(192, 256)
 anchors_preset = -1
 anchor_right = 0.1
 anchor_bottom = 0.236
+offset_bottom = 1.12
 pivot_offset = Vector2(96, 256)
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("1_casw2")
+texture = ExtResource("5_r6g8e")
 expand_mode = 1
 script = ExtResource("1_0yggd")
 
@@ -135,4 +141,16 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = SubResource("CompressedTexture2D_ptvro")
+expand_mode = 1
+
+[node name="Highlight" type="TextureRect" parent="."]
+visible = false
+show_behind_parent = true
+material = SubResource("ShaderMaterial_3nwe0")
+layout_mode = 0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 200.0
+offset_bottom = 264.0
+texture = ExtResource("5_r6g8e")
 expand_mode = 1
