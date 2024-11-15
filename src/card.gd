@@ -120,7 +120,8 @@ func display_icon(icon_texture: Texture2D, icon_help_text: String) -> void:
 	new_texture_rect.tooltip_text = icon_help_text
 	new_texture_rect.texture = icon_texture
 	new_texture_rect.show()
-	$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
+	if (is_inside_tree()):
+		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
 
 func update_spell_display() -> void:
 	$Title.text = spell.name
