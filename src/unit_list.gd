@@ -24,7 +24,7 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Damage Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/unit/hunchy.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 2)]),
 	Creature.new("Health Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.HEALTH, 5)]),
 	Creature.new("Speed Buffer", CardType.MELEE, 10, 1, 4, 10, "res://textures/unit/cricket.png", [Unit.Buff.new(Unit.BuffType.SPEED, 0.5)]),
-	Creature.new("Torchlighter", CardType.MELEE, 50, 1, 2, 10, "res://textures/unit/hand_crawler.png", [], true),
+	Creature.new("Torchlighter", CardType.MELEE, 10, 1, 2, 10, "res://textures/unit/hand_crawler.png", [], true),
 	Creature.new("Healer", CardType.HEALER, 100, 3, 3, 10, "res://textures/unit/hunchy.png"),
 ]
 

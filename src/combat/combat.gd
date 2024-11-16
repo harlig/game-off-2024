@@ -258,6 +258,12 @@ func play_spell(spell: SpellList.Spell) -> void:
 func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> void:
 	furthest_torch_lit = torch_lit_ndx if is_lit else torch_lit_ndx - 1
 
+	# make opponent spawn interval faster if torch is lit, slower if it's extinguished
+	if is_lit:
+		$Opponent.spawn_interval -= 1.0
+	else:
+		$Opponent.spawn_interval += 0.5
+
 	for unit in current_ally_units:
 		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx + 1].position.x
 

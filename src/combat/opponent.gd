@@ -1,9 +1,13 @@
 class_name Opponent extends Node;
 
-const SPAWN_INTERVAL := 6.0
 
 @onready var hand := $Hand;
 
+var spawn_interval := 5.0:
+	set(value):
+		# enemies can't spawn more than once per two seconds
+		spawn_interval = max(value, 2.0)
+# spawn first unit after 1s
 var spawn_time_remaining := 1.0
 var should_spawn := true
 
@@ -20,6 +24,6 @@ func try_play_card() -> void:
 	for card: Card in hand.cards:
 		if hand.can_play(card):
 			hand.play_card(card)
-			spawn_time_remaining = SPAWN_INTERVAL;
+			spawn_time_remaining = spawn_interval;
 			spawn.emit(card);
 			return
