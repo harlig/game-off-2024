@@ -59,7 +59,7 @@ static func create_combat(combat_difficulty: int, relics_for_combat: Array[Relic
 
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
-	var enemy_cards := randomize_new_enemy_deck(difficulty * 10, difficulty)
+	var enemy_cards := randomize_new_enemy_deck(difficulty * 200, difficulty * 50)
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, relics)
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(player_combat_deck)
@@ -374,7 +374,7 @@ func _on_unit_mouse_exited(unit: Unit) -> void:
 func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
 	var new_deck: Array[Card] = []
 	var total_strength := 0
-	var strengh_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(card: UnitList.Creature) -> bool: return card.strength_factor <= single_card_strength_limit)
+	var strengh_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(creature: UnitList.Creature) -> bool: return creature.strength_factor <= single_card_strength_limit)
 	while total_strength < strength_limit:
 		var creature := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
 		total_strength += creature.strength_factor

@@ -242,6 +242,7 @@ func highlight(highlight_color: Color) -> void:
 	$Highlight.show()
 
 func unhighlight() -> void:
+	# TODO: if I remove this, I get errors in the editor. however if I keep it, cards don't unhighlight once they've been discarded
 	if not is_inside_tree():
 		return
 
