@@ -36,10 +36,11 @@ func _input(event: InputEvent) -> void:
 		$DragLine.clear_points()
 		$DragEnd.hide()
 
-		var did_play: bool = event.position.y < $PlayHeight.position.y and get_parent().try_play_card(card)
+		var is_in_play_area: bool = event.position.y < $PlayHeight.position.y
+		var did_play: bool = is_in_play_area and get_parent().try_play_card(card)
 
 		if not did_play:
-			place_back_in_hand(card, current_selected_return_pos, current_selected_return_rot, Color.RED)
+			place_back_in_hand(card, current_selected_return_pos, current_selected_return_rot, Color.RED if is_in_play_area else Color.WHITE)
 
 		if current_hover != card:
 			show_hovered_card()
@@ -50,6 +51,10 @@ func _input(event: InputEvent) -> void:
 			draw_drag_line(event)
 		elif current_selected:
 			current_selected.global_position = event.position - current_selected.size * current_selected.scale / 2.0
+			if event.position.y >= $PlayHeight.position.y:
+				current_selected.highlight(Color.DARK_GRAY)
+			else:
+				highlight_current_card()
 
 
 func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
@@ -74,10 +79,12 @@ func _on_hand_discarded(card: Card) -> void:
 
 func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
 	$ManaDisplay/TextureRect2/Label2.text = str(cur_mana) + "/" + str(max_mana);
-
 	if not current_selected:
 		return
+	highlight_current_card()
 
+
+func highlight_current_card() -> void:
 	if get_parent().get_node("Hand").can_play(current_selected):
 		current_selected.highlight(Color.DARK_GREEN)
 	else:
@@ -99,10 +106,7 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 	if card.is_unit_spell():
 		unit_spell_selected.emit()
 
-	if get_parent().get_node("Hand").can_play(current_selected):
-		current_selected.highlight(Color.DARK_GREEN)
-	else:
-		current_selected.highlight(Color.RED)
+	highlight_current_card()
 
 
 func _on_card_mouse_entered(card: Card) -> void:
