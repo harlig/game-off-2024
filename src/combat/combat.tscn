@@ -12,7 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/combat/reward.tscn" id="8_1gtat"]
 [ext_resource type="Texture2D" uid="uid://c8qybgyq1afys" path="res://textures/hud/line_arrow_small.png" id="9_g3f32"]
 [ext_resource type="Script" path="res://src/combat/opponent.gd" id="9_i3xgm"]
-[ext_resource type="Texture2D" uid="uid://c3jkkh3b5cmr7" path="res://textures/hud/line_arrow_big.png" id="10_07yon"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kqti8"]
 size = Vector3(46, 1, 6)
@@ -41,6 +40,10 @@ shader_parameter/color = null
 size = Vector2(2, 2)
 center_offset = Vector3(0, 0.02, 0)
 orientation = 1
+
+[sub_resource type="Curve" id="Curve_wv1k5"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.87931, 0.997284), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
@@ -151,14 +154,15 @@ vertical_alignment = 1
 z_index = 2
 texture_repeat = 2
 width = 64.0
+width_curve = SubResource("Curve_wv1k5")
 texture = ExtResource("9_g3f32")
 texture_mode = 1
 
 [node name="DragEnd" type="Sprite2D" parent="HandDisplay"]
 z_index = 3
 scale = Vector2(0.64, 0.64)
-texture = ExtResource("10_07yon")
-offset = Vector2(-24, 0)
+texture = ExtResource("9_g3f32")
+offset = Vector2(-30, 0)
 
 [node name="Opponent" type="Node" parent="."]
 script = ExtResource("9_i3xgm")

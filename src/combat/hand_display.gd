@@ -225,7 +225,7 @@ func draw_drag_line(event: InputEvent) -> void:
 		$DragLine.add_point(current_position + normal * quadriatic * 100);
 
 	var drag_end_direction := -1 if direction.x < 0 else 1
-	$DragEnd.rotation = direction.angle() + deg_to_rad(50) * drag_end_direction;
+	$DragEnd.rotation = direction.angle() + deg_to_rad(65) * drag_end_direction;
 	$DragEnd.global_position = current_position;
 
 # Move hover card down a bit
