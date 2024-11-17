@@ -128,7 +128,6 @@ func update_display() -> void:
 	$ManaArea/Mana.text = str(mana)
 
 func update_unit_display() -> void:
-	print("updaitng unit display")
 	$Title.text = creature.name
 	$HealthArea/Health.text = str(creature.health)
 	$DamageArea/Damage.text = str(creature.damage)

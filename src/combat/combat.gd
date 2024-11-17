@@ -255,7 +255,6 @@ func play_spell(spell: SpellList.Spell) -> void:
 			$Hand.draw_cards(spell.value)
 
 func deal_secret() -> void:
-	print("dealing secret")
 	# TODO: play audio cue here
 	$Hand.add_secret(Card.random_secret_card())
 	pass

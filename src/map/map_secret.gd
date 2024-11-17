@@ -119,7 +119,6 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pr
 		if card != null:
 			cards_drawn.append(card)
 
-	print("Drew these cards ", cards_drawn)
 	var values_to_count: Array = []
 	match trial_type:
 		TrialType.CREATURE:
@@ -159,7 +158,6 @@ func _on_trial_button_pressed(trial_type: TrialType, trial_value: int, button_pr
 		_:
 			push_error("Unknown trial type", trial_type)
 	var value_from_cards: int = values_to_count.reduce(func(acc: int, val: int) -> int: return acc + val)
-	print("Value from cards: ", value_from_cards, "... trial value: ", trial_value)
 
 	var secret_text := str(trial_value) + " " + trial_type_string(trial_type)
 	var passed_trial := value_from_cards >= trial_value

@@ -151,8 +151,6 @@ func place_back_in_hand(card: Card, pos: Vector2, rot: float, color_to_highlight
 	card.position = pos
 	card.rotation = rot
 
-	print(pos)
-
 	if color_to_highlight_then_unhighlight != Color.WHITE:
 		card.highlight(color_to_highlight_then_unhighlight)
 		await get_tree().create_timer(0.5).timeout
