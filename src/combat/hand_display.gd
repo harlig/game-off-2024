@@ -36,17 +36,14 @@ func _input(event: InputEvent) -> void:
 		$DragLine.clear_points()
 		$DragEnd.hide()
 
-		var tried_play_card_and_failed: bool = false
-		if event.position.y < $PlayHeight.position.y:
-			tried_play_card_and_failed = !(get_parent().try_play_card(card))
+		var did_play: bool = event.position.y < $PlayHeight.position.y and get_parent().try_play_card(card)
+
+		if not did_play:
+			place_back_in_hand(card, current_selected_return_pos, current_selected_return_rot, Color.RED)
 
 		if current_hover != card:
 			show_hovered_card()
 
-		if tried_play_card_and_failed:
-			place_back_in_hand(card, current_selected_return_pos, current_selected_return_rot, Color.RED)
-		else:
-			place_back_in_hand(card, current_selected_return_pos, current_selected_return_rot)
 
 	if event is InputEventMouseMotion:
 		if is_dragging:
@@ -57,19 +54,22 @@ func _input(event: InputEvent) -> void:
 
 func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
 	$HandArea.add_child(card)
+
 	if insert_at >= 0:
 		$HandArea.move_child(card, insert_at)
+
 	card.card_clicked.connect(_on_card_clicked)
 	card.mouse_entered.connect(_on_card_mouse_entered.bind(card))
 	card.mouse_exited.connect(_on_card_mouse_exited.bind(card))
 
 
 func _on_hand_discarded(card: Card) -> void:
-	$HandArea.remove_child(card)
 	card.card_clicked.disconnect(_on_card_clicked)
 	card.mouse_entered.disconnect(_on_card_mouse_entered)
 	card.mouse_exited.disconnect(_on_card_mouse_exited)
 	card.unhighlight()
+
+	$HandArea.remove_child(card)
 
 
 func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
@@ -89,8 +89,8 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 		return
 
 	current_selected = card
-	current_selected_return_pos = card.position
-	current_selected_return_rot = card.rotation
+	current_selected_return_pos = current_hover_return_pos
+	current_selected_return_rot = current_hover_return_rot
 
 	if !card.is_none_spell():
 		drag_start_position = card.global_position + card.size * card.scale / 2.0
