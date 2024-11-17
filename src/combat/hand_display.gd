@@ -108,6 +108,8 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 
 func _on_card_mouse_entered(card: Card) -> void:
 	current_hover = card
+	current_hover_return_pos = card.position
+	current_hover_return_rot = card.rotation
 
 	if current_selected:
 		return
@@ -119,12 +121,10 @@ func show_hovered_card() -> void:
 	if !current_hover:
 		return
 
-	current_hover.cancel_tween.emit()
 	current_hover.z_index = 1
-	current_hover.position.y = -300.0
-	current_hover.scale = Vector2(1.3, 1.3)
+	tween_card_to(current_hover, Vector2(current_hover.position.x, -300.0), current_hover.rotation, Vector2(1.3, 1.3), 0.2)
 
-	update_hand_positions()
+	# update_hand_positions()
 
 
 func _on_card_mouse_exited(card: Card) -> void:
@@ -145,11 +145,8 @@ func _on_drop_box_entered() -> void:
 
 
 func place_back_in_hand(card: Card, pos: Vector2, rot: float, color_to_highlight_then_unhighlight: Color = Color.WHITE) -> void:
-	card.cancel_tween.emit()
 	card.z_index = 0
-	card.scale = Vector2(1.0, 1.0)
-	card.position = pos
-	card.rotation = rot
+	tween_card_to(card, pos, rot, Vector2.ONE, 0.2)
 
 	if color_to_highlight_then_unhighlight != Color.WHITE:
 		card.highlight(color_to_highlight_then_unhighlight)
@@ -182,21 +179,26 @@ func update_hand_positions() -> void:
 		var rot := deg_to_rad(current_rotation)
 
 		if card == current_hover:
+			print("updating current hover")
 			current_hover_return_pos = pos
 			current_hover_return_rot = rot
 		elif card == current_selected:
 			current_selected_return_pos = pos
 			current_selected_return_rot = rot
 		else:
-			card.cancel_tween.emit()
-
-			var tween := get_tree().create_tween()
-			tween.parallel().tween_property(card, "position", pos, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-			tween.parallel().tween_property(card, "rotation", rot, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-			card.cancel_tween.connect(tween.stop)
-
+			tween_card_to(card, pos, rot, Vector2.ONE, 0.5);
 			# card.position = Vector2(x_pos, y_pos)
 			# card.rotation = deg_to_rad(current_rotation)
+
+
+func tween_card_to(card: Card, pos: Vector2, rot: float, scele: Vector2, time: float) -> void:
+		card.cancel_tween.emit()
+
+		var tween := get_tree().create_tween()
+		tween.parallel().tween_property(card, "position", pos, time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		tween.parallel().tween_property(card, "rotation", rot, time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		tween.parallel().tween_property(card, "scale", scele, time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		card.cancel_tween.connect(tween.stop)
 
 
 func draw_drag_line(event: InputEvent) -> void:
