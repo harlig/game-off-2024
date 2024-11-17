@@ -49,6 +49,9 @@ func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) 
 		try_draw_card();
 		cards_drawn += 1
 
+	# emit signal immediately to update mana display
+	mana_updated.emit(cur_mana, max_mana)
+
 
 func try_draw_card() -> void:
 	if cards.size() >= MAX_HAND_SIZE:

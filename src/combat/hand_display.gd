@@ -22,28 +22,30 @@ signal unit_spell_selected()
 signal card_deselected()
 
 func _input(event: InputEvent) -> void:
-	# Try to play current seleceted on left mouse button event
+	# Try to play current selected on left mouse button event
 	if event is InputEventMouseButton \
 	and event.button_index == MOUSE_BUTTON_LEFT \
 	and current_selected:
 		# Always safe to deselect card (for unit raypickable) and clear line2d
 		card_deselected.emit()
+		var card := current_selected
+		current_selected = null
+
 		is_dragging = false
 		$DragLine.clear_points()
 		$DragEnd.hide()
 
 		var tried_play_card_and_failed: bool = false
 		if event.position.y < $PlayHeight.position.y:
-			tried_play_card_and_failed = !(get_parent().try_play_card(current_selected))
+			tried_play_card_and_failed = !(get_parent().try_play_card(card))
 
-		if current_hover != current_selected:
+		if current_hover != card:
 			show_hovered_card()
 
 		if tried_play_card_and_failed:
-			place_back_in_hand(current_selected, current_selected_return_pos, current_selected_return_rot, Color.RED)
+			place_back_in_hand(card, current_selected_return_pos, current_selected_return_rot, Color.RED)
 		else:
-			place_back_in_hand(current_selected, current_selected_return_pos, current_selected_return_rot)
-		current_selected = null
+			place_back_in_hand(card, current_selected_return_pos, current_selected_return_rot)
 
 	if event is InputEventMouseMotion:
 		if is_dragging:
