@@ -10,6 +10,7 @@ const CARD_CANCEL_HEIGHT = 40.0
 var current_hover: Card = null
 var current_hover_return_pos: Vector2
 var current_hover_return_rot: float
+var current_hover_return_ind: int
 
 var current_selected: Card = null
 var current_selected_return_pos: Vector2
@@ -58,7 +59,6 @@ func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
 	$HandArea.add_child(card)
 	if insert_at >= 0:
 		$HandArea.move_child(card, insert_at)
-	update_hand_positions()
 	card.card_clicked.connect(_on_card_clicked)
 	card.mouse_entered.connect(_on_card_mouse_entered.bind(card))
 	card.mouse_exited.connect(_on_card_mouse_exited.bind(card))
@@ -66,7 +66,6 @@ func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
 
 func _on_hand_discarded(card: Card) -> void:
 	$HandArea.remove_child(card)
-	update_hand_positions()
 	card.card_clicked.disconnect(_on_card_clicked)
 	card.mouse_entered.disconnect(_on_card_mouse_entered)
 	card.mouse_exited.disconnect(_on_card_mouse_exited)
@@ -122,9 +121,9 @@ func show_hovered_card() -> void:
 		return
 
 	current_hover.z_index = 1
+	current_hover_return_ind = current_hover.get_index()
+	$HandArea.move_child(current_hover, $HandArea.get_child_count() - 1)
 	tween_card_to(current_hover, Vector2(current_hover.position.x, -300.0), current_hover.rotation, Vector2(1.3, 1.3), 0.2)
-
-	# update_hand_positions()
 
 
 func _on_card_mouse_exited(card: Card) -> void:
@@ -146,6 +145,7 @@ func _on_drop_box_entered() -> void:
 
 func place_back_in_hand(card: Card, pos: Vector2, rot: float, color_to_highlight_then_unhighlight: Color = Color.WHITE) -> void:
 	card.z_index = 0
+	$HandArea.move_child(card, current_hover_return_ind)
 	tween_card_to(card, pos, rot, Vector2.ONE, 0.2)
 
 	if color_to_highlight_then_unhighlight != Color.WHITE:
@@ -156,7 +156,7 @@ func place_back_in_hand(card: Card, pos: Vector2, rot: float, color_to_highlight
 
 
 # TODO: Spread around i
-func update_hand_positions() -> void:
+func update_hand_positions(hand: Array[Card]) -> void:
 	# Avoid tween warnings for preloaded combat
 	if get_parent().name == "PreloadedCombat":
 		return ;
@@ -166,8 +166,8 @@ func update_hand_positions() -> void:
 	var hand_width := card_spacing * hand_size
 	var current_rotation := -ROTATION_PER_CARD * (hand_size - 1) / 2.0 - ROTATION_PER_CARD
 
-	for i in range(hand_size):
-		var card := $HandArea.get_child(i)
+	for i in range(len(hand)):
+		var card := hand[i]
 		current_rotation += ROTATION_PER_CARD
 
 		var x_pos := i * card_spacing - hand_width / 2.0
