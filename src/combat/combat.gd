@@ -139,6 +139,8 @@ func try_play_card(card: Card) -> bool:
 		Card.CardType.UNIT when play_location_valid:
 			spawn_unit(unit_scene, card, play_location, Attackable.Team.PLAYER)
 			$Hand.play_card(card)
+			# kinda weird this happens twice in this method, but removing this causes the spawn area to stay highlighted when a unit is played
+			reset_spawn_mesh()
 			return true
 
 		Card.CardType.SPELL:
@@ -338,7 +340,8 @@ func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position
 
 			if play_location_valid:
 				spawn_mesh.material_override.set_shader_parameter("x_scale", spawn_mesh.mesh.size.x / spawn_mesh.mesh.size.y)
-				spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN)
+				# TODO: this should be modified by if the player can play the card
+				set_spawn_mesh_color()
 			else:
 				reset_spawn_mesh()
 
@@ -349,8 +352,14 @@ func _on_spawn_area_mouse_exited() -> void:
 
 
 func reset_spawn_mesh() -> void:
-	spawn_mesh.material_override.set_shader_parameter("is_hovered", false)
 	spawn_mesh.material_override.set_shader_parameter("color", original_spawn_mesh_color)
+
+func set_spawn_mesh_color() -> void:
+	if get_node_or_null("HandDisplay") == null or $HandDisplay.current_selected == null:
+		return
+
+	if $HandDisplay.current_selected.type == Card.CardType.UNIT:
+		spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN if $Hand.can_play($HandDisplay.current_selected) else Color.RED)
 
 
 func _on_unit_mouse_entered(unit: Unit) -> void:
@@ -381,3 +390,7 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 
 func _on_combat_lost_button_pressed() -> void:
 	combat_over.emit(state)
+
+
+func _on_hand_mana_updated(_cur: int, _max: int) -> void:
+	set_spawn_mesh_color()
