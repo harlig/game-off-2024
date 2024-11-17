@@ -53,19 +53,22 @@ func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) 
 	mana_updated.emit(cur_mana, max_mana)
 
 
-func try_draw_card() -> void:
+func try_draw_card() -> bool:
 	if cards.filter(func(_card: Card) -> bool: return _card and !_card.is_secret).size() >= MAX_HAND_SIZE:
 		print("Hand full, can't draw a card!")
-		return
+		return false
 
 	var card := deck.draw()
 	cards.append(card)
 	drew.emit(card)
+	return true
 
 
 func draw_cards(n: int) -> void:
 	for i in range(n):
-		try_draw_card()
+		# if we can't draw a card, don't keep trying
+		if not try_draw_card():
+			return
 
 
 func add_secret(card: Card) -> void:
