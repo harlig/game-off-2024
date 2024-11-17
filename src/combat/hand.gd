@@ -68,6 +68,10 @@ func draw_cards(n: int) -> void:
 		try_draw_card()
 
 
+func add_secret() -> void:
+	pass
+
+
 func play_card(card: Card) -> void:
 	cur_mana -= card.mana
 	mana_updated.emit(cur_mana, max_mana)

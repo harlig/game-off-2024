@@ -1,6 +1,6 @@
-class_name Secret extends Control
+class_name MapSecret extends Control
 
-const secret_scene := preload("res://src/map/secret.tscn")
+const secret_scene := preload("res://src/map/map_secret.tscn")
 
 const TRIALS_OFFERED_COUNT := 3
 const NUM_CARDS_TO_DRAW := 3
@@ -46,7 +46,7 @@ signal lost_secret()
 # This is how you should instantiate a secret scene
 ####################################################
 ####################################################
-static func create_secret_trial(init_difficulty: int, init_deck: Deck) -> Secret:
+static func create_secret_trial(init_difficulty: int, init_deck: Deck) -> MapSecret:
 	var secret := secret_scene.instantiate()
 	secret.difficulty = init_difficulty
 	secret.deck = CombatDeck.create_combat_deck(init_deck.cards)
