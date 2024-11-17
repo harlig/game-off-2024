@@ -163,14 +163,13 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	var unit: Unit = unit_to_spawn.instantiate()
 	# gotta add child early so ready is called
 	add_child(unit)
-	var random_z_offset := randf_range(-1, 1)
 	var y := 0
 	match card_played.creature.type:
 		UnitList.CardType.AIR:
 			y = 5
 		_:
 			y = 0
-	unit.position = Vector3(unit_position.x, y, unit_position.z + random_z_offset)
+	unit.position = Vector3(unit_position.x, y, unit_position.z)
 	unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
 	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false)
 	unit.unit_attackable.team = team
@@ -260,9 +259,9 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 
 	# make opponent spawn interval faster if torch is lit, slower if it's extinguished
 	if is_lit:
-		$Opponent.spawn_interval -= 1.0
+		$Opponent.spawn_interval -= 0.5
 	else:
-		$Opponent.spawn_interval += 0.5
+		$Opponent.spawn_interval += 0.25
 
 	for unit in current_ally_units:
 		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx + 1].position.x
@@ -340,8 +339,6 @@ func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position
 			if play_location_valid:
 				spawn_mesh.material_override.set_shader_parameter("x_scale", spawn_mesh.mesh.size.x / spawn_mesh.mesh.size.y)
 				spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN)
-				# spawn_mesh.material_override.set_shader_parameter("is_hovered", true)
-				# spawn_mesh.material_override.set_shader_parameter("hover_loc", Vector2(relative_x_position, relative_z_position))
 			else:
 				reset_spawn_mesh()
 
