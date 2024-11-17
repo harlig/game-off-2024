@@ -83,16 +83,6 @@ static func random_secret_card() -> Card:
 	card.is_secret = true
 	card.modulate = Color(133 / 255.0, 96 / 255.0, 136 / 255.0)
 
-	print("updaitng secrtet card")
-	card.get_node("TextureRect").hide()
-	card.get_node("Title").text = "SECRET"
-	card.get_node("DamageArea").get_node("Damage").text = "??"
-	card.get_node("HealthArea").get_node("Health").text = "??"
-	card.get_node("DescriptionArea").get_node("Type").text = "??"
-	card.get_node("DescriptionArea").get_node("SpellDescription").text = "??"
-
-	# TODO: hide buffs?
-
 	return card
 
 
@@ -127,6 +117,14 @@ func update_display() -> void:
 			update_unit_display()
 		CardType.SPELL:
 			update_spell_display()
+	if is_secret:
+		$TextureRect.hide()
+		$Title.text = "SECRET"
+		$DamageArea/Damage.text = "??"
+		$HealthArea/Health.text = "??"
+		$DescriptionArea/Type.text = "??"
+		$DescriptionArea/SpellDescription.text = "??"
+
 	$ManaArea/Mana.text = str(mana)
 
 func update_unit_display() -> void:
