@@ -88,6 +88,8 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 		return
 
 	current_selected = card
+	current_selected_return_pos = card.position
+	current_selected_return_rot = card.rotation
 
 	if !card.is_none_spell():
 		drag_start_position = card.global_position + card.size * card.scale / 2.0
@@ -146,9 +148,13 @@ func place_back_in_hand(card: Card, pos: Vector2, rot: float, color_to_highlight
 	card.scale = Vector2(1.0, 1.0)
 	card.position = pos
 	card.rotation = rot
+
+	print(pos)
+
 	if color_to_highlight_then_unhighlight != Color.WHITE:
 		card.highlight(color_to_highlight_then_unhighlight)
 		await get_tree().create_timer(0.5).timeout
+
 	card.unhighlight()
 
 
