@@ -81,8 +81,6 @@ static func random_secret_card() -> Card:
 		card = SpellList.random_secret_card()
 
 	card.is_secret = true
-	card.modulate = Color(133 / 255.0, 96 / 255.0, 136 / 255.0)
-
 	return card
 
 
@@ -118,6 +116,7 @@ func update_display() -> void:
 		CardType.SPELL:
 			update_spell_display()
 	if is_secret:
+		texture = load("res://textures/card/card_secret.png")
 		$TextureRect.hide()
 		$Title.text = "SECRET"
 		$DamageArea/Damage.text = "??"
