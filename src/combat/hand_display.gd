@@ -78,7 +78,7 @@ func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
 	if get_parent().get_node("Hand").can_play(current_selected):
 		current_selected.highlight(Color.DARK_GREEN)
 	else:
-		current_selected.highlight(Color.DIM_GRAY)
+		current_selected.highlight(Color.RED)
 
 
 func _on_card_clicked(_times_clicked: int, card: Card) -> void:
@@ -97,7 +97,7 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 	if get_parent().get_node("Hand").can_play(current_selected):
 		current_selected.highlight(Color.DARK_GREEN)
 	else:
-		current_selected.highlight(Color.DIM_GRAY)
+		current_selected.highlight(Color.RED)
 
 
 func _on_card_mouse_entered(card: Card) -> void:

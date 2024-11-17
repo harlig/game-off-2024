@@ -131,34 +131,32 @@ func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 # Attempt to play card and return whether it was played
 func try_play_card(card: Card) -> bool:
 	reset_spawn_mesh()
-
 	if not $Hand.can_play(card):
 		return false
 
+	var played := false
 	match card.type:
 		Card.CardType.UNIT when play_location_valid:
 			spawn_unit(unit_scene, card, play_location, Attackable.Team.PLAYER)
 			$Hand.play_card(card)
-			# kinda weird this happens twice in this method, but removing this causes the spawn area to stay highlighted when a unit is played
-			reset_spawn_mesh()
-			return true
+			played = true
 
 		Card.CardType.SPELL:
 			if card.is_none_spell():
 				play_spell(card.spell)
 				$Hand.play_card(card)
-				return true
+				played = true
 
 			elif card.is_unit_spell():
 				play_spell(card.spell)
 				$Hand.play_card(card)
-				return true
+				played = true
 
 			elif card.is_area_spell() and play_location_valid:
 				#TODO
 				pass ;
 
-	return false
+	return played
 
 
 func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Vector3, team: Attackable.Team) -> void:
@@ -393,4 +391,5 @@ func _on_combat_lost_button_pressed() -> void:
 
 
 func _on_hand_mana_updated(_cur: int, _max: int) -> void:
-	set_spawn_mesh_color()
+	if play_location_valid:
+		set_spawn_mesh_color()
