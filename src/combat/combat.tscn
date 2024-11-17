@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=19 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
 [ext_resource type="Script" path="res://src/combat/combat_camera.gd" id="4_uic0f"]
 [ext_resource type="Shader" path="res://shaders/spawn_area.gdshader" id="4_yejyx"]
 [ext_resource type="Script" path="res://src/combat/hand.gd" id="5_3nvnk"]
+[ext_resource type="Shader" path="res://shaders/spawn_loc.gdshader" id="5_ekx6p"]
 [ext_resource type="Texture2D" uid="uid://cju5ys6csnnl3" path="res://textures/hud/mana.png" id="6_g70ey"]
 [ext_resource type="Script" path="res://src/combat/hand_display.gd" id="6_ojwhk"]
 [ext_resource type="Texture2D" uid="uid://kg1i4rk2x7h3" path="res://textures/hud/circle_tan.png" id="7_ec4of"]
@@ -31,6 +32,16 @@ size = Vector2(5, 6)
 center_offset = Vector3(3, 0, 0)
 orientation = 1
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d88h3"]
+render_priority = 0
+shader = ExtResource("5_ekx6p")
+shader_parameter/color = null
+
+[sub_resource type="QuadMesh" id="QuadMesh_rcjsf"]
+size = Vector2(2, 2)
+center_offset = Vector3(0, 0.02, 0)
+orientation = 1
+
 [node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
 
@@ -54,6 +65,11 @@ shape = SubResource("BoxShape3D_kqti8")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0.1, -11)
 material_override = SubResource("ShaderMaterial_x1ilm")
 mesh = SubResource("QuadMesh_tdyly")
+
+[node name="SpawnLocMesh" type="MeshInstance3D" parent="."]
+visible = false
+material_override = SubResource("ShaderMaterial_d88h3")
+mesh = SubResource("QuadMesh_rcjsf")
 
 [node name="PlayerBaseTorchLocation" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -12)

@@ -6,7 +6,6 @@ const torch_scene: PackedScene = preload("res://src/torch.tscn")
 
 @onready var reward := $Reward
 @onready var spawn_mesh: MeshInstance3D = $SpawnMesh
-@onready var original_spawn_mesh_color: Color = spawn_mesh.material_override.get_shader_parameter("color")
 @onready var player_base_torch_location: Node3D = $PlayerBaseTorchLocation
 @onready var enemy_base_torch_position: Node3D = $EnemyBaseTorchLocation
 
@@ -130,7 +129,8 @@ func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 
 # Attempt to play card and return whether it was played
 func try_play_card(card: Card) -> bool:
-	reset_spawn_mesh()
+	$SpawnLocMesh.hide()
+
 	if not $Hand.can_play(card):
 		return false
 
@@ -305,7 +305,7 @@ func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 
 func finish_combat(new_state: CombatState) -> void:
 	state = new_state
-	reset_spawn_mesh()
+
 	$HandDisplay.hide()
 	$Opponent.should_spawn = false
 
@@ -348,27 +348,13 @@ func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position
 			play_location_valid = event_position.x < all_torches[furthest_torch_lit].global_position.x
 
 			if play_location_valid:
-				spawn_mesh.material_override.set_shader_parameter("x_scale", spawn_mesh.mesh.size.x / spawn_mesh.mesh.size.y)
-				# TODO: this should be modified by if the player can play the card
-				set_spawn_mesh_color()
-			else:
-				reset_spawn_mesh()
+				$SpawnLocMesh.show()
+				$SpawnLocMesh.global_transform.origin = Vector3(event_position.x, 0, event_position.z)
 
 
 func _on_spawn_area_mouse_exited() -> void:
 	play_location_valid = false;
-	reset_spawn_mesh()
-
-
-func reset_spawn_mesh() -> void:
-	spawn_mesh.material_override.set_shader_parameter("color", original_spawn_mesh_color)
-
-func set_spawn_mesh_color() -> void:
-	if get_node_or_null("HandDisplay") == null or $HandDisplay.current_selected == null:
-		return
-
-	if $HandDisplay.current_selected.type == Card.CardType.UNIT:
-		spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN if $Hand.can_play($HandDisplay.current_selected) else Color.RED)
+	$SpawnLocMesh.hide()
 
 
 func _on_unit_mouse_entered(unit: Unit) -> void:
@@ -403,4 +389,4 @@ func _on_combat_lost_button_pressed() -> void:
 
 func _on_hand_mana_updated(_cur: int, _max: int) -> void:
 	if play_location_valid:
-		set_spawn_mesh_color()
+		pass ;
