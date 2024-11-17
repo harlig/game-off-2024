@@ -54,8 +54,10 @@ func _input(event: InputEvent) -> void:
 			current_selected.global_position = event.position - current_selected.size * current_selected.scale / 2.0
 
 
-func _on_hand_drew(card: Card) -> void:
+func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
 	$HandArea.add_child(card)
+	if insert_at >= 0:
+		$HandArea.move_child(card, insert_at)
 	update_hand_positions()
 	card.card_clicked.connect(_on_card_clicked)
 	card.mouse_entered.connect(_on_card_mouse_entered.bind(card))

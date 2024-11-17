@@ -54,7 +54,7 @@ func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) 
 
 
 func try_draw_card() -> void:
-	if cards.size() >= MAX_HAND_SIZE:
+	if cards.filter(func(_card: Card) -> bool: return _card and !_card.is_secret).size() >= MAX_HAND_SIZE:
 		print("Hand full, can't draw a card!")
 		return
 
@@ -68,7 +68,10 @@ func draw_cards(n: int) -> void:
 		try_draw_card()
 
 
-func add_secret() -> void:
+func add_secret(card: Card) -> void:
+	# TODO: make this add to the end of the secret cards
+	cards.insert(0, card)
+	drew.emit(card, 0)
 	pass
 
 

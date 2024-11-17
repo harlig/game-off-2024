@@ -10,6 +10,11 @@ static var spell_cards: Array[Spell] = [
 	Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 3, 3, "res://textures/spell/draw_cards.png"),
 ]
 
+static var secret_spell_cards: Array[Spell] = [
+	Spell.new("Permanently ++ max mana", SpellType.MAX_MANA, TargetableType.NONE, 1, 10, "res://textures/hud/mana.png"),
+	Spell.new("Draw cards til hand full", SpellType.DRAW_CARDS, TargetableType.NONE, 15, 10, "res://textures/spell/draw_cards.png"),
+]
+
 class Spell:
 	var name: String
 	var type: SpellType
@@ -63,3 +68,8 @@ static func new_card_by_id(id: int) -> Card:
 static func new_card_by_name(spell_name: String) -> Card:
 	var spell_arr := spell_cards.filter(func(spell: Spell) -> bool: return spell.name == spell_name)
 	return Card.create_spell_card(spell_arr[0])
+
+
+static func random_secret_card() -> Card:
+	var secret_spell := secret_spell_cards[randi() % secret_spell_cards.size()]
+	return Card.create_spell_card(secret_spell)

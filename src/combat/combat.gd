@@ -257,7 +257,7 @@ func play_spell(spell: SpellList.Spell) -> void:
 func deal_secret() -> void:
 	print("dealing secret")
 	# TODO: play audio cue here
-	$Hand.add_secret()
+	$Hand.add_secret(Card.random_secret_card())
 	pass
 
 func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> void:

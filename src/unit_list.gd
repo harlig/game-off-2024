@@ -28,6 +28,10 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Torchlighter", CardType.MELEE, 10, 1, 2, "res://textures/unit/hand_crawler.png", [], true),
 ]
 
+static var secret_creature_cards: Array[Creature] = [
+	Creature.new("Big Frickin Guy", CardType.MELEE, 1000, 6, 10, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 5)])
+]
+
 class Creature:
 	var name: String
 	var type: CardType
@@ -77,3 +81,7 @@ static func new_card_by_id(id: int) -> Card:
 static func new_card_by_name(unit_name: String) -> Card:
 	var unit_arr := creature_cards.filter(func(creature: Creature) -> bool: return creature.name == unit_name)
 	return Card.create_creature_card(unit_arr[0])
+
+static func random_secret_card() -> Card:
+	var secret_creature := secret_creature_cards[randi() % secret_creature_cards.size()]
+	return Card.create_creature_card(secret_creature)

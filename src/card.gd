@@ -14,6 +14,7 @@ var mana: int:
 		$ManaArea/Mana.text = str(value)
 var creature: UnitList.Creature
 var spell: SpellList.Spell
+var is_secret: bool = false
 
 var is_selected := false
 var times_clicked := 0
@@ -71,6 +72,29 @@ static func get_random_card_back() -> Texture:
 ####################################################
 ####################################################
 
+static func random_secret_card() -> Card:
+	var random := randf()
+	var card: Card
+	if random < 0.5:
+		card = UnitList.random_secret_card()
+	else:
+		card = SpellList.random_secret_card()
+
+	card.is_secret = true
+	card.modulate = Color(133 / 255.0, 96 / 255.0, 136 / 255.0)
+
+	print("updaitng secrtet card")
+	card.get_node("TextureRect").hide()
+	card.get_node("Title").text = "SECRET"
+	card.get_node("DamageArea").get_node("Damage").text = "??"
+	card.get_node("HealthArea").get_node("Health").text = "??"
+	card.get_node("DescriptionArea").get_node("Type").text = "??"
+	card.get_node("DescriptionArea").get_node("SpellDescription").text = "??"
+
+	# TODO: hide buffs?
+
+	return card
+
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")
@@ -106,6 +130,7 @@ func update_display() -> void:
 	$ManaArea/Mana.text = str(mana)
 
 func update_unit_display() -> void:
+	print("updaitng unit display")
 	$Title.text = creature.name
 	$HealthArea/Health.text = str(creature.health)
 	$DamageArea/Damage.text = str(creature.damage)
