@@ -30,7 +30,6 @@ offset_bottom = 256.0
 pivot_offset = Vector2(96, 256)
 size_flags_horizontal = 4
 size_flags_vertical = 4
-mouse_filter = 0
 texture = ExtResource("5_r6g8e")
 expand_mode = 1
 script = ExtResource("1_0yggd")
