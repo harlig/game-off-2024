@@ -41,6 +41,8 @@ var relics: Array[Relic] = []
 var player_combat_deck: CombatDeck
 var enemy_combat_deck: CombatDeck
 
+var torches_player_has_lit: Array[Torch] = []
+
 ####################################################
 ####################################################
 # This is how you should instantiate a combat scene
@@ -80,6 +82,7 @@ func _ready() -> void:
 	(player_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(player_base_torch))
 	add_child(player_base_torch)
 	all_torches.append(player_base_torch)
+	torches_player_has_lit.append(player_base_torch)
 
 	# set up the torches, spanning the width of the map from base to base
 	var player_base_x: float = player_base_torch_location.position.x
@@ -251,12 +254,22 @@ func play_spell(spell: SpellList.Spell) -> void:
 		SpellList.SpellType.DRAW_CARDS:
 			$Hand.draw_cards(spell.value)
 
+func deal_secret() -> void:
+	print("dealing secret")
+	pass
+
 func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> void:
 	furthest_torch_lit = torch_lit_ndx if is_lit else torch_lit_ndx - 1
+	var torch := all_torches[torch_lit_ndx]
 
 	# make opponent spawn interval faster if torch is lit, slower if it's extinguished
 	if is_lit:
 		$Opponent.spawn_interval -= 0.5
+
+		# if player hasn't already lit this torch, give them a secret
+		if torch not in torches_player_has_lit:
+			torches_player_has_lit.append(torch)
+			deal_secret()
 	else:
 		$Opponent.spawn_interval += 0.25
 
@@ -264,9 +277,9 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx + 1].position.x
 
 	for unit in current_enemy_units:
-		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx].position.x
+		unit.furthest_x_position_allowed = torch.position.x
 
-	var furthest_torch_x := all_torches[furthest_torch_lit].position.x
+	var furthest_torch_x := torch.position.x
 
 	# tween to new positions in parallel
 	var tween: Tween = get_tree().create_tween();

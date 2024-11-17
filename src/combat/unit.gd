@@ -247,7 +247,6 @@ func make_selectable(selectable: bool) -> void:
 	unit_attackable.input_ray_pickable = selectable
 
 func apply_buff(incoming_buff: Buff) -> void:
-	print("Applying buff: " + str(incoming_buff.type) + " " + str(incoming_buff.value))
 	match incoming_buff.type:
 		BuffType.SPEED:
 			speed += incoming_buff.value
