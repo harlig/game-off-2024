@@ -7,7 +7,7 @@
 [ext_resource type="Shader" path="res://shaders/flame.gdshader" id="3_te8yo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rflrp"]
-size = Vector3(1, 1.5, 4)
+size = Vector3(1, 1.5, 8)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dnfef"]
 render_priority = 0
@@ -18,7 +18,7 @@ shader_parameter/color = Color(6.8827e-06, 0.803262, 0, 1)
 size = Vector2(0.2, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ce7wc"]
-size = Vector3(2, 2, 4)
+size = Vector3(2, 2, 8)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_av3n6"]
 resource_local_to_scene = true
