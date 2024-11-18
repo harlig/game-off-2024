@@ -87,11 +87,9 @@ func play_card(card: Card) -> void:
 		get_tree().paused = true
 		await hand_display.secret_acknowledged
 		get_tree().paused = false
-	discard(card)
-
-
-func discard(card: Card) -> void:
-	deck.discard(card)
+	# secrets don't get sent to the discard pile
+	if !card.is_secret:
+		deck.discard(card)
 	cards.erase(card)
 	discarded.emit(card)
 

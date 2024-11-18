@@ -202,7 +202,10 @@ func update_spell_display() -> void:
 		SpellList.SpellType.MANA_REGEN:
 			description_text = "Increase mana regen by " + str(spell.value) + "x for this combat"
 		SpellList.SpellType.DRAW_CARDS:
-			description_text = "Draw " + str(round(spell.value)) + " cards"
+			if spell.value <= Hand.MAX_HAND_SIZE:
+				description_text = "Draw " + str(round(spell.value)) + " cards"
+			else:
+				description_text = "Draw cards until hand is full"
 		SpellList.SpellType.DRAW_CARDS_REGEN:
 			description_text = "Increase draw speed by " + str(round(spell.value)) + "x for this combat"
 
