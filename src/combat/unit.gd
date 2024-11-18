@@ -7,7 +7,6 @@ const speed_buff_texture: Texture2D = preload("res://textures/card/augment/buff_
 
 enum Direction {LEFT, RIGHT}
 
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var unit_attackable: Attackable = $Attackable
 
 const ATTACK_COOLDOWN := 1.2
@@ -19,6 +18,7 @@ const INVULNERABLE_TIME := ATTACK_COOLDOWN * 2
 const WALK_ANIMATION := "walk"
 var attack_animation := "attack"
 var change_torch_animation := "light_torch"
+var scalar := 1
 
 var speed := 1.5
 var damage := 5:
@@ -30,6 +30,7 @@ var unit_type: int = UnitList.CardType.MELEE
 var currently_attacking: Array[Attackable] = []
 var allies_in_attack_range: Array[Attackable] = []
 var enemies_in_attack_range: Array[Attackable] = []
+var animation_player: AnimationPlayer
 
 var furthest_x_position_allowed: float = 0
 
@@ -83,6 +84,9 @@ func _ready() -> void:
 	invulnerability_timer.one_shot = true
 	invulnerability_timer.connect("timeout", stop_invulnerability, ConnectFlags.CONNECT_ONE_SHOT);
 	invulnerability_timer.start(INVULNERABLE_TIME)
+	animation_player = $AnimationPlayer.duplicate()
+	$AnimationPlayer.queue_free()
+	add_child(animation_player)
 
 func stop_invulnerability() -> void:
 	is_invulnerable = false
@@ -144,7 +148,7 @@ func perform_ranged_attack() -> void:
 
 func play_attack_animation_and_reset() -> void:
 	animation_player.seek(0, true)
-	animation_player.play(attack_animation)
+	play_animation(attack_animation)
 	# are you seeing an error that says this is already connected? that probably means the attack animation used here is longer than the attack cooldown!
 	animation_player.animation_finished.connect(do_attacks, ConnectFlags.CONNECT_ONE_SHOT)
 	time_since_last_attack = 0.0
@@ -154,7 +158,10 @@ func do_attacks(_anim_name: String) -> void:
 	if unit_type != UnitList.CardType.RANGED and unit_type != UnitList.CardType.HEALER:
 		for attackable in currently_attacking:
 			attackable.take_damage(damage)
-	animation_player.play(WALK_ANIMATION)
+	play_animation(WALK_ANIMATION)
+
+func play_animation(animation_name: String) -> void:
+	animation_player.play(animation_name + "_" + str(scalar))
 
 # when something runs into my target area
 func _on_target_area_area_entered(area: Area3D) -> void:
@@ -191,7 +198,7 @@ func _on_target_area_area_exited(area: Area3D) -> void:
 
 func _on_attack_finished(_anim_name: String) -> void:
 	animation_player.seek(0, true)
-	animation_player.play(WALK_ANIMATION)
+	play_animation(WALK_ANIMATION)
 
 func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> void:
 	# need to set both max and current hp
@@ -212,7 +219,6 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	buffs_i_apply = from_creature.buffs_i_apply
 	can_change_torches = from_creature.can_change_torches
 
-	var scalar := 1
 	if from_creature.get_score() < 20:
 		scalar = 1
 	elif from_creature.get_score() < 70:
@@ -229,10 +235,65 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 
 	var mesh_instance: MeshInstance3D = $MeshInstance3D
 	mesh_instance.scale = Vector3(scalar, scalar, 1)
-	mesh_instance.position.x = (1 - scalar)
+	var x_diff := 1 - scalar
+	mesh_instance.position.x = x_diff
 	mesh_instance.position.y = scalar
 
+	# TODO: need to update all animation key frames which modify on the scale of the unit
+	# TODO: this is applying to ALL units bc somehow the animation player is shared
+	var new_animations: Array[Pair] = []
+
+	for animation_name: String in animation_player.get_animation_list():
+		var animation: Animation = animation_player.get_animation(animation_name)
+		print("Checking animation: " + animation_name)
+		for track_ndx in range(animation.get_track_count()):
+			var path: String = animation.track_get_path(track_ndx)
+			if path != "MeshInstance3D:position" and path != "MeshInstance3D:scale":
+				continue
+			new_animations.append(Pair.new(animation_name, animation.duplicate()))
+
+	for animation_pair: Pair in new_animations:
+		var animation: Animation = animation_pair.second
+		for track_ndx in range(animation.get_track_count()):
+			var path: String = animation.track_get_path(track_ndx)
+			if path != "MeshInstance3D:position" and path != "MeshInstance3D:scale":
+				continue
+
+			print("Checking new track")
+			print("type: ", animation.track_get_type(track_ndx))
+			print("path: ", animation.track_get_path(track_ndx))
+			for key_index: int in animation.track_get_key_count(track_ndx):
+				print("key_index: " + str(key_index))
+				# this must be a vector3 I think
+				var value: Vector3 = animation.track_get_key_value(track_ndx, key_index)
+				match path:
+					"MeshInstance3D:position":
+						value.x = x_diff
+						value.y = scalar
+					"MeshInstance3D:scale":
+						value.x *= scalar
+						value.y *= scalar
+				animation.track_set_key_value(track_ndx, key_index, value)
+
+				print(animation.track_get_key_value(track_ndx, key_index))
+				print()
+				pass
+	for animation_lib_name: String in animation_player.get_animation_library_list():
+		var animation_lib: AnimationLibrary = animation_player.get_animation_library(animation_lib_name)
+		for animation_pair: Pair in new_animations:
+			var animation_name: String = animation_pair.first
+			var animation: Animation = animation_pair.second
+			animation_lib.add_animation(animation_name + "_" + str(scalar), animation)
+
 	resize_unit_target_box(from_creature)
+
+class Pair:
+	var first: Variant
+	var second: Variant
+
+	func _init(init_first: Variant, init_second: Variant) -> void:
+		self.first = init_first
+		self.second = init_second
 
 func resize_unit_target_box(creature: UnitList.Creature) -> void:
 	var collision_shape: CollisionShape3D = $TargetArea/CollisionShape3D
@@ -291,7 +352,7 @@ func try_light_torch(torch: Torch) -> void:
 		return
 
 	is_changing_torch = true
-	animation_player.play(change_torch_animation)
+	play_animation(change_torch_animation)
 	# set false so we can pause
 	await get_tree().create_timer(2.0, false).timeout
 
@@ -299,14 +360,14 @@ func try_light_torch(torch: Torch) -> void:
 		torch.light_torch()
 
 	is_changing_torch = false
-	animation_player.play(WALK_ANIMATION)
+	play_animation(WALK_ANIMATION)
 
 func try_extinguish_torch(torch: Torch) -> void:
 	if not can_change_torches or not torch.is_lit:
 		return
 
 	is_changing_torch = true
-	animation_player.play(change_torch_animation)
+	play_animation(change_torch_animation)
 	# set false so we can pause
 	await get_tree().create_timer(2.0, false).timeout
 
@@ -314,7 +375,7 @@ func try_extinguish_torch(torch: Torch) -> void:
 		torch.extinguish_torch()
 
 	is_changing_torch = false
-	animation_player.play(WALK_ANIMATION)
+	play_animation(WALK_ANIMATION)
 
 func fire_projectile(target_unit: Attackable) -> void:
 	var projectile_instance: Projectile = projectile_scene.instantiate()

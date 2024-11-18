@@ -246,6 +246,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vok6h"]
+resource_local_to_scene = true
 _data = {
 &"light_torch": SubResource("Animation_ttp57"),
 &"heal": SubResource("Animation_evayf"),
