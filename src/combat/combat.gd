@@ -262,9 +262,9 @@ func deal_secret() -> void:
 	# TODO: play audio cue here
 	$Hand.add_secret(Card.random_secret_card())
 
-func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> void:
-	furthest_torch_lit = torch_lit_ndx if is_lit else torch_lit_ndx - 1
-	var torch := all_torches[torch_lit_ndx]
+func _on_middle_area_torch_state_changed(is_lit: bool, torch_changed_ndx: int) -> void:
+	furthest_torch_lit = torch_changed_ndx if is_lit else torch_changed_ndx - 1
+	var torch := all_torches[furthest_torch_lit]
 
 	# make opponent spawn interval faster if torch is lit, slower if it's extinguished
 	if is_lit:
@@ -278,7 +278,7 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 		$Opponent.spawn_interval += 0.25
 
 	for unit in current_ally_units:
-		unit.furthest_x_position_allowed = all_torches[torch_lit_ndx + 1].position.x
+		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit + 1].position.x
 
 	for unit in current_enemy_units:
 		unit.furthest_x_position_allowed = torch.position.x
@@ -291,6 +291,7 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_lit_ndx: int) -> vo
 	var new_offset := Vector3(new_size.x / 2.0, 0.0, 0.0)
 	tween.parallel().tween_property(spawn_mesh.mesh, "size", new_size, 1.0).set_trans(Tween.TRANS_CUBIC);
 	tween.parallel().tween_property(spawn_mesh.mesh, "center_offset", new_offset, 1.0).set_trans(Tween.TRANS_CUBIC);
+	print("New spawn mesh size is " + str(new_size) + " and offset is " + str(new_offset))
 
 func _on_player_base_torch_state_changed(torch_lit: bool) -> void:
 	# this should always be false
