@@ -7,10 +7,12 @@ var damage: int = 1
 var speed: float = 5
 var velocity := Vector3(0, 0, -5)
 var has_processed_collision := false
+var initial_position: Vector3
 
 enum Direction {LEFT, RIGHT}
 
 func _ready() -> void:
+	initial_position = global_position
 	if velocity.x < 0:
 		$MeshInstance3D.material_override.set_shader_parameter("flip_h", true)
 	else:
@@ -19,6 +21,12 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	global_position += velocity * delta
+	if velocity.x < 0:
+		if global_position.x < initial_position.x - 10:
+			queue_free()
+	else:
+		if global_position.x > initial_position.x + 10:
+			queue_free()
 
 # when something runs into my target area
 func _on_target_area_area_entered(area: Area3D) -> void:

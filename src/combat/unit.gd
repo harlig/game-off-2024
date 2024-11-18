@@ -295,7 +295,6 @@ func try_extinguish_torch(torch: Torch) -> void:
 	animation_player.play(WALK_ANIMATION)
 
 func fire_projectile(target_unit: Attackable) -> void:
-	# Instance the projectile
 	var projectile_instance: Projectile = projectile_scene.instantiate()
 
 	# Set the projectile's initial position to the unit's position
@@ -309,5 +308,4 @@ func fire_projectile(target_unit: Attackable) -> void:
 	projectile_instance.damage = damage
 	projectile_instance.team = unit_attackable.team
 
-	# Add the projectile to the 'combat' node
 	get_parent().add_child(projectile_instance)
