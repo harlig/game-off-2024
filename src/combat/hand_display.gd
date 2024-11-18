@@ -268,7 +268,9 @@ func reveal_secret(card: Card) -> void:
 	card.is_secret_releaved = true
 	card.update_display()
 
-	await get_tree().create_timer(10.0).timeout
+	$ContinueButton.show()
+	await $ContinueButton.pressed
+	$ContinueButton.hide()
 
 	secret_acknowledged.emit()
 

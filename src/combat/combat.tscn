@@ -166,6 +166,19 @@ scale = Vector2(0.64, 0.64)
 texture = ExtResource("9_g3f32")
 offset = Vector2(-30, 0)
 
+[node name="ContinueButton" type="Button" parent="HandDisplay"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_top = 0.425
+anchor_right = 0.9
+anchor_bottom = 0.575
+focus_mode = 0
+theme_override_font_sizes/font_size = 48
+text = "Continue"
+
 [node name="Opponent" type="Node" parent="."]
 script = ExtResource("9_i3xgm")
 

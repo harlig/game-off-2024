@@ -155,6 +155,12 @@ func update_unit_display() -> void:
 	add_buff_icons()
 
 func add_buff_icons() -> void:
+	var children := $DescriptionArea/HBoxContainer.get_children()
+	for child in children:
+		if child.name == "TextureRect":
+			continue
+		child.queue_free()
+
 	for buff in creature.buffs_i_apply:
 		display_icon(buff.texture(), buff.description())
 
@@ -169,7 +175,7 @@ func display_icon(icon_texture: Texture2D, icon_help_text: String) -> void:
 	new_texture_rect.tooltip_text = icon_help_text
 	new_texture_rect.texture = icon_texture
 	new_texture_rect.show()
-	if (is_inside_tree()):
+	if is_inside_tree():
 		$DescriptionArea/HBoxContainer.add_child(new_texture_rect)
 
 func update_spell_display() -> void:
