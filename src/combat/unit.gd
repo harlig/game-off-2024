@@ -20,7 +20,7 @@ const WALK_ANIMATION := "walk"
 var attack_animation := "attack"
 var change_torch_animation := "light_torch"
 
-var speed := 10.5
+var speed := 1.5
 var damage := 5:
 	set(value):
 		damage = value

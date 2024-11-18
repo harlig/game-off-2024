@@ -8,7 +8,7 @@ var spawn_interval := 5.0:
 		# enemies can't spawn more than once per two seconds
 		spawn_interval = max(value, 2.0)
 # spawn first unit after 1s
-var spawn_time_remaining := 1000.0
+var spawn_time_remaining := 3.0
 var should_spawn := true
 
 signal spawn(card: Card)

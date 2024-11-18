@@ -159,7 +159,8 @@ func add_buff_icons() -> void:
 	for child in children:
 		if child.name == "TextureRect":
 			continue
-		child.queue_free()
+		# free, don't queue free otherwise there can be a tad of lag in removing the old ones
+		child.free()
 
 	for buff in creature.buffs_i_apply:
 		display_icon(buff.texture(), buff.description())
