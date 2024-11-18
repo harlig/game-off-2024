@@ -81,6 +81,12 @@ func add_secret(card: Card) -> void:
 func play_card(card: Card) -> void:
 	cur_mana -= card.mana
 	mana_updated.emit(cur_mana, max_mana)
+	var hand_display := get_node_or_null("../HandDisplay")
+	if card.is_secret and hand_display:
+		hand_display.reveal_secret(card)
+		get_tree().paused = true
+		await hand_display.secret_acknowledged
+		get_tree().paused = false
 	discard(card)
 
 

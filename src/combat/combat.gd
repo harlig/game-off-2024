@@ -137,28 +137,22 @@ func try_play_card(card: Card) -> bool:
 	# need to set this before we potentially await something in the secret code since the validity of the play location could change when player moves mouse, but we should still respect the validity pre-timeout
 	var play_location_valid_before_timeout := play_location_valid
 
-	if card.is_secret:
-		$HandDisplay.reveal_secret(card)
-		get_tree().paused = true
-		await $HandDisplay.secret_acknowledged
-		get_tree().paused = false
-
 	var played := false
 	match card.type:
 		Card.CardType.UNIT when play_location_valid_before_timeout:
+			await $Hand.play_card(card)
 			spawn_unit(unit_scene, card, play_location, Attackable.Team.PLAYER)
-			$Hand.play_card(card)
 			played = true
 
 		Card.CardType.SPELL:
 			if card.is_none_spell():
+				await $Hand.play_card(card)
 				play_spell(card.spell)
-				$Hand.play_card(card)
 				played = true
 
 			elif card.is_unit_spell():
+				await $Hand.play_card(card)
 				play_spell(card.spell)
-				$Hand.play_card(card)
 				played = true
 
 			elif card.is_area_spell() and play_location_valid_before_timeout:
