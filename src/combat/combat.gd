@@ -243,16 +243,20 @@ func play_spell(spell: SpellList.Spell) -> void:
 	match spell.type:
 		SpellList.SpellType.DAMAGE:
 			if currently_hovered_unit:
-				currently_hovered_unit.unit_attackable.take_damage(spell.value)
+				currently_hovered_unit.unit_attackable.take_damage(round(spell.value))
 		SpellList.SpellType.HEAL:
 			if currently_hovered_unit:
-				currently_hovered_unit.unit_attackable.heal(spell.value)
+				currently_hovered_unit.unit_attackable.heal(round(spell.value))
 		SpellList.SpellType.CUR_MANA:
 			$Hand.cur_mana += spell.value
 		SpellList.SpellType.MAX_MANA:
 			$Hand.max_mana += spell.value
+		SpellList.SpellType.MANA_REGEN:
+			$Hand.mana_time /= spell.value
 		SpellList.SpellType.DRAW_CARDS:
 			$Hand.draw_cards(spell.value)
+		SpellList.SpellType.DRAW_CARDS_REGEN:
+			$Hand.draw_time /= spell.value
 
 func deal_secret() -> void:
 	# TODO: play audio cue here

@@ -6,24 +6,32 @@ static var spell_cards: Array[Spell] = [
 	Spell.new("Fireball", SpellType.DAMAGE, TargetableType.UNIT, 5, 1, "res://textures/spell/fireball.png"),
 	Spell.new("Heal", SpellType.HEAL, TargetableType.UNIT, 6, 1, "res://textures/spell/heal.png"),
 	Spell.new("Mana", SpellType.CUR_MANA, TargetableType.NONE, 3, 1, "res://textures/hud/mana.png"),
+	Spell.new("+ mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 1.2, 5, "res://textures/hud/mana.png"),
+	# TODO: add mana regen image
 	Spell.new("++ max mana", SpellType.MAX_MANA, TargetableType.NONE, 1, 5, "res://textures/hud/mana.png"),
 	Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 3, 3, "res://textures/spell/draw_cards.png"),
+	# TODO: add card regen image
+	Spell.new("Draw cards faster", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 1.75, 5, "res://textures/spell/draw_cards.png"),
 ]
 
 static var secret_spell_cards: Array[Spell] = [
 	Spell.new("+3 max mana", SpellType.MAX_MANA, TargetableType.NONE, 3, 10, "res://textures/hud/mana.png"),
+	# TODO: add mana regen image
+	Spell.new("Triple mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 3.0, 10, "res://textures/spell/mana.png"),
 	Spell.new("Draw cards til hand full", SpellType.DRAW_CARDS, TargetableType.NONE, 15, 4, "res://textures/spell/draw_cards.png"),
+	# TODO: add card regen image
+	Spell.new("Draw cards hella fast", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 3, 12, "res://textures/spell/draw_cards.png"),
 ]
 
 class Spell:
 	var name: String
 	var type: SpellType
 	var targetable_type := TargetableType.NONE
-	var value: int
+	var value: float
 	var mana: int
 	var card_image_path: String
 
-	func _init(init_name: String, init_type: SpellType, init_targetable_type: TargetableType, init_value: int, init_mana: int, init_card_image_path: String) -> void:
+	func _init(init_name: String, init_type: SpellType, init_targetable_type: TargetableType, init_value: float, init_mana: int, init_card_image_path: String) -> void:
 		self.name = init_name
 		self.type = init_type
 		self.targetable_type = init_targetable_type
@@ -41,7 +49,7 @@ class Spell:
 			existing.card_image_path
 		)
 
-	func get_score() -> int:
+	func get_score() -> float:
 		return value + mana
 
 	func _to_string() -> String:
@@ -53,7 +61,9 @@ enum SpellType {
 	HEAL,
 	CUR_MANA,
 	MAX_MANA,
+	MANA_REGEN,
 	DRAW_CARDS,
+	DRAW_CARDS_REGEN,
 }
 
 enum TargetableType {

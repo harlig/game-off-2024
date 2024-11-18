@@ -91,7 +91,7 @@ func get_score() -> int:
 		CardType.UNIT:
 			return creature.get_score()
 		CardType.SPELL:
-			return spell.get_score()
+			return round(spell.get_score())
 		_:
 			push_error("Unknown card type", type)
 	return -1
@@ -177,15 +177,19 @@ func update_spell_display() -> void:
 	var description_text := ""
 	match spell.type:
 		SpellList.SpellType.DAMAGE:
-			description_text = "Deals " + str(spell.value) + " damage"
+			description_text = "Deals " + str(round(spell.value)) + " damage"
 		SpellList.SpellType.HEAL:
-			description_text = "Heals " + str(spell.value) + " health"
+			description_text = "Heals " + str(round(spell.value)) + " health"
 		SpellList.SpellType.CUR_MANA:
-			description_text = "Gives " + str(spell.value) + " mana"
+			description_text = "Gives " + str(round(spell.value)) + " mana"
 		SpellList.SpellType.MAX_MANA:
-			description_text = "Increase max mana by " + str(spell.value) + " for this combat"
+			description_text = "Increase max mana by " + str(round(spell.value)) + " for this combat"
+		SpellList.SpellType.MANA_REGEN:
+			description_text = "Increase mana regen by " + str(spell.value) + "x for this combat"
 		SpellList.SpellType.DRAW_CARDS:
-			description_text = "Draw " + str(spell.value) + " cards"
+			description_text = "Draw " + str(round(spell.value)) + " cards"
+		SpellList.SpellType.DRAW_CARDS_REGEN:
+			description_text = "Increase draw speed by " + str(round(spell.value)) + "x for this combat"
 
 	$DescriptionArea/SpellDescription.show()
 	$DescriptionArea/SpellDescription.text = description_text
