@@ -212,6 +212,26 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	buffs_i_apply = from_creature.buffs_i_apply
 	can_change_torches = from_creature.can_change_torches
 
+	var scalar := 1
+	if from_creature.get_score() < 20:
+		scalar = 1
+	elif from_creature.get_score() < 70:
+		scalar = 2
+	else:
+		scalar = 3
+
+	print("adjusting units with scalar 		" + str(scalar))
+	var attackable_collider: CollisionShape3D = $Attackable/CollisionShape3D
+	var attackable_box_shape: BoxShape3D = attackable_collider.shape
+	var new_box_shape := BoxShape3D.new()
+	new_box_shape.size = Vector3(attackable_box_shape.size.x * scalar, attackable_box_shape.size.y * scalar, attackable_box_shape.size.z)
+	attackable_collider.shape = new_box_shape
+
+	var mesh_instance: MeshInstance3D = $MeshInstance3D
+	mesh_instance.scale = Vector3(scalar, scalar, 1)
+	mesh_instance.position.x = (1 - scalar)
+	mesh_instance.position.y = scalar
+
 	resize_unit_target_box(from_creature)
 
 func resize_unit_target_box(creature: UnitList.Creature) -> void:
