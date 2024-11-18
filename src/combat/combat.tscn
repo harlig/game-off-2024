@@ -229,7 +229,6 @@ autowrap_mode = 2
 [connection signal="mouse_exited" from="Battlefield" to="." method="_on_spawn_area_mouse_exited"]
 [connection signal="discarded" from="Hand" to="HandDisplay" method="_on_hand_discarded"]
 [connection signal="drew" from="Hand" to="HandDisplay" method="_on_hand_drew"]
-[connection signal="hand_updated" from="Hand" to="HandDisplay" method="update_hand_positions"]
 [connection signal="mana_updated" from="Hand" to="." method="_on_hand_mana_updated"]
 [connection signal="mana_updated" from="Hand" to="HandDisplay" method="_on_hand_mana_updated"]
 [connection signal="spawn" from="Opponent" to="." method="_on_opponent_spawn"]

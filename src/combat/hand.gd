@@ -18,7 +18,6 @@ var mana_time_remaining := mana_time
 
 signal drew(card: Card)
 signal discarded(card: Card)
-signal hand_updated(cards: Array[Card])
 signal mana_updated(cur: int, max: int)
 
 func _physics_process(delta: float) -> void:
@@ -62,7 +61,6 @@ func try_draw_card() -> bool:
 	var card := deck.draw()
 	cards.append(card)
 	drew.emit(card)
-	hand_updated.emit(cards)
 	return true
 
 
@@ -90,7 +88,6 @@ func discard(card: Card) -> void:
 	deck.discard(card)
 	cards.erase(card)
 	discarded.emit(card)
-	hand_updated.emit(cards)
 
 
 func can_play(card: Card) -> bool:
