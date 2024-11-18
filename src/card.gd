@@ -15,6 +15,7 @@ var mana: int:
 var creature: UnitList.Creature
 var spell: SpellList.Spell
 var is_secret: bool = false
+var is_secret_releaved: bool = false
 
 var is_selected := false
 var times_clicked := 0
@@ -121,13 +122,14 @@ func update_display() -> void:
 			update_spell_display()
 	if is_secret:
 		texture = load("res://textures/card/card_secret.png")
-		$TextureRect.hide()
-		$Title.text = "SECRET"
-		$DamageArea/Damage.text = "??"
-		$HealthArea/Health.text = "??"
-		if type == CardType.SPELL:
-			# TODO: give an option to affect the rest of the run
-			$DescriptionArea/SpellDescription.text = "Affects the rest of this combat"
+		if not is_secret_releaved:
+			$TextureRect.hide()
+			$Title.text = "SECRET"
+			$DamageArea/Damage.text = "??"
+			$HealthArea/Health.text = "??"
+			if type == CardType.SPELL:
+				# TODO: give an option to affect the rest of the run
+				$DescriptionArea/SpellDescription.text = "Affects the rest of this combat"
 
 	$ManaArea/Mana.text = str(mana)
 

@@ -20,7 +20,7 @@ const WALK_ANIMATION := "walk"
 var attack_animation := "attack"
 var change_torch_animation := "light_torch"
 
-var speed := 1.5
+var speed := 10.5
 var damage := 5:
 	set(value):
 		damage = value
@@ -272,13 +272,8 @@ func try_light_torch(torch: Torch) -> void:
 
 	is_changing_torch = true
 	animation_player.play(change_torch_animation)
-	var timer := Timer.new()
-	timer.process_mode = Node.PROCESS_MODE_PAUSABLE
-	timer.wait_time = 2.0
-	timer.one_shot = true
-	timer.autostart = true
-	add_child(timer)
-	await timer.timeout
+	# set false so we can pause
+	await get_tree().create_timer(2.0, false).timeout
 
 	if not torch.is_lit:
 		torch.light_torch()
@@ -292,7 +287,8 @@ func try_extinguish_torch(torch: Torch) -> void:
 
 	is_changing_torch = true
 	animation_player.play(change_torch_animation)
-	await get_tree().create_timer(2.0).timeout
+	# set false so we can pause
+	await get_tree().create_timer(2.0, false).timeout
 
 	if torch.is_lit:
 		torch.extinguish_torch()

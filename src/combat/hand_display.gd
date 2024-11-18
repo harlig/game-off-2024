@@ -92,7 +92,8 @@ func highlight_current_card() -> void:
 
 
 func _on_card_clicked(_times_clicked: int, card: Card) -> void:
-	if current_selected:
+	# when secrets are presented, don't handle input from these
+	if current_selected || get_tree().paused:
 		return
 
 	current_selected = card
@@ -108,6 +109,9 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 
 
 func _on_card_mouse_entered(card: Card) -> void:
+	# when secrets are presented, don't handle input from these
+	if get_tree().paused:
+		return
 	current_hover = card
 
 	if current_selected:
@@ -129,6 +133,9 @@ func show_hovered_card() -> void:
 
 
 func _on_card_mouse_exited(card: Card) -> void:
+	# when secrets are presented, don't handle input from these
+	if get_tree().paused:
+		return
 	current_hover = null;
 
 	if current_selected:
@@ -213,14 +220,15 @@ func get_card_rotation(ind: int) -> float:
 	return deg_to_rad(current_rotation)
 
 
-func tween_card_to(card: Card, pos: Vector2, rot: float, scele: Vector2, time: float) -> void:
+func tween_card_to(card: Card, pos: Vector2, rot: float, scele: Vector2, time: float, use_global_position: bool = false) -> Tween:
 		card.cancel_tween.emit()
 
-		var tween := get_tree().create_tween()
-		tween.parallel().tween_property(card, "position", pos, time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		var tween := create_tween()
+		tween.parallel().tween_property(card, "position" if not use_global_position else "global_position", pos, time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 		tween.parallel().tween_property(card, "rotation", rot, time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 		tween.parallel().tween_property(card, "scale", scele, time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 		card.cancel_tween.connect(tween.stop)
+		return tween
 
 
 func draw_drag_line(event: InputEvent) -> void:
@@ -251,10 +259,17 @@ func draw_drag_line(event: InputEvent) -> void:
 	$DragEnd.global_position = current_position;
 
 
-func reveal_secret(_card: Card) -> void:
-	$SecretPlayedArea.show()
+func reveal_secret(card: Card) -> void:
+	var x_pos: float = global_position.x + (size.x) / 2.0 - CARD_X_SIZE / 2.0
+	var y_pos: float = global_position.y + (size.y) / 2.0 - CARD_Y_SIZE / 2.0
+	var tween: Tween = tween_card_to(card, Vector2(x_pos, y_pos), 0.0, Vector2(1.0, 1.0), 1.5, true)
+	await tween.finished
+
+	card.is_secret_releaved = true
+	card.update_display()
+
 	await get_tree().create_timer(10.0).timeout
-	$SecretPlayedArea.hide()
+
 	secret_acknowledged.emit()
 
 # Move hover card down a bit

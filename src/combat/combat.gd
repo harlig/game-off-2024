@@ -134,16 +134,18 @@ func try_play_card(card: Card) -> bool:
 	if not $Hand.can_play(card):
 		return false
 
+	# need to set this before we potentially await something in the secret code since the validity of the play location could change when player moves mouse, but we should still respect the validity pre-timeout
+	var play_location_valid_before_timeout := play_location_valid
+
 	if card.is_secret:
 		$HandDisplay.reveal_secret(card)
-		# TODO: stop all units
 		get_tree().paused = true
 		await $HandDisplay.secret_acknowledged
 		get_tree().paused = false
 
 	var played := false
 	match card.type:
-		Card.CardType.UNIT when play_location_valid:
+		Card.CardType.UNIT when play_location_valid_before_timeout:
 			spawn_unit(unit_scene, card, play_location, Attackable.Team.PLAYER)
 			$Hand.play_card(card)
 			played = true
@@ -159,7 +161,7 @@ func try_play_card(card: Card) -> bool:
 				$Hand.play_card(card)
 				played = true
 
-			elif card.is_area_spell() and play_location_valid:
+			elif card.is_area_spell() and play_location_valid_before_timeout:
 				#TODO
 				pass ;
 
