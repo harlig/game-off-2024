@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccvlb71xbdyuv"
-path="res://.godot/imported/Untitled_Artwork-7.png-fcd57e909e579aa591f5914c429db697.ctex"
+uid="uid://di757sl5csh7g"
+path="res://.godot/imported/snek.png-d4f134c15db81844e030b63943131f64.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/unit/Untitled_Artwork-7.png"
-dest_files=["res://.godot/imported/Untitled_Artwork-7.png-fcd57e909e579aa591f5914c429db697.ctex"]
+source_file="res://textures/unit/snek.png"
+dest_files=["res://.godot/imported/snek.png-d4f134c15db81844e030b63943131f64.ctex"]
 
 [params]
 

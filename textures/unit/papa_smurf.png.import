@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://da7n15iyrqfyr"
-path="res://.godot/imported/Untitled_Artwork-9.png-b3d0756d4ddd9324954c433dd3542225.ctex"
+uid="uid://cu2dtg87vv1g8"
+path="res://.godot/imported/papa_smurf.png-9d642048e4dc1c66d0fdc1e41bad4a8f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/unit/Untitled_Artwork-9.png"
-dest_files=["res://.godot/imported/Untitled_Artwork-9.png-b3d0756d4ddd9324954c433dd3542225.ctex"]
+source_file="res://textures/unit/papa_smurf.png"
+dest_files=["res://.godot/imported/papa_smurf.png-9d642048e4dc1c66d0fdc1e41bad4a8f.ctex"]
 
 [params]
 

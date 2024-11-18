@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccojt8m1xk3mc"
-path="res://.godot/imported/Untitled_Artwork-2.png-90def708464e069ca1dff62508837f13.ctex"
+uid="uid://cf5t1whacjr0y"
+path="res://.godot/imported/buff_beak.png-5972322aa1a60ebfa0411498dfac8c33.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/unit/Untitled_Artwork-2.png"
-dest_files=["res://.godot/imported/Untitled_Artwork-2.png-90def708464e069ca1dff62508837f13.ctex"]
+source_file="res://textures/unit/buff_beak.png"
+dest_files=["res://.godot/imported/buff_beak.png-5972322aa1a60ebfa0411498dfac8c33.ctex"]
 
 [params]
 

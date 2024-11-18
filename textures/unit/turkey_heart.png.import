@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cbwx1o6skvfbl"
-path="res://.godot/imported/Untitled_Artwork-4.png-ea4d4e9e764d092c14788d7471237718.ctex"
+path="res://.godot/imported/turkey_heart.png-5bed5852d722e6ff9809ac6f7a95ff0e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/unit/Untitled_Artwork-4.png"
-dest_files=["res://.godot/imported/Untitled_Artwork-4.png-ea4d4e9e764d092c14788d7471237718.ctex"]
+source_file="res://textures/unit/turkey_heart.png"
+dest_files=["res://.godot/imported/turkey_heart.png-5bed5852d722e6ff9809ac6f7a95ff0e.ctex"]
 
 [params]
 

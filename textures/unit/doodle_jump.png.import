@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cf5t1whacjr0y"
-path="res://.godot/imported/Untitled_Artwork-8.png-f4524f4f8d2c5dc30bd0cf3087e2df51.ctex"
+uid="uid://dy2356jugga7s"
+path="res://.godot/imported/doodle_jump.png-787b4c38d53842f91991982c3d3d9eca.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/unit/Untitled_Artwork-8.png"
-dest_files=["res://.godot/imported/Untitled_Artwork-8.png-f4524f4f8d2c5dc30bd0cf3087e2df51.ctex"]
+source_file="res://textures/unit/doodle_jump.png"
+dest_files=["res://.godot/imported/doodle_jump.png-787b4c38d53842f91991982c3d3d9eca.ctex"]
 
 [params]
 

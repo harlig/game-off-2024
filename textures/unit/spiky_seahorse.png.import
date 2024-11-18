@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfyvvtvnuqxan"
-path="res://.godot/imported/Untitled_Artwork-12.png-757302c575d8b23784dd0061065b875c.ctex"
+uid="uid://ccvlb71xbdyuv"
+path="res://.godot/imported/spiky_seahorse.png-bf8f3d2cc0ca8c68c91162db87383a89.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/unit/Untitled_Artwork-12.png"
-dest_files=["res://.godot/imported/Untitled_Artwork-12.png-757302c575d8b23784dd0061065b875c.ctex"]
+source_file="res://textures/unit/spiky_seahorse.png"
+dest_files=["res://.godot/imported/spiky_seahorse.png-bf8f3d2cc0ca8c68c91162db87383a89.ctex"]
 
 [params]
 

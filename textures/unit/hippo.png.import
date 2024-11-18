@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cu2dtg87vv1g8"
-path="res://.godot/imported/Untitled_Artwork-6.png-670a16155498d72f79c5303c367b638b.ctex"
+uid="uid://bxal0wamve5hd"
+path="res://.godot/imported/hippo.png-689b5fe11f5c6b858462ce07e7bd65f2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/unit/Untitled_Artwork-6.png"
-dest_files=["res://.godot/imported/Untitled_Artwork-6.png-670a16155498d72f79c5303c367b638b.ctex"]
+source_file="res://textures/unit/hippo.png"
+dest_files=["res://.godot/imported/hippo.png-689b5fe11f5c6b858462ce07e7bd65f2.ctex"]
 
 [params]
 
