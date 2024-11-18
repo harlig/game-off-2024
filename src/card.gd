@@ -119,8 +119,9 @@ func update_display() -> void:
 		$Title.text = "SECRET"
 		$DamageArea/Damage.text = "??"
 		$HealthArea/Health.text = "??"
-		$DescriptionArea/Type.text = "??"
-		$DescriptionArea/SpellDescription.text = "??"
+		if type == CardType.SPELL:
+			# TODO: give an option to affect the rest of the run
+			$DescriptionArea/SpellDescription.text = "Affects the rest of this combat"
 
 	$ManaArea/Mana.text = str(mana)
 
