@@ -9,12 +9,7 @@ const CARD_PLAY_HEIGHT = 300.0
 const CARD_CANCEL_HEIGHT = 40.0
 
 var current_hover: Card = null
-var current_hover_return_pos: Vector2
-var current_hover_return_rot: float
-
 var current_selected: Card = null
-var current_selected_return_pos: Vector2
-var current_selected_return_rot: float
 
 var drag_start_position: Vector2
 var is_dragging := false
@@ -40,7 +35,7 @@ func _input(event: InputEvent) -> void:
 		var did_play: bool = is_in_play_area and get_parent().try_play_card(card)
 
 		if not did_play:
-			place_back_in_hand(card, current_selected_return_pos, current_selected_return_rot, Color.RED if is_in_play_area else Color.WHITE)
+			place_back_in_hand(card, Color.RED if is_in_play_area else Color.WHITE)
 
 		if current_hover != card:
 			show_hovered_card()
@@ -100,8 +95,6 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 		return
 
 	current_selected = card
-	current_selected_return_pos = current_hover_return_pos
-	current_selected_return_rot = current_hover_return_rot
 
 	if !card.is_none_spell():
 		drag_start_position = card.global_position + card.size * card.scale / 2.0
@@ -115,8 +108,6 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 
 func _on_card_mouse_entered(card: Card) -> void:
 	current_hover = card
-	current_hover_return_pos = card.position
-	current_hover_return_rot = card.rotation
 
 	if current_selected:
 		return
@@ -128,8 +119,11 @@ func show_hovered_card() -> void:
 	if !current_hover:
 		return
 
-	current_hover.z_index = 1
 	update_hand_positions()
+
+	current_hover.z_index = 1
+	current_hover.position = get_card_position(current_hover.get_index())
+	current_hover.rotation = get_card_rotation(current_hover.get_index())
 	tween_card_to(current_hover, Vector2(current_hover.position.x, -300.0), current_hover.rotation, Vector2(1.3, 1.3), 0.2)
 
 
@@ -140,19 +134,21 @@ func _on_card_mouse_exited(card: Card) -> void:
 		return
 
 	update_hand_positions();
-	place_back_in_hand(card, current_hover_return_pos, current_hover_return_rot);
+	place_back_in_hand(card);
 
 
 func _on_drop_box_entered() -> void:
 	if !current_selected:
 		return ;
 
-	place_back_in_hand(current_selected, current_selected_return_pos, current_selected_return_rot)
+	place_back_in_hand(current_selected)
 	current_selected = null
 
 
-func place_back_in_hand(card: Card, pos: Vector2, rot: float, color_to_highlight_then_unhighlight: Color = Color.WHITE) -> void:
+func place_back_in_hand(card: Card, color_to_highlight_then_unhighlight: Color = Color.WHITE) -> void:
 	card.z_index = 0
+	var pos := get_card_position(card.get_index())
+	var rot := get_card_rotation(card.get_index())
 	tween_card_to(card, pos, rot, Vector2.ONE, 0.2)
 
 	if color_to_highlight_then_unhighlight != Color.WHITE:
@@ -173,13 +169,7 @@ func update_hand_positions() -> void:
 		var pos := get_card_position(i)
 		var rot := get_card_rotation(i)
 
-		if card == current_hover:
-			current_hover_return_pos = pos + Vector2(SPREAD_WIDTH, 0.0)
-			current_hover_return_rot = rot
-		elif card == current_selected:
-			current_selected_return_pos = pos + Vector2(SPREAD_WIDTH, 0.0)
-			current_selected_return_rot = rot
-		else:
+		if card not in [current_hover, current_selected]:
 			tween_card_to(card, pos, rot, Vector2.ONE, 0.5);
 
 
