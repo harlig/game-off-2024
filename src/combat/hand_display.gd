@@ -1,6 +1,7 @@
 class_name HandDisplay extends Control;
 
 const MAX_HAND_WIDTH = 512.0
+const SPREAD_WIDTH = 80.0
 const ROTATION_PER_CARD = 4.0
 const CARD_X_SIZE = 192.0
 const CARD_Y_SIZE = 256.0
@@ -128,6 +129,7 @@ func show_hovered_card() -> void:
 		return
 
 	current_hover.z_index = 1
+	update_hand_positions()
 	tween_card_to(current_hover, Vector2(current_hover.position.x, -300.0), current_hover.rotation, Vector2(1.3, 1.3), 0.2)
 
 
@@ -137,6 +139,7 @@ func _on_card_mouse_exited(card: Card) -> void:
 	if current_selected:
 		return
 
+	update_hand_positions();
 	place_back_in_hand(card, current_hover_return_pos, current_hover_return_rot);
 
 
@@ -165,33 +168,58 @@ func update_hand_positions() -> void:
 	if get_parent().name == "PreloadedCombat":
 		return ;
 
-	var hand_size := $HandArea.get_child_count()
-	var card_spacing: float = max(CARD_X_SIZE - 12.0 * hand_size, 60.0)
-	var hand_width := card_spacing * hand_size
-	var current_rotation := -ROTATION_PER_CARD * (hand_size - 1) / 2.0 - ROTATION_PER_CARD
-
-	for i in range(hand_size):
+	for i in range($HandArea.get_child_count()):
 		var card := $HandArea.get_child(i)
-		current_rotation += ROTATION_PER_CARD
-
-		var x_pos := i * card_spacing - hand_width / 2.0
-		var y_pos := -CARD_Y_SIZE * 1.2
-		var center_dist: float = abs(i - (hand_size - 1) / 2.0)
-		y_pos += 4.0 * center_dist * center_dist
-
-		var pos := Vector2(x_pos, y_pos)
-		var rot := deg_to_rad(current_rotation)
+		var pos := get_card_position(i)
+		var rot := get_card_rotation(i)
 
 		if card == current_hover:
-			current_hover_return_pos = pos
+			current_hover_return_pos = pos + Vector2(SPREAD_WIDTH, 0.0)
 			current_hover_return_rot = rot
 		elif card == current_selected:
-			current_selected_return_pos = pos
+			current_selected_return_pos = pos + Vector2(SPREAD_WIDTH, 0.0)
 			current_selected_return_rot = rot
 		else:
 			tween_card_to(card, pos, rot, Vector2.ONE, 0.5);
-			# card.position = Vector2(x_pos, y_pos)
-			# card.rotation = deg_to_rad(current_rotation)
+
+
+func get_card_position(ind: int) -> Vector2:
+	var hand_size := $HandArea.get_child_count()
+	var card_spacing: float = max(CARD_X_SIZE - 12.0 * hand_size, 60.0)
+	var hand_width := card_spacing * hand_size
+
+	var do_spread := current_hover or current_selected
+	var passed_hover := (current_hover and ind > current_hover.get_index()) or (current_selected and ind > current_selected.get_index())
+
+	var x_pos := ind * card_spacing - hand_width / 2.0
+	if do_spread and not passed_hover:
+		x_pos -= SPREAD_WIDTH
+	elif do_spread and passed_hover:
+		x_pos += SPREAD_WIDTH
+
+	var y_pos := -CARD_Y_SIZE * 1.2
+	var center_dist: float = abs(ind - (hand_size - 1) / 2.0)
+	y_pos += 4.0 * center_dist * center_dist
+
+	var card := $HandArea.get_child(ind)
+	var pos := Vector2(x_pos, y_pos)
+	if card == current_hover or card == current_selected:
+		pos += Vector2(SPREAD_WIDTH, 0.0)
+
+	return pos
+
+
+func get_card_rotation(ind: int) -> float:
+	var hand_size := $HandArea.get_child_count()
+	var current_rotation := -ROTATION_PER_CARD * (hand_size - 1) / 2.0 - ROTATION_PER_CARD
+
+	for i in range(hand_size):
+		current_rotation += ROTATION_PER_CARD
+
+		if i == ind:
+			break
+
+	return deg_to_rad(current_rotation)
 
 
 func tween_card_to(card: Card, pos: Vector2, rot: float, scele: Vector2, time: float) -> void:
