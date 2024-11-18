@@ -79,8 +79,6 @@ static func random_secret_card() -> Card:
 		card = UnitList.random_secret_card()
 	else:
 		card = SpellList.random_secret_card()
-
-	card.is_secret = true
 	return card
 
 

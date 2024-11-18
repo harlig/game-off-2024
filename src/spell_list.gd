@@ -72,4 +72,6 @@ static func new_card_by_name(spell_name: String) -> Card:
 
 static func random_secret_card() -> Card:
 	var secret_spell := secret_spell_cards[randi() % secret_spell_cards.size()]
-	return Card.create_spell_card(secret_spell)
+	var card := Card.create_spell_card(secret_spell)
+	card.is_secret = true
+	return card

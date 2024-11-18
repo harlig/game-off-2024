@@ -84,4 +84,6 @@ static func new_card_by_name(unit_name: String) -> Card:
 
 static func random_secret_card() -> Card:
 	var secret_creature := secret_creature_cards[randi() % secret_creature_cards.size()]
-	return Card.create_creature_card(secret_creature)
+	var card := Card.create_creature_card(secret_creature)
+	card.is_secret = true
+	return card
