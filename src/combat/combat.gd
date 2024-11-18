@@ -134,6 +134,13 @@ func try_play_card(card: Card) -> bool:
 	if not $Hand.can_play(card):
 		return false
 
+	if card.is_secret:
+		$HandDisplay.reveal_secret(card)
+		# TODO: stop all units
+		get_tree().paused = true
+		await $HandDisplay.secret_acknowledged
+		get_tree().paused = false
+
 	var played := false
 	match card.type:
 		Card.CardType.UNIT when play_location_valid:

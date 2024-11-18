@@ -272,7 +272,13 @@ func try_light_torch(torch: Torch) -> void:
 
 	is_changing_torch = true
 	animation_player.play(change_torch_animation)
-	await get_tree().create_timer(2.0).timeout
+	var timer := Timer.new()
+	timer.process_mode = Node.PROCESS_MODE_PAUSABLE
+	timer.wait_time = 2.0
+	timer.one_shot = true
+	timer.autostart = true
+	add_child(timer)
+	await timer.timeout
 
 	if not torch.is_lit:
 		torch.light_torch()

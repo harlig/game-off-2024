@@ -16,6 +16,7 @@ var is_dragging := false
 
 signal unit_spell_selected()
 signal card_deselected()
+signal secret_acknowledged()
 
 func _input(event: InputEvent) -> void:
 	# Try to play current selected on left mouse button event
@@ -32,7 +33,7 @@ func _input(event: InputEvent) -> void:
 		$DragEnd.hide()
 
 		var is_in_play_area: bool = event.position.y < $PlayHeight.position.y
-		var did_play: bool = is_in_play_area and get_parent().try_play_card(card)
+		var did_play: bool = is_in_play_area and await get_parent().try_play_card(card)
 
 		if not did_play:
 			place_back_in_hand(card, Color.RED if is_in_play_area else Color.WHITE)
@@ -248,6 +249,13 @@ func draw_drag_line(event: InputEvent) -> void:
 	var drag_end_direction := -1 if direction.x < 0 else 1
 	$DragEnd.rotation = direction.angle() + deg_to_rad(65) * drag_end_direction;
 	$DragEnd.global_position = current_position;
+
+
+func reveal_secret(_card: Card) -> void:
+	$SecretPlayedArea.show()
+	await get_tree().create_timer(10.0).timeout
+	$SecretPlayedArea.hide()
+	secret_acknowledged.emit()
 
 # Move hover card down a bit
 # var hand_size := $HandArea.get_child_count()

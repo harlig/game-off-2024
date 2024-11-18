@@ -15,12 +15,12 @@ static var spell_cards: Array[Spell] = [
 ]
 
 static var secret_spell_cards: Array[Spell] = [
-	Spell.new("+3 max mana", SpellType.MAX_MANA, TargetableType.NONE, 3, 10, "res://textures/hud/mana.png"),
+	Spell.new("+3 max mana", SpellType.MAX_MANA, TargetableType.NONE, 3, 1, "res://textures/hud/mana.png"),
 	# TODO: add mana regen image
-	Spell.new("Triple mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 3.0, 10, "res://textures/spell/mana.png"),
+	Spell.new("Triple mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 3.0, 1, "res://textures/spell/mana.png"),
 	Spell.new("Draw cards til hand full", SpellType.DRAW_CARDS, TargetableType.NONE, 15, 4, "res://textures/spell/draw_cards.png"),
 	# TODO: add card regen image
-	Spell.new("Draw cards hella fast", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 3, 12, "res://textures/spell/draw_cards.png"),
+	Spell.new("Draw cards hella fast", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 3, 0, "res://textures/spell/draw_cards.png"),
 ]
 
 class Spell:

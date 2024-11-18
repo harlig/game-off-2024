@@ -32,43 +32,34 @@ shader_parameter/highlight_color = Color(0.958417, 0.877664, 0.804085, 1)
 [sub_resource type="QuadMesh" id="QuadMesh_4p5bs"]
 size = Vector2(2, 2)
 
-[sub_resource type="Animation" id="Animation_8afef"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_ttp57"]
+resource_name = "light_torch"
+length = 2.0
+loop_mode = 1
+step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:scale")
-tracks/0/interp = 1
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(1, 1, 1)]
+"values": [Vector3(0, 1, 0), Vector3(0, 1.1, 0), Vector3(0, 1.1, 0), Vector3(0, 1.0716, 0), Vector3(0, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:position")
-tracks/1/interp = 1
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 1, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MeshInstance3D:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
+"values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, 1.22173), Vector3(-0.785398, 0, 1.5708), Vector3(-0.785398, 0, 1.34041), Vector3(-0.785398, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_evayf"]
@@ -96,6 +87,36 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -0.347321), Vector3(-0.785398, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_kmiha"]
+resource_name = "light_torch_reversed"
+length = 2.0
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 1.1, 0), Vector3(0, 1.1, 0), Vector3(0, 1.0716, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -1.22173), Vector3(-0.785398, 0, -1.5708), Vector3(-0.785398, 0, -1.34041), Vector3(-0.785398, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ckihm"]
@@ -156,64 +177,43 @@ tracks/1/keys = {
 "values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -0.607375), Vector3(-0.785398, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_kmiha"]
-resource_name = "light_torch_reversed"
-length = 2.0
-loop_mode = 1
-step = 0.1
+[sub_resource type="Animation" id="Animation_8afef"]
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:position")
-tracks/0/interp = 2
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0, 1.1, 0), Vector3(0, 1.1, 0), Vector3(0, 1.0716, 0), Vector3(0, 1, 0)]
+"values": [Vector3(1, 1, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:rotation")
-tracks/1/interp = 2
+tracks/1/path = NodePath("MeshInstance3D:position")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -1.22173), Vector3(-0.785398, 0, -1.5708), Vector3(-0.785398, 0, -1.34041), Vector3(-0.785398, 0, 0)]
+"values": [Vector3(0, 1, 0)]
 }
-
-[sub_resource type="Animation" id="Animation_ttp57"]
-resource_name = "light_torch"
-length = 2.0
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0, 1.1, 0), Vector3(0, 1.1, 0), Vector3(0, 1.0716, 0), Vector3(0, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:rotation")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, 1.22173), Vector3(-0.785398, 0, 1.5708), Vector3(-0.785398, 0, 1.34041), Vector3(-0.785398, 0, 0)]
+"values": [Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_8vw6h"]
@@ -257,6 +257,7 @@ _data = {
 }
 
 [node name="Unit" type="Node3D"]
+process_mode = 1
 script = ExtResource("1_2p7eh")
 
 [node name="Attackable" parent="." instance=ExtResource("1_s1phr")]
