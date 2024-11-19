@@ -92,8 +92,9 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 	existing_combat.queue_free()
-	between_combat.get_node("Control").show()
-	between_combat.can_open_shop = true
+	# only do this if the player hasn't yet opened the shop
+	if between_combat.shop == null:
+		between_combat.get_node("Control").show()
 
 	# if combat_state == Combat.CombatState.WON:
 	# 	print("Combat won!")

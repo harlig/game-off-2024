@@ -11,7 +11,6 @@ var combat_difficulty: int
 var bank: int
 
 var can_highlight_shopkeeper := true
-var can_open_shop := false
 var shop: Shop
 
 static func create_between_combat(init_combat_difficulty: int, init_bank: int) -> BetweenCombat:
@@ -22,6 +21,7 @@ static func create_between_combat(init_combat_difficulty: int, init_bank: int) -
 
 
 func _on_button_pressed() -> void:
+	can_highlight_shopkeeper = false
 	continue_pressed.emit()
 
 
@@ -35,17 +35,20 @@ func _on_area_3d_mouse_exited() -> void:
 
 
 func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if not can_open_shop:
+	if not can_highlight_shopkeeper:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		create_shop()
 		$Area3D/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 		can_highlight_shopkeeper = false
-		can_open_shop = false
 
 
 func create_shop() -> void:
 	$Control.hide()
+	if shop != null:
+		shop.show()
+		return
+
 	var new_shop: Shop = shop_scene.instantiate()
 	new_shop.shop_value = combat_difficulty
 	new_shop.player_gold = bank
@@ -55,6 +58,6 @@ func create_shop() -> void:
 	add_child(new_shop)
 
 func _on_shop_closed() -> void:
-	shop.queue_free()
-	shop = null
+	shop.hide()
 	$Control.show()
+	can_highlight_shopkeeper = true
