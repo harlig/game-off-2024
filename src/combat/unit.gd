@@ -7,6 +7,7 @@ const speed_buff_texture: Texture2D = preload("res://textures/card/augment/buff_
 
 enum Direction {LEFT, RIGHT}
 
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var unit_attackable: Attackable = $Attackable
 
 const ATTACK_COOLDOWN := 1.2
@@ -30,7 +31,6 @@ var unit_type: int = UnitList.CardType.MELEE
 var currently_attacking: Array[Attackable] = []
 var allies_in_attack_range: Array[Attackable] = []
 var enemies_in_attack_range: Array[Attackable] = []
-var animation_player: AnimationPlayer
 
 var furthest_x_position_allowed: float = 0
 
@@ -84,9 +84,6 @@ func _ready() -> void:
 	invulnerability_timer.one_shot = true
 	invulnerability_timer.connect("timeout", stop_invulnerability, ConnectFlags.CONNECT_ONE_SHOT);
 	invulnerability_timer.start(INVULNERABLE_TIME)
-	animation_player = $AnimationPlayer.duplicate()
-	$AnimationPlayer.queue_free()
-	add_child(animation_player)
 
 func stop_invulnerability() -> void:
 	is_invulnerable = false
