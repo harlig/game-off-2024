@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
-[ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
+[ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_mtl7e"]
 [ext_resource type="Shader" path="res://shaders/spawn_area.gdshader" id="4_yejyx"]
 [ext_resource type="Script" path="res://src/combat/hand.gd" id="5_3nvnk"]
 [ext_resource type="Shader" path="res://shaders/spawn_loc.gdshader" id="5_ekx6p"]

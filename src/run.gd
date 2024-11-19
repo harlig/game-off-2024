@@ -1,5 +1,7 @@
 class_name Run extends Control
 
+const between_combat_scene := preload("res://src/between_combat.tscn")
+
 @onready var camera := $Camera3D
 @onready var deck := $DeckControl/Deck
 @onready var relic_area := $RelicArea
@@ -76,19 +78,29 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	for torch: Torch in new_combat.all_torches:
 		torch.get_node("CPUParticles3D").emitting = false
 
+	var between_combat := between_combat_scene.instantiate()
+	add_child(between_combat)
+
 	var offset := 56
-	new_combat.position = Vector3(existing_combat.position.x + offset, existing_combat.position.y, existing_combat.position.z)
+	between_combat.position = Vector3(existing_combat.position.x + offset, between_combat.position.y, between_combat.position.z)
+	new_combat.position = Vector3(existing_combat.position.x + 2 * offset, new_combat.position.y, new_combat.position.z)
 
 	var tween: Tween = get_tree().create_tween();
 	tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - offset, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(between_combat, "position", Vector3(between_combat.position.x - offset, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - offset, new_combat.position.y, new_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 	for ndx in range(new_combat.furthest_torch_lit + 1):
 		var torch := new_combat.all_torches[ndx]
 		torch.get_node("CPUParticles3D").emitting = true
-	new_combat.show()
 
 	existing_combat.queue_free()
+	tween = get_tree().create_tween()
+	tween.parallel().tween_property(between_combat, "position", Vector3(between_combat.position.x - offset, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - offset, new_combat.position.y, new_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+
+	between_combat.queue_free()
 	new_combat.get_node("HandDisplay").show()
 
 	# if combat_state == Combat.CombatState.WON:
