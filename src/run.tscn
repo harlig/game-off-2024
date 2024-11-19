@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://dljtnngynioy1"]
+[gd_scene load_steps=8 format=3 uid="uid://dljtnngynioy1"]
 
 [ext_resource type="Script" path="res://src/run.gd" id="1_cnw64"]
-[ext_resource type="PackedScene" uid="uid://dnuxboxdulw4k" path="res://src/map/map.tscn" id="2_bsm6l"]
 [ext_resource type="Script" path="res://src/combat/combat_camera.gd" id="3_nj1jd"]
 [ext_resource type="PackedScene" uid="uid://cih1pigr4i7xh" path="res://src/deck.tscn" id="3_pu7pl"]
 [ext_resource type="PackedScene" uid="uid://bdga38e85imgw" path="res://src/combat/combat.tscn" id="4_xap8m"]
@@ -19,8 +18,6 @@ layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("1_cnw64")
-
-[node name="Map" parent="." instance=ExtResource("2_bsm6l")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 50, 40)
@@ -86,5 +83,3 @@ anchor_bottom = 0.15
 grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
-
-[connection signal="view_deck_clicked" from="Map" to="." method="_on_map_view_deck_clicked"]
