@@ -185,15 +185,20 @@ func _on_lost_secret(secret_scene_to_delete: MapSecret) -> void:
 
 func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
+	existing_combat.get_node("Hand").queue_free()
+
 	var new_combat := create_combat()
-	# existing_combat.get_node("HandDisplay").hide()
+	new_combat.hide()
 	new_combat.get_node("HandDisplay").hide()
-	new_combat.position.x = new_combat.position.x + 25.0
+	new_combat.position.x = new_combat.position.x + 65.0
 
 	var tween: Tween = get_tree().create_tween();
-	tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - 25, existing_combat.position.y, existing_combat.position.z), 10.0)
-	tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - 25, new_combat.position.y, new_combat.position.z), 10.0)
+	print("Existing combat position is ", existing_combat.position)
+	tween.tween_property(existing_combat, "position", Vector3(existing_combat.position.x - 5, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_LINEAR)
+	# tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - 65, new_combat.position.y, new_combat.position.z), 5.0)
 	await tween.finished
+	print("Existing combat position is now ", existing_combat.position)
+	new_combat.show()
 
 	existing_combat.queue_free()
 	new_combat.get_node("HandDisplay").show()
