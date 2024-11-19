@@ -5,12 +5,13 @@ const between_combat_scene := preload("res://src/between_combat.tscn")
 @onready var camera := $Camera3D
 @onready var deck := $DeckControl/Deck
 @onready var relic_area := $RelicArea
+@onready var bank_control := $BankControl
 
 var combat_difficulty := 1
 var bank := 10:
 	set(value):
-		print("Bank value changed to: ", value)
 		bank = value
+		bank_control.get_node("Value").text = str(value)
 
 # TODO: do we even want relics?
 var relics: Array[Relic] = [
@@ -28,6 +29,8 @@ var has_preloaded := false
 var current_combat: Combat
 
 func _ready() -> void:
+	# kinda janky but guarantees that the bank's text will get updated to its starting value
+	bank = bank
 	# TODO: need to figure out how to dynamically do this when a relic is added
 	for relic in relics:
 		relic_area.add_child(relic)
@@ -62,8 +65,10 @@ func create_combat() -> Combat:
 	current_combat = new_combat
 	combat_difficulty += 1
 
-	new_combat.connect("reward_chosen", _on_combat_reward_chosen)
-	new_combat.connect("combat_over", _on_combat_over)
+	new_combat.reward_presented.connect(bank_control.show)
+	new_combat.reward_chosen.connect(_on_combat_reward_chosen)
+	new_combat.combat_over.connect(_on_combat_over)
+
 	add_child(new_combat)
 	return new_combat
 
@@ -75,6 +80,7 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 
 	var between_combat: BetweenCombat = BetweenCombat.create_between_combat(combat_difficulty, bank)
 	between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
+	between_combat.item_purchased.connect(_on_item_purchased)
 	between_combat.get_node("Control").hide()
 	add_child(between_combat)
 
@@ -99,8 +105,8 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	# 	move_to_unvisited_node()
 
 func continue_to_next_combat(between_combat: BetweenCombat) -> void:
-	print("Continue to next combat")
 	between_combat.get_node("Control").hide()
+	bank_control.hide()
 	var offset := 56
 	var new_combat := create_combat()
 	new_combat.position = Vector3(between_combat.position.x + offset, new_combat.position.y, new_combat.position.z)
@@ -125,10 +131,8 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 	if reward.type == Reward.RewardData.Type.CARD:
-		print("Received card reward: ", reward.card.creature)
 		deck.add_card(reward.card)
 	elif reward.type == Reward.RewardData.Type.GOLD:
-		print("Received gold reward: ", reward.gold)
 		bank += reward.gold
 	current_combat.reward.queue_free()
 

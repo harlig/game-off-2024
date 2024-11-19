@@ -10,7 +10,7 @@ var blank_card: Control
 
 var cards_in_shop := []
 
-signal item_purchased(item: Card)
+signal item_purchased(item: Card, cost: int)
 signal shop_closed()
 
 func _on_leave_shop_button_pressed() -> void:

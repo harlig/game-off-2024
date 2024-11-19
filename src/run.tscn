@@ -86,6 +86,7 @@ mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="BankControl" type="Control" parent="."]
+visible = false
 custom_minimum_size = Vector2(180, 100)
 layout_mode = 1
 anchor_left = 1.0

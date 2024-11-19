@@ -5,7 +5,7 @@ const between_combat_scene := preload("res://src/between_combat.tscn")
 const shop_scene := preload("res://src/map/shop.tscn")
 
 signal continue_pressed()
-signal item_purchased
+signal item_purchased(item: Card, cost: int)
 
 var combat_difficulty: int
 var bank: int
@@ -39,6 +39,9 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		create_shop()
+		$Area3D/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
+		can_highlight_shopkeeper = false
+		can_open_shop = false
 
 
 func create_shop() -> void:
@@ -52,8 +55,6 @@ func create_shop() -> void:
 	add_child(new_shop)
 
 func _on_shop_closed() -> void:
-	can_highlight_shopkeeper = false
-	can_open_shop = false
 	shop.queue_free()
 	shop = null
 	$Control.show()
