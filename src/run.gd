@@ -73,35 +73,20 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	for torch: Torch in existing_combat.all_torches:
 		torch.get_node("CPUParticles3D").emitting = false
 
-	var new_combat := create_combat()
-	new_combat.get_node("HandDisplay").hide()
-	for torch: Torch in new_combat.all_torches:
-		torch.get_node("CPUParticles3D").emitting = false
-
-	var between_combat := between_combat_scene.instantiate()
+	var between_combat: BetweenCombat = BetweenCombat.create_between_combat()
+	between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
+	between_combat.get_node("Control").hide()
 	add_child(between_combat)
 
 	var offset := 56
 	between_combat.position = Vector3(existing_combat.position.x + offset, between_combat.position.y, between_combat.position.z)
-	new_combat.position = Vector3(existing_combat.position.x + 2 * offset, new_combat.position.y, new_combat.position.z)
 
 	var tween: Tween = get_tree().create_tween();
 	tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - offset, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
-	tween.parallel().tween_property(between_combat, "position", Vector3(between_combat.position.x - offset, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
-	tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - offset, new_combat.position.y, new_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
-	for ndx in range(new_combat.furthest_torch_lit + 1):
-		var torch := new_combat.all_torches[ndx]
-		torch.get_node("CPUParticles3D").emitting = true
-
 	existing_combat.queue_free()
-	tween = get_tree().create_tween()
-	tween.parallel().tween_property(between_combat, "position", Vector3(between_combat.position.x - offset, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
-	tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - offset, new_combat.position.y, new_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
-	await tween.finished
-
-	between_combat.queue_free()
-	new_combat.get_node("HandDisplay").show()
+	between_combat.get_node("Control").show()
 
 	# if combat_state == Combat.CombatState.WON:
 	# 	print("Combat won!")
@@ -111,6 +96,31 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	# 	print("Combat lost!")
 	# 	map.hide_node(current_node)
 	# 	move_to_unvisited_node()
+
+func continue_to_next_combat(between_combat: BetweenCombat) -> void:
+	print("Continue to next combat")
+	between_combat.get_node("Control").hide()
+	var offset := 56
+	var new_combat := create_combat()
+	new_combat.position = Vector3(between_combat.position.x + offset, new_combat.position.y, new_combat.position.z)
+
+	new_combat.get_node("HandDisplay").hide()
+	for torch: Torch in new_combat.all_torches:
+		torch.get_node("CPUParticles3D").emitting = false
+
+	var tween: Tween = get_tree().create_tween();
+	tween = get_tree().create_tween()
+	tween.parallel().tween_property(between_combat, "position", Vector3(between_combat.position.x - offset, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(new_combat, "position", Vector3(between_combat.position.x, new_combat.position.y, new_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+
+	for ndx in range(new_combat.furthest_torch_lit + 1):
+		var torch := new_combat.all_torches[ndx]
+		torch.get_node("CPUParticles3D").emitting = true
+
+	between_combat.queue_free()
+	new_combat.get_node("HandDisplay").show()
+
 
 func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 	if reward.type == Reward.RewardData.Type.CARD:
