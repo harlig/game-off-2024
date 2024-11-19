@@ -161,6 +161,7 @@ func do_attacks(_anim_name: String) -> void:
 	play_animation(WALK_ANIMATION)
 
 func play_animation(animation_name: String) -> void:
+	print("Trying to play animation " + animation_name + "_" + str(scalar))
 	animation_player.play(animation_name + "_" + str(scalar))
 
 # when something runs into my target area
@@ -245,12 +246,12 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 
 	for animation_name: String in animation_player.get_animation_list():
 		var animation: Animation = animation_player.get_animation(animation_name)
-		print("Checking animation: " + animation_name)
 		for track_ndx in range(animation.get_track_count()):
 			var path: String = animation.track_get_path(track_ndx)
 			if path != "MeshInstance3D:position" and path != "MeshInstance3D:scale":
 				continue
 			new_animations.append(Pair.new(animation_name, animation.duplicate()))
+			break
 
 	for animation_pair: Pair in new_animations:
 		var animation: Animation = animation_pair.second
@@ -259,9 +260,6 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 			if path != "MeshInstance3D:position" and path != "MeshInstance3D:scale":
 				continue
 
-			print("Checking new track")
-			print("type: ", animation.track_get_type(track_ndx))
-			print("path: ", animation.track_get_path(track_ndx))
 			for key_index: int in animation.track_get_key_count(track_ndx):
 				print("key_index: " + str(key_index))
 				# this must be a vector3 I think
@@ -274,16 +272,19 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 						value.x *= scalar
 						value.y *= scalar
 				animation.track_set_key_value(track_ndx, key_index, value)
-
-				print(animation.track_get_key_value(track_ndx, key_index))
-				print()
 				pass
-	for animation_lib_name: String in animation_player.get_animation_library_list():
-		var animation_lib: AnimationLibrary = animation_player.get_animation_library(animation_lib_name)
-		for animation_pair: Pair in new_animations:
-			var animation_name: String = animation_pair.first
-			var animation: Animation = animation_pair.second
-			animation_lib.add_animation(animation_name + "_" + str(scalar), animation)
+	var old_animation_lib: AnimationLibrary = animation_player.get_animation_library(&"")
+	var animation_lib: AnimationLibrary = old_animation_lib.duplicate()
+	animation_player.remove_animation_library(&"")
+	print("animation lib size before: " + str(animation_lib.get_animation_list().size()))
+	for animation_pair: Pair in new_animations:
+		var animation_name: String = animation_pair.first
+		var animation: Animation = animation_pair.second
+		var new_name := animation_name + "_" + str(scalar)
+		animation_lib.add_animation(new_name, animation)
+		print("adding new name " + new_name)
+	print("animation lib size after: " + str(animation_lib.get_animation_list().size()))
+	animation_player.add_animation_library(&"", animation_lib)
 
 	resize_unit_target_box(from_creature)
 
