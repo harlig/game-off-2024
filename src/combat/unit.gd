@@ -239,52 +239,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	var x_diff := 1 - scalar
 	mesh_instance.position.x = x_diff
 	mesh_instance.position.y = scalar
-
-	# TODO: need to update all animation key frames which modify on the scale of the unit
-	# TODO: this is applying to ALL units bc somehow the animation player is shared
-	var new_animations: Array[Pair] = []
-
-	for animation_name: String in animation_player.get_animation_list():
-		var animation: Animation = animation_player.get_animation(animation_name)
-		for track_ndx in range(animation.get_track_count()):
-			var path: String = animation.track_get_path(track_ndx)
-			if path != "MeshInstance3D:position" and path != "MeshInstance3D:scale":
-				continue
-			new_animations.append(Pair.new(animation_name, animation.duplicate()))
-			break
-
-	for animation_pair: Pair in new_animations:
-		var animation: Animation = animation_pair.second
-		for track_ndx in range(animation.get_track_count()):
-			var path: String = animation.track_get_path(track_ndx)
-			if path != "MeshInstance3D:position" and path != "MeshInstance3D:scale":
-				continue
-
-			for key_index: int in animation.track_get_key_count(track_ndx):
-				print("key_index: " + str(key_index))
-				# this must be a vector3 I think
-				var value: Vector3 = animation.track_get_key_value(track_ndx, key_index)
-				match path:
-					"MeshInstance3D:position":
-						value.x = x_diff
-						value.y = scalar
-					"MeshInstance3D:scale":
-						value.x *= scalar
-						value.y *= scalar
-				animation.track_set_key_value(track_ndx, key_index, value)
-				pass
-	var old_animation_lib: AnimationLibrary = animation_player.get_animation_library(&"")
-	var animation_lib: AnimationLibrary = old_animation_lib.duplicate()
-	animation_player.remove_animation_library(&"")
-	print("animation lib size before: " + str(animation_lib.get_animation_list().size()))
-	for animation_pair: Pair in new_animations:
-		var animation_name: String = animation_pair.first
-		var animation: Animation = animation_pair.second
-		var new_name := animation_name + "_" + str(scalar)
-		animation_lib.add_animation(new_name, animation)
-		print("adding new name " + new_name)
-	print("animation lib size after: " + str(animation_lib.get_animation_list().size()))
-	animation_player.add_animation_library(&"", animation_lib)
+	play_animation(WALK_ANIMATION)
 
 	resize_unit_target_box(from_creature)
 
