@@ -111,6 +111,7 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	var offset := 56
 	var new_combat := create_combat()
 	new_combat.position = Vector3(between_combat.position.x + offset, new_combat.position.y, new_combat.position.z)
+	new_combat.get_node("Opponent").should_spawn = false
 
 	new_combat.get_node("HandDisplay").hide()
 	for torch: Torch in new_combat.all_torches:
@@ -128,6 +129,7 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 	between_combat.queue_free()
 	new_combat.get_node("HandDisplay").show()
+	new_combat.get_node("Opponent").should_spawn = true
 
 
 func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:

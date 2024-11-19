@@ -1,6 +1,5 @@
 class_name Opponent extends Node;
 
-
 @onready var hand := $Hand;
 
 var spawn_interval := 5.0:
@@ -14,6 +13,8 @@ var should_spawn := true
 signal spawn(card: Card)
 
 func _process(delta: float) -> void:
+	if not should_spawn:
+		return
 	spawn_time_remaining -= delta
 
 	if should_spawn and spawn_time_remaining <= 0.0:
