@@ -151,6 +151,8 @@ func try_play_card(card: Card) -> bool:
 				played = true
 
 			elif card.is_unit_spell():
+				if currently_hovered_unit == null:
+					return false
 				await $Hand.play_card(card)
 				play_spell(card.spell)
 				played = true
@@ -294,7 +296,6 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_changed_ndx: int) -
 	var new_offset := Vector3(new_size.x / 2.0, 0.0, 0.0)
 	tween.parallel().tween_property(spawn_mesh.mesh, "size", new_size, 1.0).set_trans(Tween.TRANS_CUBIC);
 	tween.parallel().tween_property(spawn_mesh.mesh, "center_offset", new_offset, 1.0).set_trans(Tween.TRANS_CUBIC);
-	print("New spawn mesh size is " + str(new_size) + " and offset is " + str(new_offset))
 
 func _on_player_base_torch_state_changed(torch_lit: bool) -> void:
 	# this should always be false
