@@ -302,6 +302,10 @@ func _on_player_base_torch_state_changed(torch_lit: bool) -> void:
 	if torch_lit:
 		push_error("Player base torch should never become lit after it's been extinguished")
 		return
+	for unit in current_ally_units:
+		unit.queue_free()
+	current_ally_units.clear()
+
 	finish_combat(CombatState.LOST)
 
 func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
@@ -309,6 +313,11 @@ func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 		return
 	for unit in current_ally_units:
 		unit.furthest_x_position_allowed = 1000.0;
+
+	for unit in current_enemy_units:
+		unit.queue_free()
+	current_enemy_units.clear()
+
 	finish_combat(CombatState.WON)
 
 func finish_combat(new_state: CombatState) -> void:
