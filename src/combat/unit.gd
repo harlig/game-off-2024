@@ -188,7 +188,7 @@ func _on_target_area_area_exited(area: Area3D) -> void:
 	currently_attacking.erase(area)
 	enemies_in_attack_range.erase(area)
 
-	if currently_attacking.size() == 0 and is_attacking:
+	if enemies_in_attack_range.size() == 0 and is_attacking:
 		is_attacking = false
 		if not animation_player.animation_finished.is_connected(_on_attack_finished):
 			animation_player.animation_finished.connect(_on_attack_finished, ConnectFlags.CONNECT_ONE_SHOT)
