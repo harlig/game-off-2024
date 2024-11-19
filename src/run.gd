@@ -73,7 +73,7 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	for torch: Torch in existing_combat.all_torches:
 		torch.get_node("CPUParticles3D").emitting = false
 
-	var between_combat: BetweenCombat = BetweenCombat.create_between_combat()
+	var between_combat: BetweenCombat = BetweenCombat.create_between_combat(combat_difficulty, bank)
 	between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 	between_combat.get_node("Control").hide()
 	add_child(between_combat)
@@ -87,6 +87,7 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	await tween.finished
 	existing_combat.queue_free()
 	between_combat.get_node("Control").show()
+	between_combat.can_open_shop = true
 
 	# if combat_state == Combat.CombatState.WON:
 	# 	print("Combat won!")
