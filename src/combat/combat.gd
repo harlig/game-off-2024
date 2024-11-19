@@ -71,7 +71,6 @@ func _ready() -> void:
 	$Opponent/Hand.initialize(enemy_combat_deck)
 
 	set_process(true)
-	$Camera3D.make_current()
 
 	# spawn torch at player base, and enemy base
 	var player_base_torch := torch_scene.instantiate()

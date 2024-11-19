@@ -1,8 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=18 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
-[ext_resource type="Script" path="res://src/combat/combat_camera.gd" id="4_uic0f"]
 [ext_resource type="Shader" path="res://shaders/spawn_area.gdshader" id="4_yejyx"]
 [ext_resource type="Script" path="res://src/combat/hand.gd" id="5_3nvnk"]
 [ext_resource type="Shader" path="res://shaders/spawn_loc.gdshader" id="5_ekx6p"]
@@ -49,13 +48,6 @@ point_count = 3
 script = ExtResource("1_1q57p")
 
 [node name="Backdrop" parent="." instance=ExtResource("1_mtl7e")]
-metadata/_edit_lock_ = true
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707106, 0.707106, 0, -0.707106, 0.707106, 0, 50, 40)
-projection = 1
-size = 31.0
-script = ExtResource("4_uic0f")
 metadata/_edit_lock_ = true
 
 [node name="Battlefield" type="Area3D" parent="."]

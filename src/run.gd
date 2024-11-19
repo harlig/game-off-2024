@@ -6,7 +6,7 @@ const event_scene := preload("res://src/map/event.tscn")
 const secret_scene := preload("res://src/map/map_secret.tscn")
 
 @onready var map := $Map
-@onready var camera := $Map/Camera3D
+@onready var camera := $Camera3D
 @onready var deck := $DeckControl/Deck
 @onready var relic_area := $RelicArea
 
@@ -55,7 +55,7 @@ func _ready() -> void:
 
 	$Player.position = Vector3(player_position.x, 2, player_position.y)
 	update_accessible_nodes()
-	update_camera_position()
+	# update_camera_position()
 
 	# Connect the node clicked signal
 	map.connect("node_clicked", _on_node_clicked)
@@ -63,6 +63,8 @@ func _ready() -> void:
 	# TODO: need to figure out how to dynamically do this when a relic is added
 	for relic in relics:
 		relic_area.add_child(relic)
+
+	create_combat()
 
 func _process(delta: float) -> void:
 	if has_preloaded:
@@ -90,8 +92,8 @@ func _process(delta: float) -> void:
 func update_accessible_nodes() -> void:
 	accessible_nodes = map.map_tree[player_position]
 
-func update_camera_position() -> void:
-	camera.position = Vector3(player_position.x, camera.position.y, player_position.y)
+# func update_camera_position() -> void:
+# 	camera.position = Vector3(player_position.x, camera.position.y, player_position.y)
 
 func show_map() -> void:
 	$Map.show()
@@ -168,7 +170,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		map.visualize()
 
 		update_accessible_nodes()
-		update_camera_position()
+		# update_camera_position()
 
 func _on_gained_secret(gained_secret: String, secret_scene_to_delete: MapSecret) -> void:
 	secrets_gained.append(gained_secret)
@@ -186,18 +188,24 @@ func _on_lost_secret(secret_scene_to_delete: MapSecret) -> void:
 func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
 	existing_combat.get_node("Hand").queue_free()
+	for torch: Torch in existing_combat.all_torches:
+		torch.get_node("CPUParticles3D").emitting = false
 
 	var new_combat := create_combat()
-	new_combat.hide()
 	new_combat.get_node("HandDisplay").hide()
-	new_combat.position.x = new_combat.position.x + 65.0
+	for torch: Torch in new_combat.all_torches:
+		torch.get_node("CPUParticles3D").emitting = false
+
+	var offset := 56
+	new_combat.position = Vector3(existing_combat.position.x + offset, existing_combat.position.y, existing_combat.position.z)
 
 	var tween: Tween = get_tree().create_tween();
-	print("Existing combat position is ", existing_combat.position)
-	tween.tween_property(existing_combat, "position", Vector3(existing_combat.position.x - 5, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_LINEAR)
-	# tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - 65, new_combat.position.y, new_combat.position.z), 5.0)
+	tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - offset, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - offset, new_combat.position.y, new_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
-	print("Existing combat position is now ", existing_combat.position)
+	for ndx in range(new_combat.furthest_torch_lit + 1):
+		var torch := new_combat.all_torches[ndx]
+		torch.get_node("CPUParticles3D").emitting = true
 	new_combat.show()
 
 	existing_combat.queue_free()
@@ -236,7 +244,7 @@ func move_to_unvisited_node() -> void:
 		$Player.position = Vector3(player_position.x, $Player.position.y, player_position.y)
 	show_map()
 	update_accessible_nodes()
-	update_camera_position()
+	# update_camera_position()
 
 	map.visited_node(current_node)
 

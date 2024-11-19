@@ -31,11 +31,6 @@ size = Vector2(0.3, 0.3)
 [node name="Map" type="Node3D"]
 script = ExtResource("1_6kf0m")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 2)
-current = true
-size = 250.0
-
 [node name="TranslucentCover" type="Sprite3D" parent="."]
 transform = Transform3D(1000, 0, 0, 0, -4.37114e-05, -1000, 0, 1000, -4.37114e-05, 0, -9, 0)
 visible = false
@@ -48,7 +43,7 @@ modulate = Color(0.362022, 0.808241, 1, 1)
 texture = SubResource("PlaceholderTexture2D_y8fa8")
 
 [node name="ViewDeck" type="Button" parent="."]
-anchors_preset = -1
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
