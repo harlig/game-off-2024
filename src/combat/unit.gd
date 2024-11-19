@@ -158,7 +158,6 @@ func do_attacks(_anim_name: String) -> void:
 	play_animation(WALK_ANIMATION)
 
 func play_animation(animation_name: String) -> void:
-	print("Trying to play animation " + animation_name + "_" + str(scalar))
 	animation_player.play(animation_name + "_" + str(scalar))
 
 # when something runs into my target area
@@ -224,7 +223,6 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	else:
 		scalar = 3
 
-	print("adjusting units with scalar 		" + str(scalar))
 	var attackable_collider: CollisionShape3D = $Attackable/CollisionShape3D
 	var attackable_box_shape: BoxShape3D = attackable_collider.shape
 	var new_box_shape := BoxShape3D.new()
