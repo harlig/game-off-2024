@@ -1,7 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://wscd64ckgyue"]
+[gd_scene load_steps=8 format=3 uid="uid://wscd64ckgyue"]
 
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_q6vjb"]
 [ext_resource type="Script" path="res://src/between_combat.gd" id="1_wfxe2"]
+[ext_resource type="Shader" path="res://shaders/unit.gdshader" id="3_sbovk"]
+[ext_resource type="Texture2D" uid="uid://jn6tlsaflx1f" path="res://textures/base.png" id="4_uf3yk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_syhj0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_85ou5"]
+render_priority = 0
+shader = ExtResource("3_sbovk")
+shader_parameter/albedo = ExtResource("4_uf3yk")
+shader_parameter/flip_h = false
+shader_parameter/highlight = false
+shader_parameter/highlight_color = Color(1, 1, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_hfoqc"]
 
 [node name="BetweenCombat" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2)
@@ -16,6 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Button" type="Button" parent="Control"]
 layout_mode = 1
@@ -30,4 +45,17 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 36
 text = "Continue"
 
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 3, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_syhj0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+material_override = SubResource("ShaderMaterial_85ou5")
+mesh = SubResource("QuadMesh_hfoqc")
+
 [connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
+[connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
