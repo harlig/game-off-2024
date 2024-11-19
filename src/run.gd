@@ -33,6 +33,7 @@ var relics: Array[Relic] = [
 var time_for_preload := 0.5
 var time_spent := 0.0
 var has_preloaded := false
+var current_combat: Combat
 
 var secrets_gained: Array[String] = []
 
@@ -107,6 +108,19 @@ func hide_map(should_show_bank: bool) -> void:
 		$Map/BankControl.hide()
 
 
+func create_combat() -> Combat:
+	hide_map(false)
+	var new_combat: Combat = Combat.create_combat(combat_difficulty, relics)
+	current_combat = new_combat
+	combat_difficulty += 1
+
+	new_combat.connect("reward_presented", _on_combat_reward_presented)
+	new_combat.connect("reward_chosen", _on_combat_reward_chosen)
+	new_combat.connect("combat_over", _on_combat_over)
+	add_child(new_combat)
+	return new_combat
+
+
 func _on_node_clicked(node_position: Vector2) -> void:
 	if node_position in accessible_nodes:
 		var map_node: MapNode = map.node_instance_positions[node_position]
@@ -118,14 +132,7 @@ func _on_node_clicked(node_position: Vector2) -> void:
 		if map_node.has_been_beaten:
 			map.visited_node(current_node)
 		elif map_node.type == MapNode.NodeType.COMBAT:
-			hide_map(false)
-			var new_combat: Combat = Combat.create_combat(combat_difficulty, relics)
-			combat_difficulty += 1
-
-			new_combat.connect("reward_presented", _on_combat_reward_presented)
-			new_combat.connect("reward_chosen", _on_combat_reward_chosen)
-			new_combat.connect("combat_over", _on_combat_over)
-			add_child(new_combat)
+			create_combat()
 		elif map_node.type == MapNode.NodeType.SHOP:
 			hide_map(true)
 			var new_shop: Shop = shop_scene.instantiate()
@@ -176,18 +183,29 @@ func _on_lost_secret(secret_scene_to_delete: MapSecret) -> void:
 	show_map()
 	secret_scene_to_delete.queue_free()
 
-func _on_combat_over(combat_state: Combat.CombatState) -> void:
-	if combat_state == Combat.CombatState.WON:
-		print("Combat won!")
-		$Combat.queue_free()
-		map.visited_node(current_node)
-		show_map()
-	elif combat_state == Combat.CombatState.LOST:
-		print("Combat lost!")
-		$Combat.queue_free()
-		map.hide_node(current_node)
-		move_to_unvisited_node()
-		# TODO: maybe also want to remove a card from the deck or something
+func _on_combat_over(_combat_state: Combat.CombatState) -> void:
+	var existing_combat := current_combat
+	var new_combat := create_combat()
+	# existing_combat.get_node("HandDisplay").hide()
+	new_combat.get_node("HandDisplay").hide()
+	new_combat.position.x = new_combat.position.x + 25.0
+
+	var tween: Tween = get_tree().create_tween();
+	tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - 25, existing_combat.position.y, existing_combat.position.z), 10.0)
+	tween.parallel().tween_property(new_combat, "position", Vector3(new_combat.position.x - 25, new_combat.position.y, new_combat.position.z), 10.0)
+	await tween.finished
+
+	existing_combat.queue_free()
+	new_combat.get_node("HandDisplay").show()
+
+	# if combat_state == Combat.CombatState.WON:
+	# 	print("Combat won!")
+	# 	map.visited_node(current_node)
+	# 	show_map()
+	# elif combat_state == Combat.CombatState.LOST:
+	# 	print("Combat lost!")
+	# 	map.hide_node(current_node)
+	# 	move_to_unvisited_node()
 
 func move_to_unvisited_node() -> void:
 	# Unbeat and hide some of the previously visited nodes
@@ -231,6 +249,7 @@ func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 	elif reward.type == Reward.RewardData.Type.GOLD:
 		print("Received gold reward: ", reward.gold)
 		bank += reward.gold
+	current_combat.reward.queue_free()
 
 func _on_item_purchased(item: Card, cost: int) -> void:
 	deck.add_card(item)

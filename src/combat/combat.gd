@@ -323,6 +323,13 @@ func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 func finish_combat(new_state: CombatState) -> void:
 	state = new_state
 
+	for unit in current_ally_units:
+		unit.queue_free()
+	for unit in current_enemy_units:
+		unit.queue_free()
+	current_ally_units.clear()
+	current_enemy_units.clear()
+
 	$HandDisplay.hide()
 	$Opponent.should_spawn = false
 
