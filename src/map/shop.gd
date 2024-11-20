@@ -145,6 +145,7 @@ func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 		times_card_removed += 1
 
 func _on_deck_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
+	card.unhighlight()
 	deck.remove_card(card)
 	deck.toggle_visualize_deck(_on_deck_card_clicked_to_remove, _on_deck_card_mouse_entered, _on_deck_card_mouse_exited)
 

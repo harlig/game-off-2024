@@ -40,6 +40,7 @@ func shuffle_discard_into_draw() -> void:
 
 func discard(card: Card) -> void:
 	discard_pile.append(card)
+	card.unhighlight()
 
 func get_best_cards(num_cards: int) -> Array[Card]:
 	var best_cards: Array[Card] = []
