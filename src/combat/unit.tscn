@@ -597,6 +597,7 @@ tracks/1/keys = {
 resource_local_to_scene = true
 _data = {
 &"RESET": SubResource("Animation_8afef"),
+&"heal_1": SubResource("Animation_evayf"),
 &"attack_reversed_3": SubResource("Animation_u30rm"),
 &"light_torch_1": SubResource("Animation_ttp57"),
 &"heal_2": SubResource("Animation_evayg"),
@@ -606,15 +607,14 @@ _data = {
 &"light_torch_3": SubResource("Animation_hq6oo"),
 &"attack_1": SubResource("Animation_ckihm"),
 &"walk_3": SubResource("Animation_50sip"),
+&"walk_2": SubResource("Animation_8vw6i"),
 &"attack_reversed_1": SubResource("Animation_weuqb"),
 &"light_torch_reversed_1": SubResource("Animation_kmiha"),
 &"attack_reversed_2": SubResource("Animation_weuqc"),
-&"walk_2": SubResource("Animation_8vw6i"),
-&"light_torch_reversed_2": SubResource("Animation_kmihb"),
 &"heal_3": SubResource("Animation_mjboi"),
-&"light_torch_reversed_3": SubResource("Animation_7jli0"),
+&"light_torch_reversed_2": SubResource("Animation_kmihb"),
 &"light_torch_2": SubResource("Animation_ttp58"),
-&"heal_1": SubResource("Animation_evayf")
+&"light_torch_reversed_3": SubResource("Animation_7jli0")
 }
 
 [node name="Unit" type="Node3D"]
@@ -664,6 +664,7 @@ autoplay = "walk"
 
 [node name="Label3D" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 0)
+visible = false
 text = "dmg"
 font_size = 72
 
