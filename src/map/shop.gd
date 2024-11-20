@@ -135,7 +135,7 @@ func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 		if player_gold < remove_card_cost:
 			return
 
-		deck.toggle_visualize_deck(_on_card_clicked_to_remove)
+		deck.toggle_visualize_deck(_on_deck_card_clicked_to_remove, _on_deck_card_mouse_entered, _on_deck_card_mouse_exited)
 		$OfferArea.hide()
 		$LeaveShopButton.hide()
 		$RemoveCardOffer.hide()
@@ -144,14 +144,20 @@ func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 		card_removed.emit(remove_card_cost)
 		times_card_removed += 1
 
-func _on_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
+func _on_deck_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
 	deck.remove_card(card)
-	deck.toggle_visualize_deck(_on_card_clicked_to_remove)
+	deck.toggle_visualize_deck(_on_deck_card_clicked_to_remove, _on_deck_card_mouse_entered, _on_deck_card_mouse_exited)
 
 	$OfferArea.show()
 	$LeaveShopButton.show()
 	$RemoveCardOffer.show()
 	$Label.text = "Shop"
+
+func _on_deck_card_mouse_entered(card: Card) -> void:
+	card.highlight(Color.DARK_GREEN)
+
+func _on_deck_card_mouse_exited(card: Card) -> void:
+	card.unhighlight()
 
 
 func highlight(highlight_color: Color) -> void:
