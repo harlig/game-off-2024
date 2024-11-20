@@ -60,7 +60,7 @@ static func create_combat(combat_difficulty: int, relics_for_combat: Array[Relic
 
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
-	var enemy_cards := randomize_new_enemy_deck(difficulty * 100, difficulty * 50)
+	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20)
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, relics)
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(player_combat_deck)
@@ -71,8 +71,6 @@ func _ready() -> void:
 	$Opponent/Hand.initialize(enemy_combat_deck)
 
 	set_process(true)
-
-	$Opponent.spawn.connect(_on_opponent_spawn)
 
 	# spawn torch at player base, and enemy base
 	var player_base_torch := torch_scene.instantiate()

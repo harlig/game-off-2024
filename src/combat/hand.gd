@@ -64,7 +64,9 @@ func try_draw_card() -> bool:
 
 	var card := deck.draw()
 	if card == null:
+		print("No card to draw!")
 		return false
+
 	cards.append(card)
 	drew.emit(card)
 	return true
