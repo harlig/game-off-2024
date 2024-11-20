@@ -169,3 +169,4 @@ text = "$25"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="LeaveShopButton" to="." method="_on_leave_shop_button_pressed"]
+[connection signal="gui_input" from="RemoveCardOffer/BlankCard" to="." method="_on_remove_card_offer_gui_input"]

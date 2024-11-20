@@ -103,3 +103,7 @@ func _on_card_clicked(times_clicked: int, card: Card, offer: Control) -> void:
 
 		offer.queue_free()
 		last_clicked_card = null
+
+func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		print("Clicked remove card!")
