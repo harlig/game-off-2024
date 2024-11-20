@@ -133,6 +133,9 @@ func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		if player_gold < remove_card_cost:
+			highlight_remove_card(Color.RED)
+			await get_tree().create_timer(0.5).timeout
+			unhighlight_remove_card()
 			return
 
 		deck.toggle_visualize_deck(_on_deck_card_clicked_to_remove, _on_deck_card_mouse_entered, _on_deck_card_mouse_exited)
@@ -161,13 +164,13 @@ func _on_deck_card_mouse_exited(card: Card) -> void:
 	card.unhighlight()
 
 
-func highlight(highlight_color: Color) -> void:
+func highlight_remove_card(highlight_color: Color) -> void:
 	if not is_inside_tree():
 		return
 	$RemoveCardOffer/BlankCard/Highlight.material.set_shader_parameter("color", highlight_color)
 	$RemoveCardOffer/BlankCard/Highlight.show()
 
-func unhighlight() -> void:
+func unhighlight_remove_card() -> void:
 	# TODO: if I remove this, I get errors in the editor. however if I keep it, cards don't unhighlight once they've been discarded
 	if not is_inside_tree():
 		return
@@ -175,7 +178,7 @@ func unhighlight() -> void:
 	$RemoveCardOffer/BlankCard/Highlight.hide()
 
 func _on_remove_card_offer_mouse_entered() -> void:
-	highlight(Color.DARK_GREEN)
+	highlight_remove_card(Color.DARK_GREEN)
 
 func _on_remove_card_offer_mouse_exited() -> void:
-	unhighlight()
+	unhighlight_remove_card()
