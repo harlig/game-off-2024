@@ -55,6 +55,9 @@ func _ready() -> void:
 		var new_offer := create_new_offer(new_card)
 
 		new_card.connect("card_clicked", _on_card_clicked.bind(new_offer))
+		new_card.mouse_entered.connect(_on_card_mouse_entered.bind(new_card))
+		new_card.mouse_exited.connect(_on_card_mouse_exited.bind(new_card))
+
 		units_in_shop.append(new_card)
 		$OfferArea/Units.add_child(new_offer)
 
@@ -64,8 +67,18 @@ func _ready() -> void:
 		var new_offer := create_new_offer(new_card)
 
 		new_card.connect("card_clicked", _on_card_clicked.bind(new_offer))
+		new_card.mouse_entered.connect(_on_card_mouse_entered.bind(new_card))
+		new_card.mouse_exited.connect(_on_card_mouse_exited.bind(new_card))
+
 		spells_in_shop.append(new_card)
 		$OfferArea/Spells.add_child(new_offer)
+
+
+func _on_card_mouse_entered(card: Card) -> void:
+	card.highlight(Color.DARK_GREEN)
+
+func _on_card_mouse_exited(card: Card) -> void:
+	card.unhighlight()
 
 func create_new_offer(card: Card) -> Control:
 	var new_offer := blank_offer.duplicate()
@@ -84,7 +97,9 @@ func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 	last_clicked_card = card
 
 	if player_gold < card.get_score():
-		print("Not enough gold")
+		card.highlight(Color.RED)
+		await get_tree().create_timer(0.5).timeout
+		card.unhighlight()
 		return
 
 	# TODO: factor in actual cost
