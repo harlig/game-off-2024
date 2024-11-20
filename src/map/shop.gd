@@ -114,9 +114,13 @@ func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 		deck.toggle_visualize_deck(_on_card_clicked_to_remove)
 		$OfferArea.hide()
 		$LeaveShopButton.hide()
+		$RemoveCardOffer.hide()
+		$Label.text = "Remove a card"
 
 func _on_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
 	deck.remove_card(card)
 	deck.toggle_visualize_deck(_on_card_clicked_to_remove)
 	$OfferArea.show()
 	$LeaveShopButton.show()
+	$RemoveCardOffer.show()
+	$Label.text = "Shop"
