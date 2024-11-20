@@ -16,11 +16,15 @@ var cur_mana := 8:
 var draw_time_remaining := draw_time
 var mana_time_remaining := mana_time
 
+var paused := false
+
 signal drew(card: Card)
 signal discarded(card: Card)
 signal mana_updated(cur: int, max: int)
 
 func _physics_process(delta: float) -> void:
+	if paused:
+		return
 	draw_time_remaining -= delta
 
 	if draw_time_remaining <= 0:
@@ -59,6 +63,8 @@ func try_draw_card() -> bool:
 		return false
 
 	var card := deck.draw()
+	if card == null:
+		return false
 	cards.append(card)
 	drew.emit(card)
 	return true

@@ -60,7 +60,7 @@ static func create_combat(combat_difficulty: int, relics_for_combat: Array[Relic
 
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
-	var enemy_cards := randomize_new_enemy_deck(difficulty * 200, difficulty * 50)
+	var enemy_cards := randomize_new_enemy_deck(difficulty * 100, difficulty * 50)
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, relics)
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(player_combat_deck)
