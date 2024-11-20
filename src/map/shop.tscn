@@ -25,7 +25,7 @@ anchor_right = 0.5
 anchor_bottom = 0.6
 grow_horizontal = 2
 grow_vertical = 2
-columns = 3
+columns = 4
 
 [node name="BlankCard" parent="OfferArea" instance=ExtResource("2_2833r")]
 layout_mode = 2

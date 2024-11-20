@@ -1,12 +1,13 @@
 class_name Shop extends Control
 
-const SHOP_SIZE := 6
+@onready var blank_card: Control = $OfferArea/BlankCard
+
+const SHOP_UNIT_COUNT := 4
+const SHOP_SPELL_COUNT := 4
 var shop_value := 1
 var player_gold := 0
 
 var last_clicked_card: Card = null
-
-var blank_card: Control
 
 var cards_in_shop := []
 
@@ -35,9 +36,17 @@ class Item:
 
 
 func _ready() -> void:
-	blank_card = $OfferArea/BlankCard
-	for ndx in range(SHOP_SIZE):
-		var new_card := UnitList.new_card_by_id(randi() % UnitList.creature_cards.size()) if randf() < 0.7 else SpellList.new_card_by_id(randi() % SpellList.spell_cards.size())
+	# TODO: guarantee unique units and spells
+	for ndx in range(SHOP_UNIT_COUNT):
+		var new_card := UnitList.new_card_by_id(randi() % UnitList.creature_cards.size())
+		new_card.name = "Unit {ndx}"
+		new_card.connect("card_clicked", _on_card_clicked)
+		cards_in_shop.append(new_card)
+		$OfferArea.add_child(new_card)
+
+	for ndx in range(SHOP_SPELL_COUNT):
+		var new_card := SpellList.new_card_by_id(randi() % SpellList.spell_cards.size())
+		new_card.name = "Spell {ndx}"
 		new_card.connect("card_clicked", _on_card_clicked)
 		cards_in_shop.append(new_card)
 		$OfferArea.add_child(new_card)
