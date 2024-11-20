@@ -72,6 +72,8 @@ func _ready() -> void:
 
 	set_process(true)
 
+	$Opponent.spawn.connect(_on_opponent_spawn)
+
 	# spawn torch at player base, and enemy base
 	var player_base_torch := torch_scene.instantiate()
 	player_base_torch.is_lit = true
