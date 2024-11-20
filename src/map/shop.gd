@@ -7,6 +7,8 @@ const SHOP_SPELL_COUNT := 4
 var shop_value := 1
 var player_gold := 0
 
+var remove_card_cost := 25
+
 var last_clicked_card: Card = null
 
 var units_in_shop := []
@@ -66,44 +68,49 @@ func create_new_offer(card: Card) -> Control:
 	return new_offer
 
 
-func _on_card_clicked(times_clicked: int, card: Card, offer: Control) -> void:
+func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 	if last_clicked_card and last_clicked_card != card:
 		last_clicked_card.reset_selected()
 
 	last_clicked_card = card
 
-	if times_clicked == 2:
-		if player_gold < card.get_score():
-			print("Not enough gold")
-			return
+	if player_gold < card.get_score():
+		print("Not enough gold")
+		return
 
-		# TODO: factor in actual cost
-		var cost := card.get_score()
-		player_gold -= cost
-		item_purchased.emit(last_clicked_card, cost)
-		var new_blank_offer := blank_offer.duplicate()
-		new_blank_offer.get_node("Label").hide()
-		new_blank_offer.show()
-		var index_of: int
-		var card_area: Control
-		match card.type:
-			Card.CardType.UNIT:
-				index_of = units_in_shop.find(card)
-				units_in_shop.remove_at(index_of)
-				card_area = $OfferArea/Units
-			Card.CardType.SPELL:
-				index_of = spells_in_shop.find(card)
-				spells_in_shop.remove_at(index_of)
-				card_area = $OfferArea/Spells
-			_:
-				push_error("Unknown card type clicked in shop: ", card.type)
-		card_area.add_child(new_blank_offer)
-		# no clue why I need the +1 here but it works
-		card_area.move_child(new_blank_offer, index_of + 1)
+	# TODO: factor in actual cost
+	var cost := card.get_score()
+	player_gold -= cost
+	item_purchased.emit(last_clicked_card, cost)
+	var new_blank_offer := blank_offer.duplicate()
+	new_blank_offer.get_node("Label").hide()
+	new_blank_offer.show()
+	var index_of: int
+	var card_area: Control
+	match card.type:
+		Card.CardType.UNIT:
+			index_of = units_in_shop.find(card)
+			units_in_shop.remove_at(index_of)
+			card_area = $OfferArea/Units
+		Card.CardType.SPELL:
+			index_of = spells_in_shop.find(card)
+			spells_in_shop.remove_at(index_of)
+			card_area = $OfferArea/Spells
+		_:
+			push_error("Unknown card type clicked in shop: ", card.type)
+	card_area.add_child(new_blank_offer)
+	# no clue why I need the +1 here but it works
+	card_area.move_child(new_blank_offer, index_of + 1)
 
-		offer.queue_free()
-		last_clicked_card = null
+	offer.queue_free()
+	last_clicked_card = null
 
 func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		print("Clicked remove card!")
+		if player_gold < remove_card_cost:
+			print("Not enough gold to remove card")
+			return
+
+		# view deck, connect cards to a "remove card" option
+		print("Going to remove card!")
