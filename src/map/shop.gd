@@ -9,7 +9,8 @@ var player_gold := 0
 
 var last_clicked_card: Card = null
 
-var cards_in_shop := []
+var units_in_shop := []
+var spells_in_shop := []
 
 signal item_purchased(item: Card, cost: int)
 signal shop_closed()
@@ -41,14 +42,14 @@ func _ready() -> void:
 		var new_card := UnitList.new_card_by_id(randi() % UnitList.creature_cards.size())
 		new_card.name = "Unit {ndx}"
 		new_card.connect("card_clicked", _on_card_clicked)
-		cards_in_shop.append(new_card)
+		units_in_shop.append(new_card)
 		$OfferArea.add_child(new_card)
 
 	for ndx in range(SHOP_SPELL_COUNT):
 		var new_card := SpellList.new_card_by_id(randi() % SpellList.spell_cards.size())
 		new_card.name = "Spell {ndx}"
 		new_card.connect("card_clicked", _on_card_clicked)
-		cards_in_shop.append(new_card)
+		spells_in_shop.append(new_card)
 		$OfferArea.add_child(new_card)
 
 
@@ -67,11 +68,21 @@ func _on_card_clicked(times_clicked: int, card_instance: Card) -> void:
 		var cost := card_instance.get_score()
 		player_gold -= cost
 		item_purchased.emit(last_clicked_card, cost)
-		var index_of := cards_in_shop.find(card_instance)
 		var new_blank_card := blank_card.duplicate()
 		new_blank_card.show()
+		var index_of: int
+		match card_instance.type:
+			Card.CardType.UNIT:
+				index_of = units_in_shop.find(card_instance)
+				units_in_shop.remove_at(index_of)
+			Card.CardType.SPELL:
+				index_of = spells_in_shop.find(card_instance)
+				spells_in_shop.remove_at(index_of)
+			_:
+				push_error("Unknown card type clicked in shop: ", card_instance.type)
 		$OfferArea.add_child(new_blank_card)
 		# no clue why I need the +1 here but it works
 		$OfferArea.move_child(new_blank_card, index_of + 1)
+
 		card_instance.queue_free()
 		last_clicked_card = null
