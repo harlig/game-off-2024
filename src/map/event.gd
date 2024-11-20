@@ -53,7 +53,7 @@ func offer_buff_card() -> void:
 	$BuffCard/Button.connect("pressed", _on_buff_card_button_pressed.bind(buff_type, value))
 
 func _on_buff_card_button_pressed(buff_type: BuffType, value: int) -> void:
-	deck.toggle_visualize_deck([Card.CardType.UNIT])
+	# deck.toggle_visualize_deck([Card.CardType.UNIT])
 	$BuffCard/Button.hide()
 
 	for card in deck.cards:
@@ -79,6 +79,6 @@ func _on_card_clicked(_times_clicked: int, card: Card, buff_type: BuffType, valu
 
 	for deck_card in deck.cards:
 		deck_card.disconnect("card_clicked", _on_card_clicked)
-	deck.toggle_visualize_deck()
+	# deck.toggle_visualize_deck()
 
 	emit_signal("event_resolved", 0)

@@ -9,8 +9,8 @@ const cricket_unit_texture_path := "res://textures/unit/cricket.png"
 
 var cards: Array[Card] = []
 
-
 var is_visualizing_deck: bool = false
+var cards_displayed: Array[Card] = []
 
 
 func _ready() -> void:
@@ -44,20 +44,24 @@ func add_card(card: Card) -> void:
 	var duped_card: Card = Card.duplicate_card(card)
 	cards.append(duped_card)
 
+func remove_card(card: Card) -> void:
+	cards.erase(card)
+	if (is_visualizing_deck):
+		$GridContainer.remove_child(card)
+		cards_displayed.erase(card)
 
-var cards_displayed: Array[Card] = []
-func toggle_visualize_deck(card_types_to_display: Array[Card.CardType]=[]) -> bool:
+func toggle_visualize_deck(on_card_clicked_attachment: Callable) -> bool:
 	is_visualizing_deck = !is_visualizing_deck
-	print("Toggling visualizing deck with types to display ", card_types_to_display)
+	print("Toggling visualizing deck")
 	if is_visualizing_deck:
 		for card in cards:
-			# yikes this is garbage but whatever, would love to set the default to all enum values but too hard rn
-			if card_types_to_display.size() == 0 or card.type in card_types_to_display:
-				cards_displayed.append(card)
-				$GridContainer.add_child(card)
+			card.card_clicked.connect(on_card_clicked_attachment)
+			cards_displayed.append(card)
+			$GridContainer.add_child(card)
 
 	else:
 		for card in cards_displayed:
+			card.card_clicked.disconnect(on_card_clicked_attachment)
 			card.reset_selected()
 			$GridContainer.remove_child(card)
 		cards_displayed.clear()

@@ -80,7 +80,7 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	for torch: Torch in existing_combat.all_torches:
 		torch.get_node("CPUParticles3D").emitting = false
 
-	var between_combat: BetweenCombat = BetweenCombat.create_between_combat(combat_difficulty, bank)
+	var between_combat: BetweenCombat = BetweenCombat.create_between_combat(combat_difficulty, bank, deck)
 	between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 	between_combat.item_purchased.connect(_on_item_purchased)
 	between_combat.get_node("Control").hide()

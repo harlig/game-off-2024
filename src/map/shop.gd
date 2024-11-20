@@ -13,6 +13,7 @@ var last_clicked_card: Card = null
 
 var units_in_shop := []
 var spells_in_shop := []
+var deck: Deck
 
 signal item_purchased(item: Card, cost: int)
 signal shop_closed()
@@ -107,10 +108,15 @@ func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 
 func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		print("Clicked remove card!")
 		if player_gold < remove_card_cost:
-			print("Not enough gold to remove card")
 			return
 
-		# view deck, connect cards to a "remove card" option
-		print("Going to remove card!")
+		deck.toggle_visualize_deck(_on_card_clicked_to_remove)
+		$OfferArea.hide()
+		$LeaveShopButton.hide()
+
+func _on_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
+	deck.remove_card(card)
+	deck.toggle_visualize_deck(_on_card_clicked_to_remove)
+	$OfferArea.show()
+	$LeaveShopButton.show()

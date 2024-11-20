@@ -9,14 +9,16 @@ signal item_purchased(item: Card, cost: int)
 
 var combat_difficulty: int
 var bank: int
+var deck: Deck
 
 var can_highlight_shopkeeper := true
 var shop: Shop
 
-static func create_between_combat(init_combat_difficulty: int, init_bank: int) -> BetweenCombat:
+static func create_between_combat(init_combat_difficulty: int, init_bank: int, init_deck: Deck) -> BetweenCombat:
 	var between_combat_instance: BetweenCombat = between_combat_scene.instantiate()
 	between_combat_instance.combat_difficulty = init_combat_difficulty
 	between_combat_instance.bank = init_bank
+	between_combat_instance.deck = init_deck
 	return between_combat_instance
 
 
@@ -52,6 +54,7 @@ func create_shop() -> void:
 	var new_shop: Shop = shop_scene.instantiate()
 	new_shop.shop_value = combat_difficulty
 	new_shop.player_gold = bank
+	new_shop.deck = deck
 	new_shop.item_purchased.connect(item_purchased.emit)
 	new_shop.shop_closed.connect(_on_shop_closed)
 	shop = new_shop
