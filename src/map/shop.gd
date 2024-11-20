@@ -11,8 +11,6 @@ var player_gold := 0
 
 var remove_card_cost := 25
 
-var last_clicked_card: Card = null
-
 var units_in_shop := []
 var spells_in_shop := []
 var deck: Deck
@@ -92,11 +90,6 @@ func create_new_offer(card: Card) -> Control:
 
 
 func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
-	if last_clicked_card and last_clicked_card != card:
-		last_clicked_card.reset_selected()
-
-	last_clicked_card = card
-
 	if player_gold < card.get_score():
 		card.highlight(Color.RED)
 		await get_tree().create_timer(0.5).timeout
@@ -106,7 +99,8 @@ func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 	# TODO: factor in actual cost
 	var cost := card.get_score()
 	player_gold -= cost
-	item_purchased.emit(last_clicked_card, cost)
+	card.unhighlight()
+	item_purchased.emit(card, cost)
 	var new_blank_offer := blank_offer.duplicate()
 	new_blank_offer.get_node("Label").hide()
 	new_blank_offer.show()
@@ -128,7 +122,6 @@ func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 	card_area.move_child(new_blank_offer, index_of + 1)
 
 	offer.queue_free()
-	last_clicked_card = null
 
 func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
