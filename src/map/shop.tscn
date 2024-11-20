@@ -16,7 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2kuu5")
 
-[node name="OfferArea" type="GridContainer" parent="."]
+[node name="OfferArea" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -25,10 +25,14 @@ anchor_right = 0.5
 anchor_bottom = 0.6
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Units" type="GridContainer" parent="OfferArea"]
+layout_mode = 2
 columns = 4
 
-[node name="BlankCard" parent="OfferArea" instance=ExtResource("2_2833r")]
+[node name="Spells" type="GridContainer" parent="OfferArea"]
 layout_mode = 2
+columns = 4
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -53,5 +57,12 @@ anchor_right = 0.2
 anchor_bottom = 0.2
 theme_override_font_sizes/font_size = 48
 text = "Leave shop"
+
+[node name="BlankCard" parent="." instance=ExtResource("2_2833r")]
+layout_mode = 2
+offset_left = 960.0
+offset_top = 646.0
+offset_right = 1152.0
+offset_bottom = 902.0
 
 [connection signal="pressed" from="LeaveShopButton" to="." method="_on_leave_shop_button_pressed"]
