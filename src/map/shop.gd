@@ -4,6 +4,8 @@ class_name Shop extends Control
 
 const SHOP_UNIT_COUNT := 4
 const SHOP_SPELL_COUNT := 4
+const BASE_REMOVE_CARD_COST := 25
+
 var shop_value := 1
 var player_gold := 0
 
@@ -14,9 +16,15 @@ var last_clicked_card: Card = null
 var units_in_shop := []
 var spells_in_shop := []
 var deck: Deck
+var times_card_removed: int:
+	set(value):
+		times_card_removed = value
+		remove_card_cost = (1 + times_card_removed) * BASE_REMOVE_CARD_COST
+		$RemoveCardOffer/Label.text = "$" + str(remove_card_cost)
 
 signal item_purchased(item: Card, cost: int)
 signal shop_closed()
+signal card_removed(cost: int)
 
 func _on_leave_shop_button_pressed() -> void:
 	shop_closed.emit()
@@ -116,10 +124,14 @@ func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 		$LeaveShopButton.hide()
 		$RemoveCardOffer.hide()
 		$Label.text = "Remove a card"
+		player_gold -= remove_card_cost
+		card_removed.emit(remove_card_cost)
+		times_card_removed += 1
 
 func _on_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
 	deck.remove_card(card)
 	deck.toggle_visualize_deck(_on_card_clicked_to_remove)
+
 	$OfferArea.show()
 	$LeaveShopButton.show()
 	$RemoveCardOffer.show()

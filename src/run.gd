@@ -12,6 +12,7 @@ var bank := 10:
 	set(value):
 		bank = value
 		bank_control.get_node("Value").text = str(value)
+var times_card_removed := 0
 
 # TODO: do we even want relics?
 var relics: Array[Relic] = [
@@ -80,10 +81,11 @@ func _on_combat_over(_combat_state: Combat.CombatState) -> void:
 	for torch: Torch in existing_combat.all_torches:
 		torch.get_node("CPUParticles3D").emitting = false
 
-	var between_combat: BetweenCombat = BetweenCombat.create_between_combat(combat_difficulty, bank, deck)
+	var between_combat: BetweenCombat = BetweenCombat.create_between_combat(combat_difficulty, bank, deck, times_card_removed)
 	between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 	between_combat.item_purchased.connect(_on_item_purchased)
 	between_combat.get_node("Control").hide()
+	between_combat.card_removed.connect(_on_card_removed)
 	add_child(between_combat)
 
 	var offset := 56
@@ -149,3 +151,8 @@ func _on_item_purchased(item: Card, cost: int) -> void:
 	# 	deck.add_card(item.card)
 	# else:
 	# 	push_warning("Item type not supported yet")
+
+
+func _on_card_removed(cost: int) -> void:
+	times_card_removed += 1
+	bank -= cost
