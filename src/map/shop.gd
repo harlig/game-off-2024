@@ -29,6 +29,7 @@ signal card_removed(cost: int)
 func _on_leave_shop_button_pressed() -> void:
 	shop_closed.emit()
 
+
 class Item:
 	var cost := 0
 	var card: Card
@@ -151,3 +152,23 @@ func _on_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
 	$LeaveShopButton.show()
 	$RemoveCardOffer.show()
 	$Label.text = "Shop"
+
+
+func highlight(highlight_color: Color) -> void:
+	if not is_inside_tree():
+		return
+	$RemoveCardOffer/BlankCard/Highlight.material.set_shader_parameter("color", highlight_color)
+	$RemoveCardOffer/BlankCard/Highlight.show()
+
+func unhighlight() -> void:
+	# TODO: if I remove this, I get errors in the editor. however if I keep it, cards don't unhighlight once they've been discarded
+	if not is_inside_tree():
+		return
+
+	$RemoveCardOffer/BlankCard/Highlight.hide()
+
+func _on_remove_card_offer_mouse_entered() -> void:
+	highlight(Color.DARK_GREEN)
+
+func _on_remove_card_offer_mouse_exited() -> void:
+	unhighlight()
