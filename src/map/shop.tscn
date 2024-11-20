@@ -28,10 +28,12 @@ grow_vertical = 2
 
 [node name="Units" type="GridContainer" parent="OfferArea"]
 layout_mode = 2
+theme_override_constants/h_separation = 30
 columns = 4
 
 [node name="Spells" type="GridContainer" parent="OfferArea"]
 layout_mode = 2
+theme_override_constants/h_separation = 30
 columns = 4
 
 [node name="Label" type="Label" parent="."]
@@ -58,11 +60,39 @@ anchor_bottom = 0.2
 theme_override_font_sizes/font_size = 48
 text = "Leave shop"
 
-[node name="BlankCard" parent="." instance=ExtResource("2_2833r")]
-layout_mode = 2
-offset_left = 960.0
-offset_top = 646.0
-offset_right = 1152.0
-offset_bottom = 902.0
+[node name="BlankOffer" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(192, 336)
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BlankCard" parent="BlankOffer" instance=ExtResource("2_2833r")]
+visible = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -96.0
+offset_right = 96.0
+offset_bottom = 256.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="BlankOffer"]
+custom_minimum_size = Vector2(192, 60)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = -60.0
+offset_right = 96.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 36
+text = "$100"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="LeaveShopButton" to="." method="_on_leave_shop_button_pressed"]
