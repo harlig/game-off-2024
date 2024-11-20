@@ -192,22 +192,22 @@ func update_spell_display() -> void:
 	var description_text := ""
 	match spell.type:
 		SpellList.SpellType.DAMAGE:
-			description_text = "Deals " + str(round(spell.value)) + " damage"
+			description_text = "Deals " + str(int(round(spell.value))) + " damage"
 		SpellList.SpellType.HEAL:
-			description_text = "Heals " + str(round(spell.value)) + " health"
+			description_text = "Heals " + str(int(round(spell.value))) + " health"
 		SpellList.SpellType.CUR_MANA:
-			description_text = "Gives " + str(round(spell.value)) + " mana"
+			description_text = "Gives " + str(int(round(spell.value))) + " mana"
 		SpellList.SpellType.MAX_MANA:
-			description_text = "Increase max mana by " + str(round(spell.value)) + " for this combat"
+			description_text = "Increase max mana by " + str(int(round(spell.value))) + " for this combat"
 		SpellList.SpellType.MANA_REGEN:
 			description_text = "Increase mana regen by " + str(spell.value) + "x for this combat"
 		SpellList.SpellType.DRAW_CARDS:
 			if spell.value <= Hand.MAX_HAND_SIZE:
-				description_text = "Draw " + str(round(spell.value)) + " cards"
+				description_text = "Draw " + str(int(round(spell.value))) + " cards"
 			else:
 				description_text = "Draw cards until hand is full"
 		SpellList.SpellType.DRAW_CARDS_REGEN:
-			description_text = "Increase draw speed by " + str(round(spell.value)) + "x for this combat"
+			description_text = "Increase draw speed by " + str(int(round(spell.value))) + "x for this combat"
 
 	$DescriptionArea/SpellDescription.show()
 	$DescriptionArea/SpellDescription.text = description_text
