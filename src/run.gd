@@ -38,12 +38,6 @@ var current_combat: Combat
 func _ready() -> void:
 	# kinda janky but guarantees that the bank's text will get updated to its starting value
 	bank = bank
-
-	# TODO: need to figure out how to dynamically do this when a relic is added
-	# TODO: do we even want to display relics? I removed the below code
-	# for relic in relics:
-	# 	relic_area.add_child(relic)
-
 	create_combat()
 
 func _process(delta: float) -> void:
