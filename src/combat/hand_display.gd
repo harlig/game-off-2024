@@ -87,10 +87,8 @@ func visualize_draw_pile() -> void:
 	$DrawArea/Label.text = str(draw_pile_size)
 	if draw_pile_size > 0:
 		$DrawArea/TextureRect.show()
-		$DrawArea/Label.show()
 	else:
 		$DrawArea/TextureRect.hide()
-		$DrawArea/Label.hide()
 
 	if draw_pile_size > 1:
 		$DrawArea/TextureRect2.show()
@@ -108,10 +106,8 @@ func visualize_discard_pile() -> void:
 	$DiscardArea/Label.text = str(discard_pile_size)
 	if discard_pile_size > 0:
 		$DiscardArea/TextureRect.show()
-		$DiscardArea/Label.show()
 	else:
 		$DiscardArea/TextureRect.hide()
-		$DiscardArea/Label.hide()
 
 	if discard_pile_size > 1:
 		$DiscardArea/TextureRect2.show()
