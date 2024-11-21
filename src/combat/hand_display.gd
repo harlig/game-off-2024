@@ -8,6 +8,8 @@ const CARD_Y_SIZE = 256.0
 const CARD_PLAY_HEIGHT = 300.0
 const CARD_CANCEL_HEIGHT = 40.0
 
+@onready var hand: Hand = get_parent().get_node("Hand") as Hand
+
 var current_hover: Card = null
 var current_selected: Card = null
 
@@ -64,8 +66,8 @@ func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
 	card.mouse_exited.connect(_on_card_mouse_exited.bind(card))
 
 	update_hand_positions();
-	$DrawArea/Label.text = str((get_parent().get_node("Hand") as Hand).deck.draw_pile.size())
-	$DiscardArea/Label.text = str((get_parent().get_node("Hand") as Hand).deck.discard_pile.size())
+	visualize_draw_pile()
+	visualize_discard_pile()
 
 
 func _on_hand_discarded(card: Card) -> void:
@@ -77,7 +79,49 @@ func _on_hand_discarded(card: Card) -> void:
 	$HandArea.remove_child(card)
 
 	update_hand_positions();
-	$DiscardArea/Label.text = str((get_parent().get_node("Hand") as Hand).deck.discard_pile.size())
+	visualize_discard_pile()
+
+
+func visualize_draw_pile() -> void:
+	var draw_pile_size := hand.deck.draw_pile.size()
+	$DrawArea/Label.text = str(draw_pile_size)
+	if draw_pile_size > 0:
+		$DrawArea/TextureRect.show()
+		$DrawArea/Label.show()
+	else:
+		$DrawArea/TextureRect.hide()
+		$DrawArea/Label.hide()
+
+	if draw_pile_size > 1:
+		$DrawArea/TextureRect2.show()
+	else:
+		$DrawArea/TextureRect2.hide()
+
+	if draw_pile_size > 2:
+		$DrawArea/TextureRect3.show()
+	else:
+		$DrawArea/TextureRect3.hide()
+
+
+func visualize_discard_pile() -> void:
+	var discard_pile_size := hand.deck.discard_pile.size()
+	$DiscardArea/Label.text = str(discard_pile_size)
+	if discard_pile_size > 0:
+		$DiscardArea/TextureRect.show()
+		$DiscardArea/Label.show()
+	else:
+		$DiscardArea/TextureRect.hide()
+		$DiscardArea/Label.hide()
+
+	if discard_pile_size > 1:
+		$DiscardArea/TextureRect2.show()
+	else:
+		$DiscardArea/TextureRect2.hide()
+
+	if discard_pile_size > 2:
+		$DiscardArea/TextureRect3.show()
+	else:
+		$DiscardArea/TextureRect3.hide()
 
 
 func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
@@ -88,7 +132,7 @@ func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
 
 
 func highlight_current_card() -> void:
-	if get_parent().get_node("Hand").can_play(current_selected):
+	if hand.can_play(current_selected):
 		current_selected.highlight(Color.DARK_GREEN)
 	else:
 		current_selected.highlight(Color.RED)

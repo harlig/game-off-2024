@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/combat/reward.tscn" id="8_1gtat"]
 [ext_resource type="Texture2D" uid="uid://c8qybgyq1afys" path="res://textures/hud/line_arrow_small.png" id="9_g3f32"]
 [ext_resource type="Script" path="res://src/combat/opponent.gd" id="9_i3xgm"]
-[ext_resource type="Texture2D" uid="uid://djmxoep3ddp8y" path="res://textures/card/card_blank.png" id="10_cacu0"]
+[ext_resource type="Texture2D" uid="uid://vf3m2jamdf57" path="res://textures/card/back_of_card.png" id="10_nl47w"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kqti8"]
 size = Vector3(46, 1, 6)
@@ -182,7 +182,38 @@ offset_bottom = 1048.0
 rotation = -0.383972
 mouse_filter = 2
 
+[node name="TextureRect3" type="TextureRect" parent="HandDisplay/DrawArea"]
+visible = false
+custom_minimum_size = Vector2(96, 128)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_top = -12.0
+offset_right = 36.0
+offset_bottom = 116.0
+grow_horizontal = 2
+texture = ExtResource("10_nl47w")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="HandDisplay/DrawArea"]
+visible = false
+custom_minimum_size = Vector2(96, 128)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -54.0
+offset_top = -6.0
+offset_right = 42.0
+offset_bottom = 122.0
+grow_horizontal = 2
+texture = ExtResource("10_nl47w")
+expand_mode = 1
+
 [node name="TextureRect" type="TextureRect" parent="HandDisplay/DrawArea"]
+visible = false
 custom_minimum_size = Vector2(96, 128)
 layout_mode = 1
 anchors_preset = 5
@@ -192,10 +223,11 @@ offset_left = -48.0
 offset_right = 48.0
 offset_bottom = 128.0
 grow_horizontal = 2
-texture = ExtResource("10_cacu0")
+texture = ExtResource("10_nl47w")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="HandDisplay/DrawArea"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -222,7 +254,38 @@ offset_bottom = 1008.0
 rotation = 0.383972
 mouse_filter = 2
 
+[node name="TextureRect3" type="TextureRect" parent="HandDisplay/DiscardArea"]
+visible = false
+custom_minimum_size = Vector2(96, 128)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -36.0
+offset_top = -12.0
+offset_right = 60.0
+offset_bottom = 116.0
+grow_horizontal = 2
+texture = ExtResource("10_nl47w")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="HandDisplay/DiscardArea"]
+visible = false
+custom_minimum_size = Vector2(96, 128)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -42.0
+offset_top = -6.0
+offset_right = 54.0
+offset_bottom = 122.0
+grow_horizontal = 2
+texture = ExtResource("10_nl47w")
+expand_mode = 1
+
 [node name="TextureRect" type="TextureRect" parent="HandDisplay/DiscardArea"]
+visible = false
 custom_minimum_size = Vector2(96, 128)
 layout_mode = 1
 anchors_preset = 5
@@ -232,10 +295,11 @@ offset_left = -48.0
 offset_right = 48.0
 offset_bottom = 128.0
 grow_horizontal = 2
-texture = ExtResource("10_cacu0")
+texture = ExtResource("10_nl47w")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="HandDisplay/DiscardArea"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
