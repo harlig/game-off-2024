@@ -75,42 +75,49 @@ func create_combat() -> Combat:
 	add_child(new_combat)
 	return new_combat
 
-func _on_combat_over(_combat_state: Combat.CombatState) -> void:
+func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
 	existing_combat.get_node("Hand").queue_free()
 	for torch: Torch in existing_combat.all_torches:
 		torch.get_node("CPUParticles3D").emitting = false
 
-	var between_combat: BetweenCombat = BetweenCombat.create_between_combat(combat_difficulty, bank, deck, times_card_removed)
-	between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
-	between_combat.item_purchased.connect(_on_item_purchased)
-	between_combat.get_node("Control").hide()
-	between_combat.card_removed.connect(_on_card_removed)
-	add_child(between_combat)
+	# on combat won, create a shop and go right
+	# on combat lose, create a retry and go left
 
-	var offset := 56
-	between_combat.position = Vector3(existing_combat.position.x + offset, between_combat.position.y, between_combat.position.z)
+	if combat_state == Combat.CombatState.WON:
+		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed)
+		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
+		between_combat.item_purchased.connect(_on_item_purchased)
+		between_combat.get_node("Continue").hide()
+		between_combat.card_removed.connect(_on_card_removed)
+		add_child(between_combat)
 
-	var tween: Tween = get_tree().create_tween();
-	tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - offset, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
-	tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
-	await tween.finished
-	existing_combat.queue_free()
-	# only do this if the player hasn't yet opened the shop
-	if between_combat.shop == null:
-		between_combat.get_node("Control").show()
+		var offset := 56
+		between_combat.position = Vector3(existing_combat.position.x + offset, between_combat.position.y, between_combat.position.z)
 
-	# if combat_state == Combat.CombatState.WON:
-	# 	print("Combat won!")
-	# 	map.visited_node(current_node)
-	# 	show_map()
-	# elif combat_state == Combat.CombatState.LOST:
-	# 	print("Combat lost!")
-	# 	map.hide_node(current_node)
-	# 	move_to_unvisited_node()
+		var tween: Tween = get_tree().create_tween();
+		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - offset, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
+		existing_combat.queue_free()
+		# only do this if the player hasn't yet opened the shop
+		if between_combat.shop == null:
+			between_combat.get_node("Continue").show()
+	elif combat_state == Combat.CombatState.LOST:
+		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed)
+		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
+		add_child(between_combat)
+
+		var offset := 56
+		between_combat.position = Vector3(existing_combat.position.x - offset, between_combat.position.y, between_combat.position.z)
+
+		var tween: Tween = get_tree().create_tween();
+		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x + offset, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
+		existing_combat.queue_free()
 
 func continue_to_next_combat(between_combat: BetweenCombat) -> void:
-	between_combat.get_node("Control").hide()
 	bank_control.hide()
 	var offset := 56
 	var new_combat := create_combat()

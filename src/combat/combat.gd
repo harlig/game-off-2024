@@ -408,6 +408,7 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 
 func _on_combat_lost_button_pressed() -> void:
 	combat_over.emit(state)
+	$Lost.hide()
 
 
 func _on_hand_mana_updated(_cur: int, _max: int) -> void:

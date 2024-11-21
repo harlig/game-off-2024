@@ -13,44 +13,60 @@ var bank: int
 var deck: Deck
 var times_card_removed: int
 
-var can_highlight_shopkeeper := true
+var can_highlight_interactable := true
 var shop: Shop
+var type: Type
+
+enum Type {
+	SHOP,
+	RETRY
+}
 
 
-static func create_between_combat(init_combat_difficulty: int, init_bank: int, init_deck: Deck, init_times_card_removed: int) -> BetweenCombat:
+static func create_between_combat(init_type: Type, init_combat_difficulty: int, init_bank: int, init_deck: Deck, init_times_card_removed: int) -> BetweenCombat:
 	var between_combat_instance: BetweenCombat = between_combat_scene.instantiate()
+	between_combat_instance.type = init_type
 	between_combat_instance.combat_difficulty = init_combat_difficulty
 	between_combat_instance.bank = init_bank
 	between_combat_instance.deck = init_deck
 	between_combat_instance.times_card_removed = init_times_card_removed
+
+	if init_type == Type.RETRY:
+		between_combat_instance.get_node("Continue").hide()
+
 	return between_combat_instance
 
 
 func _on_button_pressed() -> void:
-	can_highlight_shopkeeper = false
+	can_highlight_interactable = false
+	$Continue.hide()
 	continue_pressed.emit()
 
 
 func _on_area_3d_mouse_entered() -> void:
-	if can_highlight_shopkeeper:
-		$Shop/MeshInstance3D.material_override.set_shader_parameter("highlight", true)
+	if can_highlight_interactable:
+		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", true)
 
 
 func _on_area_3d_mouse_exited() -> void:
-	$Shop/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
+	$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 
 
 func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if not can_highlight_shopkeeper:
+	if not can_highlight_interactable:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		create_shop()
-		$Shop/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
-		can_highlight_shopkeeper = false
+		if type == Type.SHOP:
+			create_shop()
+		elif type == Type.RETRY:
+			print("would do a retry here")
+			$Continue.show()
+		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
+		can_highlight_interactable = false
 
 
 func create_shop() -> void:
-	$Control.hide()
+	$Continue.hide()
 	if shop != null:
 		shop.show()
 		return
@@ -69,5 +85,5 @@ func create_shop() -> void:
 
 func _on_shop_closed() -> void:
 	shop.hide()
-	$Control.show()
-	can_highlight_shopkeeper = true
+	$Continue.show()
+	can_highlight_interactable = true
