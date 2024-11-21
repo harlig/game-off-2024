@@ -64,6 +64,8 @@ func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
 	card.mouse_exited.connect(_on_card_mouse_exited.bind(card))
 
 	update_hand_positions();
+	$DrawArea/Label.text = str((get_parent().get_node("Hand") as Hand).deck.draw_pile.size())
+	$DiscardArea/Label.text = str((get_parent().get_node("Hand") as Hand).deck.discard_pile.size())
 
 
 func _on_hand_discarded(card: Card) -> void:
