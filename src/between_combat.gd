@@ -14,7 +14,10 @@ var deck: Deck
 var times_card_removed: int
 
 var can_highlight_interactable := true
+
 var shop: Shop
+var lose_combat: LoseCombat
+
 var type: Type
 
 enum Type {
@@ -59,8 +62,7 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 		if type == Type.SHOP:
 			create_shop()
 		elif type == Type.RETRY:
-			print("would do a retry here")
-			$Continue.show()
+			create_lose_combat()
 		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 		can_highlight_interactable = false
 
@@ -87,3 +89,15 @@ func _on_shop_closed() -> void:
 	shop.hide()
 	$Continue.show()
 	can_highlight_interactable = true
+
+func create_lose_combat() -> void:
+	var new_lose_combat: LoseCombat = LoseCombat.create_lose_combat(CombatDeck.create_combat_deck(deck.cards))
+	new_lose_combat.card_removed.connect(_on_lose_combat_card_removed)
+	add_child(new_lose_combat)
+	lose_combat = new_lose_combat
+
+func _on_lose_combat_card_removed(card: Card) -> void:
+	print("Removing card in between combat")
+	deck.remove_card(card)
+	lose_combat.hide()
+	$Continue.show()
