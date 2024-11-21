@@ -8,10 +8,14 @@ const MAX_HAND_SIZE := 8
 
 var cards: Array[Card] = []
 var deck: CombatDeck;
-var max_mana := 8
+var max_mana := 8:
+	set(value):
+		max_mana = value
+		mana_updated.emit(cur_mana, max_mana)
 var cur_mana := 8:
 	set(value):
 		cur_mana = min(value, max_mana)
+		mana_updated.emit(cur_mana, max_mana)
 
 var draw_time_remaining := draw_time
 var mana_time_remaining := mana_time
@@ -36,7 +40,6 @@ func _physics_process(delta: float) -> void:
 	if mana_time_remaining <= 0:
 		cur_mana += 1
 		mana_time_remaining = mana_time
-		mana_updated.emit(cur_mana, max_mana)
 
 func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) -> void:
 	deck = combat_deck;
@@ -88,7 +91,6 @@ func add_secret(card: Card) -> void:
 
 func play_card(card: Card) -> void:
 	cur_mana -= card.mana
-	mana_updated.emit(cur_mana, max_mana)
 	var hand_display := get_node_or_null("../HandDisplay")
 	if card.is_secret and hand_display:
 		hand_display.reveal_secret(card)
