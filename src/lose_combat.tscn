@@ -52,6 +52,7 @@ anchor_right = 0.65
 anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 0
 theme_override_font_sizes/font_size = 48
 text = "Ah dang it :( "
 

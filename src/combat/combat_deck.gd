@@ -8,6 +8,8 @@ var all_cards: Array[Card] = []
 var discard_pile: Array[Card] = []
 var draw_pile: Array[Card] = []
 
+var combat_deck_card_to_original_card: Dictionary[Card, Card] = {}
+
 static func create_combat_deck(cards: Array[Card], relics: Array[Relic]=[]) -> CombatDeck:
 	var combat_deck: CombatDeck = combat_deck_scene.instantiate()
 
@@ -18,6 +20,8 @@ static func create_combat_deck(cards: Array[Card], relics: Array[Relic]=[]) -> C
 
 		combat_deck.all_cards.append(new_card)
 		combat_deck.draw_pile.append(new_card)
+
+		combat_deck.combat_deck_card_to_original_card[new_card] = card
 	combat_deck.draw_pile.shuffle()
 	return combat_deck
 

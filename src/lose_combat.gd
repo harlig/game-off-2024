@@ -18,6 +18,7 @@ static func create_lose_combat(init_deck: CombatDeck) -> LoseCombat:
 
 func _on_button_pressed() -> void:
 	$Label.hide()
+	$Button.hide()
 	$Title.text = "Remove a card"
 
 	var cards_drawn: Array[Card] = []
@@ -38,9 +39,9 @@ func _on_card_mouse_exited(card: Card) -> void:
 	card.unhighlight()
 
 
-func _on_card_clicked(_times_clicked: int, card: Card) -> void:
+func _on_card_clicked(_times_clicked: int, combat_deck_card: Card) -> void:
 	# TODO: make the card blow up or something
-	card_removed.emit(card)
+	card_removed.emit(deck.combat_deck_card_to_original_card[combat_deck_card])
 
 func draw_and_tween_card(ndx: int) -> Card:
 	# TODO: this should draw your BEST card at the time
