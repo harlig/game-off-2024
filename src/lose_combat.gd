@@ -18,7 +18,7 @@ static func create_lose_combat(init_deck: CombatDeck) -> LoseCombat:
 
 func _on_button_pressed() -> void:
 	$Label.hide()
-	$Title.text = "Select a card to remove"
+	$Title.text = "Remove a card"
 
 	var cards_drawn: Array[Card] = []
 	for ndx in range(NUM_CARDS_TO_DRAW):
@@ -28,10 +28,18 @@ func _on_button_pressed() -> void:
 		cards_drawn.append(card)
 		# TODO: wire up card to card click and hover
 		card.card_clicked.connect(_on_card_clicked)
+		card.mouse_entered.connect(_on_card_mouse_entered.bind(card))
+		card.mouse_exited.connect(_on_card_mouse_exited.bind(card))
+
+func _on_card_mouse_entered(card: Card) -> void:
+	card.highlight(Color.DARK_GREEN)
+
+func _on_card_mouse_exited(card: Card) -> void:
+	card.unhighlight()
 
 
 func _on_card_clicked(_times_clicked: int, card: Card) -> void:
-	print("Clicked a card observed from lost combat")
+	# TODO: make the card blow up or something
 	card_removed.emit(card)
 
 func draw_and_tween_card(ndx: int) -> Card:
