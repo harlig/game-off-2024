@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=19 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_mtl7e"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/combat/reward.tscn" id="8_1gtat"]
 [ext_resource type="Texture2D" uid="uid://c8qybgyq1afys" path="res://textures/hud/line_arrow_small.png" id="9_g3f32"]
 [ext_resource type="Script" path="res://src/combat/opponent.gd" id="9_i3xgm"]
+[ext_resource type="Texture2D" uid="uid://djmxoep3ddp8y" path="res://textures/card/card_blank.png" id="10_cacu0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kqti8"]
 size = Vector3(46, 1, 6)
@@ -170,6 +171,45 @@ anchor_bottom = 0.575
 focus_mode = 0
 theme_override_font_sizes/font_size = 48
 text = "Continue"
+
+[node name="DiscardArea" type="Control" parent="HandDisplay"]
+custom_minimum_size = Vector2(96, 168)
+anchors_preset = 0
+offset_left = 1756.0
+offset_top = 840.0
+offset_right = 1852.0
+offset_bottom = 1028.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="HandDisplay/DiscardArea"]
+custom_minimum_size = Vector2(96, 128)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -48.0
+offset_right = 48.0
+offset_bottom = 128.0
+grow_horizontal = 2
+texture = ExtResource("10_cacu0")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="HandDisplay/DiscardArea"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -36.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Opponent" type="Node" parent="."]
 script = ExtResource("9_i3xgm")

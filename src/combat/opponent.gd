@@ -7,7 +7,7 @@ var should_spawn := true
 
 signal spawn(card: Card)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not should_spawn:
 		return
 

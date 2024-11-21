@@ -75,6 +75,7 @@ func _on_hand_discarded(card: Card) -> void:
 	$HandArea.remove_child(card)
 
 	update_hand_positions();
+	$DiscardArea/Label.text = str((get_parent().get_node("Hand") as Hand).deck.discard_pile.size())
 
 
 func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
