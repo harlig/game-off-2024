@@ -33,11 +33,11 @@ func _on_button_pressed() -> void:
 
 func _on_area_3d_mouse_entered() -> void:
 	if can_highlight_shopkeeper:
-		$Area3D/MeshInstance3D.material_override.set_shader_parameter("highlight", true)
+		$Shop/MeshInstance3D.material_override.set_shader_parameter("highlight", true)
 
 
 func _on_area_3d_mouse_exited() -> void:
-	$Area3D/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
+	$Shop/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 
 
 func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
@@ -45,7 +45,7 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		create_shop()
-		$Area3D/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
+		$Shop/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 		can_highlight_shopkeeper = false
 
 
