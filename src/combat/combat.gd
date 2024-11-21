@@ -332,8 +332,9 @@ func finish_combat(new_state: CombatState) -> void:
 	current_ally_units.clear()
 	current_enemy_units.clear()
 
-	$HandDisplay.hide()
-	$Opponent.should_spawn = false
+	$HandDisplay.queue_free()
+	$Hand.queue_free()
+	$Opponent.queue_free()
 
 	if state == CombatState.WON:
 		provide_rewards()

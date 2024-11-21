@@ -32,6 +32,10 @@ static func create_combat_deck(cards: Array[Card], init_audio: Audio = null, rel
 func draw(should_shuffle_if_empty: bool = true) -> Card:
 	if draw_pile.size() == 0 and should_shuffle_if_empty:
 		shuffle_discard_into_draw()
+
+	if audio != null and draw_pile.size() > 0:
+		audio.play_card_draw()
+
 	return draw_pile.pop_back()
 
 func draw_best(should_shuffle_if_empty: bool = true) -> Card:
@@ -43,6 +47,8 @@ func draw_best(should_shuffle_if_empty: bool = true) -> Card:
 		if best_card == null or card.get_score() > best_card.get_score():
 			best_card = card
 	draw_pile.erase(best_card)
+	if audio != null and best_card != null:
+		audio.play_card_draw()
 	return best_card
 
 func try_draw_torchlighter() -> Card:
@@ -53,6 +59,9 @@ func try_draw_torchlighter() -> Card:
 	return null
 
 func shuffle_discard_into_draw() -> void:
+	if discard_pile.size() == 0:
+		return
+
 	draw_pile = discard_pile
 	discard_pile = []
 	draw_pile.shuffle()

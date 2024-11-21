@@ -1,10 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://dr2punal65bu4"]
+[gd_scene load_steps=4 format=3 uid="uid://dr2punal65bu4"]
 
 [ext_resource type="AudioStream" uid="uid://deor8g8sfri8j" path="res://sounds/shuffle.wav" id="1_6xpj6"]
 [ext_resource type="Script" path="res://src/audio.gd" id="1_m2klc"]
+[ext_resource type="AudioStream" uid="uid://cagcusis5v5ci" path="res://sounds/draw.wav" id="3_cdxbh"]
 
 [node name="Audio" type="Node"]
 script = ExtResource("1_m2klc")
 
 [node name="Shuffle" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("1_6xpj6")
+volume_db = -15.0
+
+[node name="Draw" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_cdxbh")
+volume_db = -30.0
