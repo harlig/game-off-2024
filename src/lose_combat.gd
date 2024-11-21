@@ -27,7 +27,9 @@ func _on_button_pressed() -> void:
 		if card == null:
 			break
 		cards_drawn.append(card)
-		# TODO: wire up card to card click and hover
+
+	# do this after so you can't select until all cards are drawn
+	for card in cards_drawn:
 		card.card_clicked.connect(_on_card_clicked)
 		card.mouse_entered.connect(_on_card_mouse_entered.bind(card))
 		card.mouse_exited.connect(_on_card_mouse_exited.bind(card))
@@ -44,8 +46,8 @@ func _on_card_clicked(_times_clicked: int, combat_deck_card: Card) -> void:
 	card_removed.emit(deck.combat_deck_card_to_original_card[combat_deck_card])
 
 func draw_and_tween_card(ndx: int) -> Card:
-	# TODO: this should draw your BEST card at the time
-	var card := deck.draw(false)
+	# TODO: could be sick if we pick like one of the best 4 to draw
+	var card := deck.draw_best(false)
 	cards.append(card)
 	if card != null:
 		card.position = $DrawCardLocation.global_position

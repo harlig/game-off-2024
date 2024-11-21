@@ -30,6 +30,17 @@ func draw(should_shuffle_if_empty: bool = true) -> Card:
 		shuffle_discard_into_draw()
 	return draw_pile.pop_back()
 
+func draw_best(should_shuffle_if_empty: bool = true) -> Card:
+	if draw_pile.size() == 0 and should_shuffle_if_empty:
+		shuffle_discard_into_draw()
+
+	var best_card: Card = null
+	for card in draw_pile:
+		if best_card == null or card.get_score() > best_card.get_score():
+			best_card = card
+	draw_pile.erase(best_card)
+	return best_card
+
 func try_draw_torchlighter() -> Card:
 	for card in draw_pile:
 		if card.type == Card.CardType.UNIT and card.creature.can_change_torches:
