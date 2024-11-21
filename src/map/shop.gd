@@ -7,13 +7,19 @@ const SHOP_SPELL_COUNT := 4
 const BASE_REMOVE_CARD_COST := 25
 
 var shop_value := 1
-var player_gold := 0
+var player_gold := 0:
+	set(value):
+		if value < player_gold:
+			audio.play_purchase()
+		player_gold = value
+
 
 var remove_card_cost := 25
 
 var units_in_shop := []
 var spells_in_shop := []
 var deck: Deck
+var audio: Audio
 var times_card_removed: int:
 	set(value):
 		times_card_removed = value
@@ -92,6 +98,7 @@ func create_new_offer(card: Card) -> Control:
 func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 	if player_gold < card.get_score():
 		card.highlight(Color.RED)
+		audio.play_buzzer()
 		await get_tree().create_timer(0.5).timeout
 		card.unhighlight()
 		return
@@ -126,6 +133,7 @@ func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		if player_gold < remove_card_cost:
+			audio.play_buzzer()
 			highlight_remove_card(Color.RED)
 			await get_tree().create_timer(0.5).timeout
 			unhighlight_remove_card()

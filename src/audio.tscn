@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dr2punal65bu4"]
+[gd_scene load_steps=6 format=3 uid="uid://dr2punal65bu4"]
 
 [ext_resource type="AudioStream" uid="uid://deor8g8sfri8j" path="res://sounds/shuffle.wav" id="1_6xpj6"]
 [ext_resource type="Script" path="res://src/audio.gd" id="1_m2klc"]
 [ext_resource type="AudioStream" uid="uid://cagcusis5v5ci" path="res://sounds/draw.wav" id="3_cdxbh"]
+[ext_resource type="AudioStream" uid="uid://dhgji0b0t3unx" path="res://sounds/purchase.wav" id="4_n6xbf"]
+[ext_resource type="AudioStream" uid="uid://ql5wko38ra6e" path="res://sounds/buzzer.wav" id="5_8goch"]
 
 [node name="Audio" type="Node"]
 script = ExtResource("1_m2klc")
@@ -14,3 +16,11 @@ volume_db = -15.0
 [node name="Draw" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_cdxbh")
 volume_db = -30.0
+
+[node name="Purchase" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_n6xbf")
+volume_db = -20.0
+
+[node name="Buzzer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_8goch")
+volume_db = -20.0

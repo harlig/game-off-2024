@@ -78,7 +78,6 @@ func create_combat() -> Combat:
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
-	existing_combat.get_node("Hand").queue_free()
 	for torch: Torch in existing_combat.all_torches:
 		torch.get_node("CPUParticles3D").emitting = false
 
@@ -86,7 +85,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	# on combat lose, create a retry and go left
 
 	if combat_state == Combat.CombatState.WON:
-		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed)
+		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 		between_combat.item_purchased.connect(_on_item_purchased)
 		between_combat.get_node("Continue").hide()
@@ -105,7 +104,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		if between_combat.shop == null:
 			between_combat.get_node("Continue").show()
 	elif combat_state == Combat.CombatState.LOST:
-		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed)
+		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 		add_child(between_combat)
 
