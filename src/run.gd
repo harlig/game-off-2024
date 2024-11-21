@@ -1,6 +1,9 @@
 class_name Run extends Control
 
 const between_combat_scene := preload("res://src/between_combat.tscn")
+const BETWEEN_COMBAT_OFFSET := 56
+
+const COMBATS_TO_BEAT := 5
 
 @onready var camera := $Camera3D
 @onready var deck := $DeckControl/Deck
@@ -67,7 +70,6 @@ func _process(delta: float) -> void:
 func create_combat() -> Combat:
 	var new_combat: Combat = Combat.create_combat(combat_difficulty, audio, relics)
 	current_combat = new_combat
-	combat_difficulty += 1
 
 	new_combat.reward_presented.connect(bank_control.show)
 	new_combat.reward_chosen.connect(_on_combat_reward_chosen)
@@ -83,8 +85,8 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 
 	# on combat won, create a shop and go right
 	# on combat lose, create a retry and go left
-
 	if combat_state == Combat.CombatState.WON:
+		combat_difficulty += 1
 		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 		between_combat.item_purchased.connect(_on_item_purchased)
@@ -92,11 +94,10 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		between_combat.card_removed.connect(_on_card_removed)
 		add_child(between_combat)
 
-		var offset := 56
-		between_combat.position = Vector3(existing_combat.position.x + offset, between_combat.position.y, between_combat.position.z)
+		between_combat.position = Vector3(existing_combat.position.x + BETWEEN_COMBAT_OFFSET, between_combat.position.y, between_combat.position.z)
 
 		var tween: Tween = get_tree().create_tween();
-		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - offset, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - BETWEEN_COMBAT_OFFSET, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
 		existing_combat.queue_free()
@@ -108,11 +109,10 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 		add_child(between_combat)
 
-		var offset := 56
-		between_combat.position = Vector3(existing_combat.position.x - offset, between_combat.position.y, between_combat.position.z)
+		between_combat.position = Vector3(existing_combat.position.x - BETWEEN_COMBAT_OFFSET, between_combat.position.y, between_combat.position.z)
 
 		var tween: Tween = get_tree().create_tween();
-		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x + offset, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x + BETWEEN_COMBAT_OFFSET, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
 		existing_combat.queue_free()
