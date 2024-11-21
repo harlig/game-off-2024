@@ -24,6 +24,7 @@ func try_play_cards() -> void:
 				hand.play_card(card)
 				spawn.emit(card)
 				card_played = true
+				# TODO: this isn't working, we want some offset when opponent plays cards
 				await get_tree().create_timer(randf_range(0.5, 1.5)).timeout
 				break
 		if not card_played:

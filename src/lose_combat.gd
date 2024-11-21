@@ -28,6 +28,12 @@ func _on_button_pressed() -> void:
 			break
 		cards_drawn.append(card)
 
+	if cards_drawn.size() == 0:
+		$Title.text = "Game over"
+		$Label.text = "You have no more cards for me to take. Better luck in the next run!"
+		$Label.show()
+		return
+
 	# do this after so you can't select until all cards are drawn
 	for card in cards_drawn:
 		card.card_clicked.connect(_on_card_clicked)
