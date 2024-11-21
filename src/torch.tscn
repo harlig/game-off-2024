@@ -40,8 +40,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mk0sy"]
 _data = {
-&"play": SubResource("Animation_uhuun"),
-&"RESET": SubResource("Animation_y2o7x")
+&"RESET": SubResource("Animation_y2o7x"),
+&"play": SubResource("Animation_uhuun")
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r7033"]

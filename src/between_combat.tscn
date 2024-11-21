@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://wscd64ckgyue"]
+[gd_scene load_steps=9 format=3 uid="uid://wscd64ckgyue"]
 
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_q6vjb"]
 [ext_resource type="Script" path="res://src/between_combat.gd" id="1_wfxe2"]
 [ext_resource type="Shader" path="res://shaders/unit.gdshader" id="3_sbovk"]
 [ext_resource type="Texture2D" uid="uid://jn6tlsaflx1f" path="res://textures/base.png" id="4_uf3yk"]
+[ext_resource type="Texture2D" uid="uid://sfftvieddmo" path="res://textures/map/check_box.png" id="5_licqt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_syhj0"]
 
@@ -54,6 +55,43 @@ shape = SubResource("BoxShape3D_syhj0")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Interactable"]
 material_override = SubResource("ShaderMaterial_85ou5")
 mesh = SubResource("QuadMesh_hfoqc")
+
+[node name="Progress" type="Control" parent="."]
+layout_mode = 3
+anchor_left = 0.3
+anchor_top = 0.1
+anchor_right = 0.7
+anchor_bottom = 0.3
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="Progress"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "Your progress"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Progress"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 67
+columns = 5
+
+[node name="BaseTextureRect" type="TextureRect" parent="Progress/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("5_licqt")
+expand_mode = 1
 
 [connection signal="pressed" from="Continue/Button" to="." method="_on_button_pressed"]
 [connection signal="input_event" from="Interactable" to="." method="_on_area_3d_input_event"]

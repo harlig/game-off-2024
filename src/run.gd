@@ -12,6 +12,8 @@ const COMBATS_TO_BEAT := 5
 @onready var audio := $Audio
 
 var combat_difficulty := 1
+var combats_beaten := 0
+
 var bank := 10:
 	set(value):
 		bank = value
@@ -87,7 +89,12 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	# on combat lose, create a retry and go left
 	if combat_state == Combat.CombatState.WON:
 		combat_difficulty += 1
-		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio)
+		combats_beaten += 1
+		if combats_beaten == COMBATS_TO_BEAT:
+			print("YOU BEAT THE GAME!!!!!!!!")
+			# TODO: show something cool
+			return
+		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 		between_combat.item_purchased.connect(_on_item_purchased)
 		between_combat.get_node("Continue").hide()
@@ -105,7 +112,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		if between_combat.shop == null:
 			between_combat.get_node("Continue").show()
 	elif combat_state == Combat.CombatState.LOST:
-		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio)
+		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 		add_child(between_combat)
 

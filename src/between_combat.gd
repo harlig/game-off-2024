@@ -9,6 +9,7 @@ signal item_purchased(item: Card, cost: int)
 signal card_removed(cost: int)
 
 var combat_difficulty: int
+var combats_beaten: int
 var bank: int
 var deck: Deck
 var times_card_removed: int
@@ -28,10 +29,11 @@ enum Type {
 }
 
 
-static func create_between_combat(init_type: Type, init_combat_difficulty: int, init_bank: int, init_deck: Deck, init_times_card_removed: int, init_audio: Audio) -> BetweenCombat:
+static func create_between_combat(init_type: Type, init_combat_difficulty: int, init_bank: int, init_deck: Deck, init_times_card_removed: int, init_audio: Audio, init_combats_beaten: int) -> BetweenCombat:
 	var between_combat_instance: BetweenCombat = between_combat_scene.instantiate()
 	between_combat_instance.type = init_type
 	between_combat_instance.combat_difficulty = init_combat_difficulty
+	between_combat_instance.combats_beaten = init_combats_beaten
 	between_combat_instance.bank = init_bank
 	between_combat_instance.deck = init_deck
 	between_combat_instance.audio = init_audio
@@ -41,6 +43,13 @@ static func create_between_combat(init_type: Type, init_combat_difficulty: int, 
 		between_combat_instance.get_node("Continue").hide()
 
 	return between_combat_instance
+
+
+func _ready() -> void:
+	for ndx in range(combats_beaten):
+		var new_beat_combat_indicator := $Progress/GridContainer/BaseTextureRect.duplicate()
+		new_beat_combat_indicator.show()
+		$Progress/GridContainer.add_child(new_beat_combat_indicator)
 
 
 func _on_button_pressed() -> void:
@@ -68,6 +77,7 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 			create_lose_combat()
 		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 		can_highlight_interactable = false
+		$Progress.hide()
 
 
 func create_shop() -> void:
@@ -93,6 +103,7 @@ func _on_shop_closed() -> void:
 	shop.hide()
 	$Continue.show()
 	can_highlight_interactable = true
+	$Progress.show()
 
 func create_lose_combat() -> void:
 	var new_lose_combat: LoseCombat = LoseCombat.create_lose_combat(CombatDeck.create_combat_deck(deck.cards))
@@ -105,3 +116,4 @@ func _on_lose_combat_card_removed(card: Card) -> void:
 	deck.remove_card(card)
 	lose_combat.hide()
 	$Continue.show()
+	$Progress.show()
