@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dljtnngynioy1"]
+[gd_scene load_steps=9 format=3 uid="uid://dljtnngynioy1"]
 
 [ext_resource type="Script" path="res://src/run.gd" id="1_cnw64"]
 [ext_resource type="Script" path="res://src/combat/combat_camera.gd" id="3_nj1jd"]
 [ext_resource type="PackedScene" uid="uid://cih1pigr4i7xh" path="res://src/deck.tscn" id="3_pu7pl"]
 [ext_resource type="PackedScene" uid="uid://bdga38e85imgw" path="res://src/combat/combat.tscn" id="4_xap8m"]
 [ext_resource type="PackedScene" uid="uid://brab37f81ohc5" path="res://src/combat/projectile.tscn" id="5_awlrp"]
+[ext_resource type="PackedScene" uid="uid://dr2punal65bu4" path="res://src/audio.tscn" id="6_xmwp7"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xa4ld"]
 
@@ -125,3 +126,5 @@ theme_override_font_sizes/font_size = 48
 text = "100"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="Audio" parent="." instance=ExtResource("6_xmwp7")]

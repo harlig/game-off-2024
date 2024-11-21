@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dr2punal65bu4"]
+
+[ext_resource type="AudioStream" uid="uid://deor8g8sfri8j" path="res://sounds/shuffle.wav" id="1_6xpj6"]
+[ext_resource type="Script" path="res://src/audio.gd" id="1_m2klc"]
+
+[node name="Audio" type="Node"]
+script = ExtResource("1_m2klc")
+
+[node name="Shuffle" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_6xpj6")

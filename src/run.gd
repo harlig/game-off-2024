@@ -6,6 +6,7 @@ const between_combat_scene := preload("res://src/between_combat.tscn")
 @onready var deck := $DeckControl/Deck
 @onready var relic_area := $RelicArea
 @onready var bank_control := $BankControl
+@onready var audio := $Audio
 
 var combat_difficulty := 1
 var bank := 10:
@@ -64,7 +65,7 @@ func _process(delta: float) -> void:
 		print("has done preloaded shit")
 
 func create_combat() -> Combat:
-	var new_combat: Combat = Combat.create_combat(combat_difficulty, relics)
+	var new_combat: Combat = Combat.create_combat(combat_difficulty, audio, relics)
 	current_combat = new_combat
 	combat_difficulty += 1
 

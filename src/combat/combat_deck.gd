@@ -8,10 +8,14 @@ var all_cards: Array[Card] = []
 var discard_pile: Array[Card] = []
 var draw_pile: Array[Card] = []
 
+var audio: Audio = null
+
 var combat_deck_card_to_original_card: Dictionary[Card, Card] = {}
 
-static func create_combat_deck(cards: Array[Card], relics: Array[Relic]=[]) -> CombatDeck:
+static func create_combat_deck(cards: Array[Card], init_audio: Audio = null, relics: Array[Relic]=[]) -> CombatDeck:
 	var combat_deck: CombatDeck = combat_deck_scene.instantiate()
+	if init_audio != null:
+		combat_deck.audio = init_audio
 
 	for card: Card in cards:
 		var new_card := Card.duplicate_card(card)
@@ -52,6 +56,8 @@ func shuffle_discard_into_draw() -> void:
 	draw_pile = discard_pile
 	discard_pile = []
 	draw_pile.shuffle()
+	if audio != null:
+		audio.play_shuffle()
 
 func discard(card: Card) -> void:
 	discard_pile.append(card)

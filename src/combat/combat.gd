@@ -35,6 +35,8 @@ var current_enemy_units: Array[Unit] = []
 var all_torches: Array[Torch] = []
 var furthest_torch_lit := 0
 
+var audio: Audio
+
 var relics: Array[Relic] = []
 
 var player_combat_deck: CombatDeck
@@ -47,9 +49,10 @@ var torches_player_has_lit: Array[Torch] = []
 # This is how you should instantiate a combat scene
 ####################################################
 ####################################################
-static func create_combat(combat_difficulty: int, relics_for_combat: Array[Relic]) -> Combat:
+static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic]) -> Combat:
 	var combat_instance: Combat = combat_scene.instantiate()
 	combat_instance.difficulty = combat_difficulty
+	combat_instance.audio = init_audio
 	combat_instance.relics = relics_for_combat
 	return combat_instance
 ####################################################
@@ -61,7 +64,7 @@ static func create_combat(combat_difficulty: int, relics_for_combat: Array[Relic
 func _ready() -> void:
 	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20)
-	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, relics)
+	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(player_combat_deck)
 	add_child(enemy_combat_deck)
