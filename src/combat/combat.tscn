@@ -176,9 +176,10 @@ text = "Continue"
 custom_minimum_size = Vector2(96, 168)
 anchors_preset = 0
 offset_left = 68.0
-offset_top = 840.0
+offset_top = 860.0
 offset_right = 164.0
-offset_bottom = 1028.0
+offset_bottom = 1048.0
+rotation = -0.383972
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="HandDisplay/DrawArea"]
@@ -215,9 +216,10 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(96, 168)
 anchors_preset = 0
 offset_left = 1756.0
-offset_top = 840.0
+offset_top = 820.0
 offset_right = 1852.0
-offset_bottom = 1028.0
+offset_bottom = 1008.0
+rotation = 0.383972
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="HandDisplay/DiscardArea"]
