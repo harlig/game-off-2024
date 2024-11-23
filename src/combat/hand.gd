@@ -37,6 +37,7 @@ func _physics_process(delta: float) -> void:
 
 func update_draw_timer(delta: float) -> void:
 	if len(cards) >= MAX_HAND_SIZE:
+		draw_time_remaining = draw_time;
 		draw_time_updated.emit(0.0, draw_time)
 		return ;
 
@@ -50,6 +51,7 @@ func update_draw_timer(delta: float) -> void:
 
 func update_mana_timer(delta: float) -> void:
 	if cur_mana == max_mana:
+		mana_time_remaining = mana_time;
 		mana_time_updated.emit(0.0, mana_time)
 		return ;
 
