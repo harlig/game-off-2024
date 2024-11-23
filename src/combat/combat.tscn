@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=21 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
 [ext_resource type="PackedScene" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
@@ -43,11 +43,17 @@ orientation = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7mbfs"]
 shader = ExtResource("7_e0ci3")
-shader_parameter/percent = 0.5
+shader_parameter/percent = 0.427
+shader_parameter/border_width = 0.1
 
 [sub_resource type="Curve" id="Curve_wv1k5"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.87931, 0.997284), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8k5rd"]
+shader = ExtResource("7_e0ci3")
+shader_parameter/percent = 0.5
+shader_parameter/border_width = 0.01
 
 [node name="Combat" type="Node3D"]
 script = ExtResource("1_1q57p")
@@ -114,28 +120,27 @@ grow_vertical = 0
 mouse_filter = 2
 metadata/_edit_lock_ = true
 
-[node name="ManaDisplay" type="HBoxContainer" parent="HandDisplay"]
+[node name="ManaDisplay" type="VBoxContainer" parent="HandDisplay"]
 layout_mode = 0
-offset_left = 96.0
-offset_top = 700.0
-offset_right = 240.0
-offset_bottom = 772.0
+offset_left = 212.0
+offset_top = 640.0
+offset_right = 284.0
+offset_bottom = 736.0
 scale = Vector2(1.6, 1.6)
-theme_override_constants/separation = -24
+theme_override_constants/separation = 0
 
 [node name="TextureRect" type="TextureRect" parent="HandDisplay/ManaDisplay"]
 material = SubResource("ShaderMaterial_7mbfs")
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
+size_flags_horizontal = 4
 texture = ExtResource("6_g70ey")
 expand_mode = 1
 
 [node name="Label2" type="Label" parent="HandDisplay/ManaDisplay"]
-custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
-text = "7 / 7"
+text = "7/7"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -172,12 +177,11 @@ anchors_preset = 0
 offset_left = 68.0
 offset_top = 860.0
 offset_right = 164.0
-offset_bottom = 1048.0
+offset_bottom = 1028.0
 rotation = -0.383972
 mouse_filter = 2
 
 [node name="TextureRect3" type="TextureRect" parent="HandDisplay/DrawArea"]
-visible = false
 custom_minimum_size = Vector2(96, 128)
 layout_mode = 1
 anchors_preset = 5
@@ -192,7 +196,6 @@ texture = ExtResource("10_nl47w")
 expand_mode = 1
 
 [node name="TextureRect2" type="TextureRect" parent="HandDisplay/DrawArea"]
-visible = false
 custom_minimum_size = Vector2(96, 128)
 layout_mode = 1
 anchors_preset = 5
@@ -207,7 +210,7 @@ texture = ExtResource("10_nl47w")
 expand_mode = 1
 
 [node name="TextureRect" type="TextureRect" parent="HandDisplay/DrawArea"]
-visible = false
+material = SubResource("ShaderMaterial_8k5rd")
 custom_minimum_size = Vector2(96, 128)
 layout_mode = 1
 anchors_preset = 5
@@ -384,7 +387,9 @@ text = "View Deck"
 [connection signal="mouse_entered" from="Battlefield" to="." method="_on_spawn_area_mouse_entered"]
 [connection signal="mouse_exited" from="Battlefield" to="." method="_on_spawn_area_mouse_exited"]
 [connection signal="discarded" from="Hand" to="HandDisplay" method="_on_hand_discarded"]
+[connection signal="draw_time_updated" from="Hand" to="HandDisplay" method="_on_hand_draw_time_updated"]
 [connection signal="drew" from="Hand" to="HandDisplay" method="_on_hand_drew"]
+[connection signal="mana_time_updated" from="Hand" to="HandDisplay" method="_on_hand_mana_time_updated"]
 [connection signal="mana_updated" from="Hand" to="." method="_on_hand_mana_updated"]
 [connection signal="mana_updated" from="Hand" to="HandDisplay" method="_on_hand_mana_updated"]
 [connection signal="spawn" from="Opponent" to="." method="_on_opponent_spawn"]

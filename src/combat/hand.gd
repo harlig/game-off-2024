@@ -25,21 +25,31 @@ var paused := false
 signal drew(card: Card)
 signal discarded(card: Card)
 signal mana_updated(cur: int, max: int)
+signal mana_time_updated(remaining: float, initial: float)
+signal draw_time_updated(remaining: float, initial: float)
 
 func _physics_process(delta: float) -> void:
 	if paused:
 		return
+
 	draw_time_remaining -= delta
+	draw_time_updated.emit(draw_time_remaining, draw_time)
 
 	if draw_time_remaining <= 0:
 		draw_time_remaining = draw_time
 		try_draw_card()
 
+	if cur_mana == max_mana:
+		mana_time_updated.emit(0.0, mana_time)
+		return ;
+
 	mana_time_remaining -= delta
+	mana_time_updated.emit(mana_time_remaining, mana_time)
 
 	if mana_time_remaining <= 0:
 		cur_mana += 1
 		mana_time_remaining = mana_time
+
 
 func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) -> void:
 	deck = combat_deck;
