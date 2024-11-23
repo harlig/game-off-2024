@@ -46,6 +46,7 @@ static func create_between_combat(init_type: Type, init_combat_difficulty: int, 
 	if init_type == Type.END:
 		between_combat_instance.get_node("Progress").hide()
 		(between_combat_instance.get_node("Continue").get_node("Button") as Button).text = "Menu"
+		between_combat_instance.get_node("Backdrop").get_node("WinTorches").show()
 	return between_combat_instance
 
 

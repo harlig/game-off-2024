@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://wscd64ckgyue"]
+[gd_scene load_steps=10 format=3 uid="uid://wscd64ckgyue"]
 
 [ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_q6vjb"]
 [ext_resource type="Script" path="res://src/between_combat.gd" id="1_wfxe2"]
+[ext_resource type="PackedScene" uid="uid://c0paiugr6o31v" path="res://src/torch.tscn" id="3_byvop"]
 [ext_resource type="Shader" path="res://shaders/unit.gdshader" id="3_sbovk"]
 [ext_resource type="Texture2D" uid="uid://jn6tlsaflx1f" path="res://textures/base.png" id="4_uf3yk"]
 [ext_resource type="Texture2D" uid="uid://sfftvieddmo" path="res://textures/map/check_box.png" id="5_licqt"]
@@ -23,6 +24,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2)
 script = ExtResource("1_wfxe2")
 
 [node name="Backdrop" parent="." instance=ExtResource("1_q6vjb")]
+
+[node name="WinTorches" type="Node3D" parent="Backdrop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+visible = false
+
+[node name="Torch" parent="Backdrop/WinTorches" instance=ExtResource("3_byvop")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+
+[node name="Torch2" parent="Backdrop/WinTorches" instance=ExtResource("3_byvop")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 
 [node name="Continue" type="Control" parent="."]
 layout_mode = 3
@@ -47,7 +58,7 @@ theme_override_font_sizes/font_size = 36
 text = "Continue"
 
 [node name="Interactable" type="Area3D" parent="."]
-transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 3, -5)
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0.3, 3, -5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
 shape = SubResource("BoxShape3D_syhj0")
