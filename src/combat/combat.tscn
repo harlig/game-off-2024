@@ -1,13 +1,13 @@
-[gd_scene load_steps=19 format=3 uid="uid://bdga38e85imgw"]
+[gd_scene load_steps=20 format=3 uid="uid://bdga38e85imgw"]
 
 [ext_resource type="Script" path="res://src/combat/combat.gd" id="1_1q57p"]
-[ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_mtl7e"]
+[ext_resource type="PackedScene" path="res://src/combat/backdrop.tscn" id="1_mtl7e"]
 [ext_resource type="Shader" path="res://shaders/spawn_area.gdshader" id="4_yejyx"]
 [ext_resource type="Script" path="res://src/combat/hand.gd" id="5_3nvnk"]
 [ext_resource type="Shader" path="res://shaders/spawn_loc.gdshader" id="5_ekx6p"]
 [ext_resource type="Texture2D" uid="uid://cju5ys6csnnl3" path="res://textures/hud/mana.png" id="6_g70ey"]
 [ext_resource type="Script" path="res://src/combat/hand_display.gd" id="6_ojwhk"]
-[ext_resource type="Texture2D" uid="uid://kg1i4rk2x7h3" path="res://textures/hud/circle_tan.png" id="7_ec4of"]
+[ext_resource type="Shader" path="res://shaders/fill_inner.gdshader" id="7_e0ci3"]
 [ext_resource type="PackedScene" uid="uid://cunlyf5vflgsp" path="res://src/combat/reward.tscn" id="8_1gtat"]
 [ext_resource type="Texture2D" uid="uid://c8qybgyq1afys" path="res://textures/hud/line_arrow_small.png" id="9_g3f32"]
 [ext_resource type="Script" path="res://src/combat/opponent.gd" id="9_i3xgm"]
@@ -40,6 +40,10 @@ shader_parameter/color = null
 size = Vector2(2, 2)
 center_offset = Vector3(0, 0.02, 0)
 orientation = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mbfs"]
+shader = ExtResource("7_e0ci3")
+shader_parameter/percent = 0.5
 
 [sub_resource type="Curve" id="Curve_wv1k5"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.87931, 0.997284), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -112,33 +116,23 @@ metadata/_edit_lock_ = true
 
 [node name="ManaDisplay" type="HBoxContainer" parent="HandDisplay"]
 layout_mode = 0
-offset_left = 128.0
+offset_left = 96.0
 offset_top = 700.0
-offset_right = 272.0
+offset_right = 240.0
 offset_bottom = 772.0
 scale = Vector2(1.6, 1.6)
 theme_override_constants/separation = -24
 
 [node name="TextureRect" type="TextureRect" parent="HandDisplay/ManaDisplay"]
+material = SubResource("ShaderMaterial_7mbfs")
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 texture = ExtResource("6_g70ey")
 expand_mode = 1
 
-[node name="TextureRect2" type="TextureRect" parent="HandDisplay/ManaDisplay"]
-z_index = -1
-custom_minimum_size = Vector2(96, 72)
-layout_mode = 2
-texture = ExtResource("7_ec4of")
-expand_mode = 1
-
-[node name="Label2" type="Label" parent="HandDisplay/ManaDisplay/TextureRect2"]
+[node name="Label2" type="Label" parent="HandDisplay/ManaDisplay"]
 custom_minimum_size = Vector2(64, 64)
-layout_mode = 0
-offset_left = 8.0
-offset_top = 4.0
-offset_right = 95.0
-offset_bottom = 68.0
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "7 / 7"
