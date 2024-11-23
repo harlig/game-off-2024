@@ -84,13 +84,15 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	if combat_state == Combat.CombatState.WON:
 		combat_difficulty += 1
 		combats_beaten += 1
+		var between_combat: BetweenCombat
 		if combats_beaten == COMBATS_TO_BEAT:
 			print("YOU BEAT THE GAME!!!!!!!!")
-			# TODO: show something cool
-			return
-		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
-		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
-		between_combat.item_purchased.connect(_on_item_purchased)
+			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.END, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
+			between_combat.continue_pressed.connect(continue_to_beat_game.bind(between_combat))
+		else:
+			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
+			between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
+			between_combat.item_purchased.connect(_on_item_purchased)
 		between_combat.get_node("Continue").hide()
 		between_combat.card_removed.connect(_on_card_removed)
 		add_child(between_combat)
@@ -102,8 +104,9 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
 		existing_combat.queue_free()
+
 		# only do this if the player hasn't yet opened the shop
-		if between_combat.shop == null:
+		if between_combat.shop == null && between_combat.type == BetweenCombat.Type.SHOP:
 			between_combat.get_node("Continue").show()
 	elif combat_state == Combat.CombatState.LOST:
 		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
@@ -144,6 +147,11 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	new_combat.get_node("HandDisplay").show()
 	new_combat.get_node("Opponent").should_spawn = true
 	new_combat.get_node("Hand").paused = false
+
+
+func continue_to_beat_game(between_combat: BetweenCombat) -> void:
+	print("You beat the game fr fr")
+	between_combat.queue_free()
 
 
 func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:

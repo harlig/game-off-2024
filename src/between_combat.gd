@@ -25,7 +25,8 @@ var audio: Audio
 
 enum Type {
 	SHOP,
-	RETRY
+	RETRY,
+	END
 }
 
 
@@ -42,6 +43,9 @@ static func create_between_combat(init_type: Type, init_combat_difficulty: int, 
 	if init_type == Type.RETRY:
 		between_combat_instance.get_node("Continue").hide()
 
+	if init_type == Type.END:
+		between_combat_instance.get_node("Progress").hide()
+		(between_combat_instance.get_node("Continue").get_node("Button") as Button).text = "Menu"
 	return between_combat_instance
 
 
@@ -75,6 +79,9 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 			create_shop()
 		elif type == Type.RETRY:
 			create_lose_combat()
+		elif type == Type.END:
+			$Win.show()
+			$Continue.show()
 		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 		can_highlight_interactable = false
 		$Progress.hide()

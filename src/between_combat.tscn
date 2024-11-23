@@ -93,6 +93,38 @@ layout_mode = 2
 texture = ExtResource("5_licqt")
 expand_mode = 1
 
+[node name="Win" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchor_left = 0.3
+anchor_top = 0.1
+anchor_right = 0.7
+anchor_bottom = 0.7
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Win"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.2
+theme_override_font_sizes/font_size = 64
+text = "You won!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Narrative" type="Label" parent="Win"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_font_sizes/font_size = 48
+text = "You've discovered the secrets of the forest. Congratulations on your victory!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [connection signal="pressed" from="Continue/Button" to="." method="_on_button_pressed"]
 [connection signal="input_event" from="Interactable" to="." method="_on_area_3d_input_event"]
 [connection signal="mouse_entered" from="Interactable" to="." method="_on_area_3d_mouse_entered"]

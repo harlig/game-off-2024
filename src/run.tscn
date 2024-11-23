@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dljtnngynioy1"]
+[gd_scene load_steps=8 format=3 uid="uid://dljtnngynioy1"]
 
 [ext_resource type="Script" path="res://src/run.gd" id="1_cnw64"]
 [ext_resource type="Script" path="res://src/combat/combat_camera.gd" id="3_nj1jd"]
@@ -6,8 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://bdga38e85imgw" path="res://src/combat/combat.tscn" id="4_xap8m"]
 [ext_resource type="PackedScene" uid="uid://brab37f81ohc5" path="res://src/combat/projectile.tscn" id="5_awlrp"]
 [ext_resource type="PackedScene" uid="uid://dr2punal65bu4" path="res://src/audio.tscn" id="6_xmwp7"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xa4ld"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4r0vh"]
 font_size = 82
@@ -27,12 +25,6 @@ current = true
 size = 31.0
 script = ExtResource("3_nj1jd")
 metadata/_edit_lock_ = true
-
-[node name="Player" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
-modulate = Color(0, 0, 0, 1)
-pixel_size = 0.1
-texture = SubResource("PlaceholderTexture2D_xa4ld")
 
 [node name="DeckControl" type="Control" parent="."]
 layout_mode = 3
