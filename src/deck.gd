@@ -65,6 +65,8 @@ func toggle_visualize_deck(on_card_clicked_attachment: Callable, on_card_mouse_e
 	else:
 		for card in cards_displayed:
 			card.card_clicked.disconnect(on_card_clicked_attachment)
+			card.mouse_entered.disconnect(on_card_mouse_entered)
+			card.mouse_exited.disconnect(on_card_mouse_exited)
 			card.reset_selected()
 			$GridContainer.remove_child(card)
 		cards_displayed.clear()

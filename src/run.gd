@@ -3,7 +3,7 @@ class_name Run extends Control
 const between_combat_scene := preload("res://src/between_combat.tscn")
 const BETWEEN_COMBAT_OFFSET := 56
 
-const COMBATS_TO_BEAT := 1
+const COMBATS_TO_BEAT := 5
 
 @onready var camera := $Camera3D
 @onready var deck := $DeckControl/Deck

@@ -339,6 +339,7 @@ func finish_combat(new_state: CombatState) -> void:
 	$HandDisplay.queue_free()
 	$Hand.queue_free()
 	$Opponent.queue_free()
+	$ViewDeckButton.hide()
 
 	if state == CombatState.WON:
 		# check if winning this combat caused us to reach the end of the game, and if so just emit the signal
@@ -430,6 +431,16 @@ func _on_hand_mana_updated(_cur: int, _max: int) -> void:
 
 func _on_view_deck_button_pressed() -> void:
 	# don't care about these callbacks 😎
-	player_deck.toggle_visualize_deck(func() -> void: pass , func() -> void: pass , func() -> void: pass )
-	get_tree().paused = true
-	$HandDisplay.hide()
+	player_deck.toggle_visualize_deck(_who_cares_1, _who_cares_0, _who_cares_0)
+	get_tree().paused = !get_tree().paused
+
+	if player_deck.is_visualizing_deck:
+		$HandDisplay.hide()
+	else:
+		$HandDisplay.show()
+
+func _who_cares_0(_c: Card) -> void:
+	pass
+
+func _who_cares_1(_t: int, _c: Card) -> void:
+	pass
