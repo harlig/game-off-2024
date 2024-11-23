@@ -10,6 +10,7 @@ var deck: CombatDeck
 var cards: Array[Card] = []
 
 signal card_removed(card: Card)
+signal game_lost()
 
 static func create_lose_combat(init_deck: CombatDeck) -> LoseCombat:
 	var lose_combat_instance: LoseCombat = secret_scene.instantiate()
@@ -32,6 +33,7 @@ func _on_button_pressed() -> void:
 		$Title.text = "Game over"
 		$Label.text = "You have no more cards for me to take. Better luck in the next run!"
 		$Label.show()
+		game_lost.emit()
 		return
 
 	# do this after so you can't select until all cards are drawn

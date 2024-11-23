@@ -7,6 +7,7 @@ const shop_scene := preload("res://src/map/shop.tscn")
 signal continue_pressed()
 signal item_purchased(item: Card, cost: int)
 signal card_removed(cost: int)
+signal game_lost()
 
 var combat_difficulty: int
 var combats_beaten: int
@@ -117,12 +118,21 @@ func create_lose_combat() -> void:
 	# TODO: if I have no more cards I can remove, let's lose the game
 	var new_lose_combat: LoseCombat = LoseCombat.create_lose_combat(CombatDeck.create_combat_deck(deck.cards))
 	new_lose_combat.card_removed.connect(_on_lose_combat_card_removed)
+	new_lose_combat.game_lost.connect(_on_game_lost)
 	add_child(new_lose_combat)
 	lose_combat = new_lose_combat
 
 func _on_lose_combat_card_removed(card: Card) -> void:
-	print("Removing card in between combat")
 	deck.remove_card(card)
 	lose_combat.hide()
 	$Continue.show()
 	$Progress.show()
+
+
+func _on_game_lost() -> void:
+	for dict: Dictionary in $Continue/Button.pressed.get_connections():
+		$Continue/Button.pressed.disconnect(dict.callable)
+
+	$Continue/Button.text = "Menu"
+	$Continue.show()
+	$Continue/Button.pressed.connect(game_lost.emit)
