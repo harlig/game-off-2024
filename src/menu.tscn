@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://cw6b415ocy2t2"]
+
+[ext_resource type="Script" path="res://src/menu.gd" id="1_t5igk"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t5igk")
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.4
+anchor_right = 0.65
+anchor_bottom = 0.8
+theme_override_constants/separation = 30
+
+[node name="Play" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 72
+text = "Play"
+
+[node name="HowToPlay" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 72
+text = "How to play"
+
+[node name="Settings" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 72
+text = "Settings"
