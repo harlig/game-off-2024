@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cih1pigr4i7xh" path="res://src/deck.tscn" id="3_pu7pl"]
 [ext_resource type="PackedScene" uid="uid://bdga38e85imgw" path="res://src/combat/combat.tscn" id="4_xap8m"]
 [ext_resource type="PackedScene" uid="uid://brab37f81ohc5" path="res://src/combat/projectile.tscn" id="5_awlrp"]
-[ext_resource type="PackedScene" path="res://src/audio.tscn" id="6_xmwp7"]
+[ext_resource type="PackedScene" uid="uid://dr2punal65bu4" path="res://src/audio.tscn" id="6_xmwp7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4r0vh"]
 font_size = 82

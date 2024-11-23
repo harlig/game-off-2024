@@ -3,24 +3,20 @@ class_name SpellList extends Node
 static var card_scene := preload("res://src/card.tscn")
 
 static var spell_cards: Array[Spell] = [
-	Spell.new("Fireball", SpellType.DAMAGE, TargetableType.UNIT, 5, 1, "res://textures/spell/fireball.png"),
-	Spell.new("Heal", SpellType.HEAL, TargetableType.UNIT, 6, 1, "res://textures/spell/heal.png"),
-	Spell.new("Mana", SpellType.CUR_MANA, TargetableType.NONE, 3, 1, "res://textures/hud/mana.png"),
-	Spell.new("Fast mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 1.2, 5, "res://textures/hud/mana.png"),
-	# TODO: add mana regen image
-	Spell.new("More max mana", SpellType.MAX_MANA, TargetableType.NONE, 1, 5, "res://textures/hud/mana.png"),
-	Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 3, 3, "res://textures/spell/draw_cards.png"),
-	# TODO: add card regen image
-	Spell.new("Fast draw cards", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 1.75, 5, "res://textures/spell/draw_cards.png"),
+	Spell.new("Fireball", SpellType.DAMAGE, TargetableType.UNIT, 4, 2, "res://textures/spell/fireball.png"),
+	Spell.new("Heal", SpellType.HEAL, TargetableType.UNIT, 5, 2, "res://textures/spell/heal.png"),
+	Spell.new("Mana", SpellType.CUR_MANA, TargetableType.NONE, 2, 1, "res://textures/hud/mana.png"),
+	Spell.new("Fast mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 1.5, 4, "res://textures/hud/mana.png"),
+	Spell.new("More max mana", SpellType.MAX_MANA, TargetableType.NONE, 1, 4, "res://textures/hud/mana.png"),
+	Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 2, 3, "res://textures/spell/draw_cards.png"),
+	Spell.new("Fast draw cards", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 1.5, 4, "res://textures/spell/draw_cards.png"),
 ]
 
 static var secret_spell_cards: Array[Spell] = [
-	Spell.new("More max mana", SpellType.MAX_MANA, TargetableType.NONE, 3, 1, "res://textures/hud/mana.png"),
-	# TODO: add mana regen image
-	Spell.new("Fast mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 3.0, 1, "res://textures/hud/mana.png"),
-	Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 15, 4, "res://textures/spell/draw_cards.png"),
-	# TODO: add card regen image
-	Spell.new("Fast draw cards", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 3, 0, "res://textures/spell/draw_cards.png"),
+	Spell.new("More max mana", SpellType.MAX_MANA, TargetableType.NONE, 2, 2, "res://textures/hud/mana.png"),
+	Spell.new("Fast mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 2.0, 2, "res://textures/hud/mana.png"),
+	Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 10, 5, "res://textures/spell/draw_cards.png"),
+	Spell.new("Fast draw cards", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 2.5, 3, "res://textures/spell/draw_cards.png"),
 ]
 
 class Spell:

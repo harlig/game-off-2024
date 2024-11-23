@@ -65,7 +65,7 @@ class Buff:
 				type_str = "damage"
 			BuffType.HEALTH:
 				type_str = "health"
-		return "While alive, gives other units +" + str(value) + " " + type_str
+		return "While alive, gives other units +" + str(int(round(value))) + " " + type_str
 
 	func texture() -> Texture2D:
 		match type:

@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://wscd64ckgyue"]
 
-[ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/backdrop.tscn" id="1_q6vjb"]
+[ext_resource type="PackedScene" uid="uid://b3ktuay7bbkej" path="res://src/combat/backdrop.tscn" id="1_q6vjb"]
 [ext_resource type="Script" path="res://src/between_combat.gd" id="1_wfxe2"]
 [ext_resource type="PackedScene" uid="uid://c0paiugr6o31v" path="res://src/torch.tscn" id="3_byvop"]
 [ext_resource type="Shader" path="res://shaders/unit.gdshader" id="3_sbovk"]

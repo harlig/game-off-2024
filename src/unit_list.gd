@@ -28,7 +28,7 @@ static var creature_cards: Array[Creature] = [
 ]
 
 static var secret_creature_cards: Array[Creature] = [
-	Creature.new("Big Frickin Guy", CardType.MELEE, 1000, 6, 0, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 5)])
+	Creature.new("Big Frickin Guy", CardType.MELEE, 250, 4, 0, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 5)])
 ]
 
 class Creature:
