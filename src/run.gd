@@ -76,8 +76,6 @@ func create_combat() -> Combat:
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
-	for torch: Torch in existing_combat.all_torches:
-		torch.get_node("CPUParticles3D").emitting = false
 
 	# on combat won, create a shop and go right
 	# on combat lose, create a retry and go left
@@ -130,18 +128,12 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	new_combat.get_node("Hand").paused = true
 
 	new_combat.get_node("HandDisplay").hide()
-	for torch: Torch in new_combat.all_torches:
-		torch.get_node("CPUParticles3D").emitting = false
 
 	var tween: Tween = get_tree().create_tween();
 	tween = get_tree().create_tween()
 	tween.parallel().tween_property(between_combat, "position", Vector3(between_combat.position.x - offset, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	tween.parallel().tween_property(new_combat, "position", Vector3(between_combat.position.x, new_combat.position.y, new_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
-
-	for ndx in range(new_combat.furthest_torch_lit + 1):
-		var torch := new_combat.all_torches[ndx]
-		torch.get_node("CPUParticles3D").emitting = true
 
 	between_combat.queue_free()
 	new_combat.get_node("HandDisplay").show()
