@@ -45,6 +45,7 @@ var enemy_combat_deck: CombatDeck
 var torches_player_has_lit: Array[Torch] = []
 
 var combats_beaten_before_this_combat: int
+var player_deck: Deck
 
 ####################################################
 ####################################################
@@ -65,7 +66,7 @@ static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_
 
 
 func _ready() -> void:
-	var player_deck := get_parent().get_node("DeckControl").get_node("Deck")
+	player_deck = get_parent().get_node("DeckControl").get_node("Deck")
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20)
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
@@ -425,3 +426,10 @@ func _on_combat_lost_button_pressed() -> void:
 func _on_hand_mana_updated(_cur: int, _max: int) -> void:
 	if play_location_valid:
 		pass ;
+
+
+func _on_view_deck_button_pressed() -> void:
+	# don't care about these callbacks 😎
+	player_deck.toggle_visualize_deck(func() -> void: pass , func() -> void: pass , func() -> void: pass )
+	get_tree().paused = true
+	$HandDisplay.hide()
