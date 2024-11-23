@@ -88,7 +88,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		if combats_beaten == COMBATS_TO_BEAT:
 			print("YOU BEAT THE GAME!!!!!!!!")
 			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.END, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
-			between_combat.continue_pressed.connect(continue_to_beat_game.bind(between_combat))
+			between_combat.continue_pressed.connect(continue_to_beat_game)
 		else:
 			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
 			between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
@@ -149,9 +149,11 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	new_combat.get_node("Hand").paused = false
 
 
-func continue_to_beat_game(between_combat: BetweenCombat) -> void:
+func continue_to_beat_game() -> void:
 	print("You beat the game fr fr")
-	between_combat.queue_free()
+	var menu: Menu = load("res://src/menu.tscn").instantiate()
+	add_sibling(menu)
+	queue_free()
 
 
 func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:

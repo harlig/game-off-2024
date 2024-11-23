@@ -114,6 +114,7 @@ func _on_shop_closed() -> void:
 	$Progress.show()
 
 func create_lose_combat() -> void:
+	# TODO: if I have no more cards I can remove, let's lose the game
 	var new_lose_combat: LoseCombat = LoseCombat.create_lose_combat(CombatDeck.create_combat_deck(deck.cards))
 	new_lose_combat.card_removed.connect(_on_lose_combat_card_removed)
 	add_child(new_lose_combat)
