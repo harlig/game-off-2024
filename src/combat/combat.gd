@@ -44,16 +44,19 @@ var enemy_combat_deck: CombatDeck
 
 var torches_player_has_lit: Array[Torch] = []
 
+var combats_beaten_before_this_combat: int
+
 ####################################################
 ####################################################
 # This is how you should instantiate a combat scene
 ####################################################
 ####################################################
-static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic]) -> Combat:
+static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic], combats_beaten: int) -> Combat:
 	var combat_instance: Combat = combat_scene.instantiate()
 	combat_instance.difficulty = combat_difficulty
 	combat_instance.audio = init_audio
 	combat_instance.relics = relics_for_combat
+	combat_instance.combats_beaten_before_this_combat = combats_beaten
 	return combat_instance
 ####################################################
 ####################################################
@@ -337,7 +340,11 @@ func finish_combat(new_state: CombatState) -> void:
 	$Opponent.queue_free()
 
 	if state == CombatState.WON:
-		provide_rewards()
+		# check if winning this combat caused us to reach the end of the game, and if so just emit the signal
+		if combats_beaten_before_this_combat + 1 == Run.COMBATS_TO_BEAT:
+			combat_over.emit(state)
+		else:
+			provide_rewards()
 	else:
 		show_combat_lost()
 

@@ -3,7 +3,7 @@ class_name Run extends Control
 const between_combat_scene := preload("res://src/between_combat.tscn")
 const BETWEEN_COMBAT_OFFSET := 56
 
-const COMBATS_TO_BEAT := 5
+const COMBATS_TO_BEAT := 1
 
 @onready var camera := $Camera3D
 @onready var deck := $DeckControl/Deck
@@ -64,7 +64,7 @@ func _process(delta: float) -> void:
 		print("has done preloaded shit")
 
 func create_combat() -> Combat:
-	var new_combat: Combat = Combat.create_combat(combat_difficulty, audio, relics)
+	var new_combat: Combat = Combat.create_combat(combat_difficulty, audio, relics, combats_beaten)
 	current_combat = new_combat
 
 	new_combat.reward_presented.connect(bank_control.show)
