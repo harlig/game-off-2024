@@ -1,7 +1,6 @@
 class_name Hand extends Node
 
-const HAND_SIZE := 5
-const MAX_HAND_SIZE := 8
+const MAX_HAND_SIZE := 5
 
 @export var draw_time := 5.0
 @export var mana_time := 2.0
@@ -62,7 +61,7 @@ func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) 
 			drew.emit(torchlighter)
 			cards_drawn += 1
 
-	for i in range(HAND_SIZE - cards_drawn):
+	for i in range(MAX_HAND_SIZE - cards_drawn):
 		try_draw_card();
 		cards_drawn += 1
 
