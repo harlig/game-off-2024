@@ -17,6 +17,7 @@
 size = Vector3(46, 1, 6)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x1ilm"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_yejyx")
 shader_parameter/color = Color(0.615907, 0.565972, 0.517489, 1)

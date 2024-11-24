@@ -360,6 +360,7 @@ func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 	finish_combat(CombatState.WON)
 
 func finish_combat(new_state: CombatState) -> void:
+	reset_spawn_mesh_color()
 	state = new_state
 
 	for unit in current_ally_units:
