@@ -5,6 +5,7 @@ const INITIAL_TORCHLIGHTER_COUNT: int = 2
 const INITIAL_HEALER_COUNT: int = 1
 const MAX_INITIAL_SCORE: int = 200
 const MAX_INITIAL_PER_UNIT_SCORE: int = 20
+const MAX_MANA_COST: int = 8
 
 var cards: Array[Card] = []
 
@@ -20,17 +21,28 @@ static func create_deck() -> Deck:
 func _ready() -> void:
 	var total_score := 0
 	var num_units := INITIAL_BASE_UNITS_COUNT
+	var mana_costs := [1, 2, 3]
 	while total_score < MAX_INITIAL_SCORE and num_units > 0:
-		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE)
-		if total_score + card.get_score() <= MAX_INITIAL_SCORE:
+		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE, MAX_MANA_COST)
+		if total_score + card.get_score() <= MAX_INITIAL_SCORE and card.mana <= MAX_MANA_COST:
+			if card.mana in mana_costs:
+				mana_costs.erase(card.mana)
 			add_card(card)
 			total_score += card.get_score()
 			num_units -= 1
 
-	for ndx in range(INITIAL_TORCHLIGHTER_COUNT):
-		add_card(UnitList.new_card_by_name("Torchlighter"))
+	while mana_costs.size() > 0:
+		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE, MAX_MANA_COST)
+		if card.mana in mana_costs:
+			add_card(card)
+			mana_costs.erase(card.mana)
+
+	# TODO: sort the cards by mana cost
+
 	for ndx in range(INITIAL_HEALER_COUNT):
 		add_card(UnitList.new_card_by_name("Healer"))
+	for ndx in range(INITIAL_TORCHLIGHTER_COUNT):
+		add_card(UnitList.new_card_by_name("Torchlighter"))
 
 	for ndx in range(0, SpellList.spell_cards.size()):
 		var spell_card := SpellList.new_card_by_id(ndx % SpellList.spell_cards.size())
