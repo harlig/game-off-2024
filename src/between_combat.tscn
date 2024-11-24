@@ -67,6 +67,7 @@ material_override = SubResource("ShaderMaterial_85ou5")
 mesh = SubResource("QuadMesh_hfoqc")
 
 [node name="Welcome" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchor_left = 0.3
 anchor_top = 0.1
@@ -162,3 +163,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
 [connection signal="input_event" from="Interactable" to="." method="_on_area_3d_input_event"]
 [connection signal="mouse_entered" from="Interactable" to="." method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="Interactable" to="." method="_on_area_3d_mouse_exited"]
+[connection signal="pressed" from="Welcome/Button" to="." method="_on_welcome_button_pressed"]

@@ -92,15 +92,16 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 		can_highlight_interactable = false
 
 
-func deal_deck() -> void:
+func _on_welcome_button_pressed() -> void:
 	$Welcome.hide()
 	deck.toggle_visualize_deck(_who_cares_0, _who_cares_1, _who_cares_1)
-	$Continue.pressed.connect(start_combats)
+	$Continue.position.x += 60
+	$Continue/Button.pressed.connect(start_combats)
 	$Continue.show()
 
 func start_combats() -> void:
 	deck.toggle_visualize_deck(_who_cares_0, _who_cares_1, _who_cares_1)
-	$Continue.pressed.disconnect(start_combats)
+	$Continue/Button.pressed.disconnect(start_combats)
 
 
 func create_shop() -> void:
