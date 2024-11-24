@@ -89,7 +89,7 @@ static func random_secret_card() -> Card:
 	return card
 
 static func compare_by_mana(a: Card, b: Card) -> bool:
-	return a.mana < b.mana
+	return a.mana > b.mana
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")

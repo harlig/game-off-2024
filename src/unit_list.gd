@@ -29,7 +29,7 @@ static var creature_cards: Array[Creature] = [
 
 static var secret_creature_cards: Array[Creature] = [
 	Creature.new("Big Frickin Guy", CardType.MELEE, 250, 2, 0, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 5)]),
-	Creature.new("Swiftstriker", CardType.MELEE, 20, 30, 0, "res://textures/unit/hippo.png"),
+	Creature.new("Swiftstriker", CardType.MELEE, 60, 30, 0, "res://textures/unit/hippo.png"),
 	Creature.new("Ranger", CardType.RANGED, 50, 8, 0, "res://textures/unit/tripod.png")
 ]
 
