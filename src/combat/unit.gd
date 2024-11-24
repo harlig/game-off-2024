@@ -218,7 +218,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 
 	if from_creature.get_score() < 20:
 		scalar = 1
-	elif from_creature.get_score() < 70:
+	elif from_creature.get_score() < 50:
 		scalar = 2
 	else:
 		scalar = 3

@@ -37,7 +37,6 @@ class Creature:
 	var health: int
 	var damage: int
 	var mana: int
-	var strength_factor: int
 	var card_image_path: String
 	var buffs_i_apply: Array[Unit.Buff] = []
 	var can_change_torches: bool = false
@@ -52,7 +51,7 @@ class Creature:
 		self.buffs_i_apply = init_buffs_i_apply
 		self.can_change_torches = init_can_change_torches
 
-		self.strength_factor = health + damage * 2 + mana * 3
+		print("Created unit with name " + name + " and score " + str(get_score()))
 
 	static func copy_of(existing: Creature) -> Creature:
 		return Creature.new(existing.name,
@@ -66,13 +65,13 @@ class Creature:
 		)
 
 	func get_score() -> int:
-		var base_score := (health + damage * 2 + mana * 3) / 10.0
+		var base_score := (health * 3 + damage * 10 + mana * 3) / 10.0
 		var buff_score := buffs_i_apply.size() * 5
 		var torch_score := 10 if can_change_torches else 0
 		return clamp(base_score + buff_score + torch_score, 0, 100)
 
 	func _to_string() -> String:
-		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Strength Factor: " + str(strength_factor) + " Card Image Path: " + card_image_path + " Buffs I Apply: " + str(buffs_i_apply) + " Can Light Torches: " + str(can_change_torches)
+		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Score: " + str(get_score()) + " Card Image Path: " + card_image_path + " Buffs I Apply: " + str(buffs_i_apply) + " Can Light Torches: " + str(can_change_torches)
 
 
 enum CardType {RANGED, MELEE, AIR, HEALER}

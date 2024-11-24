@@ -1,6 +1,6 @@
 class_name Audio extends Node
 
-var disabled := true
+var disabled := false
 
 func _ready() -> void:
 	if disabled:

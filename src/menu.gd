@@ -63,7 +63,7 @@ func _on_settings_pressed() -> void:
 
 func _on_volume_slider_value_changed(value: float) -> void:
 	for child: AudioStreamPlayer in $Audio.get_children():
-		child.volume_db = -45.0 + value / 5.0
+		child.volume_db = -30.0 + value / 5.0
 		if value == 0.0:
 			child.volume_db = -100.0;
 

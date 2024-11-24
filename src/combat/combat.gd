@@ -429,11 +429,11 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 	var total_strength := 0
 	var percentage: int = min(20 * (combats_beaten + 1), 100)
 	var strength_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(creature: UnitList.Creature) -> bool:
-		return creature.strength_factor <= single_card_strength_limit and creature.get_score() <= percentage
+		return creature.get_score() <= single_card_strength_limit and creature.get_score() <= percentage
 	)
 	while total_strength < strength_limit:
 		var creature := strength_limited_creatures[randi_range(0, strength_limited_creatures.size() - 1)]
-		total_strength += creature.strength_factor
+		total_strength += creature.get_score()
 		new_deck.append(Card.create_creature_card(creature))
 	return new_deck
 
