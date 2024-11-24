@@ -196,7 +196,9 @@ func reset_spawn_mesh_color() -> void:
 
 
 func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Vector3, team: Attackable.Team) -> void:
-	reset_spawn_mesh_color()
+	if team == Attackable.Team.PLAYER:
+		reset_spawn_mesh_color()
+
 	spawned_unit.emit()
 	var unit: Unit = unit_to_spawn.instantiate()
 	# gotta add child early so ready is called
