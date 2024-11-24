@@ -65,6 +65,8 @@ func _ready() -> void:
 
 func _on_button_pressed() -> void:
 	can_highlight_interactable = false
+	$Welcome.hide()
+	$Win.hide()
 	$Continue.hide()
 	continue_pressed.emit()
 
@@ -96,7 +98,9 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 
 
 func _on_welcome_button_pressed() -> void:
-	$Welcome.hide()
+	$Welcome/Label.text = "Your deck"
+	$Welcome/Narrative.hide()
+	$Welcome/Button.hide()
 	deck.toggle_visualize_deck(_who_cares_0, _who_cares_1, _who_cares_1)
 	$Continue.position.x += 60
 	$Continue/Button.pressed.connect(start_combats)

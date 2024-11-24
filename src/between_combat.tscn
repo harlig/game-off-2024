@@ -75,6 +75,7 @@ anchor_right = 0.7
 anchor_bottom = 0.7
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="Welcome"]
 layout_mode = 1
