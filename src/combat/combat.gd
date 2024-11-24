@@ -77,7 +77,7 @@ func _ready() -> void:
 	# TODO: Oof the second arg, let's fix this at some point
 	$Hand.initialize(player_combat_deck, true)
 
-	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20)
+	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20, combats_beaten_before_this_combat)
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(enemy_combat_deck)
@@ -424,12 +424,15 @@ func _on_unit_mouse_exited(unit: Unit) -> void:
 		unit.unhighlight_unit()
 
 
-func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int) -> Array[Card]:
+func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: int, combats_beaten: int) -> Array[Card]:
 	var new_deck: Array[Card] = []
 	var total_strength := 0
-	var strengh_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(creature: UnitList.Creature) -> bool: return creature.strength_factor <= single_card_strength_limit)
+	var percentage: int = min(20 * (combats_beaten + 1), 100)
+	var strength_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(creature: UnitList.Creature) -> bool:
+		return creature.strength_factor <= single_card_strength_limit and creature.get_score() <= percentage
+	)
 	while total_strength < strength_limit:
-		var creature := strengh_limited_creatures[randi_range(0, strengh_limited_creatures.size() - 1)]
+		var creature := strength_limited_creatures[randi_range(0, strength_limited_creatures.size() - 1)]
 		total_strength += creature.strength_factor
 		new_deck.append(Card.create_creature_card(creature))
 	return new_deck

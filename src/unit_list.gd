@@ -66,7 +66,10 @@ class Creature:
 		)
 
 	func get_score() -> int:
-		return health + damage
+		var base_score := (health + damage * 2 + mana * 3) / 10.0
+		var buff_score := buffs_i_apply.size() * 5
+		var torch_score := 10 if can_change_torches else 0
+		return clamp(base_score + buff_score + torch_score, 0, 100)
 
 	func _to_string() -> String:
 		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Strength Factor: " + str(strength_factor) + " Card Image Path: " + card_image_path + " Buffs I Apply: " + str(buffs_i_apply) + " Can Light Torches: " + str(can_change_torches)

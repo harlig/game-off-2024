@@ -103,6 +103,9 @@ func get_score() -> int:
 			push_error("Unknown card type", type)
 	return -1
 
+func get_cost() -> int:
+	return get_score() * 3
+
 static func duplicate_card(card: Card) -> Card:
 	var new_card := card.duplicate()
 	new_card.type = card.type

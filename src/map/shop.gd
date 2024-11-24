@@ -48,7 +48,7 @@ class Item:
 		var item: Item = Item.new()
 		item.card = new_card
 		item.type = Type.CARD
-		item.cost = new_card.get_score()
+		item.cost = new_card.get_cost()
 		return item
 
 
@@ -90,13 +90,13 @@ func create_new_offer(card: Card) -> Control:
 	new_offer.get_node("BlankCard").queue_free()
 	new_offer.add_child(card)
 	new_offer.show()
-	var cost := card.get_score()
+	var cost := card.get_cost()
 	new_offer.get_node("Label").text = "$" + str(cost)
 	return new_offer
 
 
 func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
-	if player_gold < card.get_score():
+	if player_gold < card.get_cost():
 		card.highlight(Color.RED)
 		audio.play_buzzer()
 		await get_tree().create_timer(0.5).timeout
@@ -104,7 +104,7 @@ func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 		return
 
 	# TODO: factor in actual cost
-	var cost := card.get_score()
+	var cost := card.get_cost()
 	player_gold -= cost
 	card.unhighlight()
 	item_purchased.emit(card, cost)
