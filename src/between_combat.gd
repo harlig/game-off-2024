@@ -45,17 +45,18 @@ static func create_between_combat(init_type: Type, init_combat_difficulty: int, 
 		between_combat_instance.get_node("Continue").hide()
 
 	if init_type == Type.END:
-		between_combat_instance.get_node("Progress").hide()
 		(between_combat_instance.get_node("Continue").get_node("Button") as Button).text = "Menu"
 		between_combat_instance.get_node("Backdrop").get_node("WinTorches").show()
 	return between_combat_instance
 
 
 func _ready() -> void:
-	for ndx in range(combats_beaten):
-		var new_beat_combat_indicator := $Progress/GridContainer/BaseTextureRect.duplicate()
-		new_beat_combat_indicator.show()
-		$Progress/GridContainer.add_child(new_beat_combat_indicator)
+	for ndx in range($ProgressTorches.get_children().size()):
+		var torch := $ProgressTorches.get_child(ndx) as Torch
+		if ndx < combats_beaten:
+			torch.light_torch()
+		else:
+			torch.extinguish_torch()
 
 
 func _on_button_pressed() -> void:
@@ -86,7 +87,6 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 			$Continue.show()
 		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 		can_highlight_interactable = false
-		$Progress.hide()
 
 
 func create_shop() -> void:
@@ -112,7 +112,6 @@ func _on_shop_closed() -> void:
 	shop.hide()
 	$Continue.show()
 	can_highlight_interactable = true
-	$Progress.show()
 
 func create_lose_combat() -> void:
 	# TODO: if I have no more cards I can remove, let's lose the game
@@ -126,7 +125,6 @@ func _on_lose_combat_card_removed(card: Card) -> void:
 	deck.remove_card(card)
 	lose_combat.hide()
 	$Continue.show()
-	$Progress.show()
 
 
 func _on_game_lost() -> void:
