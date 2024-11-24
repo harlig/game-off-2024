@@ -16,6 +16,7 @@ var current_selected: Card = null
 var drag_start_position: Vector2
 var is_dragging := false
 
+signal unit_selected()
 signal unit_spell_selected()
 signal card_deselected()
 signal secret_acknowledged()
@@ -160,6 +161,9 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 	if card.is_unit_spell():
 		unit_spell_selected.emit()
 
+	if card.type == Card.CardType.UNIT:
+		unit_selected.emit()
+
 	highlight_current_card()
 
 
@@ -209,6 +213,7 @@ func _on_drop_box_entered() -> void:
 
 
 func place_back_in_hand(card: Card, color_to_highlight_then_unhighlight: Color = Color.WHITE) -> void:
+	card_deselected.emit()
 	card.z_index = 0
 	var pos := get_card_position(card.get_index())
 	var rot := get_card_rotation(card.get_index())

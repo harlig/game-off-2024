@@ -8,6 +8,7 @@ const torch_scene: PackedScene = preload("res://src/torch.tscn")
 @onready var spawn_mesh: MeshInstance3D = $SpawnMesh
 @onready var player_base_torch_location: Node3D = $PlayerBaseTorchLocation
 @onready var enemy_base_torch_position: Node3D = $EnemyBaseTorchLocation
+var original_spawn_mesh_color: Color
 
 signal reward_presented()
 signal reward_chosen(reward: Reward.RewardData)
@@ -50,6 +51,7 @@ var combats_beaten_before_this_combat: int
 var player_deck: Deck
 var is_tutorial: bool
 
+
 ####################################################
 ####################################################
 # This is how you should instantiate a combat scene
@@ -71,6 +73,10 @@ static func create_combat(init_player_deck: Deck, combat_difficulty: int, init_a
 
 
 func _ready() -> void:
+	original_spawn_mesh_color = spawn_mesh.material_override.get_shader_parameter("color")
+	$HandDisplay.card_deselected.connect(reset_spawn_mesh_color)
+	$HandDisplay.unit_selected.connect(highlight_spawn_mesh)
+
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
 	add_child(player_combat_deck)
 
@@ -180,7 +186,16 @@ func try_play_card(card: Card) -> bool:
 	return played
 
 
+func highlight_spawn_mesh() -> void:
+	spawn_mesh.material_override.set_shader_parameter("color", Color.GREEN)
+
+
+func reset_spawn_mesh_color() -> void:
+	spawn_mesh.material_override.set_shader_parameter("color", original_spawn_mesh_color)
+
+
 func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Vector3, team: Attackable.Team) -> void:
+	reset_spawn_mesh_color()
 	spawned_unit.emit()
 	var unit: Unit = unit_to_spawn.instantiate()
 	# gotta add child early so ready is called
