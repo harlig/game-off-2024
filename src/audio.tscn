@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dr2punal65bu4"]
+[gd_scene load_steps=7 format=3 uid="uid://cp8oeuj383dlo"]
 
 [ext_resource type="AudioStream" uid="uid://deor8g8sfri8j" path="res://sounds/shuffle.wav" id="1_6xpj6"]
 [ext_resource type="Script" path="res://src/audio.gd" id="1_m2klc"]

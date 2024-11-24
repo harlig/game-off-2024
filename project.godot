@@ -30,6 +30,7 @@ window/stretch/mode="canvas_items"
 
 [gui]
 
+theme/custom="res://theme.tres"
 theme/custom_font="res://fonts/Snorkad-Regular.ttf"
 
 [rendering]

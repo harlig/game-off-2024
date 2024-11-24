@@ -1,18 +1,19 @@
 class_name Menu extends Control
 
-
 var tutorial_combat: Combat
 var tutorial_deck: Deck
 var tutorial_camera: Camera3D
+
+
+func _ready() -> void:
+	_on_volume_slider_value_changed($Settings/VolumeSlider.value)
+
 
 func _on_play_pressed() -> void:
 	var run: Run = load("res://src/run.tscn").instantiate()
 	add_sibling(run)
 	queue_free()
 
-
-func _on_settings_pressed() -> void:
-	print("Settings")
 
 func _on_how_to_play_pressed() -> void:
 	tutorial_deck = Deck.create_deck()
@@ -51,4 +52,23 @@ func _on_tutorial_combat_spawned_unit() -> void:
 
 
 func _on_middle_torch_lit(_torch_ndx: int) -> void:
-	tutorial_combat.set_help_text("Well done! You've lit a torch.\nThe first time you light a torch in a combat, you'll get a secret added to your hand which doesn't count towards your hand size.\nSecrets are powerful cards which help you in combat.\nTry playing the secret you just got.")
+	tutorial_combat.set_help_text("Well done! You've lit a torch.\nThe first time you light a torch in a combat, you'll get a secret added to your hand. Secrets are powerful cards which help you in combat.\nTry playing the secret you just got.")
+
+
+func _on_settings_pressed() -> void:
+	$Title.hide()
+	$Buttons.hide()
+	$Settings.show()
+
+
+func _on_volume_slider_value_changed(value: float) -> void:
+	for child: AudioStreamPlayer in $Audio.get_children():
+		child.volume_db = -45.0 + value / 5.0
+		if value == 0.0:
+			child.volume_db = -100.0;
+
+
+func _on_back_button_pressed() -> void:
+	$Title.show()
+	$Buttons.show()
+	$Settings.hide()
