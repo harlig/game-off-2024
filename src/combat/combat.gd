@@ -478,8 +478,10 @@ func _on_view_deck_button_pressed() -> void:
 
 	if player_deck.is_visualizing_deck:
 		$HandDisplay.hide()
+		$ViewDeckButton.text = "Hide deck"
 	else:
 		$HandDisplay.show()
+		$ViewDeckButton.text = "View deck"
 
 func _who_cares_0(_t: int, _c: Card) -> void:
 	pass

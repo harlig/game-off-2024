@@ -109,7 +109,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 28
-text = "Show deck"
+text = "View deck"
 
 [node name="Win" type="Control" parent="."]
 visible = false
