@@ -3,8 +3,8 @@ class_name SpellList extends Node
 static var card_scene := preload("res://src/card.tscn")
 
 static var spell_cards: Array[Spell] = [
-	Spell.new("Fireball", SpellType.DAMAGE, TargetableType.UNIT, 4, 2, "res://textures/spell/fireball.png"),
-	Spell.new("Heal", SpellType.HEAL, TargetableType.UNIT, 5, 2, "res://textures/spell/heal.png"),
+	# Spell.new("Fireball", SpellType.DAMAGE, TargetableType.UNIT, 4, 2, "res://textures/spell/fireball.png"),
+	# Spell.new("Heal", SpellType.HEAL, TargetableType.UNIT, 5, 2, "res://textures/spell/heal.png"),
 	Spell.new("Mana", SpellType.CUR_MANA, TargetableType.NONE, 2, 1, "res://textures/hud/mana.png"),
 	Spell.new("Fast mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 1.5, 4, "res://textures/hud/mana.png"),
 	Spell.new("More max mana", SpellType.MAX_MANA, TargetableType.NONE, 1, 4, "res://textures/hud/mana.png"),
