@@ -46,18 +46,20 @@ var torches_player_has_lit: Array[Torch] = []
 
 var combats_beaten_before_this_combat: int
 var player_deck: Deck
+var disable_opponent: bool
 
 ####################################################
 ####################################################
 # This is how you should instantiate a combat scene
 ####################################################
 ####################################################
-static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic], combats_beaten: int) -> Combat:
+static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic], combats_beaten: int, init_disable_opponent: bool = false) -> Combat:
 	var combat_instance: Combat = combat_scene.instantiate()
 	combat_instance.difficulty = combat_difficulty
 	combat_instance.audio = init_audio
 	combat_instance.relics = relics_for_combat
 	combat_instance.combats_beaten_before_this_combat = combats_beaten
+	combat_instance.disable_opponent = init_disable_opponent
 	return combat_instance
 ####################################################
 ####################################################
@@ -67,15 +69,19 @@ static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_
 
 func _ready() -> void:
 	player_deck = get_parent().get_node("DeckControl").get_node("Deck")
-	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20)
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
-	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(player_combat_deck)
-	add_child(enemy_combat_deck)
 
 	# TODO: Oof the second arg, let's fix this at some point
 	$Hand.initialize(player_combat_deck, relics.filter(func(relic: Relic) -> bool: return relic.relic_name == 'Torchlighter Relic').size() > 0)
+
+	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20)
+	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
+	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
+	add_child(enemy_combat_deck)
 	$Opponent/Hand.initialize(enemy_combat_deck)
+	if disable_opponent:
+		$Opponent.should_spawn = false
 
 	set_process(true)
 
