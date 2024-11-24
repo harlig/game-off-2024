@@ -12,6 +12,8 @@ const torch_scene: PackedScene = preload("res://src/torch.tscn")
 signal reward_presented()
 signal reward_chosen(reward: Reward.RewardData)
 signal combat_over(combat_state: CombatState)
+signal middle_torch_lit(ndx: int)
+signal spawned_unit()
 
 enum CombatState {PLAYING, WON, LOST}
 
@@ -179,6 +181,7 @@ func try_play_card(card: Card) -> bool:
 
 
 func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Vector3, team: Attackable.Team) -> void:
+	spawned_unit.emit()
 	var unit: Unit = unit_to_spawn.instantiate()
 	# gotta add child early so ready is called
 	add_child(unit)
@@ -293,6 +296,7 @@ func _on_middle_area_torch_state_changed(is_lit: bool, torch_changed_ndx: int) -
 		if torch not in torches_player_has_lit:
 			torches_player_has_lit.append(torch)
 			deal_secret()
+			middle_torch_lit.emit(torch_changed_ndx)
 	else:
 		$Opponent.spawn_interval += 0.25
 
@@ -456,3 +460,7 @@ func _who_cares_0(_c: Card) -> void:
 
 func _who_cares_1(_t: int, _c: Card) -> void:
 	pass
+
+func set_help_text(text: String) -> void:
+	$HelpText.text = text
+	$HelpText.show()
