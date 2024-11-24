@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cw6b415ocy2t2"]
+[gd_scene load_steps=3 format=3 uid="uid://cw6b415ocy2t2"]
 
 [ext_resource type="Script" path="res://src/menu.gd" id="1_t5igk"]
+[ext_resource type="PackedScene" uid="uid://dr2punal65bu4" path="res://src/audio.tscn" id="2_1yg6l"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -41,6 +42,8 @@ size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 72
 text = "Settings"
+
+[node name="Audio" parent="." instance=ExtResource("2_1yg6l")]
 
 [connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Buttons/HowToPlay" to="." method="_on_how_to_play_pressed"]
