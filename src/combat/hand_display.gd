@@ -55,7 +55,7 @@ func _input(event: InputEvent) -> void:
 				highlight_current_card()
 
 func update_hand_size_text() -> void:
-	$HandSize.text = str(hand.num_non_secret_cards()) + "/" + str(hand.MAX_HAND_SIZE)
+	$HandSize.text = str(hand.num_non_secret_cards()) + "/" + str(hand.max_hand_size)
 
 func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
 	update_hand_size_text()

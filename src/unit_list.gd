@@ -1,16 +1,16 @@
 class_name UnitList extends Node
 
 static var creature_cards: Array[Creature] = [
-	Creature.new("Shriekling", CardType.RANGED, 10, 2, 2, "res://textures/unit/doodle_jump.png"),
+	Creature.new("Shriekling", CardType.RANGED, 20, 2, 2, "res://textures/unit/doodle_jump.png"),
 	Creature.new("Murkmouth", CardType.MELEE, 30, 3, 3, "res://textures/unit/hippo.png"),
 	Creature.new("Wraithvine", CardType.RANGED, 20, 4, 3, "res://textures/unit/flower.png"),
-	Creature.new("Gloom", CardType.RANGED, 10, 2, 1, "res://textures/unit/catergator.png"),
+	Creature.new("Gloom", CardType.RANGED, 20, 2, 1, "res://textures/unit/catergator.png"),
 	Creature.new("Hollowstalkers", CardType.MELEE, 40, 3, 4, "res://textures/unit/cricket.png"),
 	Creature.new("Sablemoth", CardType.RANGED, 20, 1, 1, "res://textures/unit/turkey_heart.png"),
-	Creature.new("Creep", CardType.MELEE, 10, 1, 1, "res://textures/unit/slug.png"),
+	Creature.new("Creep", CardType.RANGED, 10, 1, 1, "res://textures/unit/slug.png"),
 	Creature.new("Netherlimbs", CardType.MELEE, 50, 5, 5, "res://textures/unit/doodle_jump.png"),
 	Creature.new("Phantom Husk", CardType.RANGED, 20, 3, 2, "res://textures/unit/papa_smurf.png"),
-	Creature.new("Spindler", CardType.RANGED, 10, 2, 2, "res://textures/unit/tripod.png"),
+	Creature.new("Spindler", CardType.RANGED, 20, 2, 2, "res://textures/unit/tripod.png"),
 	Creature.new("Rotling", CardType.MELEE, 20, 2, 2, "res://textures/unit/snek.png"),
 	Creature.new("Dreadroot", CardType.RANGED, 30, 3, 3, "res://textures/unit/spiky_seahorse.png"),
 	Creature.new("Cryptkin", CardType.MELEE, 10, 2, 1, "res://textures/unit/cricket.png"),
@@ -21,16 +21,16 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Ebon Phantom", CardType.MELEE, 50, 8, 6, "res://textures/unit/hand_crawler.png"),
 	Creature.new("Healer", CardType.HEALER, 100, 3, 4, "res://textures/unit/ufo.png"),
 	Creature.new("Abyssal Fiend", CardType.MELEE, 100, 8, 10, "res://textures/unit/hand_crawler.png"),
-	Creature.new("Damage Buffer", CardType.MELEE, 20, 3, 4, "res://textures/unit/turkey_heart.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 2)]),
-	Creature.new("Health Buffer", CardType.MELEE, 20, 1, 4, "res://textures/unit/papa_smurf.png", [Unit.Buff.new(Unit.BuffType.HEALTH, 20)]),
-	Creature.new("Speed Buffer", CardType.MELEE, 20, 1, 4, "res://textures/unit/snek.png", [Unit.Buff.new(Unit.BuffType.SPEED, 0.5)]),
-	Creature.new("Torchlighter", CardType.MELEE, 20, 1, 2, "res://textures/unit/hand_crawler.png", [], true),
+	Creature.new("Damage Buffer", CardType.MELEE, 40, 4, 4, "res://textures/unit/turkey_heart.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 2)]),
+	Creature.new("Health Buffer", CardType.MELEE, 40, 2, 4, "res://textures/unit/papa_smurf.png", [Unit.Buff.new(Unit.BuffType.HEALTH, 20)]),
+	Creature.new("Speed Buffer", CardType.MELEE, 40, 2, 4, "res://textures/unit/snek.png", [Unit.Buff.new(Unit.BuffType.SPEED, 0.5)]),
+	Creature.new("Torchlighter", CardType.MELEE, 40, 1, 2, "res://textures/unit/hand_crawler.png", [], true),
 ]
 
 static var secret_creature_cards: Array[Creature] = [
-	Creature.new("Big Frickin Guy", CardType.MELEE, 250, 2, 0, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 5)]),
-	Creature.new("Swiftstriker", CardType.MELEE, 60, 30, 0, "res://textures/unit/hippo.png"),
-	Creature.new("Ranger", CardType.RANGED, 50, 8, 0, "res://textures/unit/tripod.png")
+	Creature.new("Abyssal Titan", CardType.MELEE, 250, 2, 3, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 5)]),
+	Creature.new("Spectral Assassin", CardType.MELEE, 60, 30, 3, "res://textures/unit/hippo.png"),
+	Creature.new("Shadow Ranger", CardType.RANGED, 50, 8, 3, "res://textures/unit/tripod.png")
 ]
 
 class Creature:

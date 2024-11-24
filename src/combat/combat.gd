@@ -279,6 +279,9 @@ func play_spell(spell: SpellList.Spell) -> void:
 			$Hand.draw_cards(spell.value)
 		SpellList.SpellType.DRAW_CARDS_REGEN:
 			$Hand.draw_time /= spell.value
+		SpellList.SpellType.HAND_SIZE:
+			$Hand.max_hand_size += spell.value
+			$HandDisplay.update_hand_size_text()
 
 func deal_secret() -> void:
 	# TODO: play audio cue here

@@ -4,7 +4,7 @@ class_name Reward extends Control
 
 signal reward_chosen(reward: RewardData)
 
-var reward_skipped_gold: int = 25
+var reward_skipped_gold: int = 50
 
 class RewardData:
 	enum Type {CARD, GOLD}
@@ -31,17 +31,9 @@ func add_card_offerings(cards: Array[Card]) -> void:
 		card_offered.connect("card_clicked", _on_reward_clicked)
 		$Offers.add_child(card_offered)
 
-var last_clicked_reward_card: Card = null
-
-func _on_reward_clicked(times_clicked: int, reward_card: Card) -> void:
-	if last_clicked_reward_card and last_clicked_reward_card != reward_card:
-		last_clicked_reward_card.reset_selected()
-
-	last_clicked_reward_card = reward_card
-
-	if times_clicked == 2:
-		reward_card.reset_selected()
-		reward_chosen.emit(RewardData.for_card(reward_card))
+func _on_reward_clicked(_times_clicked: int, reward_card: Card) -> void:
+	reward_card.reset_selected()
+	reward_chosen.emit(RewardData.for_card(reward_card))
 
 
 func _on_skip_button_pressed() -> void:

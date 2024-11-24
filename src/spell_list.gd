@@ -10,6 +10,7 @@ static var spell_cards: Array[Spell] = [
 	Spell.new("More max mana", SpellType.MAX_MANA, TargetableType.NONE, 1, 3, "res://textures/hud/mana.png"),
 	Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 2, 3, "res://textures/spell/draw_cards.png"),
 	Spell.new("Fast draw cards", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 1.5, 4, "res://textures/spell/draw_cards.png"),
+	Spell.new("Hand size", SpellType.HAND_SIZE, TargetableType.NONE, 1, 3, "res://textures/spell/draw_cards.png"),
 ]
 
 static var secret_spell_cards: Array[Spell] = [
@@ -61,6 +62,7 @@ enum SpellType {
 	MANA_REGEN,
 	DRAW_CARDS,
 	DRAW_CARDS_REGEN,
+	HAND_SIZE,
 }
 
 enum TargetableType {

@@ -89,7 +89,7 @@ static func random_secret_card() -> Card:
 	return card
 
 static func compare_by_mana(a: Card, b: Card) -> bool:
-	return a.mana > b.mana
+	return a.mana < b.mana
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")
@@ -208,12 +208,14 @@ func update_spell_display() -> void:
 		SpellList.SpellType.MANA_REGEN:
 			description_text = "Increase mana regen by " + str(spell.value) + "x for this combat"
 		SpellList.SpellType.DRAW_CARDS:
-			if spell.value <= Hand.MAX_HAND_SIZE:
+			if spell.value <= 15:
 				description_text = "Draw " + str(int(round(spell.value))) + " cards"
 			else:
 				description_text = "Draw cards until hand is full"
 		SpellList.SpellType.DRAW_CARDS_REGEN:
 			description_text = "Increase draw speed by " + str(int(round(spell.value))) + "x for this combat"
+		SpellList.SpellType.HAND_SIZE:
+			description_text = "Increase max hand size by " + str(int(round(spell.value))) + " for this combat"
 
 	$DescriptionArea/SpellDescription.show()
 	$DescriptionArea/SpellDescription.text = description_text

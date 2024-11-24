@@ -1,9 +1,10 @@
 class_name Hand extends Node
 
-const MAX_HAND_SIZE := 5
 
 @export var draw_time := 5.0
 @export var mana_time := 2.0
+
+var max_hand_size := 5
 
 var cards: Array[Card] = []
 var deck: CombatDeck;
@@ -36,7 +37,7 @@ func _physics_process(delta: float) -> void:
 
 
 func update_draw_timer(delta: float) -> void:
-	if num_non_secret_cards() >= MAX_HAND_SIZE:
+	if num_non_secret_cards() >= max_hand_size:
 		draw_time_remaining = draw_time;
 		draw_time_updated.emit(0.0, draw_time)
 		return ;
@@ -74,7 +75,7 @@ func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) 
 			drew.emit(torchlighter)
 			cards_drawn += 1
 
-	for i in range(MAX_HAND_SIZE - cards_drawn):
+	for i in range(max_hand_size - cards_drawn):
 		try_draw_card();
 		cards_drawn += 1
 
@@ -83,7 +84,7 @@ func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) 
 
 
 func try_draw_card() -> bool:
-	if cards.filter(func(_card: Card) -> bool: return _card and !_card.is_secret).size() >= MAX_HAND_SIZE:
+	if cards.filter(func(_card: Card) -> bool: return _card and !_card.is_secret).size() >= max_hand_size:
 		print("Hand full, can't draw a card!")
 		return false
 
