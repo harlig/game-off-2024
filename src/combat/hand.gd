@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 
 
 func update_draw_timer(delta: float) -> void:
-	if len(cards) >= MAX_HAND_SIZE:
+	if num_non_secret_cards() >= MAX_HAND_SIZE:
 		draw_time_remaining = draw_time;
 		draw_time_updated.emit(0.0, draw_time)
 		return ;
@@ -141,3 +141,7 @@ func swap(card1: Card, card2: Card) -> void:
 
 	cards[card1_ndx] = card2
 	cards[card2_ndx] = card1
+
+
+func num_non_secret_cards() -> int:
+	return cards.filter(func(_card: Card) -> bool: return !_card.is_secret).size()

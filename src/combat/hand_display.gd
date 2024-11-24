@@ -54,8 +54,11 @@ func _input(event: InputEvent) -> void:
 			else:
 				highlight_current_card()
 
+func update_hand_size_text() -> void:
+	$HandSize.text = str(hand.num_non_secret_cards()) + "/" + str(hand.MAX_HAND_SIZE)
 
 func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
+	update_hand_size_text()
 	$HandArea.add_child(card)
 
 	if insert_at >= 0:
@@ -71,6 +74,7 @@ func _on_hand_drew(card: Card, insert_at: int = -1) -> void:
 
 
 func _on_hand_discarded(card: Card) -> void:
+	update_hand_size_text()
 	card.card_clicked.disconnect(_on_card_clicked)
 	card.mouse_entered.disconnect(_on_card_mouse_entered)
 	card.mouse_exited.disconnect(_on_card_mouse_exited)
@@ -246,7 +250,7 @@ func get_card_position(ind: int) -> Vector2:
 	elif do_spread and passed_hover:
 		x_pos += SPREAD_WIDTH
 
-	var y_pos := -CARD_Y_SIZE * 1.2
+	var y_pos := -CARD_Y_SIZE * 1.3
 	var center_dist: float = abs(ind - (hand_size - 1) / 2.0)
 	y_pos += 4.0 * center_dist * center_dist
 
