@@ -79,6 +79,7 @@ func _process(delta: float) -> void:
 func create_combat() -> Combat:
 	var new_combat: Combat = Combat.create_combat(deck, combat_difficulty, audio, relics, combats_beaten)
 	current_combat = new_combat
+	new_combat.get_node("ViewDeckButton").hide()
 
 	new_combat.reward_presented.connect(bank_control.show)
 	new_combat.reward_chosen.connect(_on_combat_reward_chosen)
@@ -149,6 +150,7 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	await tween.finished
 
 	between_combat.queue_free()
+	new_combat.get_node("ViewDeckButton").show()
 	new_combat.get_node("HandDisplay").show()
 	new_combat.get_node("Opponent").should_spawn = true
 	new_combat.get_node("Hand").paused = false
