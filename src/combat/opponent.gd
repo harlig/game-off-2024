@@ -3,7 +3,6 @@ class_name Opponent extends Node
 @onready var hand := $Hand
 
 var difficulty: int
-var max_units_to_play_at_once: int
 
 var spawn_interval := 5.0
 var should_spawn := true
@@ -14,7 +13,6 @@ signal spawn(card: Card)
 
 func _ready() -> void:
 	adjust_spawn_interval()
-	max_units_to_play_at_once = difficulty + 1
 
 func adjust_spawn_interval() -> void:
 	match difficulty:
@@ -47,6 +45,7 @@ func _process(delta: float) -> void:
 	adjust_spawn_interval()
 
 func try_play_cards() -> void:
+	var max_units_to_play_at_once := difficulty + 1
 	playing_cards = true
 
 	var cards: Array[Card] = hand.cards
