@@ -22,21 +22,24 @@ func _ready() -> void:
 	var total_score := 0
 	var num_units := INITIAL_BASE_UNITS_COUNT
 	var mana_costs := [1, 2, 3]
-	while total_score < MAX_INITIAL_SCORE and num_units > 0:
-		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE, MAX_MANA_COST)
-		print("Got card with name " + card.name + " and score " + str(card.get_score()))
-		if total_score + card.get_score() <= MAX_INITIAL_SCORE and card.mana <= MAX_MANA_COST:
-			if card.mana in mana_costs:
-				mana_costs.erase(card.mana)
-			add_card(card)
-			total_score += card.get_score()
-			num_units -= 1
 
+	# ensure we hit the mana costs first
 	while mana_costs.size() > 0:
-		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE, MAX_MANA_COST)
+		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE)
 		if card.mana in mana_costs:
 			add_card(card)
 			mana_costs.erase(card.mana)
+			total_score += card.get_score()
+			num_units -= 1
+
+	# add more units as needed to fill up the amount of units we want
+	while total_score < MAX_INITIAL_SCORE and num_units > 0:
+		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE)
+		print("Got card with name " + card.name + " and score " + str(card.get_score()))
+		if total_score + card.get_score() <= MAX_INITIAL_SCORE and card.mana <= MAX_MANA_COST:
+			add_card(card)
+			total_score += card.get_score()
+			num_units -= 1
 
 	cards.sort_custom(Card.compare_by_mana)
 
