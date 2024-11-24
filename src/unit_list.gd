@@ -85,6 +85,12 @@ static func new_card_by_name(unit_name: String) -> Card:
 	var unit_arr := creature_cards.filter(func(creature: Creature) -> bool: return creature.name == unit_name)
 	return Card.create_creature_card(unit_arr[0])
 
+static func get_random_card(max_score: int, can_be_torchlighter: bool = false) -> Card:
+	var creature := creature_cards[randi() % creature_cards.size()]
+	while creature.get_score() > max_score and creature.can_change_torches != can_be_torchlighter:
+		creature = creature_cards[randi() % creature_cards.size()]
+	return Card.create_creature_card(creature)
+
 static func random_secret_card() -> Card:
 	var secret_creature := secret_creature_cards[randi() % secret_creature_cards.size()]
 	var card := Card.create_creature_card(secret_creature)

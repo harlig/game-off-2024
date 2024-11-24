@@ -3,6 +3,8 @@ class_name Deck extends Control
 const INITIAL_BASE_UNITS_COUNT: int = 6
 const INITIAL_TORCHLIGHTER_COUNT: int = 2
 const INITIAL_HEALER_COUNT: int = 1
+const MAX_INITIAL_SCORE: int = 200
+const MAX_INITIAL_PER_UNIT_SCORE: int = 20
 
 var cards: Array[Card] = []
 
@@ -16,26 +18,19 @@ static func create_deck() -> Deck:
 
 
 func _ready() -> void:
+	var total_score := 0
 	var num_units := INITIAL_BASE_UNITS_COUNT
-	for ndx in range(num_units):
-		if (ndx < 2):
-			var basic_unit_card := UnitList.new_card_by_name("Gloom") # Give them an airial card for testing
-			add_card(basic_unit_card)
-		elif (ndx >= 2 && ndx < 5):
-			var medium_unit_card := UnitList.new_card_by_id(ndx) # Shriekling
-			add_card(medium_unit_card)
-		else:
-			var rare_unit_card := UnitList.new_card_by_name("Ebon Phantom") # Ebon Phantom
-			add_card(rare_unit_card)
-
-	add_card(UnitList.new_card_by_name("Damage Buffer")) # Add a buff card
-	add_card(UnitList.new_card_by_name("Health Buffer")) # Add a buff card
-	add_card(UnitList.new_card_by_name("Speed Buffer")) # Add a buff card
+	while total_score < MAX_INITIAL_SCORE and num_units > 0:
+		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE)
+		if total_score + card.get_score() <= MAX_INITIAL_SCORE:
+			add_card(card)
+			total_score += card.get_score()
+			num_units -= 1
 
 	for ndx in range(INITIAL_TORCHLIGHTER_COUNT):
-		add_card(UnitList.new_card_by_name("Torchlighter")) # Add a torchlighter card
+		add_card(UnitList.new_card_by_name("Torchlighter"))
 	for ndx in range(INITIAL_HEALER_COUNT):
-		add_card(UnitList.new_card_by_name("Healer")) # Add a healer card
+		add_card(UnitList.new_card_by_name("Healer"))
 
 	for ndx in range(0, SpellList.spell_cards.size()):
 		var spell_card := SpellList.new_card_by_id(ndx % SpellList.spell_cards.size())
