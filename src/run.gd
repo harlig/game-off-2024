@@ -115,10 +115,6 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
 		existing_combat.queue_free()
-
-		# only do this if the player hasn't yet opened the shop
-		if between_combat.shop == null && between_combat.type == BetweenCombat.Type.SHOP:
-			between_combat.get_node("Continue").show()
 	elif combat_state == Combat.CombatState.LOST:
 		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
