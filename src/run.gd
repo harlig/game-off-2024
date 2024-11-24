@@ -22,13 +22,10 @@ var times_card_removed := 0
 
 # TODO: do we even want relics?
 var relics: Array[Relic] = [
-	# Relic.create_relic("Torchlighter Relic", "Your first hand of each combat will always draw a Torchlighter", "res://textures/relic/torchlighter_secret.png", []),
-]
-# var relics: Array[Relic] = [
 # 	Relic.create_relic("Health Relic", "When you spawn a unit, give it +5 max hp", "res://textures/relic/health_secret.jpg", [Card.CardType.UNIT]),
 # 	Relic.create_relic("Spells Mana Relic", "Your spells each cost -1 mana", "res://textures/relic/mana_secret.jpg", [Card.CardType.SPELL]),
 	# Relic.create_relic("Torchlighter Relic", "Your first hand of each combat will always draw a Torchlighter", "res://textures/relic/torchlighter_secret.png", []),
-# 	]
+]
 
 var time_for_preload := 0.5
 var time_spent := 0.0
@@ -45,7 +42,13 @@ func _ready() -> void:
 	preloaded_combat.hide()
 	add_child(preloaded_combat)
 
-	create_combat()
+	# TODO: create a between combat and a next between combat
+	var between_combat: BetweenCombat
+	between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.START, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
+	between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
+	between_combat.get_node("Continue").hide()
+	between_combat.card_removed.connect(_on_card_removed)
+	add_child(between_combat)
 
 func _process(delta: float) -> void:
 	if has_preloaded:
@@ -71,7 +74,7 @@ func _process(delta: float) -> void:
 		print("has done preloaded shit")
 
 func create_combat() -> Combat:
-	var new_combat: Combat = Combat.create_combat($DeckControl/Deck, combat_difficulty, audio, relics, combats_beaten)
+	var new_combat: Combat = Combat.create_combat(deck, combat_difficulty, audio, relics, combats_beaten)
 	current_combat = new_combat
 
 	new_combat.reward_presented.connect(bank_control.show)

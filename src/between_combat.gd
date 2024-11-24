@@ -25,6 +25,7 @@ var type: Type
 var audio: Audio
 
 enum Type {
+	START,
 	SHOP,
 	RETRY,
 	END
@@ -78,6 +79,8 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 	if not can_highlight_interactable:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		if type == Type.START:
+			$Welcome.show()
 		if type == Type.SHOP:
 			create_shop()
 		elif type == Type.RETRY:
@@ -87,6 +90,17 @@ func _on_area_3d_input_event(_camera: Node, event: InputEvent, _event_position: 
 			$Continue.show()
 		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 		can_highlight_interactable = false
+
+
+func deal_deck() -> void:
+	$Welcome.hide()
+	deck.toggle_visualize_deck(_who_cares_0, _who_cares_1, _who_cares_1)
+	$Continue.pressed.connect(start_combats)
+	$Continue.show()
+
+func start_combats() -> void:
+	deck.toggle_visualize_deck(_who_cares_0, _who_cares_1, _who_cares_1)
+	$Continue.pressed.disconnect(start_combats)
 
 
 func create_shop() -> void:
@@ -134,3 +148,9 @@ func _on_game_lost() -> void:
 	$Continue/Button.text = "Menu"
 	$Continue.show()
 	$Continue/Button.pressed.connect(game_lost.emit)
+
+func _who_cares_0(_t: int, _c: Card) -> void:
+	pass
+
+func _who_cares_1(_c: Card) -> void:
+	pass
