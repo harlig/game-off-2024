@@ -277,6 +277,8 @@ func _to_string() -> String:
 			card_string = "Unit: " + creature.name + " - " + str(creature.health) + " health, " + str(creature.damage) + " damage"
 		CardType.SPELL:
 			card_string = "Spell: " + spell.name + " - " + str(spell.value) + " value" + " type " + str(spell.type)
+
+	card_string += " - Score: " + str(get_score())
 	return card_string
 
 

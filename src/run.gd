@@ -3,16 +3,17 @@ class_name Run extends Control
 const between_combat_scene := preload("res://src/between_combat.tscn")
 const BETWEEN_COMBAT_OFFSET := 56
 
-const COMBATS_TO_BEAT := 5
+const COMBATS_TO_BEAT := 1
 
 @onready var camera := $Camera3D
 @onready var deck := $DeckControl/Deck
 @onready var relic_area := $RelicArea
 @onready var bank_control := $BankControl
-@onready var audio := $Audio
 
 var combat_difficulty := 1
 var combats_beaten := 0
+var main_menu: Menu
+var audio: Audio
 
 var bank := 10:
 	set(value):
@@ -35,6 +36,8 @@ var current_combat: Combat
 func _ready() -> void:
 	# kinda janky but guarantees that the bank's text will get updated to its starting value
 	bank = bank
+
+	audio = $Audio
 
 	# preload a combat to try to reduce stuttering
 	var preloaded_combat: Combat = Combat.create_combat($DeckControl/Deck, combat_difficulty, audio, relics, combats_beaten)
@@ -152,8 +155,9 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 
 func continue_to_menu() -> void:
-	var menu: Menu = load("res://src/menu.tscn").instantiate()
-	add_sibling(menu)
+	remove_child(audio)
+	main_menu.add_child(audio)
+	main_menu.show()
 	queue_free()
 
 
