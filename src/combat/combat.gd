@@ -73,7 +73,7 @@ func _ready() -> void:
 	add_child(player_combat_deck)
 
 	# TODO: Oof the second arg, let's fix this at some point
-	$Hand.initialize(player_combat_deck, relics.filter(func(relic: Relic) -> bool: return relic.relic_name == 'Torchlighter Relic').size() > 0)
+	$Hand.initialize(player_combat_deck, true)
 
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20)
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
