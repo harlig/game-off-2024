@@ -16,7 +16,7 @@ func _on_how_to_play_pressed() -> void:
 	# create combat, add it as a sibling, and remove the menu
 	# on combat end, it should remove itself and add the menu back
 	print("How to play")
-	var new_combat: Combat = Combat.create_combat(0, $Audio, [], 0, true)
+	var new_combat: Combat = Combat.create_combat(null, 0, $Audio, [], 0, true)
 	tutorial_combat = new_combat
 	new_combat.combat_over.connect(_on_tutorial_combat_over)
 	add_sibling(new_combat)

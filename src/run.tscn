@@ -1,10 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dljtnngynioy1"]
+[gd_scene load_steps=6 format=3 uid="uid://dljtnngynioy1"]
 
 [ext_resource type="Script" path="res://src/run.gd" id="1_cnw64"]
 [ext_resource type="Script" path="res://src/combat/combat_camera.gd" id="3_nj1jd"]
 [ext_resource type="PackedScene" uid="uid://cih1pigr4i7xh" path="res://src/deck.tscn" id="3_pu7pl"]
-[ext_resource type="PackedScene" uid="uid://bdga38e85imgw" path="res://src/combat/combat.tscn" id="4_xap8m"]
-[ext_resource type="PackedScene" uid="uid://brab37f81ohc5" path="res://src/combat/projectile.tscn" id="5_awlrp"]
 [ext_resource type="PackedScene" uid="uid://dr2punal65bu4" path="res://src/audio.tscn" id="6_xmwp7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4r0vh"]
@@ -35,12 +33,6 @@ mouse_filter = 2
 
 [node name="Deck" parent="DeckControl" instance=ExtResource("3_pu7pl")]
 layout_mode = 1
-
-[node name="PreloadedCombat" parent="." instance=ExtResource("4_xap8m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0)
-visible = false
-
-[node name="Projectile" parent="PreloadedCombat" instance=ExtResource("5_awlrp")]
 
 [node name="Loading" type="ColorRect" parent="."]
 z_index = 10

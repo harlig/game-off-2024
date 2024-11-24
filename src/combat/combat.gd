@@ -53,8 +53,9 @@ var disable_opponent: bool
 # This is how you should instantiate a combat scene
 ####################################################
 ####################################################
-static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic], combats_beaten: int, init_disable_opponent: bool = false) -> Combat:
+static func create_combat(init_player_deck: Deck, combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic], combats_beaten: int, init_disable_opponent: bool = false) -> Combat:
 	var combat_instance: Combat = combat_scene.instantiate()
+	combat_instance.player_deck = init_player_deck
 	combat_instance.difficulty = combat_difficulty
 	combat_instance.audio = init_audio
 	combat_instance.relics = relics_for_combat
@@ -68,7 +69,6 @@ static func create_combat(combat_difficulty: int, init_audio: Audio, relics_for_
 
 
 func _ready() -> void:
-	player_deck = get_parent().get_node("DeckControl").get_node("Deck")
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
 	add_child(player_combat_deck)
 

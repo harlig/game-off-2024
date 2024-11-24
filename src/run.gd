@@ -38,6 +38,13 @@ var current_combat: Combat
 func _ready() -> void:
 	# kinda janky but guarantees that the bank's text will get updated to its starting value
 	bank = bank
+
+	# preload a combat to try to reduce stuttering
+	var preloaded_combat: Combat = Combat.create_combat($DeckControl/Deck, combat_difficulty, audio, relics, combats_beaten)
+	preloaded_combat.name = "PreloadedCombat"
+	preloaded_combat.hide()
+	add_child(preloaded_combat)
+
 	create_combat()
 
 func _process(delta: float) -> void:
@@ -64,7 +71,7 @@ func _process(delta: float) -> void:
 		print("has done preloaded shit")
 
 func create_combat() -> Combat:
-	var new_combat: Combat = Combat.create_combat(combat_difficulty, audio, relics, combats_beaten)
+	var new_combat: Combat = Combat.create_combat($DeckControl/Deck, combat_difficulty, audio, relics, combats_beaten)
 	current_combat = new_combat
 
 	new_combat.reward_presented.connect(bank_control.show)
