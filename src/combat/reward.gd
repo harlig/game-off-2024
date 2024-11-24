@@ -25,6 +25,9 @@ class RewardData:
 		reward_data.gold = reward_gold
 		return reward_data
 
+func _ready() -> void:
+	$SkipButton.text = "Skip\n(+%dg)" % reward_skipped_gold
+
 func add_card_offerings(cards: Array[Card]) -> void:
 	for enemy_card: Card in cards:
 		var card_offered := Card.duplicate_card(enemy_card)

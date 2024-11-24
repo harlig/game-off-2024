@@ -47,7 +47,7 @@ class Spell:
 		)
 
 	func get_score() -> float:
-		var base_score := (value + mana * 2) / 5
+		var base_score := (value * 1.5 + mana)
 		return clamp(base_score, 0, 100)
 
 	func _to_string() -> String:
