@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dljtnngynioy1"]
+[gd_scene load_steps=7 format=3 uid="uid://dljtnngynioy1"]
 
 [ext_resource type="Script" path="res://src/run.gd" id="1_cnw64"]
 [ext_resource type="Script" path="res://src/combat/combat_camera.gd" id="3_nj1jd"]
 [ext_resource type="PackedScene" uid="uid://cih1pigr4i7xh" path="res://src/deck.tscn" id="3_pu7pl"]
+[ext_resource type="Texture2D" uid="uid://btr3nlcoi1ly3" path="res://textures/hud/bank.png" id="4_51c8o"]
 [ext_resource type="PackedScene" uid="uid://dr2punal65bu4" path="res://src/audio.tscn" id="6_xmwp7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4r0vh"]
@@ -76,23 +77,11 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
+offset_left = -250.0
 offset_top = 50.0
 offset_right = -50.0
+offset_bottom = 150.0
 grow_horizontal = 0
-
-[node name="DollarSign" type="Label" parent="BankControl"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -25.0
-offset_right = 44.0
-offset_bottom = 25.0
-grow_vertical = 2
-theme_override_font_sizes/font_size = 48
-text = "$ "
-horizontal_alignment = 2
-vertical_alignment = 1
 
 [node name="Value" type="Label" parent="BankControl"]
 layout_mode = 1
@@ -109,6 +98,26 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 48
 text = "100"
 horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="BankControl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.3
+anchor_bottom = 1.0
+grow_vertical = 2
+texture = ExtResource("4_51c8o")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="BankControl/TextureRect"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 54.0
+offset_right = 66.0
+offset_bottom = 83.0
+theme_override_font_sizes/font_size = 24
+text = "$"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Audio" parent="." instance=ExtResource("6_xmwp7")]
