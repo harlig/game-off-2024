@@ -125,6 +125,7 @@ func update_display() -> void:
 			update_unit_display()
 		CardType.SPELL:
 			update_spell_display()
+	$TextureRect.show()
 	if is_secret:
 		texture = load("res://textures/card/card_secret.png")
 		if not is_secret_releaved:
