@@ -2,10 +2,7 @@ class_name Deck extends Control
 
 const INITIAL_BASE_UNITS_COUNT: int = 6
 const INITIAL_TORCHLIGHTER_COUNT: int = 2
-const INITIAL_HEALER_COUNT: int = 2
-
-const hand_unit_texture_path := "res://textures/unit/hand_crawler.png"
-const cricket_unit_texture_path := "res://textures/unit/cricket.png"
+const INITIAL_HEALER_COUNT: int = 1
 
 var cards: Array[Card] = []
 
