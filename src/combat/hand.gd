@@ -1,10 +1,10 @@
 class_name Hand extends Node
 
 
-@export var draw_time := 6.0
-@export var mana_time := 3.0
+@export var draw_time := 8.0
+@export var mana_time := 4.0
 
-var max_hand_size := 5
+var max_hand_size := 4
 
 var cards: Array[Card] = []
 var deck: CombatDeck;

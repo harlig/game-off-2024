@@ -43,14 +43,12 @@ func _ready() -> void:
 
 	cards.sort_custom(Card.compare_by_mana)
 
-	for ndx in range(INITIAL_HEALER_COUNT):
-		add_card(UnitList.new_card_by_name("Healer"))
 	for ndx in range(INITIAL_TORCHLIGHTER_COUNT):
 		add_card(UnitList.new_card_by_name("Torchlighter"))
 
-	for ndx in range(0, SpellList.spell_cards.size()):
-		var spell_card := SpellList.new_card_by_id(ndx % SpellList.spell_cards.size())
-		add_card(spell_card)
+	# for ndx in range(0, SpellList.spell_cards.size()):
+	# 	var spell_card := SpellList.new_card_by_id(ndx % SpellList.spell_cards.size())
+	# 	add_card(spell_card)
 
 
 func add_card(card: Card) -> void:
