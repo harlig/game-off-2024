@@ -454,6 +454,10 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 		var creature := strength_limited_creatures[randi_range(0, strength_limited_creatures.size() - 1)]
 		total_strength += creature.get_score()
 		new_deck.append(Card.create_creature_card(creature))
+		if creature.type == UnitList.CardType.HEALER:
+			strength_limited_creatures = strength_limited_creatures.filter(func(c: UnitList.Creature) -> bool:
+				return c.type != UnitList.CardType.HEALER
+			)
 	return new_deck
 
 
