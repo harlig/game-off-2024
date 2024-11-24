@@ -221,7 +221,7 @@ func place_back_in_hand(card: Card, color_to_highlight_then_unhighlight: Color =
 
 	if color_to_highlight_then_unhighlight != Color.WHITE:
 		card.highlight(color_to_highlight_then_unhighlight)
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.5, false).timeout
 
 	card.unhighlight()
 

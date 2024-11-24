@@ -59,7 +59,7 @@ func try_play_cards() -> void:
 			hand.play_card(card)
 			spawn.emit(card)
 			# wait between each card played this turn to mimic human behavior
-			await get_tree().create_timer(randf_range(1.5, 3.5)).timeout
+			await get_tree().create_timer(randf_range(1.5, 3.5), false).timeout
 			cards_played += 1
 		else:
 			# randomly decide whether to wait for the next play
