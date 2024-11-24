@@ -51,4 +51,4 @@ func _on_tutorial_combat_spawned_unit() -> void:
 
 
 func _on_middle_torch_lit(_torch_ndx: int) -> void:
-	tutorial_combat.set_help_text("Well done! You've lit a torch.\nThe first time you light a torch in a combat, you'll get a secret added to your hand. Secrets are powerful cards which can help you in combat.\nTry playing the secret you just got.")
+	tutorial_combat.set_help_text("Well done! You've lit a torch.\nThe first time you light a torch in a combat, you'll get a secret added to your hand. Secrets are powerful cards which help you in combat.\nTry playing the secret you just got.")

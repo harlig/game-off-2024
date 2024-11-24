@@ -47,7 +47,10 @@ static func create_between_combat(init_type: Type, init_combat_difficulty: int, 
 
 	if init_type == Type.END:
 		(between_combat_instance.get_node("Continue").get_node("Button") as Button).text = "Menu"
-		between_combat_instance.get_node("Backdrop").get_node("WinTorches").show()
+		var win_torches: Node = between_combat_instance.get_node("Backdrop").get_node("WinTorches")
+		for child in win_torches.get_children():
+			(child as Torch).light_torch()
+		win_torches.show()
 	return between_combat_instance
 
 

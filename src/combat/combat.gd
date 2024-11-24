@@ -91,7 +91,7 @@ func _ready() -> void:
 
 	# spawn torch at player base, and enemy base
 	var player_base_torch := torch_scene.instantiate()
-	player_base_torch.is_lit = true
+	player_base_torch.light_torch()
 	player_base_torch.position = player_base_torch_location.position
 	player_base_torch.connect("torch_state_changed", _on_player_base_torch_state_changed)
 	(player_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(player_base_torch))
