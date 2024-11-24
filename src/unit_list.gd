@@ -53,8 +53,6 @@ class Creature:
 		self.buffs_i_apply = init_buffs_i_apply
 		self.can_change_torches = init_can_change_torches
 
-		print("Created unit with name " + name + " and score " + str(get_score()))
-
 	static func copy_of(existing: Creature) -> Creature:
 		return Creature.new(existing.name,
 			existing.type,

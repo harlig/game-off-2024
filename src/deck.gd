@@ -24,6 +24,7 @@ func _ready() -> void:
 	var mana_costs := [1, 2, 3]
 	while total_score < MAX_INITIAL_SCORE and num_units > 0:
 		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE, MAX_MANA_COST)
+		print("Got card with name " + card.name + " and score " + str(card.get_score()))
 		if total_score + card.get_score() <= MAX_INITIAL_SCORE and card.mana <= MAX_MANA_COST:
 			if card.mana in mana_costs:
 				mana_costs.erase(card.mana)
@@ -37,7 +38,7 @@ func _ready() -> void:
 			add_card(card)
 			mana_costs.erase(card.mana)
 
-	# TODO: sort the cards by mana cost
+	cards.sort_custom(Card.compare_by_mana)
 
 	for ndx in range(INITIAL_HEALER_COUNT):
 		add_card(UnitList.new_card_by_name("Healer"))
