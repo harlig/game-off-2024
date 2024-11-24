@@ -12,6 +12,11 @@ var cards: Array[Card] = []
 var is_visualizing_deck: bool = false
 var cards_displayed: Array[Card] = []
 
+static func create_deck() -> Deck:
+	var deck_scene := load("res://src/deck.tscn")
+	var deck_instance: Deck = deck_scene.instantiate()
+	return deck_instance
+
 
 func _ready() -> void:
 	var num_units := INITIAL_BASE_UNITS_COUNT

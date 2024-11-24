@@ -46,21 +46,21 @@ var torches_player_has_lit: Array[Torch] = []
 
 var combats_beaten_before_this_combat: int
 var player_deck: Deck
-var disable_opponent: bool
+var is_tutorial: bool
 
 ####################################################
 ####################################################
 # This is how you should instantiate a combat scene
 ####################################################
 ####################################################
-static func create_combat(init_player_deck: Deck, combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic], combats_beaten: int, init_disable_opponent: bool = false) -> Combat:
+static func create_combat(init_player_deck: Deck, combat_difficulty: int, init_audio: Audio, relics_for_combat: Array[Relic], combats_beaten: int, init_is_tutorial: bool = false) -> Combat:
 	var combat_instance: Combat = combat_scene.instantiate()
 	combat_instance.player_deck = init_player_deck
 	combat_instance.difficulty = combat_difficulty
 	combat_instance.audio = init_audio
 	combat_instance.relics = relics_for_combat
 	combat_instance.combats_beaten_before_this_combat = combats_beaten
-	combat_instance.disable_opponent = init_disable_opponent
+	combat_instance.is_tutorial = init_is_tutorial
 	return combat_instance
 ####################################################
 ####################################################
@@ -80,8 +80,10 @@ func _ready() -> void:
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(enemy_combat_deck)
 	$Opponent/Hand.initialize(enemy_combat_deck)
-	if disable_opponent:
+
+	if is_tutorial:
 		$Opponent.should_spawn = false
+		$ViewDeckButton.hide()
 
 	set_process(true)
 
@@ -346,6 +348,10 @@ func finish_combat(new_state: CombatState) -> void:
 	$Hand.queue_free()
 	$Opponent.queue_free()
 	$ViewDeckButton.hide()
+
+	if is_tutorial:
+		combat_over.emit(state)
+		return
 
 	if state == CombatState.WON:
 		# check if winning this combat caused us to reach the end of the game, and if so just emit the signal
