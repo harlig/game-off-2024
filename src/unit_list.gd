@@ -85,7 +85,7 @@ static func new_card_by_name(unit_name: String) -> Card:
 
 static func get_random_card(max_score: int, can_be_torchlighter: bool = false) -> Card:
 	var creature := creature_cards[randi() % creature_cards.size()]
-	while creature.get_score() > max_score and creature.can_change_torches != can_be_torchlighter:
+	while creature.get_score() > max_score or creature.can_change_torches != can_be_torchlighter:
 		creature = creature_cards[randi() % creature_cards.size()]
 	return Card.create_creature_card(creature)
 
