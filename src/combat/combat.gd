@@ -88,6 +88,7 @@ func _ready() -> void:
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(enemy_combat_deck)
 	$Opponent/Hand.initialize(enemy_combat_deck)
+	$Opponent.difficulty = difficulty
 
 	if is_tutorial:
 		$Opponent.should_spawn = false

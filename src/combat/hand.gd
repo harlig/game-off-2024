@@ -1,8 +1,8 @@
 class_name Hand extends Node
 
 
-@export var draw_time := 5.0
-@export var mana_time := 2.0
+@export var draw_time := 6.0
+@export var mana_time := 3.0
 
 var max_hand_size := 5
 
