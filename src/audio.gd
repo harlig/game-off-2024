@@ -1,5 +1,13 @@
 class_name Audio extends Node
 
+var disabled := true
+
+func _ready() -> void:
+	if disabled:
+		for child: Node in get_children():
+			if child is AudioStreamPlayer:
+				child.volume_db = -80.0;
+
 
 func play_shuffle() -> void:
 	$Shuffle.play()
