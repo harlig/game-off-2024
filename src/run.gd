@@ -15,7 +15,7 @@ var combats_beaten := 0
 var main_menu: Menu
 var audio: Audio
 
-var bank := 10:
+var bank := 50:
 	set(value):
 		bank = value
 		bank_control.get_node("Value").text = str(value)
