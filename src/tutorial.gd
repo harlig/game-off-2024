@@ -51,7 +51,8 @@ func add_highlight(add_to: Control) -> void:
 
 
 func highlight_hand_area() -> void:
-	add_highlight(tutorial_combat_hand_display.get_node("HandArea"))
+	# insane hack since HandArea in the display dynamically grows horizontally, but I don't give a crap!
+	add_highlight(get_node("HandAreaFake"))
 	set_help_text("This is your hand.\n\nYou can play cards from here.\nWhen cards are drawn, they will come into your hand.")
 	continue_button.pressed.connect(highlight_hand_size_area, ConnectFlags.CONNECT_ONE_SHOT)
 

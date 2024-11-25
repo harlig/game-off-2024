@@ -41,3 +41,11 @@ text = "Help!"
 fit_content = true
 autowrap_mode = 2
 horizontal_alignment = 1
+
+[node name="HandAreaFake" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.25
+anchor_top = 0.65
+anchor_right = 0.75
+anchor_bottom = 0.95
+mouse_filter = 2
