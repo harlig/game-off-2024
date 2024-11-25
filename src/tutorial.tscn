@@ -12,7 +12,8 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_j0ecg")
 
-[node name="Button" type="Button" parent="."]
+[node name="ContinueButton" type="Button" parent="."]
+process_mode = 3
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.75

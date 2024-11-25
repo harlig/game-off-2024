@@ -69,3 +69,9 @@ func try_play_cards() -> void:
 	# set timer for next play
 	play_timer = randf_range(spawn_interval * 0.8, spawn_interval * 1.2)
 	playing_cards = false
+
+
+func play_one_card() -> void:
+	var card: Card = hand.cards[0]
+	hand.play_card(card)
+	spawn.emit(card)
