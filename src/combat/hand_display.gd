@@ -126,14 +126,14 @@ func visualize_discard_pile() -> void:
 
 
 func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
-	$ManaDisplay/Label2.text = str(cur_mana) + "/" + str(max_mana);
+	$ManaArea/BoxContainer/Label.text = str(cur_mana) + "/" + str(max_mana);
 	if not current_selected:
 		return
 	highlight_current_card()
 
 
 func _on_hand_mana_time_updated(remaining: float, initial: float) -> void:
-	$ManaDisplay/TextureRect.material.set_shader_parameter("percent", remaining / initial)
+	$ManaArea/BoxContainer/TextureRect.material.set_shader_parameter("percent", remaining / initial)
 
 
 func _on_hand_draw_time_updated(remaining: float, initial: float) -> void:

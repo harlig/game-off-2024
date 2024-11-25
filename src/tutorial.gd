@@ -63,7 +63,7 @@ func highlight_hand_size_area() -> void:
 
 
 func highlight_mana_area() -> void:
-	add_highlight(tutorial_combat_hand_display.get_node("ManaDisplay"))
+	add_highlight(tutorial_combat_hand_display.get_node("ManaArea"))
 	set_help_text("This is your mana.\n\nEach card costs mana, shown in the top left of each card. You gain mana on a fixed interval, and can play cards as long as you have enough mana.")
 	continue_button.pressed.connect(highlight_draw_area, ConnectFlags.CONNECT_ONE_SHOT)
 
