@@ -491,7 +491,3 @@ func _who_cares_0(_t: int, _c: Card) -> void:
 
 func _who_cares_1(_c: Card) -> void:
 	pass
-
-func set_help_text(text: String) -> void:
-	$HelpText.text = text
-	$HelpText.show()

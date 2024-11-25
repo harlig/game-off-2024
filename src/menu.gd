@@ -21,8 +21,7 @@ func _on_play_pressed() -> void:
 func _on_how_to_play_pressed() -> void:
 	tutorial = Tutorial.create_tutorial(audio)
 	tutorial.tutorial_completed.connect(_on_tutorial_completed)
-
-	add_child(tutorial)
+	add_sibling(tutorial)
 	hide()
 
 func _on_tutorial_completed() -> void:

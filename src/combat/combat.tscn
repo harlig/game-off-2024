@@ -403,21 +403,6 @@ grow_vertical = 2
 focus_mode = 0
 text = "View Deck"
 
-[node name="HelpText" type="RichTextLabel" parent="."]
-anchors_preset = -1
-anchor_left = 0.2
-anchor_top = 0.05
-anchor_right = 0.8
-anchor_bottom = 0.3
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 36
-bbcode_enabled = true
-text = "Help!"
-fit_content = true
-autowrap_mode = 2
-horizontal_alignment = 1
-
 [node name="TutorialMenuButton" type="Button" parent="."]
 visible = false
 anchors_preset = -1
