@@ -1,9 +1,10 @@
 class_name Menu extends Control
 
+const tutorial_scene := preload("res://src/tutorial.tscn")
+
 @onready var audio: Audio = $Audio
+var tutorial: Tutorial
 var tutorial_combat: Combat
-var tutorial_deck: Deck
-var tutorial_camera: Camera3D
 
 
 func _ready() -> void:
@@ -20,14 +21,15 @@ func _on_play_pressed() -> void:
 
 
 func _on_how_to_play_pressed() -> void:
-	tutorial_deck = Deck.create_deck()
+	tutorial = tutorial_scene.instantiate()
+
+	var tutorial_deck := Deck.create_deck()
 	tutorial_deck.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tutorial_deck.get_node("GridContainer").hide()
-	add_sibling(tutorial_deck)
+	tutorial.add_child(tutorial_deck)
 
 	var run_camera: Camera3D = load("res://src/run.tscn").instantiate().get_node("Camera3D").duplicate()
-	tutorial_camera = run_camera
-	add_sibling(run_camera)
+	tutorial.add_child(run_camera)
 
 	var new_combat: Combat = Combat.create_combat(tutorial_deck, 0, $Audio, [], 0, true)
 	tutorial_combat = new_combat
@@ -35,7 +37,8 @@ func _on_how_to_play_pressed() -> void:
 	new_combat.set_help_text("Welcome to the forest!\n\nYou can drag cards into the play area to play them.\n\nTry it now!")
 	new_combat.spawned_unit.connect(_on_tutorial_combat_spawned_unit)
 	new_combat.middle_torch_lit.connect(_on_middle_torch_lit)
-	add_sibling(new_combat)
+	tutorial.add_child(new_combat)
+	add_child(tutorial)
 	hide()
 
 
@@ -46,8 +49,7 @@ func _on_tutorial_combat_over(_state: Combat.CombatState) -> void:
 
 func _on_tutorial_menu_button_pressed() -> void:
 	show()
-	tutorial_combat.queue_free()
-	tutorial_deck.queue_free()
+	tutorial.queue_free()
 
 
 func _on_tutorial_combat_spawned_unit() -> void:
