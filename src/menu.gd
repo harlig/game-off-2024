@@ -52,7 +52,7 @@ func _on_tutorial_menu_button_pressed() -> void:
 
 func _on_tutorial_combat_spawned_unit() -> void:
 	tutorial_combat.spawned_unit.disconnect(_on_tutorial_combat_spawned_unit)
-	tutorial_combat.set_help_text("Great job, you've spawned a unit!\n\nIn order to progress in the combat, you must light the torches to defeat the darkness.\nYour units will only move up to the next unlit torch.\nOnly Torchlighters can light torches.\n\nTry to play one.")
+	tutorial_combat.set_help_text("Great job, you've spawned a unit!\n\nIn order to progress in the combat, you must light the torches to defeat the darkness.\nYour units will only move up to the next unlit torch.\nOnly Torchlighters [img=60]res://textures/card/torch.png[/img] can light torches.\n\nTry to play one.")
 
 
 func _on_middle_torch_lit(_torch_ndx: int) -> void:
