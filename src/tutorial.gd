@@ -1,11 +1,13 @@
 class_name Tutorial extends Control
 
 const tutorial_scene := preload("res://src/tutorial.tscn")
+const highlight_scene := preload("res://src/highlight.tscn")
 
 @onready var continue_button: Button = $ContinueButton
 
 var audio: Audio
 var tutorial_combat: Combat
+var tutorial_combat_hand_display: HandDisplay
 
 signal tutorial_completed()
 
@@ -24,7 +26,7 @@ func _ready() -> void:
 	add_child(run_camera)
 
 	var new_combat: Combat = Combat.create_combat(tutorial_deck, 1, audio, [], 0, true)
-	tutorial_combat = new_combat
+
 	new_combat.combat_over.connect(_on_tutorial_combat_over)
 	new_combat.spawned_unit.connect(_on_tutorial_combat_spawned_unit, ConnectFlags.CONNECT_ONE_SHOT)
 	new_combat.middle_torch_lit.connect(_on_middle_torch_lit)
@@ -34,32 +36,46 @@ func _ready() -> void:
 	continue_button.pressed.connect(highlight_hand_area, ConnectFlags.CONNECT_ONE_SHOT)
 	get_tree().paused = true
 
+	tutorial_combat = new_combat
+	tutorial_combat_hand_display = new_combat.get_node("HandDisplay") as HandDisplay
+
 
 func set_help_text(text: String) -> void:
 	$HelpText.text = text
 
 
+func add_highlight(add_to: Control) -> void:
+	var highlight: Control = highlight_scene.instantiate()
+	add_to.add_child(highlight)
+	continue_button.pressed.connect(func() -> void: highlight.queue_free(), ConnectFlags.CONNECT_ONE_SHOT)
+
+
 func highlight_hand_area() -> void:
+	add_highlight(tutorial_combat_hand_display.get_node("HandArea"))
 	set_help_text("This is your hand.\n\nYou can play cards from here.\nWhen cards are drawn, they will come into your hand.")
 	continue_button.pressed.connect(highlight_hand_size_area, ConnectFlags.CONNECT_ONE_SHOT)
 
 
 func highlight_hand_size_area() -> void:
+	add_highlight(tutorial_combat_hand_display.get_node("HandSize"))
 	set_help_text("This shows your hand size.\n\nYou can only have 4 cards in your hand at a time, excluding secrets. When your hand is full, you can't draw more cards!")
 	continue_button.pressed.connect(highlight_mana_area, ConnectFlags.CONNECT_ONE_SHOT)
 
 
 func highlight_mana_area() -> void:
+	add_highlight(tutorial_combat_hand_display.get_node("ManaDisplay"))
 	set_help_text("This is your mana.\n\nEach card costs mana, shown in the top left of each card. You gain mana on a fixed interval, and can play cards as long as you have enough mana.")
 	continue_button.pressed.connect(highlight_draw_area, ConnectFlags.CONNECT_ONE_SHOT)
 
 
 func highlight_draw_area() -> void:
+	add_highlight(tutorial_combat_hand_display.get_node("DrawArea"))
 	set_help_text("This is the draw pile.\n\nYou can see how many more cards you have to draw before your deck is shuffled.\n\nYou draw cards on a fixed interval.")
 	continue_button.pressed.connect(highlight_discard_area, ConnectFlags.CONNECT_ONE_SHOT)
 
 
 func highlight_discard_area() -> void:
+	add_highlight(tutorial_combat_hand_display.get_node("DiscardArea"))
 	set_help_text("This is the discard pile.\n\nWhen you play a card, it goes here. When you try to draw when your draw pile is empty, your discard pile is shuffled into your draw pile.")
 	continue_button.pressed.connect(explain_play_cards, ConnectFlags.CONNECT_ONE_SHOT)
 
