@@ -197,7 +197,7 @@ func _on_attack_finished(_anim_name: String) -> void:
 	animation_player.seek(0, true)
 	play_animation(WALK_ANIMATION)
 
-func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> void:
+func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_secret: bool = false) -> void:
 	# need to set both max and current hp
 	unit_attackable.max_hp = from_creature.health
 	unit_attackable.hp = from_creature.health
@@ -216,7 +216,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false) -> vo
 	buffs_i_apply = from_creature.buffs_i_apply
 	can_change_torches = from_creature.can_change_torches
 
-	if from_creature.get_score() < 30:
+	if from_creature.get_score() < 30 && !is_secret:
 		scalar = 1
 	elif from_creature.get_score() < 50:
 		scalar = 2

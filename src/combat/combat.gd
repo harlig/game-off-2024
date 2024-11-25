@@ -211,7 +211,7 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 			y = 0
 	unit.position = Vector3(unit_position.x, y, unit_position.z)
 	unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
-	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false)
+	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false, card_played.is_secret)
 	unit.unit_attackable.team = team
 
 	if team == Attackable.Team.PLAYER:
