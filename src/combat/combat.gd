@@ -19,7 +19,7 @@ signal spawned_unit()
 enum CombatState {PLAYING, WON, LOST}
 
 const OFFSET_FROM_BASE_DISTANCE := 3
-const NUM_TORCHES := 3
+const NUM_MIDDLE_TORCHES := 3
 const BATTLFIELD_START_X := -23
 const BATTLFIELD_Z = 6;
 
@@ -109,10 +109,10 @@ func _ready() -> void:
 	# set up the torches, spanning the width of the map from base to base
 	var player_base_x: float = player_base_torch_location.position.x
 	var enemy_base_x: float = enemy_base_torch_position.position.x
-	var interval := (enemy_base_x - player_base_x) / (NUM_TORCHES + 1)
+	var interval := (enemy_base_x - player_base_x) / (NUM_MIDDLE_TORCHES + 1)
 
 	# TODO: should spawn torches with fibonacci sequence so the furthest torch is the hardest to light
-	for ndx in range(NUM_TORCHES):
+	for ndx in range(NUM_MIDDLE_TORCHES):
 		var torch := torch_scene.instantiate()
 		torch.position = Vector3(player_base_x + interval * (ndx + 1), 0, (player_base_torch_location.position.z + enemy_base_torch_position.position.z) / 2.0)
 
@@ -127,7 +127,7 @@ func _ready() -> void:
 
 	var enemy_base_torch := torch_scene.instantiate()
 	enemy_base_torch.position = enemy_base_torch_position.position
-	enemy_base_torch.connect("torch_state_changed", _on_enemy_base_torch_state_changed)
+	enemy_base_torch.connect("torch_state_changed", _on_enemy_base_torch_state_changed.bind(1 + NUM_MIDDLE_TORCHES))
 	(enemy_base_torch.get_node("CPUParticles3D") as CPUParticles3D).emitting = false
 	(enemy_base_torch.get_node("OmniLight3D") as OmniLight3D).hide()
 	(enemy_base_torch.get_node("MeshInstance3D").get_node("Area3D") as Area3D).connect("area_entered", _on_area_entered_torch.bind(enemy_base_torch))
@@ -347,7 +347,7 @@ func _on_player_base_torch_state_changed(torch_lit: bool) -> void:
 
 	finish_combat(CombatState.LOST)
 
-func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
+func _on_enemy_base_torch_state_changed(torch_lit: bool, torch_ndx: int) -> void:
 	if not torch_lit:
 		return
 	for unit in current_ally_units:
@@ -356,6 +356,16 @@ func _on_enemy_base_torch_state_changed(torch_lit: bool) -> void:
 	for unit in current_enemy_units:
 		unit.queue_free()
 	current_enemy_units.clear()
+
+	var torch := all_torches[torch_ndx]
+	var furthest_torch_x := torch.position.x
+
+	# tween to new positions in parallel
+	var tween: Tween = get_tree().create_tween();
+	var new_size := Vector2(abs(furthest_torch_x - BATTLFIELD_START_X), BATTLFIELD_Z)
+	var new_offset := Vector3(new_size.x / 2.0, 0.0, 0.0)
+	tween.parallel().tween_property(spawn_mesh.mesh, "size", new_size, 1.0).set_trans(Tween.TRANS_CUBIC);
+	tween.parallel().tween_property(spawn_mesh.mesh, "center_offset", new_offset, 1.0).set_trans(Tween.TRANS_CUBIC);
 
 	finish_combat(CombatState.WON)
 
