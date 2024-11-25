@@ -58,21 +58,10 @@ static func create_spell_card(init_spell: SpellList.Spell) -> Card:
 	return card_instance
 
 static func get_random_card_back() -> Texture:
-	# var card_backs := [
-	# 	"res://textures/card/back/card_back_1.png",
-	# 	"res://textures/card/back/card_back_2.png",
-	# 	"res://textures/card/back/card_back_3.png",
-	# 	"res://textures/card/back/card_back_4.png",
-	# 	"res://textures/card/back/card_back_5.png",
-	# 	"res://textures/card/back/card_back_6.png",
-	# 	"res://textures/card/back/card_back_7.png",
-	# ]
-	var card_backs := [
-		"res://textures/card/back/torchless01.png",
-		"res://textures/card/back/torchless02.png",
-		"res://textures/card/back/torchless03.png",
-		"res://textures/card/back/torchless04.png",
-	]
+	var card_backs := []
+	for ndx in range(4):
+		# card_backs.append("res://textures/card/back/new_card_back_" + str(ndx) + ".png")
+		card_backs.append("res://textures/card/back/torchless_" + str(ndx) + ".png")
 	return load(card_backs[randi() % card_backs.size()])
 ####################################################
 ####################################################

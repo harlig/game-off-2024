@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://doqm6i558kx4f"
-path="res://.godot/imported/torchless01.png-da4b79fc162fbf39198cd767f0540806.ctex"
+uid="uid://bir2w0fe5ngu2"
+path="res://.godot/imported/new_card_back_2.png-2ba367decee90b6c6eb9dd5b5d3dad6e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/card/back/torchless01.png"
-dest_files=["res://.godot/imported/torchless01.png-da4b79fc162fbf39198cd767f0540806.ctex"]
+source_file="res://textures/card/back/new_card_back_2.png"
+dest_files=["res://.godot/imported/new_card_back_2.png-2ba367decee90b6c6eb9dd5b5d3dad6e.ctex"]
 
 [params]
 
