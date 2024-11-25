@@ -55,7 +55,7 @@ func _on_card_clicked(_times_clicked: int, combat_deck_card: Card) -> void:
 
 func draw_and_tween_card(ndx: int) -> Card:
 	# TODO: could be sick if we pick like one of the best 4 to draw
-	var card := deck.draw_best(false)
+	var card := deck.draw_best(false, false)
 	cards.append(card)
 	if card != null:
 		card.position = $DrawCardLocation.global_position
