@@ -1,8 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://7d2f0g6jswhx"]
+[gd_scene load_steps=6 format=3 uid="uid://7d2f0g6jswhx"]
 
 [ext_resource type="Script" path="res://src/combat/attackable.gd" id="1_5gjtp"]
+[ext_resource type="Shader" path="res://shaders/healthbar.gdshader" id="2_cq1mv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jgdx6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8yv65"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_cq1mv")
+shader_parameter/percent = 1.0
+shader_parameter/color = Color(1, 1, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_kjkb4"]
+radius = 0.07
+height = 1.4
 
 [node name="Attackable" type="Area3D"]
 script = ExtResource("1_5gjtp")
@@ -15,3 +27,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
 visible = false
 text = "hp"
 font_size = 72
+
+[node name="Healthbar" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 1.24335, 0)
+visible = false
+material_override = SubResource("ShaderMaterial_8yv65")
+cast_shadow = 0
+ignore_occlusion_culling = true
+mesh = SubResource("CapsuleMesh_kjkb4")
+skeleton = NodePath("../..")

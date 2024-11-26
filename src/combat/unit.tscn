@@ -71,6 +71,33 @@ tracks/2/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_evayf"]
+resource_name = "heal_1"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 2, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -0.347321), Vector3(-0.785398, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_u30rm"]
 resource_name = "attack_reversed_3"
 length = 0.5
@@ -332,6 +359,35 @@ tracks/1/keys = {
 "values": [Vector3(0.3, 3, 0), Vector3(-0.3, 2.4, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_8vw6i"]
+resource_name = "walk_2"
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2, 2, 2), Vector3(2.2, 1.6, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.2, 2, 0), Vector3(-0.2, 1.6, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_weuqb"]
 resource_name = "attack_reversed_1"
 length = 0.5
@@ -420,65 +476,6 @@ tracks/1/keys = {
 "values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -0.607375), Vector3(-0.785398, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_8vw6i"]
-resource_name = "walk_2"
-loop_mode = 1
-step = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(2, 2, 2), Vector3(2.2, 1.6, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.2, 2, 0), Vector3(-0.2, 1.6, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_kmihb"]
-resource_name = "light_torch_reversed_2"
-length = 2.0
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 2, 0), Vector3(0, 2.2, 0), Vector3(0, 2.2, 0), Vector3(0, 2.0716, 0), Vector3(0, 2, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:rotation")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -1.22173), Vector3(-0.785398, 0, -1.5708), Vector3(-0.785398, 0, -1.34041), Vector3(-0.785398, 0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_mjboi"]
 resource_name = "heal_3"
 tracks/0/type = "value"
@@ -506,8 +503,8 @@ tracks/1/keys = {
 "values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -0.347321), Vector3(-0.785398, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_7jli0"]
-resource_name = "light_torch_reversed_3"
+[sub_resource type="Animation" id="Animation_kmihb"]
+resource_name = "light_torch_reversed_2"
 length = 2.0
 loop_mode = 1
 step = 0.1
@@ -521,7 +518,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 3, 0), Vector3(0, 3.3, 0), Vector3(0, 3.3, 0), Vector3(0, 3.216, 0), Vector3(0, 3, 0)]
+"values": [Vector3(0, 2, 0), Vector3(0, 2.2, 0), Vector3(0, 2.2, 0), Vector3(0, 2.0716, 0), Vector3(0, 2, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -566,8 +563,11 @@ tracks/1/keys = {
 "values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, 1.22173), Vector3(-0.785398, 0, 1.5708), Vector3(-0.785398, 0, 1.34041), Vector3(-0.785398, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_evayf"]
-resource_name = "heal_1"
+[sub_resource type="Animation" id="Animation_7jli0"]
+resource_name = "light_torch_reversed_3"
+length = 2.0
+loop_mode = 1
+step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -575,10 +575,10 @@ tracks/0/path = NodePath("MeshInstance3D:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.7, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0, 2, 0), Vector3(0, 1, 0)]
+"values": [Vector3(0, 3, 0), Vector3(0, 3.3, 0), Vector3(0, 3.3, 0), Vector3(0, 3.216, 0), Vector3(0, 3, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -587,34 +587,34 @@ tracks/1/path = NodePath("MeshInstance3D:rotation")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.7, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.2, 0.5, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -0.347321), Vector3(-0.785398, 0, 0)]
+"values": [Vector3(-0.785398, 0, 0), Vector3(-0.785398, 0, -1.22173), Vector3(-0.785398, 0, -1.5708), Vector3(-0.785398, 0, -1.34041), Vector3(-0.785398, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vok6h"]
 resource_local_to_scene = true
 _data = {
 &"RESET": SubResource("Animation_8afef"),
-&"heal_1": SubResource("Animation_evayf"),
-&"attack_reversed_3": SubResource("Animation_u30rm"),
-&"light_torch_1": SubResource("Animation_ttp57"),
-&"heal_2": SubResource("Animation_evayg"),
-&"attack_2": SubResource("Animation_ckihn"),
+&"light_torch_reversed_3": SubResource("Animation_7jli0"),
+&"light_torch_2": SubResource("Animation_ttp58"),
+&"light_torch_reversed_2": SubResource("Animation_kmihb"),
+&"heal_3": SubResource("Animation_mjboi"),
+&"attack_reversed_2": SubResource("Animation_weuqc"),
+&"light_torch_reversed_1": SubResource("Animation_kmiha"),
+&"walk_3": SubResource("Animation_50sip"),
+&"attack_reversed_1": SubResource("Animation_weuqb"),
+&"walk_2": SubResource("Animation_8vw6i"),
+&"attack_1": SubResource("Animation_ckihm"),
+&"light_torch_3": SubResource("Animation_hq6oo"),
 &"walk_1": SubResource("Animation_8vw6h"),
 &"attack_3": SubResource("Animation_0lslb"),
-&"light_torch_3": SubResource("Animation_hq6oo"),
-&"attack_1": SubResource("Animation_ckihm"),
-&"walk_3": SubResource("Animation_50sip"),
-&"walk_2": SubResource("Animation_8vw6i"),
-&"attack_reversed_1": SubResource("Animation_weuqb"),
-&"light_torch_reversed_1": SubResource("Animation_kmiha"),
-&"attack_reversed_2": SubResource("Animation_weuqc"),
-&"heal_3": SubResource("Animation_mjboi"),
-&"light_torch_reversed_2": SubResource("Animation_kmihb"),
-&"light_torch_2": SubResource("Animation_ttp58"),
-&"light_torch_reversed_3": SubResource("Animation_7jli0")
+&"attack_2": SubResource("Animation_ckihn"),
+&"heal_2": SubResource("Animation_evayg"),
+&"light_torch_1": SubResource("Animation_ttp57"),
+&"heal_1": SubResource("Animation_evayf"),
+&"attack_reversed_3": SubResource("Animation_u30rm")
 }
 
 [node name="Unit" type="Node3D"]
