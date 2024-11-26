@@ -41,7 +41,6 @@ class Item:
 
 	enum Type {
 		CARD,
-		# TODO: add other types
 	}
 
 	static func for_card(new_card: Card) -> Item:
@@ -104,7 +103,6 @@ func _on_card_clicked(_times_clicked: int, card: Card, offer: Control) -> void:
 		card.unhighlight()
 		return
 
-	# TODO: factor in actual cost
 	var cost := card.get_cost()
 	player_gold -= cost
 	card.unhighlight()

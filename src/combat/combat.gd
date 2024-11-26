@@ -81,11 +81,9 @@ func _ready() -> void:
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
 	add_child(player_combat_deck)
 
-	# TODO: Oof the second arg, let's fix this at some point
 	$Hand.initialize(player_combat_deck, true)
 
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20, combats_beaten_before_this_combat)
-	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)
 	add_child(enemy_combat_deck)
 	$Opponent/Hand.initialize(enemy_combat_deck)
