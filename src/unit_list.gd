@@ -16,7 +16,7 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Cryptkin", CardType.MELEE, 10, 2, 1, "res://textures/unit/cricket.png"),
 	Creature.new("Nightclaw", CardType.MELEE, 30, 4, 4, "res://textures/unit/buff_beak.png"),
 	Creature.new("Soul Devourer", CardType.MELEE, 80, 9, 8, "res://textures/unit/minion.png"),
-	Creature.new("Void Tyrant", CardType.RANGED, 60, 6, 6, "res://textures/unit/hunchy.png"),
+	Creature.new("Void Tyrant", CardType.RANGED, 60, 6, 5, "res://textures/unit/hunchy.png"),
 	Creature.new("Shadow Colossus", CardType.RANGED, 70, 6, 7, "res://textures/unit/catergator.png"),
 	Creature.new("Ebon Phantom", CardType.MELEE, 50, 8, 6, "res://textures/unit/hand_crawler.png"),
 	Creature.new("Healer", CardType.HEALER, 100, 3, 4, "res://textures/unit/ufo.png"),
@@ -71,7 +71,7 @@ class Creature:
 		return clamp(base_score + buff_score + torch_score, 0, 100)
 
 	func _to_string() -> String:
-		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Score: " + str(get_score()) + " Card Image Path: " + card_image_path + " Buffs I Apply: " + str(buffs_i_apply) + " Can Light Torches: " + str(can_change_torches)
+		return "Name: " + name + " Type: " + str(type) + " Health: " + str(health) + " Damage: " + str(damage) + " Mana: " + str(mana) + " Score: " + str(get_score()) + " Buffs I Apply: " + str(buffs_i_apply) + " Can Light Torches: " + str(can_change_torches)
 
 
 enum CardType {RANGED, MELEE, AIR, HEALER}
@@ -88,6 +88,15 @@ static func get_random_card(max_score: int, can_be_torchlighter: bool = false) -
 	while creature.get_score() > max_score or creature.can_change_torches != can_be_torchlighter:
 		creature = creature_cards[randi() % creature_cards.size()]
 	return Card.create_creature_card(creature)
+
+static func get_random_creature_by_score(min_score: int, max_score: int) -> Card:
+	var filtered_creatures := creature_cards.filter(func(creature: Creature) -> bool:
+		return creature.get_score() >= min_score and creature.get_score() <= max_score
+	)
+	if filtered_creatures.size() == 0:
+		return Card.create_creature_card(creature_cards[randi() % creature_cards.size()])
+
+	return Card.create_creature_card(filtered_creatures[randi() % filtered_creatures.size()])
 
 static func random_secret_card() -> Card:
 	var secret_creature := secret_creature_cards[randi() % secret_creature_cards.size()]

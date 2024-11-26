@@ -52,10 +52,11 @@ class Item:
 
 
 func _ready() -> void:
-	# TODO: guarantee unique units and spells
+	var min_score := int((shop_value - 1) * 10 / 2.0)
+	var max_score := shop_value * 20
+
 	for ndx in range(SHOP_UNIT_COUNT):
-		# TODO: this should be scaling with combat difficulty
-		var new_card := UnitList.new_card_by_id(randi() % UnitList.creature_cards.size())
+		var new_card := UnitList.get_random_creature_by_score(min_score, max_score)
 		new_card.name = "Unit {ndx}"
 		var new_offer := create_new_offer(new_card)
 
@@ -67,7 +68,7 @@ func _ready() -> void:
 		$OfferArea/Units.add_child(new_offer)
 
 	for ndx in range(SHOP_SPELL_COUNT):
-		var new_card := SpellList.new_card_by_id(randi() % SpellList.spell_cards.size())
+		var new_card := SpellList.get_random_spell_by_score(min_score, max_score)
 		new_card.name = "Spell {ndx}"
 		var new_offer := create_new_offer(new_card)
 

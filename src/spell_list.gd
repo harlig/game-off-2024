@@ -51,7 +51,7 @@ class Spell:
 		return clamp(base_score, 0, 100)
 
 	func _to_string() -> String:
-		return "Spell: " + name + ", " + " Type: " + str(type) + ", " + " Value: " + str(value) + ", " + " Mana: " + str(mana)
+		return "Spell: " + name + ", " + " Type: " + str(type) + ", " + " Value: " + str(value) + ", " + " Mana: " + str(mana) + ", " + " Score: " + str(get_score())
 
 
 enum SpellType {
@@ -78,6 +78,14 @@ static func new_card_by_name(spell_name: String) -> Card:
 	var spell_arr := spell_cards.filter(func(spell: Spell) -> bool: return spell.name == spell_name)
 	return Card.create_spell_card(spell_arr[0])
 
+static func get_random_spell_by_score(min_score: int, max_score: int) -> Card:
+	var filtered_spells := spell_cards.filter(func(spell: Spell) -> bool:
+		return spell.get_score() >= min_score and spell.get_score() <= max_score
+	)
+	if filtered_spells.size() == 0:
+		return Card.create_spell_card(spell_cards[randi() % spell_cards.size()])
+
+	return Card.create_spell_card(filtered_spells[randi() % filtered_spells.size()])
 
 static func random_secret_card() -> Card:
 	var secret_spell := secret_spell_cards[randi() % secret_spell_cards.size()]
