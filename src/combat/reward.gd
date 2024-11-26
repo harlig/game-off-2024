@@ -1,7 +1,5 @@
 class_name Reward extends Control
 
-@onready var text: Label = $Text
-
 signal reward_chosen(reward: RewardData)
 signal rewards_done()
 
@@ -27,13 +25,13 @@ class RewardData:
 		return reward_data
 
 func _ready() -> void:
-	$SkipButton.text = "Skip\n(+%dg)" % reward_skipped_gold
+	$SelectCard/SkipButton.text = "Skip\n(+%dg)" % reward_skipped_gold
 
 func add_card_offerings(cards: Array[Card]) -> void:
 	for enemy_card: Card in cards:
 		var card_offered := Card.duplicate_card(enemy_card)
 		card_offered.connect("card_clicked", _on_reward_clicked)
-		$Offers.add_child(card_offered)
+		$SelectCard/Offers.add_child(card_offered)
 
 func _on_reward_clicked(_times_clicked: int, reward_card: Card) -> void:
 	reward_card.reset_selected()
