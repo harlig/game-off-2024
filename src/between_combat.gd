@@ -24,6 +24,8 @@ var type: Type
 
 var audio: Audio
 
+var should_delay_last_torch: bool
+
 enum Type {
 	START,
 	SHOP,
@@ -32,7 +34,7 @@ enum Type {
 }
 
 
-static func create_between_combat(init_type: Type, init_combat_difficulty: int, init_bank: int, init_deck: Deck, init_times_card_removed: int, init_audio: Audio, init_combats_beaten: int) -> BetweenCombat:
+static func create_between_combat(init_type: Type, init_combat_difficulty: int, init_bank: int, init_deck: Deck, init_times_card_removed: int, init_audio: Audio, init_combats_beaten: int, init_should_delay_last_torch: bool = false) -> BetweenCombat:
 	var between_combat_instance: BetweenCombat = between_combat_scene.instantiate()
 	between_combat_instance.type = init_type
 	between_combat_instance.combat_difficulty = init_combat_difficulty
@@ -41,6 +43,7 @@ static func create_between_combat(init_type: Type, init_combat_difficulty: int, 
 	between_combat_instance.deck = init_deck
 	between_combat_instance.audio = init_audio
 	between_combat_instance.times_card_removed = init_times_card_removed
+	between_combat_instance.should_delay_last_torch = init_should_delay_last_torch
 
 	if init_type == Type.RETRY:
 		between_combat_instance.get_node("Continue").hide()
@@ -55,13 +58,20 @@ static func create_between_combat(init_type: Type, init_combat_difficulty: int, 
 
 
 func _ready() -> void:
+	var torches_to_light := combats_beaten
+	if should_delay_last_torch:
+		torches_to_light -= 1
+
 	for ndx in range($ProgressTorches.get_children().size()):
 		var torch := $ProgressTorches.get_child(ndx) as Torch
-		if ndx < combats_beaten:
+		if ndx < torches_to_light:
 			torch.light_torch()
 		else:
 			torch.extinguish_torch()
 
+
+func light_last_torch() -> void:
+	($ProgressTorches.get_child(combats_beaten - 1) as Torch).light_torch()
 
 func _on_button_pressed() -> void:
 	can_highlight_interactable = false

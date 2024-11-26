@@ -99,10 +99,10 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		combats_beaten += 1
 		var between_combat: BetweenCombat
 		if combats_beaten == COMBATS_TO_BEAT:
-			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.END, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
+			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.END, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten, true)
 			between_combat.continue_pressed.connect(continue_to_menu)
 		else:
-			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
+			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.SHOP, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten, true)
 			between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 			between_combat.item_purchased.connect(_on_item_purchased)
 		between_combat.get_node("Continue").hide()
@@ -116,8 +116,9 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
 		existing_combat.queue_free()
+		between_combat.light_last_torch()
 	elif combat_state == Combat.CombatState.LOST:
-		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten)
+		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten, false)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 		between_combat.game_lost.connect(continue_to_menu)
 		add_child(between_combat)
