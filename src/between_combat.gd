@@ -101,13 +101,13 @@ func _on_welcome_button_pressed() -> void:
 	$Welcome/Label.text = "Your deck"
 	$Welcome/Narrative.hide()
 	$Welcome/Button.hide()
-	deck.toggle_visualize_deck(_who_cares_0, _who_cares_1, _who_cares_1)
+	deck.toggle_visualize_deck()
 	$Continue.position.x += 60
 	$Continue/Button.pressed.connect(start_combats)
 	$Continue.show()
 
 func start_combats() -> void:
-	deck.toggle_visualize_deck(_who_cares_0, _who_cares_1, _who_cares_1)
+	deck.toggle_visualize_deck()
 	$Continue/Button.pressed.disconnect(start_combats)
 
 
@@ -156,9 +156,3 @@ func _on_game_lost() -> void:
 	$Continue/Button.text = "Menu"
 	$Continue.show()
 	$Continue/Button.pressed.connect(game_lost.emit)
-
-func _who_cares_0(_t: int, _c: Card) -> void:
-	pass
-
-func _who_cares_1(_c: Card) -> void:
-	pass

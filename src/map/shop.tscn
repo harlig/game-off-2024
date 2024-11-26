@@ -58,6 +58,20 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="ViewDeckButton" type="Button" parent="."]
+process_mode = 3
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.78
+anchor_top = 0.1
+anchor_right = 0.95
+anchor_bottom = 0.25
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 48
+text = "View Deck"
+
 [node name="LeaveShopButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
@@ -190,6 +204,7 @@ theme_override_font_sizes/font_size = 36
 text = "$25"
 horizontal_alignment = 1
 
+[connection signal="pressed" from="ViewDeckButton" to="." method="_on_view_deck_button_pressed"]
 [connection signal="pressed" from="LeaveShopButton" to="." method="_on_leave_shop_button_pressed"]
 [connection signal="gui_input" from="RemoveCardOffer/BlankCard" to="." method="_on_remove_card_offer_gui_input"]
 [connection signal="mouse_entered" from="RemoveCardOffer/BlankCard" to="." method="_on_remove_card_offer_mouse_entered"]

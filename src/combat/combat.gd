@@ -490,8 +490,7 @@ func _on_hand_mana_updated(_cur: int, _max: int) -> void:
 
 
 func _on_view_deck_button_pressed() -> void:
-	# don't care about these callbacks 😎
-	player_deck.toggle_visualize_deck(_who_cares_0, _who_cares_1, _who_cares_1)
+	player_deck.toggle_visualize_deck()
 	get_tree().paused = !get_tree().paused
 
 	if player_deck.is_visualizing_deck:
@@ -500,9 +499,3 @@ func _on_view_deck_button_pressed() -> void:
 	else:
 		$HandDisplay.show()
 		$ViewDeckButton.text = "View deck"
-
-func _who_cares_0(_t: int, _c: Card) -> void:
-	pass
-
-func _who_cares_1(_c: Card) -> void:
-	pass

@@ -61,7 +61,7 @@ func remove_card(card: Card) -> void:
 		$GridContainer.remove_child(card)
 		cards_displayed.erase(card)
 
-func toggle_visualize_deck(on_card_clicked_attachment: Callable, on_card_mouse_entered: Callable, on_card_mouse_exited: Callable) -> bool:
+func toggle_visualize_deck(on_card_clicked_attachment: Callable = _who_cares_0, on_card_mouse_entered: Callable = _who_cares_1, on_card_mouse_exited: Callable = _who_cares_1) -> bool:
 	is_visualizing_deck = !is_visualizing_deck
 	print("Toggling visualizing deck")
 	if is_visualizing_deck:
@@ -82,3 +82,12 @@ func toggle_visualize_deck(on_card_clicked_attachment: Callable, on_card_mouse_e
 			$GridContainer.remove_child(card)
 		cards_displayed.clear()
 	return is_visualizing_deck
+
+
+# don't care about these callbacks 😎
+func _who_cares_0(_t: int, _c: Card) -> void:
+	pass
+
+# don't care about these callbacks 😎
+func _who_cares_1(_c: Card) -> void:
+	pass

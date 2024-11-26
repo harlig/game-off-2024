@@ -410,6 +410,7 @@ anchor_bottom = 0.73
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 24
 text = "View Deck"
 
 [node name="TutorialMenuButton" type="Button" parent="."]

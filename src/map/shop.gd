@@ -184,3 +184,15 @@ func _on_remove_card_offer_mouse_entered() -> void:
 
 func _on_remove_card_offer_mouse_exited() -> void:
 	unhighlight_remove_card()
+
+func _on_view_deck_button_pressed() -> void:
+	deck.toggle_visualize_deck()
+
+	if deck.is_visualizing_deck:
+		$OfferArea.hide()
+		$LeaveShopButton.hide()
+		$ViewDeckButton.text = "Hide deck"
+	else:
+		$OfferArea.show()
+		$LeaveShopButton.show()
+		$ViewDeckButton.text = "View deck"
