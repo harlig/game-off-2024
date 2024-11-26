@@ -108,7 +108,7 @@ func _on_middle_torch_lit(_torch_ndx: int) -> void:
 	elif _torch_ndx == 2:
 		tutorial_combat.get_node("Opponent").play_one_card()
 		continue_button.show()
-		set_help_text("Your opponent spawns units too.\n\nYou must defeat the darkness by lighting all the torches before the darkness entinguishes all of your torches.\n\nPress continue, then try to light the last torch.")
+		set_help_text("Your opponent spawns units too.\n\nYou must defeat the darkness by lighting all the torches before the darkness extinguishes all of your torches.\n\nPress continue, then try to light the last torch.")
 		get_tree().paused = true
 		continue_button.pressed.connect(unpause, ConnectFlags.CONNECT_ONE_SHOT)
 
