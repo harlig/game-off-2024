@@ -403,7 +403,7 @@ func provide_rewards() -> void:
 	reward_presented.emit()
 	var best_enemy_cards: Array[Card] = enemy_combat_deck.get_best_cards(3)
 	reward.add_card_offerings(best_enemy_cards)
-	reward.combat_beaten_gold += randi_range(5, 15) * difficulty + randi_range(0, 5)
+	reward.combat_beaten_gold = randi_range(15, 25) * difficulty + randi_range(0, 15)
 	reward.show()
 	$HandDisplay.queue_free()
 	$Opponent.queue_free()
