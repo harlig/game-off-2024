@@ -58,11 +58,8 @@ static func create_spell_card(init_spell: SpellList.Spell) -> Card:
 	return card_instance
 
 static func get_random_card_back() -> Texture:
-	var card_backs := []
-	for ndx in range(4):
-		# card_backs.append("res://textures/card/back/new_card_back_" + str(ndx) + ".png")
-		card_backs.append("res://textures/card/back/torchless_" + str(ndx) + ".png")
-	return load(card_backs[randi() % card_backs.size()])
+	return load("res://textures/card/back/torchless_" + str(randi_range(0, 1)) + ".png")
+
 ####################################################
 ####################################################
 ####################################################
@@ -82,6 +79,7 @@ static func compare_by_mana(a: Card, b: Card) -> bool:
 
 func _ready() -> void:
 	original_stylebox_override = get_theme_stylebox("panel")
+	$CardBack.flip_h = randi() % 2 == 0
 	update_display()
 
 func get_score() -> int:
