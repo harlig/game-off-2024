@@ -144,6 +144,7 @@ func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 		$OfferArea.hide()
 		$LeaveShopButton.hide()
 		$RemoveCardOffer.hide()
+		$ViewDeckButton.hide()
 		$Label.text = "Remove a card"
 		player_gold -= remove_card_cost
 		card_removed.emit(remove_card_cost)
@@ -157,6 +158,7 @@ func _on_deck_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
 	$OfferArea.show()
 	$LeaveShopButton.show()
 	$RemoveCardOffer.show()
+	$ViewDeckButton.show()
 	$Label.text = "Shop"
 
 func _on_deck_card_mouse_entered(card: Card) -> void:
@@ -191,8 +193,10 @@ func _on_view_deck_button_pressed() -> void:
 	if deck.is_visualizing_deck:
 		$OfferArea.hide()
 		$LeaveShopButton.hide()
+		$RemoveCardOffer.hide()
 		$ViewDeckButton.text = "Hide deck"
 	else:
 		$OfferArea.show()
 		$LeaveShopButton.show()
+		$RemoveCardOffer.show()
 		$ViewDeckButton.text = "View deck"

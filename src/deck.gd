@@ -35,7 +35,6 @@ func _ready() -> void:
 	# add more units as needed to fill up the amount of units we want
 	while total_score < MAX_INITIAL_SCORE and num_units > 0:
 		var card := UnitList.get_random_card(MAX_INITIAL_PER_UNIT_SCORE)
-		print("Got card with name " + card.name + " and score " + str(card.get_score()))
 		if total_score + card.get_score() <= MAX_INITIAL_SCORE and card.mana <= MAX_MANA_COST:
 			add_card(card)
 			total_score += card.get_score()
@@ -63,7 +62,6 @@ func remove_card(card: Card) -> void:
 
 func toggle_visualize_deck(on_card_clicked_attachment: Callable = _who_cares_0, on_card_mouse_entered: Callable = _who_cares_1, on_card_mouse_exited: Callable = _who_cares_1) -> bool:
 	is_visualizing_deck = !is_visualizing_deck
-	print("Toggling visualizing deck")
 	if is_visualizing_deck:
 		for card in cards:
 			card.card_clicked.connect(on_card_clicked_attachment)
