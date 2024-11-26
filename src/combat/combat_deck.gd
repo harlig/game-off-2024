@@ -75,12 +75,19 @@ func discard(card: Card) -> void:
 
 func get_best_cards(num_cards: int) -> Array[Card]:
 	var best_cards: Array[Card] = []
+	var seen_creatures: Array[UnitList.Creature] = []
+	var seen_spells: Array[SpellList.Spell] = []
+
 	for card in all_cards:
 		if best_cards.size() < num_cards:
-			best_cards.append(card)
+			if card.type == Card.CardType.UNIT and card.creature not in seen_creatures:
+				best_cards.append(card)
+				seen_creatures.append(card.creature)
+			elif card.type == Card.CardType.SPELL and card.spell not in seen_spells:
+				best_cards.append(card)
+				seen_spells.append(card.spell)
 			continue
 
-		# TODO: maybe this should be an array so we can get different worst cards if they have the same score
 		var worst_best_card: Card = null
 		var worst_best_card_ndx := -1
 		for ndx in range(best_cards.size()):
@@ -89,10 +96,16 @@ func get_best_cards(num_cards: int) -> Array[Card]:
 				worst_best_card_ndx = ndx
 
 		if card.get_score() > worst_best_card.get_score():
-			best_cards[worst_best_card_ndx] = card
+			if card.type == Card.CardType.UNIT and card.creature not in seen_creatures:
+				seen_creatures.erase(best_cards[worst_best_card_ndx].creature)
+				best_cards[worst_best_card_ndx] = card
+				seen_creatures.append(card.creature)
+			elif card.type == Card.CardType.SPELL and card.spell not in seen_spells:
+				seen_spells.erase(best_cards[worst_best_card_ndx].spell)
+				best_cards[worst_best_card_ndx] = card
+				seen_spells.append(card.spell)
 
 	return best_cards
-
 
 func original_cards_in_discard_pile() -> Array[Card]:
 	var original_cards: Array[Card] = []
