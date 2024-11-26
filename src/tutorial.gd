@@ -102,7 +102,7 @@ func unpause() -> void:
 func _on_middle_torch_lit(_torch_ndx: int) -> void:
 	if _torch_ndx == 1:
 		continue_button.show()
-		set_help_text("Well done! You've lit a torch.\n\nThe first time you light a torch in a combat, you'll get a secret added to your hand which doesn't count towards your hand size.\nSecrets are powerful cards that which help you in combat, and only exist for this combat. They can only be played once.\n\nPress continue, then try playing the secret you just got.")
+		set_help_text("Well done! You've lit a torch.\n\nEach time you light a torch in a combat, you'll get a secret added to your hand which doesn't count towards your hand size.\nSecrets are powerful cards that which help you in combat, and only exist for this combat. They can only be played once.\n\nPress continue, then try playing the secret you just got.")
 		get_tree().paused = true
 		continue_button.pressed.connect(unpause, ConnectFlags.CONNECT_ONE_SHOT)
 	elif _torch_ndx == 2:
