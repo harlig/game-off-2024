@@ -205,6 +205,7 @@ text = "$25"
 horizontal_alignment = 1
 
 [node name="RemoveCardUndo" type="Button" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.78
@@ -222,3 +223,4 @@ text = "Back"
 [connection signal="gui_input" from="RemoveCardOffer/BlankCard" to="." method="_on_remove_card_offer_gui_input"]
 [connection signal="mouse_entered" from="RemoveCardOffer/BlankCard" to="." method="_on_remove_card_offer_mouse_entered"]
 [connection signal="mouse_exited" from="RemoveCardOffer/BlankCard" to="." method="_on_remove_card_offer_mouse_exited"]
+[connection signal="pressed" from="RemoveCardUndo" to="." method="_on_remove_card_undo_pressed"]

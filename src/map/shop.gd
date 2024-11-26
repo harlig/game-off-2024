@@ -150,15 +150,23 @@ func _on_remove_card_offer_gui_input(event: InputEvent) -> void:
 		$RemoveCardUndo.show()
 
 		$Label.text = "Remove a card"
-		player_gold -= remove_card_cost
-		card_removed.emit(remove_card_cost)
-		times_card_removed += 1
 
 func _on_deck_card_clicked_to_remove(_times_clicked: int, card: Card) -> void:
 	card.unhighlight()
 	deck.remove_card(card)
 	deck.toggle_visualize_deck(_on_deck_card_clicked_to_remove, _on_deck_card_mouse_entered, _on_deck_card_mouse_exited)
 
+	player_gold -= remove_card_cost
+	card_removed.emit(remove_card_cost)
+	times_card_removed += 1
+
+	return_to_shop_view()
+
+func _on_remove_card_undo_pressed() -> void:
+	deck.toggle_visualize_deck(_on_deck_card_clicked_to_remove, _on_deck_card_mouse_entered, _on_deck_card_mouse_exited)
+	return_to_shop_view()
+
+func return_to_shop_view() -> void:
 	$OfferArea.show()
 	$LeaveShopButton.show()
 	$RemoveCardOffer.show()
