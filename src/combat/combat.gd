@@ -505,7 +505,7 @@ func _on_hand_mana_updated(_cur: int, _max: int) -> void:
 
 
 func _on_view_deck_button_pressed() -> void:
-	player_deck.toggle_visualize_deck()
+	player_deck.toggle_visualize_deck(Deck._who_cares_0, Deck._who_cares_1, Deck._who_cares_1, player_combat_deck.original_cards_in_discard_pile())
 	get_tree().paused = !get_tree().paused
 
 	if player_deck.is_visualizing_deck:

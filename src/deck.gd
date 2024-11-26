@@ -60,13 +60,16 @@ func remove_card(card: Card) -> void:
 		$GridContainer.remove_child(card)
 		cards_displayed.erase(card)
 
-func toggle_visualize_deck(on_card_clicked_attachment: Callable = _who_cares_0, on_card_mouse_entered: Callable = _who_cares_1, on_card_mouse_exited: Callable = _who_cares_1) -> bool:
+func toggle_visualize_deck(on_card_clicked_attachment: Callable = _who_cares_0, on_card_mouse_entered: Callable = _who_cares_1, on_card_mouse_exited: Callable = _who_cares_1, cards_in_discard_pile: Array[Card]=[]) -> bool:
 	is_visualizing_deck = !is_visualizing_deck
 	if is_visualizing_deck:
 		for card in cards:
 			card.card_clicked.connect(on_card_clicked_attachment)
 			card.mouse_entered.connect(on_card_mouse_entered.bind(card))
 			card.mouse_exited.connect(on_card_mouse_exited.bind(card))
+
+			if card in cards_in_discard_pile:
+				card.modulate = Color(0.5, 0.5, 0.5)
 
 			cards_displayed.append(card)
 			$GridContainer.add_child(card)
@@ -76,6 +79,10 @@ func toggle_visualize_deck(on_card_clicked_attachment: Callable = _who_cares_0, 
 			card.card_clicked.disconnect(on_card_clicked_attachment)
 			card.mouse_entered.disconnect(on_card_mouse_entered)
 			card.mouse_exited.disconnect(on_card_mouse_exited)
+
+			if card in cards_in_discard_pile:
+				card.modulate = Color.WHITE
+
 			card.reset_selected()
 			$GridContainer.remove_child(card)
 		cards_displayed.clear()
@@ -83,9 +90,9 @@ func toggle_visualize_deck(on_card_clicked_attachment: Callable = _who_cares_0, 
 
 
 # don't care about these callbacks 😎
-func _who_cares_0(_t: int, _c: Card) -> void:
+static func _who_cares_0(_t: int, _c: Card) -> void:
 	pass
 
 # don't care about these callbacks 😎
-func _who_cares_1(_c: Card) -> void:
+static func _who_cares_1(_c: Card) -> void:
 	pass

@@ -92,3 +92,10 @@ func get_best_cards(num_cards: int) -> Array[Card]:
 			best_cards[worst_best_card_ndx] = card
 
 	return best_cards
+
+
+func original_cards_in_discard_pile() -> Array[Card]:
+	var original_cards: Array[Card] = []
+	for card in discard_pile:
+		original_cards.append(combat_deck_card_to_original_card[card])
+	return original_cards
