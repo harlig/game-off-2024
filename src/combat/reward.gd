@@ -6,7 +6,7 @@ signal rewards_done()
 var combat_beaten_gold := 25:
 	set(value):
 		combat_beaten_gold = value
-		$AllRewards/RewardsArea/Gold.text = "+%d gold" % combat_beaten_gold
+		$AllRewards/RewardsContainer/RewardsArea/Gold.text = "+%d gold" % combat_beaten_gold
 var reward_skipped_gold: int = 50:
 	set(value):
 		reward_skipped_gold = value
@@ -71,8 +71,8 @@ func _on_skip_button_pressed() -> void:
 func _on_gold_pressed() -> void:
 	reward_chosen.emit(RewardData.for_gold(combat_beaten_gold))
 	got_combat_gold_reward = true
-	$AllRewards/RewardsArea/Gold.hide()
-	$AllRewards/RewardsArea/BlankGold.show()
+	$AllRewards/RewardsContainer/RewardsArea/Gold.hide()
+	$AllRewards/RewardsContainer/RewardsArea/BlankGold.show()
 	finish_this_reward()
 
 func finish_this_reward() -> void:
@@ -84,7 +84,7 @@ func finish_this_reward() -> void:
 
 
 func _on_card_pressed() -> void:
-	$AllRewards/RewardsArea/Card.hide()
-	$AllRewards/RewardsArea/BlankCard.show()
+	$AllRewards/RewardsContainer/RewardsArea/Card.hide()
+	$AllRewards/RewardsContainer/RewardsArea/BlankCard.show()
 	$AllRewards.hide()
 	$SelectCard.show()

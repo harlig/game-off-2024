@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cunlyf5vflgsp"]
+[gd_scene load_steps=3 format=3 uid="uid://cunlyf5vflgsp"]
 
 [ext_resource type="Script" path="res://src/combat/reward.gd" id="1_ll4oh"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_js0ac"]
 
 [node name="Reward" type="Control"]
 custom_minimum_size = Vector2(1280, 680)
@@ -28,36 +30,52 @@ text = "Your rewards"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RewardsArea" type="VBoxContainer" parent="AllRewards"]
+[node name="RewardsContainer" type="TextureRect" parent="AllRewards"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.35
-anchor_top = 0.4
-anchor_right = 0.65
-anchor_bottom = 0.8
+anchor_left = 0.25
+anchor_top = 0.3
+anchor_right = 0.75
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("CanvasTexture_js0ac")
+
+[node name="RewardsArea" type="VBoxContainer" parent="AllRewards/RewardsContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 1.0
 theme_override_constants/separation = 20
 
-[node name="Gold" type="Button" parent="AllRewards/RewardsArea"]
+[node name="Gold" type="Button" parent="AllRewards/RewardsContainer/RewardsArea"]
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 48
 text = "+25 gold"
 
-[node name="BlankGold" type="Control" parent="AllRewards/RewardsArea"]
+[node name="BlankGold" type="Control" parent="AllRewards/RewardsContainer/RewardsArea"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Card" type="Button" parent="AllRewards/RewardsArea"]
+[node name="Card" type="Button" parent="AllRewards/RewardsContainer/RewardsArea"]
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 48
 text = "Select a card"
 
-[node name="BlankCard" type="Control" parent="AllRewards/RewardsArea"]
+[node name="BlankCard" type="Control" parent="AllRewards/RewardsContainer/RewardsArea"]
 visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BlankThird" type="Control" parent="AllRewards/RewardsContainer/RewardsArea"]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -105,6 +123,6 @@ theme_override_font_sizes/font_size = 48
 text = "Skip
 (+25g)"
 
-[connection signal="pressed" from="AllRewards/RewardsArea/Gold" to="." method="_on_gold_pressed"]
-[connection signal="pressed" from="AllRewards/RewardsArea/Card" to="." method="_on_card_pressed"]
+[connection signal="pressed" from="AllRewards/RewardsContainer/RewardsArea/Gold" to="." method="_on_gold_pressed"]
+[connection signal="pressed" from="AllRewards/RewardsContainer/RewardsArea/Card" to="." method="_on_card_pressed"]
 [connection signal="pressed" from="SelectCard/SkipButton" to="." method="_on_skip_button_pressed"]
