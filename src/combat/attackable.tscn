@@ -9,12 +9,11 @@
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_cq1mv")
-shader_parameter/percent = 1.0
+shader_parameter/percent = 0.5
 shader_parameter/color = Color(1, 1, 1, 1)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_kjkb4"]
-radius = 0.07
-height = 1.4
+[sub_resource type="QuadMesh" id="QuadMesh_lt5k8"]
+size = Vector2(1.4, 0.14)
 
 [node name="Attackable" type="Area3D"]
 script = ExtResource("1_5gjtp")
@@ -29,10 +28,10 @@ text = "hp"
 font_size = 72
 
 [node name="Healthbar" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 1.24335, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24335, 0)
 visible = false
 material_override = SubResource("ShaderMaterial_8yv65")
 cast_shadow = 0
 ignore_occlusion_culling = true
-mesh = SubResource("CapsuleMesh_kjkb4")
+mesh = SubResource("QuadMesh_lt5k8")
 skeleton = NodePath("../..")
