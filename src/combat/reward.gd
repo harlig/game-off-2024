@@ -43,9 +43,19 @@ func add_card_offerings(cards: Array[Card]) -> void:
 	for enemy_card: Card in cards:
 		var card_offered := Card.duplicate_card(enemy_card)
 		card_offered.connect("card_clicked", _on_reward_clicked)
+		card_offered.mouse_entered.connect(_on_card_mouse_entered.bind(card_offered))
+		card_offered.mouse_exited.connect(_on_card_mouse_exited.bind(card_offered))
 		$SelectCard/Offers.add_child(card_offered)
 
+func _on_card_mouse_entered(card: Card) -> void:
+	card.highlight(Color.DARK_GREEN)
+
+func _on_card_mouse_exited(card: Card) -> void:
+	card.unhighlight()
+
+
 func _on_reward_clicked(_times_clicked: int, reward_card: Card) -> void:
+	reward_card.unhighlight()
 	reward_card.reset_selected()
 	reward_chosen.emit(RewardData.for_card(reward_card))
 	got_select_card_reward = true
