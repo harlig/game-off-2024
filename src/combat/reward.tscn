@@ -38,7 +38,7 @@ anchors_preset = -1
 anchor_left = 0.25
 anchor_top = 0.3
 anchor_right = 0.75
-anchor_bottom = 0.9
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -78,7 +78,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="BlankThird" type="Control" parent="AllRewards/RewardsContainer/RewardsArea"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
