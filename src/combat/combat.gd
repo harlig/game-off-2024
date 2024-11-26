@@ -136,6 +136,23 @@ func _ready() -> void:
 	all_torches.append(enemy_base_torch)
 
 
+func countdown_combat() -> void:
+	if is_tutorial:
+		return
+
+	get_tree().paused = true
+	$Countdown.show()
+
+	for i in range(3):
+		$Countdown.text = str(3 - i)
+		await get_tree().create_timer(1.0).timeout
+	$Countdown.text = "GO!"
+	get_tree().paused = false
+	await get_tree().create_timer(1.0).timeout
+	$Countdown.hide()
+	return
+
+
 func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 	if area is not Attackable:
 		return

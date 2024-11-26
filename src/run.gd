@@ -147,10 +147,13 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	await tween.finished
 
 	between_combat.queue_free()
-	new_combat.get_node("ViewDeckButton").show()
 	new_combat.get_node("HandDisplay").show()
-	new_combat.get_node("Opponent").should_spawn = true
 	new_combat.get_node("Hand").paused = false
+
+	await new_combat.countdown_combat()
+
+	new_combat.get_node("ViewDeckButton").show()
+	new_combat.get_node("Opponent").should_spawn = true
 
 
 func continue_to_menu() -> void:

@@ -426,6 +426,22 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 36
 text = "Menu"
 
+[node name="Countdown" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = -36.0
+offset_right = 23.5
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 72
+text = "5"
+
 [connection signal="input_event" from="Battlefield" to="." method="_on_spawn_area_input_event"]
 [connection signal="mouse_entered" from="Battlefield" to="." method="_on_spawn_area_mouse_entered"]
 [connection signal="mouse_exited" from="Battlefield" to="." method="_on_spawn_area_mouse_exited"]
