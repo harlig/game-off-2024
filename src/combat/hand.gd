@@ -69,26 +69,26 @@ func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) 
 
 	var cards_drawn := 0
 	if first_card_torchlighter:
-		var torchlighter := deck.try_draw_torchlighter()
+		var torchlighter := deck.try_draw_torchlighter(false)
 		if torchlighter:
 			cards.append(torchlighter)
 			drew.emit(torchlighter)
 			cards_drawn += 1
 
 	for i in range(max_hand_size - cards_drawn):
-		try_draw_card();
+		try_draw_card(false);
 		cards_drawn += 1
 
 	# emit signal immediately to update mana display
 	mana_updated.emit(cur_mana, max_mana)
 
 
-func try_draw_card() -> bool:
+func try_draw_card(play_audio: bool = true) -> bool:
 	if cards.filter(func(_card: Card) -> bool: return _card and !_card.is_secret).size() >= max_hand_size:
 		print("Hand full, can't draw a card!")
 		return false
 
-	var card := deck.draw()
+	var card := deck.draw(play_audio)
 	if card == null:
 		print("No card to draw!")
 		return false

@@ -29,22 +29,19 @@ static func create_combat_deck(cards: Array[Card], init_audio: Audio = null, rel
 	combat_deck.draw_pile.shuffle()
 	return combat_deck
 
-func draw(should_shuffle_if_empty: bool = true) -> Card:
-	if draw_pile.size() == 0 and should_shuffle_if_empty:
-		shuffle_discard_into_draw()
+func draw(play_audio: bool = true) -> Card:
+	if draw_pile.size() == 0:
+		shuffle_discard_into_draw(play_audio)
 
-	if audio != null and draw_pile.size() > 0:
+	if audio != null and draw_pile.size() > 0 and play_audio:
 		audio.play_card_draw()
 
 	return draw_pile.pop_back()
 
-func draw_best(should_shuffle_if_empty: bool = true, can_draw_torchlighter: bool = true) -> Card:
-	if draw_pile.size() == 0 and should_shuffle_if_empty:
-		shuffle_discard_into_draw()
-
+func draw_best() -> Card:
 	var best_card: Card = null
 	for card in draw_pile:
-		if card.type == Card.CardType.UNIT and card.creature.can_change_torches and !can_draw_torchlighter:
+		if card.type == Card.CardType.UNIT and card.creature.can_change_torches:
 			continue
 		if best_card == null or card.get_score() > best_card.get_score():
 			best_card = card
@@ -53,21 +50,23 @@ func draw_best(should_shuffle_if_empty: bool = true, can_draw_torchlighter: bool
 		audio.play_card_draw()
 	return best_card
 
-func try_draw_torchlighter() -> Card:
+func try_draw_torchlighter(play_audio: bool = true) -> Card:
 	for card in draw_pile:
 		if card.type == Card.CardType.UNIT and card.creature.can_change_torches:
 			draw_pile.erase(card)
+			if audio != null and play_audio:
+				audio.play_card_draw()
 			return card
 	return null
 
-func shuffle_discard_into_draw() -> void:
+func shuffle_discard_into_draw(play_audio: bool = true) -> void:
 	if discard_pile.size() == 0:
 		return
 
 	draw_pile = discard_pile
 	discard_pile = []
 	draw_pile.shuffle()
-	if audio != null:
+	if audio != null and play_audio:
 		audio.play_shuffle()
 
 func discard(card: Card) -> void:
