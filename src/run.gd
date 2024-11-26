@@ -83,6 +83,7 @@ func create_combat() -> Combat:
 
 	new_combat.reward_presented.connect(bank_control.show)
 	new_combat.reward_chosen.connect(_on_combat_reward_chosen)
+	new_combat.rewards_done.connect(_on_combat_rewards_done)
 	new_combat.combat_over.connect(_on_combat_over)
 
 	add_child(new_combat)
@@ -164,6 +165,8 @@ func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 		deck.add_card(reward.card)
 	elif reward.type == Reward.RewardData.Type.GOLD:
 		bank += reward.gold
+
+func _on_combat_rewards_done() -> void:
 	current_combat.reward.queue_free()
 
 func _on_item_purchased(item: Card, cost: int) -> void:

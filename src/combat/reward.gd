@@ -3,6 +3,7 @@ class_name Reward extends Control
 @onready var text: Label = $Text
 
 signal reward_chosen(reward: RewardData)
+signal rewards_done()
 
 var reward_skipped_gold: int = 50
 
@@ -37,7 +38,9 @@ func add_card_offerings(cards: Array[Card]) -> void:
 func _on_reward_clicked(_times_clicked: int, reward_card: Card) -> void:
 	reward_card.reset_selected()
 	reward_chosen.emit(RewardData.for_card(reward_card))
+	rewards_done.emit()
 
 
 func _on_skip_button_pressed() -> void:
 	reward_chosen.emit(RewardData.for_gold(reward_skipped_gold))
+	rewards_done.emit()

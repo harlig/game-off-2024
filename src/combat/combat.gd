@@ -12,6 +12,7 @@ var original_spawn_mesh_color: Color
 
 signal reward_presented()
 signal reward_chosen(reward: Reward.RewardData)
+signal rewards_done()
 signal combat_over(combat_state: CombatState)
 signal middle_torch_lit(ndx: int)
 signal spawned_unit()
@@ -411,7 +412,10 @@ func show_combat_lost() -> void:
 
 func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 	reward_chosen.emit(reward_data)
+
+func _on_reward_rewards_done() -> void:
 	combat_over.emit(state)
+	rewards_done.emit()
 
 func _on_spawn_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	# check if it's null in case the hand display is destroyed
