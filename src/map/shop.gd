@@ -52,11 +52,20 @@ class Item:
 
 
 func _ready() -> void:
-	var min_score := int((shop_value - 1) * 10 / 2.0)
+	var min_score := int((shop_value - 1) * 10)
 	var max_score := shop_value * 20
 
 	for ndx in range(SHOP_UNIT_COUNT):
-		var new_card := UnitList.get_random_creature_by_score(min_score, max_score)
+		var new_card := UnitList.random_creature_by_score(min_score, max_score)
+
+		var attempts := 0
+		while attempts < 3 and units_in_shop.map(func(card: Card) -> UnitList.Creature: return card.creature).has(new_card.creature):
+			new_card = UnitList.random_creature_by_score(min_score, max_score)
+			attempts += 1
+
+		if attempts == 3:
+			new_card = UnitList.random_creature()
+
 		new_card.name = "Unit {ndx}"
 		var new_offer := create_new_offer(new_card)
 
@@ -68,7 +77,16 @@ func _ready() -> void:
 		$OfferArea/Units.add_child(new_offer)
 
 	for ndx in range(SHOP_SPELL_COUNT):
-		var new_card := SpellList.get_random_spell_by_score(min_score, max_score)
+		var new_card := SpellList.random_spell_by_score(min_score, max_score)
+
+		var attempts := 0
+		while attempts < 3 and spells_in_shop.map(func(card: Card) -> SpellList.Spell: return card.spell).has(new_card.spell):
+			new_card = SpellList.random_spell_by_score(min_score, max_score)
+			attempts += 1
+
+		if attempts == 3:
+			new_card = SpellList.random_card()
+
 		new_card.name = "Spell {ndx}"
 		var new_offer := create_new_offer(new_card)
 

@@ -78,7 +78,7 @@ static func new_card_by_name(spell_name: String) -> Card:
 	var spell_arr := spell_cards.filter(func(spell: Spell) -> bool: return spell.name == spell_name)
 	return Card.create_spell_card(spell_arr[0])
 
-static func get_random_spell_by_score(min_score: int, max_score: int) -> Card:
+static func random_spell_by_score(min_score: int, max_score: int) -> Card:
 	var filtered_spells := spell_cards.filter(func(spell: Spell) -> bool:
 		return spell.get_score() >= min_score and spell.get_score() <= max_score
 	)
@@ -86,6 +86,10 @@ static func get_random_spell_by_score(min_score: int, max_score: int) -> Card:
 		return Card.create_spell_card(spell_cards[randi() % spell_cards.size()])
 
 	return Card.create_spell_card(filtered_spells[randi() % filtered_spells.size()])
+
+static func random_card() -> Card:
+	var spell := spell_cards[randi() % spell_cards.size()]
+	return Card.create_spell_card(spell)
 
 static func random_secret_card() -> Card:
 	var secret_spell := secret_spell_cards[randi() % secret_spell_cards.size()]

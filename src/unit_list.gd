@@ -89,7 +89,7 @@ static func get_random_card(max_score: int, can_be_torchlighter: bool = false) -
 		creature = creature_cards[randi() % creature_cards.size()]
 	return Card.create_creature_card(creature)
 
-static func get_random_creature_by_score(min_score: int, max_score: int) -> Card:
+static func random_creature_by_score(min_score: int, max_score: int) -> Card:
 	var filtered_creatures := creature_cards.filter(func(creature: Creature) -> bool:
 		return creature.get_score() >= min_score and creature.get_score() <= max_score
 	)
@@ -97,6 +97,9 @@ static func get_random_creature_by_score(min_score: int, max_score: int) -> Card
 		return Card.create_creature_card(creature_cards[randi() % creature_cards.size()])
 
 	return Card.create_creature_card(filtered_creatures[randi() % filtered_creatures.size()])
+
+static func random_creature() -> Card:
+	return Card.create_creature_card(creature_cards[randi() % creature_cards.size()])
 
 static func random_secret_card() -> Card:
 	var secret_creature := secret_creature_cards[randi() % secret_creature_cards.size()]
