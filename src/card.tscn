@@ -115,6 +115,8 @@ anchor_right = 0.5
 anchor_bottom = 0.975
 grow_horizontal = 2
 grow_vertical = 2
+tooltip_text = "Power"
+mouse_filter = 1
 
 [node name="Damage" type="Label" parent="DamageArea"]
 layout_mode = 0
@@ -140,6 +142,8 @@ anchor_left = 0.5
 anchor_top = 0.875
 anchor_right = 0.95
 anchor_bottom = 0.975
+tooltip_text = "Health"
+mouse_filter = 1
 
 [node name="Health" type="Label" parent="HealthArea"]
 layout_mode = 0
