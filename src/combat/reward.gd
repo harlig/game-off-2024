@@ -3,6 +3,7 @@ class_name Reward extends Control
 signal reward_chosen(reward: RewardData)
 signal rewards_done()
 
+var combat_beaten_gold := 25
 var reward_skipped_gold: int = 50
 
 class RewardData:
@@ -25,6 +26,8 @@ class RewardData:
 		return reward_data
 
 func _ready() -> void:
+	$AllRewards/RewardsArea/Gold.text = "+%d gold" % combat_beaten_gold
+	$SelectCard.show()
 	$SelectCard/SkipButton.text = "Skip\n(+%dg)" % reward_skipped_gold
 
 func add_card_offerings(cards: Array[Card]) -> void:
