@@ -3,8 +3,17 @@ class_name Reward extends Control
 signal reward_chosen(reward: RewardData)
 signal rewards_done()
 
-var combat_beaten_gold := 25
-var reward_skipped_gold: int = 50
+var combat_beaten_gold := 25:
+	set(value):
+		combat_beaten_gold = value
+		$AllRewards/RewardsArea/Gold.text = "+%d gold" % combat_beaten_gold
+var reward_skipped_gold: int = 50:
+	set(value):
+		reward_skipped_gold = value
+		$SelectCard/SkipButton.text = "Skip\n(+%dg)" % reward_skipped_gold
+
+var got_combat_gold_reward := false
+var got_select_card_reward := false
 
 class RewardData:
 	enum Type {CARD, GOLD}
@@ -26,9 +35,9 @@ class RewardData:
 		return reward_data
 
 func _ready() -> void:
-	$AllRewards/RewardsArea/Gold.text = "+%d gold" % combat_beaten_gold
-	$SelectCard.show()
-	$SelectCard/SkipButton.text = "Skip\n(+%dg)" % reward_skipped_gold
+	combat_beaten_gold = combat_beaten_gold
+	reward_skipped_gold = reward_skipped_gold
+
 
 func add_card_offerings(cards: Array[Card]) -> void:
 	for enemy_card: Card in cards:
@@ -39,9 +48,33 @@ func add_card_offerings(cards: Array[Card]) -> void:
 func _on_reward_clicked(_times_clicked: int, reward_card: Card) -> void:
 	reward_card.reset_selected()
 	reward_chosen.emit(RewardData.for_card(reward_card))
-	rewards_done.emit()
+	got_select_card_reward = true
+	finish_this_reward()
 
 
 func _on_skip_button_pressed() -> void:
 	reward_chosen.emit(RewardData.for_gold(reward_skipped_gold))
-	rewards_done.emit()
+	got_select_card_reward = true
+	finish_this_reward()
+
+
+func _on_gold_pressed() -> void:
+	reward_chosen.emit(RewardData.for_gold(combat_beaten_gold))
+	got_combat_gold_reward = true
+	$AllRewards/RewardsArea/Gold.hide()
+	$AllRewards/RewardsArea/BlankGold.show()
+	finish_this_reward()
+
+func finish_this_reward() -> void:
+	if got_combat_gold_reward and got_select_card_reward:
+		rewards_done.emit()
+		return
+	$SelectCard.hide()
+	$AllRewards.show()
+
+
+func _on_card_pressed() -> void:
+	$AllRewards/RewardsArea/Card.hide()
+	$AllRewards/RewardsArea/BlankCard.show()
+	$AllRewards.hide()
+	$SelectCard.show()

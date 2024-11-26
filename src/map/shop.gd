@@ -55,6 +55,7 @@ class Item:
 func _ready() -> void:
 	# TODO: guarantee unique units and spells
 	for ndx in range(SHOP_UNIT_COUNT):
+		# TODO: this should be scaling with combat difficulty
 		var new_card := UnitList.new_card_by_id(randi() % UnitList.creature_cards.size())
 		new_card.name = "Unit {ndx}"
 		var new_offer := create_new_offer(new_card)

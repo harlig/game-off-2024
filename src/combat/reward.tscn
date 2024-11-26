@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cunlyf5vflgsp"]
+[gd_scene load_steps=2 format=3 uid="uid://cunlyf5vflgsp"]
 
 [ext_resource type="Script" path="res://src/combat/reward.gd" id="1_ll4oh"]
-[ext_resource type="PackedScene" uid="uid://i6b74mlrmx1w" path="res://src/highlight.tscn" id="2_vw612"]
 
 [node name="Reward" type="Control"]
 custom_minimum_size = Vector2(1280, 680)
@@ -10,10 +9,6 @@ anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 680.0
 script = ExtResource("1_ll4oh")
-
-[node name="Highlight" parent="." instance=ExtResource("2_vw612")]
-layout_mode = 0
-anchors_preset = 0
 
 [node name="AllRewards" type="Control" parent="."]
 layout_mode = 1
@@ -49,12 +44,22 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 48
 text = "+25 gold"
 
+[node name="BlankGold" type="Control" parent="AllRewards/RewardsArea"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
 [node name="Card" type="Button" parent="AllRewards/RewardsArea"]
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 48
 text = "Select a card"
+
+[node name="BlankCard" type="Control" parent="AllRewards/RewardsArea"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="SelectCard" type="Control" parent="."]
 visible = false
@@ -99,4 +104,6 @@ theme_override_font_sizes/font_size = 48
 text = "Skip
 (+25g)"
 
+[connection signal="pressed" from="AllRewards/RewardsArea/Gold" to="." method="_on_gold_pressed"]
+[connection signal="pressed" from="AllRewards/RewardsArea/Card" to="." method="_on_card_pressed"]
 [connection signal="pressed" from="SelectCard/SkipButton" to="." method="_on_skip_button_pressed"]

@@ -246,6 +246,7 @@ func _gui_input(event: InputEvent) -> void:
 			is_selected = !is_selected
 			on_select()
 
+# TODO: do we even need this method anymore?
 func reset_selected() -> void:
 	is_selected = false
 	times_clicked = 0

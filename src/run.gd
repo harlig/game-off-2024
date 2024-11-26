@@ -163,8 +163,10 @@ func continue_to_menu() -> void:
 func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 	if reward.type == Reward.RewardData.Type.CARD:
 		deck.add_card(reward.card)
+		audio.play_shuffle()
 	elif reward.type == Reward.RewardData.Type.GOLD:
 		bank += reward.gold
+		audio.play_purchase()
 
 func _on_combat_rewards_done() -> void:
 	current_combat.reward.queue_free()
