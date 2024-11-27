@@ -45,20 +45,26 @@ func take_damage(damage: int) -> void:
 		emit_signal("died")
 		get_parent().queue_free()
 
-	if has_node("Healthbar"):
-		healthbar_visible_time_rem = HEALTHBAR_VISIBLE_TIME
-		$Healthbar.show()
+	update_healthbar()
 
-		var tween := get_tree().create_tween()
-		var material: ShaderMaterial = $Healthbar.material_override
-		tween.tween_method(set_healthbar_percent, material.get_shader_parameter("percent"), float(hp) / float(max_hp), 0.3);
 
-		material.set_shader_parameter("color", Color.RED)
+func update_healthbar() -> void:
+	if not has_node("Healthbar"):
+		return ;
 
-		await get_tree().create_timer(0.3).timeout
+	healthbar_visible_time_rem = HEALTHBAR_VISIBLE_TIME
+	$Healthbar.show()
 
-		if material.get_shader_parameter("color") == Color.RED:
-			material.set_shader_parameter("color", Color.WHITE)
+	var tween := get_tree().create_tween()
+	var material: ShaderMaterial = $Healthbar.material_override
+	tween.tween_method(set_healthbar_percent, material.get_shader_parameter("percent"), float(hp) / float(max_hp), 0.3);
+
+	material.set_shader_parameter("color", Color.RED)
+
+	await get_tree().create_timer(0.3).timeout
+
+	if material.get_shader_parameter("color") == Color.RED:
+		material.set_shader_parameter("color", Color.WHITE)
 
 
 func set_healthbar_percent(value: float) -> void:
@@ -67,3 +73,4 @@ func set_healthbar_percent(value: float) -> void:
 
 func heal(amount: int) -> void:
 	hp += amount
+	update_healthbar();
