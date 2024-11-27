@@ -96,3 +96,12 @@ static func random_secret_card() -> Card:
 	var card := Card.create_spell_card(secret_spell)
 	card.is_secret = true
 	return card
+
+static func get_random_unique_secret_card(existing_secrets: Array[String]) -> Card:
+	for ndx in range(10):
+		var secret_spell := secret_spell_cards[randi() % secret_spell_cards.size()]
+		if secret_spell.name not in existing_secrets:
+			var card := Card.create_spell_card(secret_spell)
+			card.is_secret = true
+			return card
+	return random_secret_card()

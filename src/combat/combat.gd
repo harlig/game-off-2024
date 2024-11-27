@@ -318,9 +318,19 @@ func play_spell(spell: SpellList.Spell) -> void:
 			$Hand.max_hand_size += spell.value
 			$HandDisplay.update_hand_size_text()
 
+var dealt_secrets: Array[String] = []
+
 func deal_secret() -> void:
 	# TODO: play audio cue here
-	$Hand.add_secret(Card.random_secret_card())
+	var card: Card
+	var random := randf()
+	if random < 0.5:
+		card = UnitList.get_random_unique_secret_card(dealt_secrets)
+	else:
+		card = SpellList.get_random_unique_secret_card(dealt_secrets)
+	card.is_secret = true
+	dealt_secrets.append(card.name)
+	$Hand.add_secret(card)
 
 func _on_middle_area_torch_state_changed(is_lit: bool, torch_changed_ndx: int) -> void:
 	furthest_torch_lit = torch_changed_ndx if is_lit else torch_changed_ndx - 1
