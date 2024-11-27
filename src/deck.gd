@@ -45,6 +45,8 @@ func _ready() -> void:
 	for ndx in range(INITIAL_TORCHLIGHTER_COUNT):
 		add_card(UnitList.new_card_by_name("Torchlighter"))
 
+	# TODO: also add a random medium-sized unit (5 mana)
+
 
 func add_card(card: Card) -> void:
 	var duped_card: Card = Card.duplicate_card(card)

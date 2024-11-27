@@ -1,6 +1,7 @@
 class_name UnitList extends Node
 
 static var creature_cards: Array[Creature] = [
+	Creature.new("Torchlighter", CardType.MELEE, 40, 1, 1, "res://textures/unit/hand_crawler.png", [], true),
 	Creature.new("Shriekling", CardType.RANGED, 20, 2, 2, "res://textures/unit/doodle_jump.png"),
 	Creature.new("Murkmouth", CardType.MELEE, 30, 3, 3, "res://textures/unit/hippo.png"),
 	Creature.new("Wraithvine", CardType.RANGED, 20, 4, 3, "res://textures/unit/flower.png"),
@@ -24,7 +25,6 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Damage Buffer", CardType.MELEE, 40, 4, 4, "res://textures/unit/turkey_heart.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 2)]),
 	Creature.new("Health Buffer", CardType.MELEE, 40, 2, 4, "res://textures/unit/papa_smurf.png", [Unit.Buff.new(Unit.BuffType.HEALTH, 20)]),
 	Creature.new("Speed Buffer", CardType.MELEE, 40, 2, 4, "res://textures/unit/snek.png", [Unit.Buff.new(Unit.BuffType.SPEED, 0.5)]),
-	Creature.new("Torchlighter", CardType.MELEE, 40, 1, 2, "res://textures/unit/hand_crawler.png", [], true),
 ]
 
 static var secret_creature_cards: Array[Creature] = [

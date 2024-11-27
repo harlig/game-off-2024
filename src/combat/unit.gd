@@ -216,9 +216,9 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 	buffs_i_apply = from_creature.buffs_i_apply
 	can_change_torches = from_creature.can_change_torches
 
-	if from_creature.get_score() < 30 && !is_secret:
+	if from_creature.get_score() < 30 && !is_secret and from_creature.mana <= 4:
 		scalar = 1
-	elif from_creature.get_score() < 50:
+	elif from_creature.get_score() < 50 and from_creature.mana < 9:
 		scalar = 2
 	else:
 		scalar = 3
