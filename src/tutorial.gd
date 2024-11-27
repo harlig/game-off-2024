@@ -122,3 +122,20 @@ func _on_tutorial_combat_over(_state: Combat.CombatState) -> void:
 func _on_skip_tutorial_button_pressed() -> void:
 	get_tree().paused = false
 	tutorial_completed.emit()
+
+
+func _on_menu_button_pressed() -> void:
+	print("Menu button")
+	$SkipTutorialButton.hide()
+	$HelpText.hide()
+	$MenuButton.hide()
+	$Settings.show()
+	get_tree().paused = true
+
+
+func _on_settings_back_pressed() -> void:
+	$SkipTutorialButton.show()
+	$HelpText.show()
+	$MenuButton.show()
+	$Settings.hide()
+	get_tree().paused = false

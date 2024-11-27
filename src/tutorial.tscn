@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dy07gnbdlddw5"]
+[gd_scene load_steps=4 format=3 uid="uid://dy07gnbdlddw5"]
 
 [ext_resource type="Script" path="res://src/tutorial.gd" id="1_j0ecg"]
+[ext_resource type="PackedScene" uid="uid://bk4n0lhh8fddm" path="res://src/settings.tscn" id="2_0n21e"]
+[ext_resource type="Texture2D" uid="uid://c34ww1h7nrgau" path="res://textures/hamburger_menu.png" id="2_ui2h3"]
 
 [node name="Tutorial" type="Control"]
 layout_mode = 3
@@ -17,9 +19,9 @@ process_mode = 3
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.85
-anchor_top = 0.1
+anchor_top = 0.2
 anchor_right = 0.95
-anchor_bottom = 0.2
+anchor_bottom = 0.3
 focus_mode = 0
 theme_override_font_sizes/font_size = 28
 text = "Skip Tutorial"
@@ -37,6 +39,21 @@ grow_vertical = 0
 focus_mode = 0
 theme_override_font_sizes/font_size = 36
 text = "Continue"
+
+[node name="MenuButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.9
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.15
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+icon = ExtResource("2_ui2h3")
+flat = true
+expand_icon = true
 
 [node name="HelpText" type="RichTextLabel" parent="."]
 layout_mode = 1
@@ -62,4 +79,14 @@ anchor_right = 0.75
 anchor_bottom = 0.95
 mouse_filter = 2
 
+[node name="Settings" parent="." instance=ExtResource("2_0n21e")]
+visible = false
+layout_mode = 1
+offset_left = -200.0
+offset_top = -280.0
+offset_right = 200.0
+offset_bottom = 280.0
+
 [connection signal="pressed" from="SkipTutorialButton" to="." method="_on_skip_tutorial_button_pressed"]
+[connection signal="pressed" from="MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="back_pressed" from="Settings" to="." method="_on_settings_back_pressed"]
