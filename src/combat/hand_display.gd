@@ -36,7 +36,7 @@ func _input(event: InputEvent) -> void:
 		$DragEnd.hide()
 
 		var is_in_play_area: bool = event.position.y < $PlayHeight.position.y
-		var did_play: bool = is_in_play_area and await get_parent().try_play_card(card)
+		var did_play: bool = is_in_play_area and await get_parent().try_play_player_card(card)
 
 		if not did_play:
 			place_back_in_hand(card, Color.RED if is_in_play_area else Color.WHITE)
@@ -345,3 +345,9 @@ func reveal_secret(card: Card) -> void:
 
 # 	var center_dist: float = abs(i - (hand_size - 1) / 2.0)
 # 	card.position.y += 4.0 * center_dist * center_dist
+
+
+func highlight_then_unhighlight_mana_area() -> void:
+	$ManaArea/Highlight.show()
+	await get_tree().create_timer(0.5, false).timeout
+	$ManaArea/Highlight.hide()

@@ -167,10 +167,12 @@ func _on_area_entered_torch(area: Area3D, torch: Torch) -> void:
 
 
 # Attempt to play card and return whether it was played
-func try_play_card(card: Card) -> bool:
+func try_play_player_card(card: Card) -> bool:
 	$SpawnLocMesh.hide()
 
 	if not $Hand.can_play(card):
+		audio.play_buzzer()
+		$HandDisplay.highlight_then_unhighlight_mana_area()
 		return false
 
 	# need to set this before we potentially await something in the secret code since the validity of the play location could change when player moves mouse, but we should still respect the validity pre-timeout
