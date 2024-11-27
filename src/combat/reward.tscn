@@ -114,9 +114,9 @@ alignment = 1
 [node name="SkipButton" type="Button" parent="SelectCard"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
+anchor_left = 0.25
 anchor_top = 0.8
-anchor_right = 0.6
+anchor_right = 0.75
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
