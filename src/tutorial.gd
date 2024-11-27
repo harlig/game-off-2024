@@ -17,6 +17,8 @@ static func create_tutorial(init_audio: Audio) -> Tutorial:
 	return tutorial
 
 func _ready() -> void:
+	$Settings.audio = audio
+
 	var tutorial_deck := Deck.create_deck()
 	tutorial_deck.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tutorial_deck.get_node("GridContainer").hide()

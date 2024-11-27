@@ -4,9 +4,6 @@ var audio: Audio
 
 signal back_pressed()
 
-func _ready() -> void:
-	audio = get_parent().get_node("Audio")
-
 func _on_volume_slider_value_changed(value: float) -> void:
 	for child: AudioStreamPlayer in audio.get_children():
 		child.volume_db = -30.0 + value / 5.0

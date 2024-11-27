@@ -6,6 +6,7 @@ var tutorial_combat: Combat
 
 
 func _ready() -> void:
+	$Settings.audio = audio
 	# start player in tutorial
 	_on_how_to_play_pressed()
 
