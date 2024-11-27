@@ -320,14 +320,27 @@ func play_spell(spell: SpellList.Spell) -> void:
 
 var dealt_secrets: Array[String] = []
 
+var dealt_unit_secret: bool = false
+var dealt_spell_secret: bool = false
+
 func deal_secret() -> void:
 	# TODO: play audio cue here
 	var card: Card
 	var random := randf()
-	if random < 0.5:
+
+	if random < 0.5 and not dealt_unit_secret:
 		card = UnitList.get_random_unique_secret_card(dealt_secrets)
-	else:
+		dealt_unit_secret = true
+	elif random >= 0.5 and not dealt_spell_secret:
 		card = SpellList.get_random_unique_secret_card(dealt_secrets)
+		dealt_spell_secret = true
+	else:
+		random = randf()
+		if random < 0.5:
+			card = UnitList.random_secret_card()
+		else:
+			card = SpellList.random_secret_card()
+
 	card.is_secret = true
 	dealt_secrets.append(card.name)
 	$Hand.add_secret(card)
