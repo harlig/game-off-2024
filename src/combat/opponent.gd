@@ -6,7 +6,6 @@ var difficulty: int:
 	set(value):
 		difficulty = value
 		hand.max_mana += difficulty - 1
-		hand.cur_mana = hand.max_mana
 
 var spawn_interval := 5.0
 var should_spawn := true

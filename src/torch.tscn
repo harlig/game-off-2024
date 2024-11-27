@@ -70,7 +70,7 @@ _data = [Vector2(0, 0.51829), 0.0, 1.94463, 0, 0, Vector2(0.304469, 0.944418), -
 point_count = 3
 
 [node name="Torch" type="Node3D"]
-process_mode = 1
+process_mode = 3
 script = ExtResource("1_4uofj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
