@@ -92,7 +92,7 @@ func create_combat() -> Combat:
 
 func _on_reward_presented() -> void:
 	bank_control.show()
-	$Settings.hide()
+	$MenuButton.hide()
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
@@ -161,7 +161,7 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 	new_combat.get_node("ViewDeckButton").show()
 	new_combat.get_node("Opponent").should_spawn = true
-	$Settings.show()
+	$MenuButton.show()
 
 
 func continue_to_menu() -> void:
