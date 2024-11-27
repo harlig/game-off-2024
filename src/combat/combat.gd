@@ -328,18 +328,17 @@ func deal_secret() -> void:
 	var card: Card
 	var random := randf()
 
-	if random < 0.5 and not dealt_unit_secret:
-		card = UnitList.get_random_unique_secret_card(dealt_secrets)
-		dealt_unit_secret = true
-	elif random >= 0.5 and not dealt_spell_secret:
-		card = SpellList.get_random_unique_secret_card(dealt_secrets)
-		dealt_spell_secret = true
-	else:
-		random = randf()
+	if (not dealt_unit_secret and not dealt_spell_secret) or (dealt_unit_secret and dealt_spell_secret):
 		if random < 0.5:
-			card = UnitList.random_secret_card()
+			card = UnitList.get_random_unique_secret_card(dealt_secrets)
+			dealt_unit_secret = true
 		else:
-			card = SpellList.random_secret_card()
+			card = SpellList.get_random_unique_secret_card(dealt_secrets)
+			dealt_spell_secret = true
+	elif dealt_spell_secret:
+		card = UnitList.random_secret_card()
+	else:
+		card = SpellList.random_secret_card()
 
 	card.is_secret = true
 	dealt_secrets.append(card.name)
