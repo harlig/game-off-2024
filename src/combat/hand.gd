@@ -12,7 +12,7 @@ var max_mana := 8:
 	set(value):
 		max_mana = value
 		mana_updated.emit(cur_mana, max_mana)
-var cur_mana := 8:
+var cur_mana := 0:
 	set(value):
 		cur_mana = min(value, max_mana)
 		mana_updated.emit(cur_mana, max_mana)
