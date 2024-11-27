@@ -218,7 +218,6 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	spawned_unit.emit()
 	var unit: Unit = unit_to_spawn.instantiate()
 	# gotta add child early so ready is called
-	add_child(unit)
 	var y := 0
 	match card_played.creature.type:
 		UnitList.CardType.AIR:
@@ -227,8 +226,11 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 			y = 0
 	unit.position = Vector3(unit_position.x, y, unit_position.z)
 	unit.direction = Unit.Direction.RIGHT if team == Attackable.Team.PLAYER else Unit.Direction.LEFT
-	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false, card_played.is_secret)
+	add_child(unit)
+
 	unit.unit_attackable.team = team
+	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false, card_played.is_secret)
+
 
 	if team == Attackable.Team.PLAYER:
 		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit + 1].position.x
