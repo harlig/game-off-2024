@@ -9,7 +9,7 @@
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_cq1mv")
-shader_parameter/percent = 0.5
+shader_parameter/percent = 1.0
 shader_parameter/color = Color(1, 1, 1, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_lt5k8"]

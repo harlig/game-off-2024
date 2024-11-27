@@ -14,7 +14,7 @@ size = Vector3(1, 1.5, 8)
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_dyi0t")
-shader_parameter/percent = 0.5
+shader_parameter/percent = 1.0
 shader_parameter/color = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dnfef"]
@@ -605,24 +605,24 @@ tracks/1/keys = {
 resource_local_to_scene = true
 _data = {
 &"RESET": SubResource("Animation_8afef"),
-&"attack_1": SubResource("Animation_ckihm"),
-&"attack_2": SubResource("Animation_ckihn"),
-&"attack_3": SubResource("Animation_0lslb"),
-&"attack_reversed_1": SubResource("Animation_weuqb"),
-&"attack_reversed_2": SubResource("Animation_weuqc"),
-&"attack_reversed_3": SubResource("Animation_u30rm"),
-&"heal_1": SubResource("Animation_evayf"),
-&"heal_2": SubResource("Animation_evayg"),
-&"heal_3": SubResource("Animation_mjboi"),
-&"light_torch_1": SubResource("Animation_ttp57"),
 &"light_torch_2": SubResource("Animation_ttp58"),
-&"light_torch_3": SubResource("Animation_hq6oo"),
-&"light_torch_reversed_1": SubResource("Animation_kmiha"),
-&"light_torch_reversed_2": SubResource("Animation_kmihb"),
 &"light_torch_reversed_3": SubResource("Animation_7jli0"),
-&"walk_1": SubResource("Animation_8vw6h"),
+&"light_torch_reversed_2": SubResource("Animation_kmihb"),
+&"heal_3": SubResource("Animation_mjboi"),
+&"attack_reversed_2": SubResource("Animation_weuqc"),
+&"light_torch_reversed_1": SubResource("Animation_kmiha"),
+&"walk_3": SubResource("Animation_50sip"),
+&"attack_reversed_1": SubResource("Animation_weuqb"),
 &"walk_2": SubResource("Animation_8vw6i"),
-&"walk_3": SubResource("Animation_50sip")
+&"attack_1": SubResource("Animation_ckihm"),
+&"light_torch_3": SubResource("Animation_hq6oo"),
+&"walk_1": SubResource("Animation_8vw6h"),
+&"attack_3": SubResource("Animation_0lslb"),
+&"attack_2": SubResource("Animation_ckihn"),
+&"heal_2": SubResource("Animation_evayg"),
+&"light_torch_1": SubResource("Animation_ttp57"),
+&"heal_1": SubResource("Animation_evayf"),
+&"attack_reversed_3": SubResource("Animation_u30rm")
 }
 
 [node name="Unit" type="Node3D"]
