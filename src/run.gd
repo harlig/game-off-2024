@@ -128,6 +128,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 
 		var tween: Tween = get_tree().create_tween();
 		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x + BETWEEN_COMBAT_OFFSET, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
+		tween.parallel().tween_property(between_combat.get_node("Backdrop/DirectionalLight3D"), "light_energy", 0.0, 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
 		existing_combat.queue_free()
