@@ -2,6 +2,7 @@ class_name Card extends TextureRect
 
 const card_scene := preload("res://src/card.tscn")
 const card_back_spell := preload("res://textures/card/back/card_back_spell.png")
+const ranged_icon_texture: Texture2D = preload("res://textures/card/ranged_dmg.png")
 const heal_icon_texture: Texture2D = preload("res://textures/card/heal.png")
 const torchlighter_icon_texture: Texture2D = preload("res://textures/card/torch.png")
 
@@ -136,6 +137,7 @@ func update_unit_display() -> void:
 	match creature.type:
 		UnitList.CardType.RANGED:
 			creature_type_text = "Ranged"
+			$DamageArea/TextureRect.texture = ranged_icon_texture
 		UnitList.CardType.MELEE:
 			creature_type_text = "Melee"
 		UnitList.CardType.AIR:
