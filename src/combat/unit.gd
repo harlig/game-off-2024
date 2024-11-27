@@ -234,6 +234,32 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 	var x_diff := 1 - scalar
 	mesh_instance.position.x = x_diff
 	mesh_instance.position.y = scalar
+
+	var health_bar_scalar: float = scalar
+	match from_creature.card_image_path:
+		"res://textures/unit/buff_beak.png":
+			health_bar_scalar *= 1.5
+		"res://textures/unit/doodle_jump.png":
+			health_bar_scalar *= 1.2
+		"res://textures/unit/flower.png":
+			health_bar_scalar *= 1.6
+		"res://textures/unit/hippo.png":
+			health_bar_scalar *= 1.5
+		"res://textures/unit/minion.png":
+			health_bar_scalar *= 1.9
+		"res://textures/unit/papa_smurf.png":
+			health_bar_scalar *= 1.7
+		"res://textures/unit/slug.png":
+			health_bar_scalar *= 0.8
+		"res://textures/unit/snek.png":
+			health_bar_scalar *= 1.1
+		"res://textures/unit/turkey_heart.png":
+			health_bar_scalar *= 1.6
+		"res://textures/unit/ufo.png":
+			health_bar_scalar *= 1.6
+
+	$Attackable/Healthbar.position.y *= health_bar_scalar
+
 	play_animation(WALK_ANIMATION)
 
 	resize_unit_target_box(from_creature)

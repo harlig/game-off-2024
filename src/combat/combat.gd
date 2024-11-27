@@ -231,7 +231,6 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 	unit.unit_attackable.team = team
 	unit.set_stats(card_played.creature, true if team == Attackable.Team.ENEMY else false, card_played.is_secret)
 
-
 	if team == Attackable.Team.PLAYER:
 		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit + 1].position.x
 		buff_units_from_unit(unit, current_ally_units)
