@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://src/settings.gd" id="1_pngfl"]
 
 [node name="Settings" type="VBoxContainer"]
+process_mode = 3
+z_index = 10
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

@@ -117,6 +117,7 @@ func _on_middle_torch_lit(_torch_ndx: int) -> void:
 
 func _on_tutorial_combat_over(_state: Combat.CombatState) -> void:
 	set_help_text("Great job! You've completed the tutorial.\nYou're ready to venture into the forest.\n\nGood luck!")
+	$SkipTutorialButton.hide()
 	(tutorial_combat.get_node("TutorialMenuButton") as Button).pressed.connect(tutorial_completed.emit)
 	(tutorial_combat.get_node("TutorialMenuButton") as Button).show()
 
@@ -129,7 +130,6 @@ func _on_skip_tutorial_button_pressed() -> void:
 var continue_button_was_visible := false
 
 func _on_menu_button_pressed() -> void:
-	print("Menu button")
 	$SkipTutorialButton.hide()
 	$HelpText.hide()
 	$MenuButton.hide()

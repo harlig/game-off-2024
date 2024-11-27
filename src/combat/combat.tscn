@@ -103,6 +103,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -11)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -11)
 
 [node name="Hand" type="Node" parent="."]
+process_mode = 1
 script = ExtResource("5_3nvnk")
 
 [node name="HandDisplay" type="Control" parent="."]
@@ -364,6 +365,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Opponent" type="Node" parent="."]
+process_mode = 1
 script = ExtResource("9_i3xgm")
 
 [node name="Hand" type="Node" parent="Opponent"]

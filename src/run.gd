@@ -38,6 +38,7 @@ func _ready() -> void:
 	bank = bank
 
 	audio = main_menu.audio
+	$Settings.audio = audio
 
 	# preload a combat to try to reduce stuttering
 	var preloaded_combat: Combat = Combat.create_combat($DeckControl/Deck, combat_difficulty, audio, relics, combats_beaten)
@@ -139,7 +140,6 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	var new_combat := create_combat()
 	new_combat.position = Vector3(between_combat.position.x + offset, new_combat.position.y, new_combat.position.z)
 	new_combat.get_node("Opponent").should_spawn = false
-	new_combat.get_node("Hand").paused = true
 
 	new_combat.get_node("HandDisplay").hide()
 
@@ -152,7 +152,6 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 	between_combat.queue_free()
 	new_combat.get_node("HandDisplay").show()
-	new_combat.get_node("Hand").paused = false
 
 	await new_combat.countdown_combat()
 
@@ -189,3 +188,13 @@ func _on_item_purchased(item: Card, cost: int) -> void:
 func _on_card_removed(cost: int) -> void:
 	times_card_removed += 1
 	bank -= cost
+
+
+func _on_menu_button_pressed() -> void:
+	$Settings.show()
+	get_tree().paused = true
+
+
+func _on_settings_back_pressed() -> void:
+	$Settings.hide()
+	get_tree().paused = false
