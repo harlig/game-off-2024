@@ -18,6 +18,7 @@ signal spawn(card: Card)
 func _ready() -> void:
 	adjust_spawn_interval()
 	hand.max_mana += difficulty - 1
+	hand.cur_mana = hand.max_mana / 2
 
 func adjust_spawn_interval() -> void:
 	match difficulty:

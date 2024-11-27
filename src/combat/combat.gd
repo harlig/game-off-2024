@@ -511,6 +511,8 @@ func randomize_new_enemy_deck(strength_limit: int, single_card_strength_limit: i
 	var total_strength := 0
 	var percentage: int = min(20 * (combats_beaten + 1), 100)
 	var strength_limited_creatures: Array[UnitList.Creature] = UnitList.creature_cards.filter(func(creature: UnitList.Creature) -> bool:
+		if creature.can_change_torches:
+			return false
 		return creature.get_score() <= single_card_strength_limit and creature.get_score() <= percentage
 	)
 	while total_strength < strength_limit:
