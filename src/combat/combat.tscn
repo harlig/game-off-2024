@@ -48,7 +48,7 @@ shader = ExtResource("7_e0ci3")
 shader_parameter/percent = 0.427
 shader_parameter/border_width = 0.1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p07jy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifskm"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 0)
 border_width_left = 4
@@ -192,7 +192,7 @@ vertical_alignment = 1
 [node name="Highlight" parent="HandDisplay/ManaArea" instance=ExtResource("9_nl47w")]
 visible = false
 layout_mode = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_p07jy")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifskm")
 
 [node name="DragLine" type="Line2D" parent="HandDisplay"]
 z_index = 2
