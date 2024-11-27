@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cw6b415ocy2t2"]
+[gd_scene load_steps=5 format=3 uid="uid://cw6b415ocy2t2"]
 
 [ext_resource type="Script" path="res://src/menu.gd" id="1_t5igk"]
 [ext_resource type="PackedScene" uid="uid://cp8oeuj383dlo" path="res://src/audio.tscn" id="2_1yg6l"]
 [ext_resource type="Texture2D" uid="uid://dh7gfjy0doiqu" path="res://textures/cover.png" id="2_ek144"]
+[ext_resource type="PackedScene" uid="uid://bk4n0lhh8fddm" path="res://src/settings.tscn" id="3_ts47l"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -70,48 +71,16 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 72
 text = "SETTINGS"
 
-[node name="Settings" type="VBoxContainer" parent="."]
+[node name="Settings" parent="." instance=ExtResource("3_ts47l")]
 visible = false
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 48
-
-[node name="Label" type="Label" parent="Settings"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 64
-text = "volume"
-horizontal_alignment = 1
-
-[node name="VolumeSlider" type="HSlider" parent="Settings"]
-custom_minimum_size = Vector2(400, 0)
-layout_mode = 2
-value = 50.0
-
-[node name="Control" type="Control" parent="Settings"]
-custom_minimum_size = Vector2(0, 256)
-layout_mode = 2
-
-[node name="BackButton" type="Button" parent="Settings"]
-layout_mode = 2
-size_flags_vertical = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 72
-text = "back"
+offset_left = -200.0
+offset_top = -280.0
+offset_right = 200.0
+offset_bottom = 280.0
 
 [node name="Audio" parent="." instance=ExtResource("2_1yg6l")]
 
 [connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Buttons/HowToPlay" to="." method="_on_how_to_play_pressed"]
 [connection signal="pressed" from="Buttons/Settings" to="." method="_on_settings_pressed"]
-[connection signal="value_changed" from="Settings/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
-[connection signal="pressed" from="Settings/BackButton" to="." method="_on_back_button_pressed"]
