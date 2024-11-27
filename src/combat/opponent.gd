@@ -12,6 +12,7 @@ var spawn_interval := 5.0
 var should_spawn := true
 var play_timer := 0.0 # running timer
 var playing_cards := false
+var current_units: Array[Unit] = []
 
 signal spawn(card: Card)
 
@@ -59,6 +60,11 @@ func try_play_cards() -> void:
 	for card: Card in cards:
 		if cards_played >= max_units_to_play_at_once:
 			break
+
+		# don't spawn this card if it's a healer and all our units on the board are healer
+		if card.creature != null and card.creature.type == UnitList.CardType.HEALER and current_units.all(func(unit: Unit) -> bool: return unit.unit_type == UnitList.CardType.HEALER):
+			continue
+
 		if hand.can_play(card):
 			hand.play_card(card)
 			spawn.emit(card)
@@ -82,4 +88,4 @@ func play_one_card() -> void:
 
 
 func set_units(units: Array[Unit]) -> void:
-	pass
+	current_units = units

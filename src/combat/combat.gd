@@ -89,7 +89,7 @@ func _ready() -> void:
 	add_child(enemy_combat_deck)
 	$Opponent/Hand.initialize(enemy_combat_deck)
 	$Opponent.difficulty = difficulty
-	enemy_unit_state.connect($Opponent.set_enemy_units)
+	enemy_unit_state.connect($Opponent.set_units)
 
 	if is_tutorial:
 		$Opponent.should_spawn = false
