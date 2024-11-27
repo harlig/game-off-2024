@@ -2,6 +2,7 @@ class_name UnitList extends Node
 
 static var creature_cards: Array[Creature] = [
 	Creature.new("Torchlighter", CardType.MELEE, 40, 1, 1, "res://textures/unit/hand_crawler.png", [], true),
+	Creature.new("Torchtanker", CardType.MELEE, 90, 1, 3, "res://textures/unit/buff_beak.png", [], true),
 	Creature.new("Shriekling", CardType.RANGED, 20, 2, 2, "res://textures/unit/doodle_jump.png"),
 	Creature.new("Murkmouth", CardType.MELEE, 30, 3, 3, "res://textures/unit/hippo.png"),
 	Creature.new("Wraithvine", CardType.RANGED, 20, 4, 3, "res://textures/unit/flower.png"),
