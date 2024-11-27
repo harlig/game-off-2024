@@ -28,7 +28,7 @@ static var creature_cards: Array[Creature] = [
 ]
 
 static var secret_creature_cards: Array[Creature] = [
-	Creature.new("Abyssal Titan", CardType.MELEE, 250, 2, 3, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 5)]),
+	Creature.new("Abyssal Titan", CardType.MELEE, 200, 2, 3, "res://textures/unit/hand_crawler.png", [Unit.Buff.new(Unit.BuffType.DAMAGE, 5)]),
 	Creature.new("Spectral Assassin", CardType.MELEE, 70, 30, 3, "res://textures/unit/hippo.png"),
 	Creature.new("Shadow Ranger", CardType.RANGED, 50, 8, 3, "res://textures/unit/tripod.png")
 ]
