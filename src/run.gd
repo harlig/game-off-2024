@@ -82,13 +82,17 @@ func create_combat() -> Combat:
 	current_combat = new_combat
 	new_combat.get_node("ViewDeckButton").hide()
 
-	new_combat.reward_presented.connect(bank_control.show)
+	new_combat.reward_presented.connect(_on_reward_presented)
 	new_combat.reward_chosen.connect(_on_combat_reward_chosen)
 	new_combat.rewards_done.connect(_on_combat_rewards_done)
 	new_combat.combat_over.connect(_on_combat_over)
 
 	add_child(new_combat)
 	return new_combat
+
+func _on_reward_presented() -> void:
+	bank_control.show()
+	$Settings.hide()
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
@@ -157,6 +161,7 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 	new_combat.get_node("ViewDeckButton").show()
 	new_combat.get_node("Opponent").should_spawn = true
+	$Settings.show()
 
 
 func continue_to_menu() -> void:
@@ -192,9 +197,13 @@ func _on_card_removed(cost: int) -> void:
 
 func _on_menu_button_pressed() -> void:
 	$Settings.show()
+	if current_combat:
+		current_combat.hide_elements_for_pause()
 	get_tree().paused = true
 
 
 func _on_settings_back_pressed() -> void:
 	$Settings.hide()
+	if current_combat:
+		current_combat.show_elements_for_pause()
 	get_tree().paused = false

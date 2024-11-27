@@ -544,3 +544,13 @@ func _on_view_deck_button_pressed() -> void:
 	else:
 		$HandDisplay.show()
 		$ViewDeckButton.text = "View deck"
+
+
+func show_elements_for_pause() -> void:
+	$HandDisplay.show()
+	$ViewDeckButton.show()
+
+
+func hide_elements_for_pause() -> void:
+	$HandDisplay.hide()
+	$ViewDeckButton.hide()
