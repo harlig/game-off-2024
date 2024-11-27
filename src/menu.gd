@@ -13,8 +13,6 @@ func _ready() -> void:
 func _on_play_pressed() -> void:
 	var run: Run = load("res://src/run.tscn").instantiate()
 	run.main_menu = self
-	remove_child(audio)
-	run.add_child(audio)
 	add_sibling.call_deferred(run)
 	hide()
 

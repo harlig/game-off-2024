@@ -37,7 +37,7 @@ func _ready() -> void:
 	# kinda janky but guarantees that the bank's text will get updated to its starting value
 	bank = bank
 
-	audio = $Audio
+	audio = main_menu.audio
 
 	# preload a combat to try to reduce stuttering
 	var preloaded_combat: Combat = Combat.create_combat($DeckControl/Deck, combat_difficulty, audio, relics, combats_beaten)
@@ -161,8 +161,6 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 
 func continue_to_menu() -> void:
-	remove_child(audio)
-	main_menu.add_child(audio)
 	main_menu.show()
 	queue_free()
 
