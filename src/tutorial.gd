@@ -117,3 +117,8 @@ func _on_tutorial_combat_over(_state: Combat.CombatState) -> void:
 	set_help_text("Great job! You've completed the tutorial.\nYou're ready to venture into the forest.\n\nGood luck!")
 	(tutorial_combat.get_node("TutorialMenuButton") as Button).pressed.connect(tutorial_completed.emit)
 	(tutorial_combat.get_node("TutorialMenuButton") as Button).show()
+
+
+func _on_skip_tutorial_button_pressed() -> void:
+	get_tree().paused = false
+	tutorial_completed.emit()

@@ -7,6 +7,8 @@ var tutorial_combat: Combat
 
 func _ready() -> void:
 	_on_volume_slider_value_changed($Settings/VolumeSlider.value)
+	# start player in tutorial
+	_on_how_to_play_pressed()
 
 
 func _on_play_pressed() -> void:
@@ -14,14 +16,14 @@ func _on_play_pressed() -> void:
 	run.main_menu = self
 	remove_child(audio)
 	run.add_child(audio)
-	add_sibling(run)
+	add_sibling.call_deferred(run)
 	hide()
 
 
 func _on_how_to_play_pressed() -> void:
 	tutorial = Tutorial.create_tutorial(audio)
 	tutorial.tutorial_completed.connect(_on_tutorial_completed)
-	add_sibling(tutorial)
+	add_sibling.call_deferred(tutorial)
 	hide()
 
 func _on_tutorial_completed() -> void:
