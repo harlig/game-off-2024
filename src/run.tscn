@@ -37,7 +37,6 @@ mouse_filter = 2
 layout_mode = 1
 
 [node name="Loading" type="ColorRect" parent="."]
-visible = false
 z_index = 10
 layout_mode = 1
 anchors_preset = 15
