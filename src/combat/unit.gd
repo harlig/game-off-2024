@@ -1,5 +1,7 @@
 class_name Unit extends Node3D
 
+const torch_scene := preload("res://src/torch.tscn")
+
 const projectile_scene := preload("res://src/combat/projectile.tscn")
 const damage_buff_texture: Texture2D = preload("res://textures/card/augment/buff_damage.jpg")
 const health_buff_texture: Texture2D = preload("res://textures/card/augment/buff_health.png")
@@ -263,6 +265,13 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 	play_animation(WALK_ANIMATION)
 
 	resize_unit_target_box(from_creature)
+
+	if from_creature.can_change_torches:
+		var torch: Torch = torch_scene.instantiate()
+		torch.position.x += 0.4
+		torch.position.y += 0.3
+		torch.light_torch()
+		add_child(torch)
 
 class Pair:
 	var first: Variant
