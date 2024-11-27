@@ -1,6 +1,12 @@
 class_name Audio extends Node
 
 var disabled := false
+var global_volume := 50.0:
+	set(value):
+		global_volume = value
+		global_volume_changed.emit(value)
+
+signal global_volume_changed(new_value: float)
 
 func _ready() -> void:
 	if disabled:
