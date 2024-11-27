@@ -84,3 +84,4 @@ offset_bottom = 280.0
 [connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Buttons/HowToPlay" to="." method="_on_how_to_play_pressed"]
 [connection signal="pressed" from="Buttons/Settings" to="." method="_on_settings_pressed"]
+[connection signal="back_pressed" from="Settings" to="." method="_on_settings_back_button_pressed"]

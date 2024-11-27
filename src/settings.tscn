@@ -38,3 +38,6 @@ size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 72
 text = "back"
+
+[connection signal="value_changed" from="VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

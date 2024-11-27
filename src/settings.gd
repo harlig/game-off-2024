@@ -16,6 +16,3 @@ func _on_volume_slider_value_changed(value: float) -> void:
 
 func _on_back_button_pressed() -> void:
 	back_pressed.emit()
-	$Title.show()
-	$Buttons.show()
-	$Settings.hide()
