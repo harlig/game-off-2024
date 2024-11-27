@@ -53,6 +53,7 @@ func _ready() -> void:
 	between_combat.get_node("Continue").hide()
 	between_combat.card_removed.connect(_on_card_removed)
 	add_child(between_combat)
+	between_combat.put_in_focus()
 
 func _process(delta: float) -> void:
 	if has_preloaded:
@@ -122,7 +123,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
 		existing_combat.queue_free()
-		between_combat.light_last_torch()
+		between_combat.put_in_focus()
 	elif combat_state == Combat.CombatState.LOST:
 		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten, false)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))

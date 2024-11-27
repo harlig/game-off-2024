@@ -15,7 +15,7 @@ var bank: int
 var deck: Deck
 var times_card_removed: int
 
-var can_highlight_interactable := true
+var can_highlight_interactable := false
 
 var shop: Shop
 var lose_combat: LoseCombat
@@ -70,8 +70,12 @@ func _ready() -> void:
 			torch.extinguish_torch()
 
 
-func light_last_torch() -> void:
-	($ProgressTorches.get_child(combats_beaten - 1) as Torch).light_torch()
+func put_in_focus() -> void:
+	if combats_beaten > 0:
+		($ProgressTorches.get_child(combats_beaten - 1) as Torch).light_torch()
+	can_highlight_interactable = true
+	# TODO: if your mouse is already in the interactable, you should highlight him
+	# TODO: set an on mouse enetered/exited bit, and if it's in the entered state here and not exited the let's highlight our boi
 
 func _on_button_pressed() -> void:
 	can_highlight_interactable = false
