@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c34ww1h7nrgau" path="res://textures/hamburger_menu.png" id="2_ui2h3"]
 
 [node name="Tutorial" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,9 +51,7 @@ anchor_bottom = 0.15
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 28
 icon = ExtResource("2_ui2h3")
-flat = true
 expand_icon = true
 
 [node name="HelpText" type="RichTextLabel" parent="."]
@@ -64,6 +63,7 @@ anchor_right = 0.8
 anchor_bottom = 0.3
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
 text = "Help!"

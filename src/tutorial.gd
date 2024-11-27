@@ -124,13 +124,19 @@ func _on_skip_tutorial_button_pressed() -> void:
 	tutorial_completed.emit()
 
 
+var continue_button_was_visible := false
+
 func _on_menu_button_pressed() -> void:
 	print("Menu button")
 	$SkipTutorialButton.hide()
 	$HelpText.hide()
 	$MenuButton.hide()
 	$Settings.show()
+	tutorial_combat_hand_display.hide()
 	get_tree().paused = true
+	if continue_button.is_visible_in_tree():
+		continue_button_was_visible = true
+		continue_button.hide()
 
 
 func _on_settings_back_pressed() -> void:
@@ -138,4 +144,9 @@ func _on_settings_back_pressed() -> void:
 	$HelpText.show()
 	$MenuButton.show()
 	$Settings.hide()
+	tutorial_combat_hand_display.show()
 	get_tree().paused = false
+
+	if continue_button_was_visible:
+		continue_button.show()
+	continue_button_was_visible = false
