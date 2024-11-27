@@ -33,6 +33,8 @@ func _ready() -> void:
 	new_combat.spawned_unit.connect(_on_tutorial_combat_spawned_unit, ConnectFlags.CONNECT_ONE_SHOT)
 	new_combat.middle_torch_lit.connect(_on_middle_torch_lit)
 	add_child(new_combat)
+	# tutorial starts with max mana
+	new_combat.get_node("Hand").cur_mana = new_combat.get_node("Hand").max_mana
 
 	set_help_text("Welcome to the forest!")
 	continue_button.pressed.connect(highlight_hand_area, ConnectFlags.CONNECT_ONE_SHOT)
