@@ -29,9 +29,9 @@ func adjust_spawn_interval() -> void:
 		3:
 			spawn_interval = 10.0
 		4:
-			spawn_interval = 7.0
+			spawn_interval = 8.5
 		5:
-			spawn_interval = 5.0
+			spawn_interval = 6.0
 
 func _process(delta: float) -> void:
 	if not should_spawn:

@@ -138,6 +138,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
 		existing_combat.queue_free()
+		between_combat.put_in_focus()
 
 func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	bank_control.hide()
