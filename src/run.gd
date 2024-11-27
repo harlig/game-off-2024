@@ -142,6 +142,7 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	bank_control.hide()
 	var offset := 56
+	get_tree().paused = true
 	var new_combat := create_combat()
 	new_combat.position = Vector3(between_combat.position.x + offset, new_combat.position.y, new_combat.position.z)
 	new_combat.get_node("Opponent").should_spawn = false
@@ -150,6 +151,7 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 	var tween: Tween = get_tree().create_tween();
 	tween = get_tree().create_tween()
+	tween.set_pause_mode(Tween.TweenPauseMode.TWEEN_PAUSE_PROCESS)
 	tween.parallel().tween_property(between_combat, "position", Vector3(between_combat.position.x - offset, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	tween.parallel().tween_property(between_combat.get_node("Backdrop/DirectionalLight3D"), "light_energy", 0.0, 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 	tween.parallel().tween_property(new_combat, "position", Vector3(between_combat.position.x, new_combat.position.y, new_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
@@ -157,6 +159,7 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 
 	between_combat.queue_free()
 	new_combat.get_node("HandDisplay").show()
+	get_tree().paused = false
 
 	await new_combat.countdown_combat()
 
