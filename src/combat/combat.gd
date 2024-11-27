@@ -16,6 +16,7 @@ signal rewards_done()
 signal combat_over(combat_state: CombatState)
 signal middle_torch_lit(ndx: int)
 signal spawned_unit()
+signal enemy_unit_state(enemy_units: Array[Unit])
 
 enum CombatState {PLAYING, WON, LOST}
 
@@ -88,6 +89,7 @@ func _ready() -> void:
 	add_child(enemy_combat_deck)
 	$Opponent/Hand.initialize(enemy_combat_deck)
 	$Opponent.difficulty = difficulty
+	enemy_unit_state.connect($Opponent.set_enemy_units)
 
 	if is_tutorial:
 		$Opponent.should_spawn = false
@@ -241,6 +243,7 @@ func spawn_unit(unit_to_spawn: PackedScene, card_played: Card, unit_position: Ve
 		unit.furthest_x_position_allowed = all_torches[furthest_torch_lit].position.x
 		buff_units_from_unit(unit, current_enemy_units)
 		current_enemy_units.append(unit)
+		enemy_unit_state.emit(current_enemy_units)
 
 		# all enemies can extinguish torches
 		unit.can_change_torches = true
@@ -267,6 +270,7 @@ func _on_unit_died(unit: Unit) -> void:
 	else:
 		remove_buffs_from_units_buffed_by_unit(unit, current_ally_units)
 		current_enemy_units.erase(unit)
+		enemy_unit_state.emit(current_enemy_units)
 		if unit == currently_hovered_unit:
 			currently_hovered_unit = null
 

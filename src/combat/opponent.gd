@@ -46,11 +46,9 @@ func _process(delta: float) -> void:
 	if hand.cur_mana > 0:
 		try_play_cards()
 
-	# Adjust spawn interval based on difficulty
 	adjust_spawn_interval()
 
 func try_play_cards() -> void:
-	print("Trying to play opponent card with cur mana " + str(hand.cur_mana) + " and max mana " + str(hand.max_mana))
 	var max_units_to_play_at_once := difficulty + 1
 	playing_cards = true
 
@@ -81,3 +79,7 @@ func play_one_card() -> void:
 	var card: Card = hand.cards[0]
 	hand.play_card(card)
 	spawn.emit(card)
+
+
+func set_units(units: Array[Unit]) -> void:
+	pass
