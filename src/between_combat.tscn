@@ -90,11 +90,13 @@ autowrap_mode = 2
 [node name="Narrative" type="Label" parent="Welcome"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.3
+anchor_top = 0.2
 anchor_right = 1.0
 anchor_bottom = 0.8
 theme_override_font_sizes/font_size = 48
-text = "Good luck fighting your way through these woods. "
+text = "Good luck fighting your way through these woods. 
+
+I'll pick the cards for your deck."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
