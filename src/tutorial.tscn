@@ -52,6 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 icon = ExtResource("2_ui2h3")
+flat = true
 expand_icon = true
 
 [node name="HelpText" type="RichTextLabel" parent="."]

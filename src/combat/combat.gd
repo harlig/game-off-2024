@@ -140,6 +140,7 @@ func countdown_combat() -> void:
 	if is_tutorial:
 		return
 
+	$ViewDeckButton.hide()
 	get_tree().paused = true
 	$Countdown.show()
 
@@ -147,8 +148,9 @@ func countdown_combat() -> void:
 		$Countdown.text = str(3 - i)
 		await get_tree().create_timer(1.0).timeout
 	$Countdown.text = "GO!"
-	get_tree().paused = false
 	await get_tree().create_timer(1.0).timeout
+	get_tree().paused = false
+	$ViewDeckButton.show()
 	$Countdown.hide()
 	return
 

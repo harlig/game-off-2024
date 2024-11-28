@@ -97,6 +97,7 @@ func _on_reward_presented() -> void:
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
+	current_combat = null
 
 	# on combat won, create a shop and go right
 	# on combat lose, create a retry and go left
@@ -122,7 +123,6 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		tween.parallel().tween_property(existing_combat.get_node("Backdrop/DirectionalLight3D"), "light_energy", 0.0, 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
-		existing_combat.queue_free()
 		between_combat.put_in_focus()
 	elif combat_state == Combat.CombatState.LOST:
 		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten, false)
@@ -137,8 +137,8 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 		# tween.parallel().tween_property(between_combat.get_node("Backdrop/DirectionalLight3D"), "light_energy", 0.0, 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT) # SHOULD WE TWEEN HERE?
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
-		existing_combat.queue_free()
 		between_combat.put_in_focus()
+	existing_combat.queue_free()
 
 func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	bank_control.hide()
