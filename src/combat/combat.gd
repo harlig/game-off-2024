@@ -82,7 +82,7 @@ func _ready() -> void:
 	player_combat_deck = CombatDeck.create_combat_deck(player_deck.cards, audio, relics)
 	add_child(player_combat_deck)
 
-	$Hand.initialize(player_combat_deck, true)
+	$Hand.initialize(player_combat_deck, true, $ViewDeckButton)
 
 	var enemy_cards := randomize_new_enemy_deck(difficulty * 50, difficulty * 20, combats_beaten_before_this_combat)
 	enemy_combat_deck = CombatDeck.create_combat_deck(enemy_cards)

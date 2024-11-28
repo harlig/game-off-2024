@@ -7,7 +7,8 @@ class_name Hand extends Node
 var max_hand_size := 4
 
 var cards: Array[Card] = []
-var deck: CombatDeck;
+var deck: CombatDeck
+var view_deck_button: Button
 var max_mana := 8:
 	set(value):
 		max_mana = value
@@ -59,8 +60,9 @@ func update_mana_timer(delta: float) -> void:
 		mana_time_remaining = mana_time
 
 
-func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false) -> void:
+func initialize(combat_deck: CombatDeck, first_card_torchlighter: bool = false, init_view_deck_button: Button = null) -> void:
 	deck = combat_deck;
+	view_deck_button = init_view_deck_button
 
 	var cards_drawn := 0
 	if first_card_torchlighter:
@@ -111,10 +113,12 @@ func play_card(card: Card) -> void:
 	cur_mana -= card.mana
 	var hand_display := get_node_or_null("../HandDisplay")
 	if card.is_secret and hand_display:
+		view_deck_button.hide()
 		get_tree().paused = true
 		hand_display.reveal_secret(card)
 		await hand_display.secret_acknowledged
 		get_tree().paused = false
+		view_deck_button.show()
 	# secrets don't get sent to the discard pile
 	if !card.is_secret:
 		deck.discard(card)
