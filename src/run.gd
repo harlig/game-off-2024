@@ -147,7 +147,6 @@ func continue_to_next_combat(between_combat: BetweenCombat) -> void:
 	var new_combat := create_combat()
 	new_combat.position = Vector3(between_combat.position.x + offset, new_combat.position.y, new_combat.position.z)
 	new_combat.get_node("Opponent").should_spawn = false
-
 	new_combat.get_node("HandDisplay").hide()
 
 	var tween: Tween = get_tree().create_tween();

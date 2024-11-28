@@ -77,8 +77,6 @@ func put_in_focus() -> void:
 	can_highlight_interactable = true
 	if interactable_hovered:
 		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", true)
-	# TODO: if your mouse is already in the interactable, you should highlight him
-	# TODO: set an on mouse enetered/exited bit, and if it's in the entered state here and not exited the let's highlight our boi
 
 func _on_button_pressed() -> void:
 	can_highlight_interactable = false
