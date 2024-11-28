@@ -93,7 +93,6 @@ func try_draw_card(play_audio: bool = true) -> bool:
 
 	var card := deck.draw(play_audio)
 	if card == null:
-		print("No card to draw!")
 		return false
 
 	cards.append(card)
