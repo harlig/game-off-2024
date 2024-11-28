@@ -23,15 +23,15 @@ func _ready() -> void:
 func adjust_spawn_interval() -> void:
 	match difficulty:
 		1:
-			spawn_interval = 17.0
+			spawn_interval = 16.0
 		2:
-			spawn_interval = 14.0
+			spawn_interval = 13.0
 		3:
-			spawn_interval = 10.0
+			spawn_interval = 11.0
 		4:
-			spawn_interval = 8.5
+			spawn_interval = 9.5
 		5:
-			spawn_interval = 6.0
+			spawn_interval = 7.0
 
 func _process(delta: float) -> void:
 	if not should_spawn:
