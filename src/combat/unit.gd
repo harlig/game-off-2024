@@ -233,7 +233,8 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 
 	var mesh_instance: MeshInstance3D = $MeshInstance3D
 	mesh_instance.scale = Vector3(scalar, scalar, 1)
-	var x_diff := 1 - scalar
+	var x_diff := -scalar
+	# TODO: this doesn't actually matter because the animation player overrides it
 	mesh_instance.position.x = x_diff
 	mesh_instance.position.y = scalar
 
