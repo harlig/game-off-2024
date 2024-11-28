@@ -167,18 +167,6 @@ func _on_card_clicked(_times_clicked: int, card: Card) -> void:
 	highlight_current_card()
 
 
-func _on_card_mouse_entered(card: Card) -> void:
-	# when secrets are presented, don't handle input from these
-	if get_tree().paused:
-		return
-	current_hover = card
-
-	if current_selected:
-		return
-
-	show_hovered_card()
-
-
 func show_hovered_card() -> void:
 	if !current_hover:
 		return
@@ -191,12 +179,16 @@ func show_hovered_card() -> void:
 	tween_card_to(current_hover, Vector2(current_hover.position.x, -300.0), current_hover.rotation, Vector2(1.3, 1.3), 0.2)
 
 
-func _on_card_mouse_exited(card: Card) -> void:
-	# when secrets are presented, don't handle input from these
-	if get_tree().paused:
+func _on_card_mouse_entered(card: Card) -> void:
+	current_hover = card
+	if current_selected:
 		return
-	current_hover = null;
 
+	show_hovered_card()
+
+
+func _on_card_mouse_exited(card: Card) -> void:
+	current_hover = null;
 	if current_selected:
 		return
 
@@ -224,6 +216,7 @@ func place_back_in_hand(card: Card, color_to_highlight_then_unhighlight: Color =
 		await get_tree().create_timer(0.5, false).timeout
 
 	card.unhighlight()
+	update_hand_positions();
 
 
 # TODO: Spread around i
