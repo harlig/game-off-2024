@@ -196,14 +196,6 @@ func _on_card_mouse_exited(card: Card) -> void:
 	place_back_in_hand(card);
 
 
-func _on_drop_box_entered() -> void:
-	if !current_selected:
-		return ;
-
-	place_back_in_hand(current_selected)
-	current_selected = null
-
-
 func place_back_in_hand(card: Card, color_to_highlight_then_unhighlight: Color = Color.WHITE) -> void:
 	card_deselected.emit()
 	card.z_index = 0
