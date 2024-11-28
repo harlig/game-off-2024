@@ -84,6 +84,17 @@ static func new_card_by_name(unit_name: String) -> Card:
 	var unit_arr := creature_cards.filter(func(creature: Creature) -> bool: return creature.name == unit_name)
 	return Card.create_creature_card(unit_arr[0])
 
+static func get_random_card_with_mana_cost(mana_cost: int) -> Card:
+	var filtered_creatures := creature_cards.filter(func(creature: Creature) -> bool:
+		return creature.mana == mana_cost
+	)
+	if filtered_creatures.size() == 0:
+		push_warning("Found no creatures to spawn with mana cost: ", str(mana_cost), ". Falling back to a random creature")
+		return Card.create_creature_card(creature_cards[randi() % creature_cards.size()])
+
+	return Card.create_creature_card(filtered_creatures[randi() % filtered_creatures.size()])
+
+
 static func get_random_card(max_score: int, can_be_torchlighter: bool = false) -> Card:
 	var creature := creature_cards[randi() % creature_cards.size()]
 	while creature.get_score() > max_score or creature.can_change_torches != can_be_torchlighter:

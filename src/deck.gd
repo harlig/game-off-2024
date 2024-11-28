@@ -40,12 +40,12 @@ func _ready() -> void:
 			total_score += card.get_score()
 			num_units -= 1
 
+	add_card(UnitList.get_random_card_with_mana_cost(5))
+
 	cards.sort_custom(Card.compare_by_mana)
 
 	for ndx in range(INITIAL_TORCHLIGHTER_COUNT):
 		add_card(UnitList.new_card_by_name("Torchlighter"))
-
-	# TODO: also add a random medium-sized unit (5 mana)
 
 
 func add_card(card: Card) -> void:
