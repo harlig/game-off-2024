@@ -465,6 +465,7 @@ func _on_reward_reward_chosen(reward_data: Reward.RewardData) -> void:
 	reward_chosen.emit(reward_data)
 
 func _on_reward_rewards_done() -> void:
+	reward.hide()
 	combat_over.emit(state)
 	rewards_done.emit()
 
