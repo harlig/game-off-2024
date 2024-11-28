@@ -204,6 +204,9 @@ func try_play_player_card(card: Card) -> bool:
 				#TODO
 				pass ;
 
+	if played == false:
+		audio.play_buzzer()
+
 	return played
 
 
