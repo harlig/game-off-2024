@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cp8oeuj383dlo"]
+[gd_scene load_steps=8 format=3 uid="uid://cp8oeuj383dlo"]
 
 [ext_resource type="AudioStream" uid="uid://deor8g8sfri8j" path="res://sounds/shuffle.wav" id="1_6xpj6"]
 [ext_resource type="Script" path="res://src/audio.gd" id="1_m2klc"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://dhgji0b0t3unx" path="res://sounds/purchase.wav" id="4_n6xbf"]
 [ext_resource type="AudioStream" uid="uid://ql5wko38ra6e" path="res://sounds/buzzer.wav" id="5_8goch"]
 [ext_resource type="AudioStream" uid="uid://cwt3qao04wm3y" path="res://sounds/game jam 2024 - 11:20:24, 11.01 PM.wav" id="6_atis2"]
+[ext_resource type="AudioStream" uid="uid://cdv7k4p1btbs1" path="res://sounds/error.wav" id="6_uvqa1"]
 
 [node name="Audio" type="Node"]
 process_mode = 3
@@ -25,6 +26,10 @@ volume_db = -20.0
 
 [node name="Buzzer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_8goch")
+volume_db = -20.0
+
+[node name="Error" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_uvqa1")
 volume_db = -20.0
 
 [node name="AmbientMusic" type="AudioStreamPlayer" parent="."]

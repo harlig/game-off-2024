@@ -27,5 +27,9 @@ func play_purchase() -> void:
 	$Purchase.play()
 
 
+func play_error() -> void:
+	$Error.play()
+
+
 func play_buzzer() -> void:
 	$Buzzer.play()

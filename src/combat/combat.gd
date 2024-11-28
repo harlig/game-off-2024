@@ -173,7 +173,7 @@ func try_play_player_card(card: Card) -> bool:
 	$SpawnLocMesh.hide()
 
 	if not $Hand.can_play(card):
-		audio.play_buzzer()
+		audio.play_error()
 		$HandDisplay.highlight_then_unhighlight_mana_area()
 		return false
 
@@ -205,7 +205,7 @@ func try_play_player_card(card: Card) -> bool:
 				pass ;
 
 	if played == false:
-		audio.play_buzzer()
+		audio.play_error()
 
 	return played
 
