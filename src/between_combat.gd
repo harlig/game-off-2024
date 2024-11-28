@@ -16,6 +16,7 @@ var deck: Deck
 var times_card_removed: int
 
 var can_highlight_interactable := false
+var interactable_hovered := false
 
 var shop: Shop
 var lose_combat: LoseCombat
@@ -74,6 +75,8 @@ func put_in_focus() -> void:
 	if combats_beaten > 0:
 		($ProgressTorches.get_child(combats_beaten - 1) as Torch).light_torch()
 	can_highlight_interactable = true
+	if interactable_hovered:
+		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", true)
 	# TODO: if your mouse is already in the interactable, you should highlight him
 	# TODO: set an on mouse enetered/exited bit, and if it's in the entered state here and not exited the let's highlight our boi
 
@@ -86,11 +89,13 @@ func _on_button_pressed() -> void:
 
 
 func _on_area_3d_mouse_entered() -> void:
+	interactable_hovered = true
 	if can_highlight_interactable:
 		$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", true)
 
 
 func _on_area_3d_mouse_exited() -> void:
+	interactable_hovered = false
 	$Interactable/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 
 
