@@ -85,7 +85,6 @@ func create_combat() -> Combat:
 
 	new_combat.reward_presented.connect(_on_reward_presented)
 	new_combat.reward_chosen.connect(_on_combat_reward_chosen)
-	new_combat.rewards_done.connect(_on_combat_rewards_done)
 	new_combat.combat_over.connect(_on_combat_over)
 
 	add_child(new_combat)
@@ -97,14 +96,14 @@ func _on_reward_presented() -> void:
 
 func _on_combat_over(combat_state: Combat.CombatState) -> void:
 	var existing_combat := current_combat
-	current_combat = null
 
 	# on combat won, create a shop and go right
 	# on combat lose, create a retry and go left
+	var between_combat: BetweenCombat
+	var tween: Tween
 	if combat_state == Combat.CombatState.WON:
 		combat_difficulty += 1
 		combats_beaten += 1
-		var between_combat: BetweenCombat
 		if combats_beaten == COMBATS_TO_BEAT:
 			between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.END, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten, true)
 			between_combat.continue_pressed.connect(continue_to_menu)
@@ -118,26 +117,26 @@ func _on_combat_over(combat_state: Combat.CombatState) -> void:
 
 		between_combat.position = Vector3(existing_combat.position.x + BETWEEN_COMBAT_OFFSET, between_combat.position.y, between_combat.position.z)
 
-		var tween: Tween = get_tree().create_tween();
+		tween = get_tree().create_tween();
 		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x - BETWEEN_COMBAT_OFFSET, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		tween.parallel().tween_property(existing_combat.get_node("Backdrop/DirectionalLight3D"), "light_energy", 0.0, 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
-		await tween.finished
-		between_combat.put_in_focus()
 	elif combat_state == Combat.CombatState.LOST:
-		var between_combat: BetweenCombat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten, false)
+		between_combat = BetweenCombat.create_between_combat(BetweenCombat.Type.RETRY, combat_difficulty, bank, deck, times_card_removed, audio, combats_beaten, false)
 		between_combat.continue_pressed.connect(continue_to_next_combat.bind(between_combat))
 		between_combat.game_lost.connect(continue_to_menu)
 		add_child(between_combat)
 
 		between_combat.position = Vector3(existing_combat.position.x - BETWEEN_COMBAT_OFFSET, between_combat.position.y, between_combat.position.z)
 
-		var tween: Tween = get_tree().create_tween();
+		tween = get_tree().create_tween();
 		tween.parallel().tween_property(existing_combat, "position", Vector3(existing_combat.position.x + BETWEEN_COMBAT_OFFSET, existing_combat.position.y, existing_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
 		# tween.parallel().tween_property(between_combat.get_node("Backdrop/DirectionalLight3D"), "light_energy", 0.0, 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT) # SHOULD WE TWEEN HERE?
 		tween.parallel().tween_property(between_combat, "position", Vector3(existing_combat.position.x, between_combat.position.y, between_combat.position.z), 5.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN_OUT)
-		await tween.finished
-		between_combat.put_in_focus()
+
+	current_combat = null
+	await tween.finished
+	between_combat.put_in_focus()
 	existing_combat.queue_free()
 
 func continue_to_next_combat(between_combat: BetweenCombat) -> void:
@@ -180,9 +179,6 @@ func _on_combat_reward_chosen(reward: Reward.RewardData) -> void:
 	elif reward.type == Reward.RewardData.Type.GOLD:
 		bank += reward.gold
 		audio.play_purchase()
-
-func _on_combat_rewards_done() -> void:
-	current_combat.reward.queue_free()
 
 func _on_item_purchased(item: Card, cost: int) -> void:
 	deck.add_card(item)
