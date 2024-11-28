@@ -135,9 +135,6 @@ func visualize_discard_pile() -> void:
 
 func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
 	$ManaArea/BoxContainer/Label.text = str(cur_mana) + "/" + str(max_mana);
-	# if we have full mana now, set the mana time to full
-	if cur_mana == max_mana:
-		_on_hand_mana_time_updated(1, 1)
 
 	if not current_selected:
 		return
