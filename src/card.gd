@@ -138,13 +138,16 @@ func update_unit_display() -> void:
 		UnitList.CardType.RANGED:
 			creature_type_text = "Ranged"
 			$DamageArea/TextureRect.texture = ranged_icon_texture
+			$DescriptionArea/Type.tooltip_text = "Attacks a single enemy unit from a distance"
 		UnitList.CardType.MELEE:
 			creature_type_text = "Melee"
+			$DescriptionArea/Type.tooltip_text = "Attacks all nearby enemy units"
 		UnitList.CardType.AIR:
 			creature_type_text = "Air"
 		UnitList.CardType.HEALER:
 			creature_type_text = "Healer"
 			$DamageArea/TextureRect.texture = heal_icon_texture
+			$DescriptionArea/Type.tooltip_text = "Heals a nearby ally unit the lowest health"
 	$DescriptionArea/Type.text = creature_type_text
 
 	add_buff_icons()
@@ -162,9 +165,6 @@ func add_buff_icons() -> void:
 
 	if creature.can_change_torches:
 		display_icon(torchlighter_icon_texture, "Can light torches")
-
-	if creature.type == UnitList.CardType.HEALER:
-		$DescriptionArea/Type.tooltip_text = "Rather than attacking, this unit heals ally units"
 
 func display_icon(icon_texture: Texture2D, icon_help_text: String) -> void:
 	var new_texture_rect: TextureRect = $DescriptionArea/HBoxContainer/TextureRect.duplicate()
