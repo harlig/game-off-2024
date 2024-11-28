@@ -86,7 +86,7 @@ static func new_card_by_name(unit_name: String) -> Card:
 
 static func get_random_card_with_mana_cost(mana_cost: int) -> Card:
 	var filtered_creatures := creature_cards.filter(func(creature: Creature) -> bool:
-		return creature.mana == mana_cost
+		return creature.mana == mana_cost and creature.can_change_torches == false
 	)
 	if filtered_creatures.size() == 0:
 		push_warning("Found no creatures to spawn with mana cost: ", str(mana_cost), ". Falling back to a random creature")
