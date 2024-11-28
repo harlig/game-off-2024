@@ -110,6 +110,7 @@ anchor_right = 0.65
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
+focus_mode = 0
 theme_override_font_sizes/font_size = 28
 text = "View deck"
 
