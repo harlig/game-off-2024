@@ -40,6 +40,7 @@ func _input(event: InputEvent) -> void:
 
 		if not did_play:
 			place_back_in_hand(card, Color.RED if is_in_play_area else Color.WHITE)
+			update_hand_positions();
 
 		if current_hover != card:
 			show_hovered_card()
@@ -208,7 +209,6 @@ func place_back_in_hand(card: Card, color_to_highlight_then_unhighlight: Color =
 		await get_tree().create_timer(0.5, false).timeout
 
 	card.unhighlight()
-	update_hand_positions();
 
 
 # TODO: Spread around i
