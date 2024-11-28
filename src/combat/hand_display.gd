@@ -23,6 +23,11 @@ signal unit_spell_selected()
 signal card_deselected()
 signal secret_acknowledged()
 
+func _ready() -> void:
+	# TODO: fix this for tutorial
+	$ManaArea/BoxContainer/TextureRect.material.set_shader_parameter("percent", 1)
+	$DrawArea/TextureRect.material.set_shader_parameter("percent", 0)
+
 func _input(event: InputEvent) -> void:
 	# Try to play current selected on left mouse button event
 	if event is InputEventMouseButton \
@@ -130,6 +135,10 @@ func visualize_discard_pile() -> void:
 
 func _on_hand_mana_updated(cur_mana: int, max_mana: int) -> void:
 	$ManaArea/BoxContainer/Label.text = str(cur_mana) + "/" + str(max_mana);
+	# if we have full mana now, set the mana time to full
+	if cur_mana == max_mana:
+		_on_hand_mana_time_updated(1, 1)
+
 	if not current_selected:
 		return
 	highlight_current_card()
