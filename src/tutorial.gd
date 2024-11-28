@@ -94,7 +94,7 @@ func explain_play_cards() -> void:
 
 func _on_tutorial_combat_spawned_unit() -> void:
 	continue_button.show()
-	set_help_text("Great job, you've spawned a unit!\n\nIn order to progress in the combat, you must light the torches to defeat the darkness.\nYour units will only move up to the next unlit torch.\nOnly Torchlighters [img=60]res://textures/tutorial/torch_with_background.png[/img] can light torches.\nYou can hover icons on cards to learn what they do.\n\nPress continue, then try to play a Torchlighter.")
+	set_help_text("In order to progress in the combat, you must light the torches to defeat the darkness. Your units will only move up to the next unlit torch.\n\nOnly Torchlighters [img=60]res://textures/tutorial/torch_with_background.png[/img] can light torches.\n\nYou can hover text and icons on cards to learn what they do.\n\nPress continue, then try to play a Torchlighter.")
 	get_tree().paused = true
 	continue_button.pressed.connect(unpause, ConnectFlags.CONNECT_ONE_SHOT)
 
