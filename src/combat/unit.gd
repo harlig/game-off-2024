@@ -204,8 +204,8 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 	unit_attackable.max_hp = from_creature.health
 	unit_attackable.hp = from_creature.health
 
-	$MeshInstance3D.material_override.set_shader_parameter("albedo", ResourceLoader.load(from_creature.card_image_path))
-	$MeshInstance3D.material_override.set_shader_parameter("flip_h", flip_image)
+	$MeshInstanceParent/MeshInstance3D.material_override.set_shader_parameter("albedo", ResourceLoader.load(from_creature.card_image_path))
+	$MeshInstanceParent/MeshInstance3D.material_override.set_shader_parameter("flip_h", flip_image)
 	if flip_image:
 		attack_animation = "attack_reversed"
 		change_torch_animation = "light_torch_reversed"
@@ -231,12 +231,12 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 	new_box_shape.size = Vector3(attackable_box_shape.size.x * scalar, attackable_box_shape.size.y * scalar, attackable_box_shape.size.z)
 	attackable_collider.shape = new_box_shape
 
-	var mesh_instance: MeshInstance3D = $MeshInstance3D
-	mesh_instance.scale = Vector3(scalar, scalar, 1)
-	var x_diff := -scalar
+	var mesh_instance_parent: Node3D = $MeshInstanceParent
+	mesh_instance_parent.get_node("MeshInstance3D").scale = Vector3(scalar, scalar, 1)
+	var x_diff := -0.75 * scalar
 	# TODO: this doesn't actually matter because the animation player overrides it
-	mesh_instance.position.x = x_diff
-	mesh_instance.position.y = scalar
+	mesh_instance_parent.position.x = x_diff
+	mesh_instance_parent.position.y = x_diff
 
 	var health_bar_scalar: float = scalar
 	match from_creature.card_image_path:
@@ -269,8 +269,8 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 
 	if from_creature.can_change_torches:
 		var torch: Torch = torch_scene.instantiate()
-		torch.position.x += 0.4
-		torch.position.y += 0.3
+		# torch.position.x += 0.4
+		# torch.position.y += 0.3
 		torch.light_torch()
 		add_child(torch)
 
@@ -305,10 +305,10 @@ func resize_unit_target_box(creature: UnitList.Creature) -> void:
 		collision_shape.shape = new_box_shape
 
 func highlight_unit() -> void:
-	$MeshInstance3D.material_override.set_shader_parameter("highlight", true)
+	$MeshInstanceParent/MeshInstance3D.material_override.set_shader_parameter("highlight", true)
 
 func unhighlight_unit() -> void:
-	$MeshInstance3D.material_override.set_shader_parameter("highlight", false)
+	$MeshInstanceParent/MeshInstance3D.material_override.set_shader_parameter("highlight", false)
 
 
 func make_selectable(selectable: bool) -> void:
