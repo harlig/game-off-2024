@@ -111,8 +111,8 @@ func play_card(card: Card) -> void:
 	cur_mana -= card.mana
 	var hand_display := get_node_or_null("../HandDisplay")
 	if card.is_secret and hand_display:
-		hand_display.reveal_secret(card)
 		get_tree().paused = true
+		hand_display.reveal_secret(card)
 		await hand_display.secret_acknowledged
 		get_tree().paused = false
 	# secrets don't get sent to the discard pile

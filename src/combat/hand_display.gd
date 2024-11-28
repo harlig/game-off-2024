@@ -16,6 +16,8 @@ var current_selected: Card = null
 var drag_start_position: Vector2
 var is_dragging := false
 
+var is_revealing_secret := false
+
 signal unit_selected()
 signal unit_spell_selected()
 signal card_deselected()
@@ -182,7 +184,7 @@ func show_hovered_card() -> void:
 
 func _on_card_mouse_entered(card: Card) -> void:
 	current_hover = card
-	if current_selected:
+	if current_selected || is_revealing_secret:
 		return
 
 	show_hovered_card()
@@ -190,7 +192,7 @@ func _on_card_mouse_entered(card: Card) -> void:
 
 func _on_card_mouse_exited(card: Card) -> void:
 	current_hover = null;
-	if current_selected:
+	if current_selected || is_revealing_secret:
 		return
 
 	update_hand_positions();
@@ -305,12 +307,14 @@ func draw_drag_line(event: InputEvent) -> void:
 
 
 func reveal_secret(card: Card) -> void:
+	is_revealing_secret = true
+
 	var x_pos: float = global_position.x + (size.x) / 2.0 - CARD_X_SIZE / 2.0
 	var y_pos: float = global_position.y + (size.y) / 2.0 - CARD_Y_SIZE / 2.0
 	var tween: Tween = tween_card_to(card, Vector2(x_pos, y_pos), 0.0, Vector2(1.0, 1.0), 1.5, true)
 	await tween.finished
 
-	card.is_secret_releaved = true
+	card.is_secret_revealed = true
 	card.update_display()
 
 	$ContinueButton.show()
@@ -318,6 +322,7 @@ func reveal_secret(card: Card) -> void:
 	$ContinueButton.hide()
 
 	secret_acknowledged.emit()
+	is_revealing_secret = false
 
 # Move hover card down a bit
 # var hand_size := $HandArea.get_child_count()
