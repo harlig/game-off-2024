@@ -218,9 +218,11 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 	buffs_i_apply = from_creature.buffs_i_apply
 	can_change_torches = from_creature.can_change_torches
 
-	if from_creature.get_score() < 30 && !is_secret and from_creature.mana <= 4:
+	if is_secret:
+		scalar = 3
+	elif from_creature.get_score() < 30 and from_creature.mana <= 4:
 		scalar = 1
-	elif from_creature.get_score() < 50 and from_creature.mana < 9:
+	elif from_creature.get_score() < 50 and from_creature.mana < 8:
 		scalar = 2
 	else:
 		scalar = 3
@@ -236,7 +238,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 	var x_diff := -0.75 * scalar
 	# TODO: this doesn't actually matter because the animation player overrides it
 	mesh_instance_parent.position.x = x_diff
-	mesh_instance_parent.position.y = x_diff
+	mesh_instance_parent.position.y = x_diff * 0.1 if scalar == 1 else x_diff * 0.2 if scalar == 2 else x_diff * 0.3
 
 	var health_bar_scalar: float = scalar
 	match from_creature.card_image_path:
@@ -269,8 +271,7 @@ func set_stats(from_creature: UnitList.Creature, flip_image: bool = false, is_se
 
 	if from_creature.can_change_torches:
 		var torch: Torch = torch_scene.instantiate()
-		# torch.position.x += 0.4
-		# torch.position.y += 0.3
+		torch.position.y += 0.3
 		torch.light_torch()
 		add_child(torch)
 
