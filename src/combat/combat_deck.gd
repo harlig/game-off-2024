@@ -75,17 +75,17 @@ func discard(card: Card) -> void:
 
 func get_best_cards(num_cards: int) -> Array[Card]:
 	var best_cards: Array[Card] = []
-	var seen_creatures: Array[UnitList.Creature] = []
-	var seen_spells: Array[SpellList.Spell] = []
+	var seen_creatures: Dictionary[String, bool] = {}
+	var seen_spells: Dictionary[String, bool] = {}
 
 	for card in all_cards:
 		if best_cards.size() < num_cards:
-			if card.type == Card.CardType.UNIT and card.creature not in seen_creatures:
+			if card.type == Card.CardType.UNIT and not seen_creatures.has(card.creature.name):
 				best_cards.append(card)
-				seen_creatures.append(card.creature)
-			elif card.type == Card.CardType.SPELL and card.spell not in seen_spells:
+				seen_creatures[card.creature.name] = true
+			elif card.type == Card.CardType.SPELL and not seen_spells.has(card.spell.name):
 				best_cards.append(card)
-				seen_spells.append(card.spell)
+				seen_spells[card.spell.name] = true
 			continue
 
 		var worst_best_card: Card = null
@@ -96,14 +96,14 @@ func get_best_cards(num_cards: int) -> Array[Card]:
 				worst_best_card_ndx = ndx
 
 		if card.get_score() > worst_best_card.get_score():
-			if card.type == Card.CardType.UNIT and card.creature not in seen_creatures:
-				seen_creatures.erase(best_cards[worst_best_card_ndx].creature)
+			if card.type == Card.CardType.UNIT and not seen_creatures.has(card.creature.name):
+				seen_creatures.erase(best_cards[worst_best_card_ndx].creature.name)
 				best_cards[worst_best_card_ndx] = card
-				seen_creatures.append(card.creature)
-			elif card.type == Card.CardType.SPELL and card.spell not in seen_spells:
-				seen_spells.erase(best_cards[worst_best_card_ndx].spell)
+				seen_creatures[card.creature.name] = true
+			elif card.type == Card.CardType.SPELL and not seen_spells.has(card.spell.name):
+				seen_spells.erase(best_cards[worst_best_card_ndx].spell.name)
 				best_cards[worst_best_card_ndx] = card
-				seen_spells.append(card.spell)
+				seen_spells[card.spell.name] = true
 
 	return best_cards
 
