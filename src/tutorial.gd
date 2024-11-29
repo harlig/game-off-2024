@@ -37,7 +37,7 @@ func _ready() -> void:
 	# tutorial starts with max mana
 	new_combat.get_node("Hand").cur_mana = new_combat.get_node("Hand").max_mana
 
-	set_help_text("Welcome to the forest!")
+	set_help_text("Welcome to the forest!\n\n$$$$$$$$$$$$$")
 	continue_button.pressed.connect(highlight_hand_area, ConnectFlags.CONNECT_ONE_SHOT)
 	get_tree().paused = true
 
