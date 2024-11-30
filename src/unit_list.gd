@@ -7,7 +7,7 @@ static var creature_cards: Array[Creature] = [
 	Creature.new("Creep", CardType.RANGED, 10, 1, 1, "res://textures/unit/slug.png"),
 	Creature.new("Cryptkin", CardType.MELEE, 15, 2, 1, "res://textures/unit/cricket.png"),
 	Creature.new("Shriekling", CardType.RANGED, 20, 2, 2, "res://textures/unit/doodle_jump.png"),
-	Creature.new("Phantom Husk", CardType.RANGED, 20, 3, 2, "res://textures/unit/papa_smurf.png"),
+	Creature.new("Phantom Husk", CardType.RANGED, 15, 3, 2, "res://textures/unit/papa_smurf.png"),
 	Creature.new("Spindler", CardType.RANGED, 20, 2, 2, "res://textures/unit/tripod.png"),
 	Creature.new("Rotling", CardType.MELEE, 20, 2, 2, "res://textures/unit/snek.png"),
 	Creature.new("Dreadroot", CardType.RANGED, 20, 4, 3, "res://textures/unit/spiky_seahorse.png"),
