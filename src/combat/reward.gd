@@ -6,11 +6,11 @@ signal rewards_done()
 var combat_beaten_gold := 25:
 	set(value):
 		combat_beaten_gold = value
-		$AllRewards/RewardsContainer/RewardsArea/Gold.text = "+%d gold" % combat_beaten_gold
+		$AllRewards/RewardsContainer/RewardsArea/Gold.text = "Gain $%d" % combat_beaten_gold
 var reward_skipped_gold: int = 50:
 	set(value):
 		reward_skipped_gold = value
-		$SelectCard/SkipButton.text = "Skip\n(+%dg)" % reward_skipped_gold
+		$SelectCard/SkipButton.text = "Skip\n(Gain $%d)" % reward_skipped_gold
 
 var got_combat_gold_reward := false
 var got_select_card_reward := false
