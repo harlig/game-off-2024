@@ -14,8 +14,8 @@ static var spell_cards: Array[Spell] = [
 ]
 
 static var secret_spell_cards: Array[Spell] = [
-	Spell.new("More max mana", SpellType.MAX_MANA, TargetableType.NONE, 2, 2, "res://textures/hud/mana.png"),
-	Spell.new("Fast mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 2.0, 2, "res://textures/hud/mana.png"),
+	Spell.new("More max mana", SpellType.MAX_MANA, TargetableType.NONE, 3, 3, "res://textures/hud/mana.png"),
+	Spell.new("Fast mana regen", SpellType.MANA_REGEN, TargetableType.NONE, 2.0, 4, "res://textures/hud/mana.png"),
 	# Spell.new("Draw cards", SpellType.DRAW_CARDS, TargetableType.NONE, 10, 5, "res://textures/spell/draw_cards.png"),
 	Spell.new("Fast draw cards", SpellType.DRAW_CARDS_REGEN, TargetableType.NONE, 2.5, 3, "res://textures/spell/draw_cards.png"),
 ]
