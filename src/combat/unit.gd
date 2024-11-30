@@ -5,7 +5,7 @@ const torch_scene := preload("res://src/torch.tscn")
 const projectile_scene := preload("res://src/combat/projectile.tscn")
 const damage_buff_texture: Texture2D = preload("res://textures/card/augment/buff_damage.jpg")
 const health_buff_texture: Texture2D = preload("res://textures/card/augment/buff_health.png")
-const speed_buff_texture: Texture2D = preload("res://textures/card/augment/buff_speed.jpg")
+const speed_buff_texture: Texture2D = preload("res://textures/card/augment/buff_speed.png")
 
 enum Direction {LEFT, RIGHT}
 
